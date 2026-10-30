@@ -21,11 +21,19 @@ export const numeroWhatsapp = '5547992735089';
 
 export type AssuntoWhatsapp = 'geral' | 'site' | 'sistema';
 
-/** Mensagens prontas, na voz do cliente. Curtas e provisórias: a versão final é do TODO 2. */
+/**
+ * Mensagens prontas, na voz do cliente (conteudo.md, seção 6). A de sistemas leva as três
+ * perguntas do filtro, com espaços para a pessoa preencher.
+ */
 export const mensagensWhatsapp: Record<AssuntoWhatsapp, string> = {
-  geral: 'Oi! Vi o site da Infinium e queria conversar sobre a minha empresa.',
+  geral: 'Oi! Vi o site da Infinium e quero conversar sobre a minha empresa.',
   site: 'Oi! Quero um site para a minha empresa.',
-  sistema: 'Oi! Quero conversar sobre automatizar os processos da minha empresa.',
+  sistema: [
+    'Oi! Quero automatizar os processos da minha empresa.',
+    'Somos ___ pessoas.',
+    'Hoje usamos ___ (ferramentas e planilhas).',
+    'Perdemos mais tempo com ___.',
+  ].join('\n'),
 };
 
 export function linkWhatsapp(assunto: AssuntoWhatsapp = 'geral'): string {

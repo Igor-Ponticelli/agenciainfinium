@@ -1,0 +1,35 @@
+---
+import { cnpj, email, instagram, linkWhatsapp, nomeCompleto } from '../data/empresa';
+import { rotas } from '../i18n/rotas';
+import { textos as t } from '../i18n/textos';
+
+// Esqueleto: só a estrutura e os links reais. Logo e estilo são do TODO 4.
+// [PENDENTE: o Igor decide se o CNPJ aparece no rodapé]
+const mostrarCnpj = false;
+---
+
+<footer>
+  <p>{t.rodape.assinatura}</p>
+  <ul>
+    <li>
+      <a href={linkWhatsapp()} target="_blank" rel="noopener">
+        {t.contato.whatsapp} <span class="visualmente-oculto">{t.linkExterno}</span>
+      </a>
+    </li>
+    <li>
+      <a href={`mailto:${email}`}>{email}</a>
+    </li>
+    <li>
+      <a href={instagram.url} target="_blank" rel="noopener">
+        {instagram.usuario} <span class="visualmente-oculto">{t.linkExterno}</span>
+      </a>
+    </li>
+    <li>
+      <a href={rotas.privacidade}>{t.rodape.privacidade}</a>
+    </li>
+  </ul>
+  <p>
+    {nomeCompleto}
+    {mostrarCnpj && <span>· CNPJ {cnpj}</span>}
+  </p>
+</footer>
