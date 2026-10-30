@@ -1,0 +1,81 @@
+---
+import { instagram, nome, nomeCompleto } from '../data/empresa';
+import { codigoIdioma, localeOg } from '../i18n/rotas';
+
+interface Props {
+  titulo: string;
+  descricao: string;
+  /** Título da home: sai sem o sufixo com o nome da empresa. */
+  tituloCompleto?: boolean;
+  noindex?: boolean;
+  /** Imagem Open Graph (caminho absoluto no site, 1200x630). */
+  imagem?: string;
+}
+
+const {
+  titulo,
+  descricao,
+  tituloCompleto = false,
+  noindex = false,
+  imagem = '/og.png',
+} = Astro.props;
+
+const site = Astro.site!;
+const canonical = new URL(Astro.url.pathname, site).href;
+const tituloFinal = tituloCompleto ? titulo : `${titulo} | ${nomeCompleto}`;
+const imagemUrl = new URL(imagem, site).href;
+const logoUrl = new URL('/icone-512.png', site).href;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${site.origin}/#organizacao`,
+      name: nomeCompleto,
+      alternateName: nome,
+      url: site.href,
+      logo: logoUrl,
+      sameAs: [instagram.url],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${site.origin}/#site`,
+      name: nomeCompleto,
+      url: site.href,
+      inLanguage: codigoIdioma,
+      publisher: { '@id': `${site.origin}/#organizacao` },
+    },
+  ],
+};
+---
+
+<title>{tituloFinal}</title>
+<meta name="description" content={descricao} />
+{noindex && <meta name="robots" content="noindex" />}
+{!noindex && <link rel="canonical" href={canonical} />}
+
+<meta name="theme-color" content="#39135F" />
+<meta name="color-scheme" content="light" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<link rel="sitemap" href="/sitemap-index.xml" />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={nomeCompleto} />
+<meta property="og:title" content={tituloFinal} />
+<meta property="og:description" content={descricao} />
+<meta property="og:url" content={canonical} />
+<meta property="og:locale" content={localeOg} />
+<meta property="og:image" content={imagemUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={nomeCompleto} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={tituloFinal} />
+<meta name="twitter:description" content={descricao} />
+<meta name="twitter:image" content={imagemUrl} />
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
