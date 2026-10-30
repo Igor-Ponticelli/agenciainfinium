@@ -2,25 +2,29 @@
 import Base from '../layouts/Base.astro';
 import { instagram, linkWhatsapp } from '../data/empresa';
 import { rotas } from '../i18n/rotas';
-import { metasPaginas, textos as t } from '../i18n/textos';
+import { acessos as t } from '../i18n/paginas/acessos';
+import { metasPaginas } from '../i18n/textos';
 
 const meta = metasPaginas.acessos;
 ---
 
 <Base titulo={meta.titulo} descricao={meta.descricao} noindex semCabecalho>
-  <h1>Acessos</h1>
+  <h1>{t.titulo}</h1>
   <ul>
     <li>
-      <a href={linkWhatsapp('geral')}>{t.acoes.falarWhatsapp}</a>
+      <a href={linkWhatsapp()}>{t.botoes.whatsapp}</a>
     </li>
     <li>
-      <a href={rotas.sites}>{t.acoes.queroSite}</a>
+      <a href={rotas.sites}>{t.botoes.site}</a>
     </li>
     <li>
-      <a href={rotas.sistemas}>{t.acoes.queroSistema}</a>
-    </li>
-    <li>
-      <a href={instagram.url}>{t.contato.instagram}</a>
+      <a href={rotas.sistemas}>{t.botoes.sistema}</a>
     </li>
   </ul>
+  <p>
+    <a href={instagram.url}>{t.instagram}</a>
+  </p>
+  <p>
+    <a href={rotas.inicio}>{t.verSite}</a>
+  </p>
 </Base>
