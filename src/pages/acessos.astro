@@ -1,0 +1,26 @@
+---
+import Base from '../layouts/Base.astro';
+import { instagram, linkWhatsapp } from '../data/empresa';
+import { rotas } from '../i18n/rotas';
+import { metasPaginas, textos as t } from '../i18n/textos';
+
+const meta = metasPaginas.acessos;
+---
+
+<Base titulo={meta.titulo} descricao={meta.descricao} noindex semCabecalho>
+  <h1>Acessos</h1>
+  <ul>
+    <li>
+      <a href={linkWhatsapp('geral')}>{t.acoes.falarWhatsapp}</a>
+    </li>
+    <li>
+      <a href={rotas.sites}>{t.acoes.queroSite}</a>
+    </li>
+    <li>
+      <a href={rotas.sistemas}>{t.acoes.queroSistema}</a>
+    </li>
+    <li>
+      <a href={instagram.url}>{t.contato.instagram}</a>
+    </li>
+  </ul>
+</Base>

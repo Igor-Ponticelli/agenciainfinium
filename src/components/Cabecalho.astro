@@ -1,0 +1,49 @@
+---
+import logo from '../assets/marca/logo-horizontal-primary.svg';
+import { linkWhatsapp } from '../data/empresa';
+import { normalizar, rotas } from '../i18n/rotas';
+import { textos as t } from '../i18n/textos';
+
+// Esqueleto: só a estrutura e os links reais. Menu do celular, estilo e material são do TODO 4.
+const atual = normalizar(Astro.url.pathname);
+// Menu: Serviços (Sites, Sistemas) · Projetos · Blog · Contato · WhatsApp. O submenu é do TODO 4;
+// no esqueleto, os cinco são links diretos.
+const itens = [
+  { href: rotas.servicos, rotulo: t.menu.servicos },
+  { href: rotas.sites, rotulo: t.menu.sites },
+  { href: rotas.sistemas, rotulo: t.menu.sistemas },
+  { href: rotas.projetos, rotulo: t.menu.projetos },
+  { href: rotas.blog, rotulo: t.menu.blog },
+  { href: rotas.contato, rotulo: t.menu.contato },
+].map((item) => ({
+  ...item,
+  atual: atual === item.href || (atual.startsWith(item.href) && item.href !== rotas.servicos),
+}));
+---
+
+<header>
+  <a href={rotas.inicio}>
+    <img
+      src={logo.src}
+      width="160"
+      height={Math.round((160 * logo.height) / logo.width)}
+      alt={t.logo}
+    />
+  </a>
+  <nav aria-label={t.menu.rotulo}>
+    <ul>
+      {itens.map((item) => (
+        <li>
+          <a href={item.href} aria-current={item.atual ? 'page' : undefined}>
+            {item.rotulo}
+          </a>
+        </li>
+      ))}
+      <li>
+        <a href={linkWhatsapp()} target="_blank" rel="noopener">
+          {t.acoes.falarWhatsapp} <span class="visualmente-oculto">{t.linkExterno}</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>

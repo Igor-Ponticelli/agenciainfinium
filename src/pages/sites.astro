@@ -1,0 +1,10 @@
+---
+import Base from '../layouts/Base.astro';
+import { metasPaginas } from '../i18n/textos';
+
+const meta = metasPaginas.sites;
+---
+
+<Base titulo={meta.titulo} descricao={meta.descricao}>
+  <h1>Sites</h1>
+</Base>

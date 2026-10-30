@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import { rotas } from '../i18n/rotas';
+import { metasPaginas, textos as t } from '../i18n/textos';
+
+const meta = metasPaginas.naoEncontrada;
+---
+
+<Base titulo={meta.titulo} descricao={meta.descricao} noindex>
+  <h1>{t.naoEncontrada.titulo}</h1>
+  <p>{t.naoEncontrada.texto}</p>
+  <a href={rotas.inicio}>{t.naoEncontrada.voltar}</a>
+</Base>

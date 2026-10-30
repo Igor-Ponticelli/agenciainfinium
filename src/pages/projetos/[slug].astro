@@ -1,0 +1,20 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Base from '../../layouts/Base.astro';
+import { todosProjetos, type Projeto } from '../../data/projetos';
+
+export const getStaticPaths = (async () => {
+  const projetos = await todosProjetos();
+  return projetos.map((projeto) => ({ params: { slug: projeto.data.slug }, props: { projeto } }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  projeto: Projeto;
+}
+
+const { projeto } = Astro.props;
+---
+
+<Base titulo={projeto.data.titulo} descricao={projeto.data.resumo}>
+  <h1>{projeto.data.titulo}</h1>
+</Base>
