@@ -1,10 +1,116 @@
 ---
 import Base from '../layouts/Base.astro';
+import { todosProjetos } from '../data/projetos';
+import { linkWhatsapp } from '../data/empresa';
+import { rotaProjeto, rotas } from '../i18n/rotas';
+import { sistemas as t } from '../i18n/paginas/sistemas';
 import { metasPaginas } from '../i18n/textos';
 
 const meta = metasPaginas.sistemas;
+const produtos = (await todosProjetos()).filter((p) => p.data.tipo === 'produto');
 ---
 
 <Base titulo={meta.titulo} descricao={meta.descricao}>
-  <h1>Sistemas sob medida e automação de processos</h1>
+  <h1>{t.titulo}</h1>
+  <p>{t.frase}</p>
+  <p>{t.texto}</p>
+  <p>
+    <a href={linkWhatsapp('sistema')}>{t.acao}</a>
+  </p>
+
+  <section>
+    <h2>{t.problema.titulo}</h2>
+    <ul>
+      {t.problema.itens.map((i) => (
+        <li>{i}</li>
+      ))}
+    </ul>
+    <p>{t.problema.texto}</p>
+  </section>
+
+  <section>
+    <h2>{t.solucao.titulo}</h2>
+    <p>{t.solucao.texto}</p>
+    <ul>
+      {t.solucao.itens.map((i) => (
+        <li>
+          <strong>{i.titulo}.</strong> {i.texto}
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section>
+    <h2>{t.antesDepois.titulo}</h2>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">{t.antesDepois.colunas.antes}</th>
+          <th scope="col">{t.antesDepois.colunas.depois}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {t.antesDepois.linhas.map((l) => (
+          <tr>
+            <td>{l.antes}</td>
+            <td>{l.depois}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>{t.beneficios.titulo}</h2>
+    <ul>
+      {t.beneficios.itens.map((i) => (
+        <li>
+          <strong>{i.titulo}.</strong> {i.texto}
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section>
+    <h2>{t.comoFunciona.titulo}</h2>
+    <p>{t.comoFunciona.texto}</p>
+    <ol>
+      {t.comoFunciona.passos.map((p) => (
+        <li>
+          <strong>{p.titulo}.</strong> {p.texto}
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section>
+    <h2>{t.prova.titulo}</h2>
+    <p>{t.prova.texto}</p>
+    <ul>
+      {produtos.map((p) => (
+        <li>
+          <a href={rotaProjeto(p.data.slug)}>{p.data.titulo}</a>: {p.data.resumo}
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section>
+    <h2>{t.faq.titulo}</h2>
+    {t.faq.itens.map((i) => (
+      <details>
+        <summary>{i.pergunta}</summary>
+        <p>{i.resposta}</p>
+      </details>
+    ))}
+  </section>
+
+  <section>
+    <h2>{t.chamada.titulo}</h2>
+    <p>{t.chamada.texto}</p>
+    <p>
+      <a href={linkWhatsapp('sistema')}>{t.chamada.acao}</a>
+      <a href={rotas.contato}>{t.chamada.formulario}</a>
+    </p>
+  </section>
 </Base>
