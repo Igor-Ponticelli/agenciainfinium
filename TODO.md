@@ -144,7 +144,7 @@ vai para a Vercel.
 
 ## TODO 2: Conteúdo completo
 
-**Status:** pendente
+**Status:** feito em 30/10/2026, com as pendências do passo 1 marcadas (ver Notas)
 **Depende de:** TODO 1
 
 **Leia antes:** [conteudo.md](.claude/docs/conteudo.md) (tudo),
@@ -186,10 +186,11 @@ TODO 7 e a LP do Raio-X é do TODO 8.
 "diagnóstico gratuito".
 
 **Pronto quando:**
-- [ ] Todas as páginas têm texto completo, renderizando nos esqueletos.
-- [ ] Nenhum travessão em texto visível (`grep` por `—` e `–` em `src/`).
-- [ ] Nenhum dado que não esteja em EMPRESA.md, SERVICOS.md ou nos arquivos de projeto.
-- [ ] O Igor leu e aprovou, ou as dúvidas estão marcadas com `[PENDENTE]`.
+- [x] Todas as páginas têm texto completo, renderizando nos esqueletos.
+- [x] Nenhum travessão em texto visível (`grep` por `—` e `–` em `src/`).
+- [x] Nenhum dado que não esteja em EMPRESA.md, SERVICOS.md ou nos arquivos de projeto.
+- [ ] O Igor leu e aprovou, ou as dúvidas estão marcadas com `[PENDENTE]`. As dúvidas estão
+      marcadas; falta a leitura do Igor.
 
 **Commits sugeridos:** `content(home): escreve o texto da home`, `content(servicos): escreve o
 hub de serviços`, `content(sites): escreve a página de sites`, `content(sistemas): escreve a
@@ -199,6 +200,28 @@ escreve a página de contato`, `content(acessos): escreve a página de links`.
 **Precisa do Igor:** as respostas do passo 1 e os "Pontos a confirmar".
 
 **Notas:**
+- Texto em `src/i18n/paginas/` (inicio, servicos, sites, sistemas, projetos, contato, acessos),
+  um idioma só, objetos `as const`. Os textos de interface, o rodapé e as metas ficaram em
+  `textos.ts`; as mensagens do WhatsApp em `empresa.ts`. A 404 já estava em `textos.ts`.
+- Os esqueletos renderizam tudo em HTML semântico, sem estilo: `details` para FAQ, `table` para
+  "antes e depois", `dl` para a ficha do projeto, `form` sem `action` no contato (o envio é do
+  TODO 4). Entrou o `Rodape.astro` com e-mail, WhatsApp, Instagram e Privacidade.
+- **Pendências marcadas** (`grep PENDENTE src/`): o valor do diagnóstico, na página de sistemas
+  (texto visível); as cidades do SEO local, nos titles de sites e sistemas (comentário em
+  `textos.ts`); o CNPJ no rodapé (`mostrarCnpj = false` em `Rodape.astro`). Prazo médio, números
+  reais e preço do Raio-X ficaram fora do texto.
+- Decisões de copy que o Igor precisa validar: o diagnóstico aparece como "pago, abatido do
+  projeto se fechar" sem valor; a página de sistemas diz que ainda não há case de automação de
+  cliente; a mensagem de WhatsApp de sistemas leva as três perguntas com lacunas (`___`); o FAQ
+  de sites diz que texto e fotos não precisam estar prontos (deriva da etapa "conversa inicial:
+  objetivo, público e referências" de SERVICOS.md).
+- Os corpos dos projetos vieram do portfólio, na voz da Infinium (nós) e com a stack em linguagem
+  de cliente. RetroDash sem números de adoção e sem Geomais. `ordem`: sites primeiro.
+- `markdown.smartypants: false` no `astro.config.ts`: o Markdown convertia aspas em curvas e
+  converteria `--` em travessão.
+- Passada da `humanize-text` feita na escrita: sentence case, sem vocabulário de IA, sem
+  travessão, "você" como sujeito, FAQ com respostas curtas. Verificado: `astro check`, build e
+  Prettier limpos, 14 páginas geradas, nenhum `—` ou `–` em `src/`.
 
 ---
 
