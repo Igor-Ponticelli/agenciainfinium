@@ -1,10 +1,110 @@
 ---
 import Base from '../layouts/Base.astro';
+import { todosProjetos } from '../data/projetos';
+import { linkWhatsapp } from '../data/empresa';
+import { rotaProjeto, rotas } from '../i18n/rotas';
+import { inicio as t } from '../i18n/paginas/inicio';
 import { metasPaginas } from '../i18n/textos';
 
+// Esqueleto com o texto completo (TODO 2). Layout, composição e prévias são dos TODOs 4 e 5.
 const meta = metasPaginas.inicio;
+const projetos = await todosProjetos();
 ---
 
 <Base titulo={meta.titulo} descricao={meta.descricao} tituloCompleto>
-  <h1>Sites e sistemas que trabalham por você</h1>
+  <section>
+    <h1>{t.abertura.titulo}</h1>
+    <p>{t.abertura.texto}</p>
+    <p>
+      <a href={linkWhatsapp()}>{t.abertura.acaoPrincipal}</a>
+      <a href={`#${t.abertura.ancoraComoFunciona}`}>{t.abertura.acaoSecundaria}</a>
+    </p>
+  </section>
+
+  <section>
+    <h2>{t.problema.titulo}</h2>
+    {t.problema.paragrafos.map((p) => (
+      <p>{p}</p>
+    ))}
+  </section>
+
+  <section>
+    <h2>{t.servicos.titulo}</h2>
+    {[
+      { ...t.servicos.sites, rota: rotas.sites, assunto: 'site' as const },
+      { ...t.servicos.sistemas, rota: rotas.sistemas, assunto: 'sistema' as const },
+    ].map((s) => (
+      <article>
+        <h3>{s.titulo}</h3>
+        <p>{s.frase}</p>
+        <p>{s.texto}</p>
+        <p>{s.paraQuem}</p>
+        <p>
+          <a href={s.rota}>{s.verServico}</a>
+          <a href={linkWhatsapp(s.assunto)}>{s.whatsapp}</a>
+        </p>
+      </article>
+    ))}
+  </section>
+
+  <section>
+    <h2>{t.conexao.titulo}</h2>
+    <p>{t.conexao.texto}</p>
+  </section>
+
+  <section>
+    <h2>{t.projetos.titulo}</h2>
+    <p>{t.projetos.texto}</p>
+    <ul>
+      {projetos.map((p) => (
+        <li>
+          <a href={rotaProjeto(p.data.slug)}>{p.data.titulo}</a>: {p.data.resumo}
+        </li>
+      ))}
+    </ul>
+    <p>
+      <a href={rotas.projetos}>{t.projetos.acao}</a>
+    </p>
+  </section>
+
+  <section id={t.abertura.ancoraComoFunciona}>
+    <h2>{t.comoFunciona.titulo}</h2>
+    <p>{t.comoFunciona.texto}</p>
+    <ol>
+      {t.comoFunciona.passos.map((p) => (
+        <li>
+          <strong>{p.titulo}.</strong> {p.texto}
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section>
+    <h2>{t.resultados.titulo}</h2>
+    <ul>
+      {t.resultados.itens.map((i) => (
+        <li>
+          <strong>{i.titulo}.</strong> {i.texto}
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section>
+    <h2>{t.faq.titulo}</h2>
+    {t.faq.itens.map((i) => (
+      <details>
+        <summary>{i.pergunta}</summary>
+        <p>{i.resposta}</p>
+      </details>
+    ))}
+  </section>
+
+  <section>
+    <h2>{t.chamadaFinal.titulo}</h2>
+    <p>{t.chamadaFinal.texto}</p>
+    <p>
+      <a href={linkWhatsapp()}>{t.chamadaFinal.acao}</a>
+    </p>
+  </section>
 </Base>
