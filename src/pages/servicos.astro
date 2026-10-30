@@ -1,10 +1,60 @@
 ---
 import Base from '../layouts/Base.astro';
+import { linkWhatsapp } from '../data/empresa';
+import { rotas } from '../i18n/rotas';
+import { servicos as t } from '../i18n/paginas/servicos';
 import { metasPaginas } from '../i18n/textos';
 
 const meta = metasPaginas.servicos;
+const destino = { sites: rotas.sites, sistemas: rotas.sistemas, whatsapp: linkWhatsapp() };
 ---
 
 <Base titulo={meta.titulo} descricao={meta.descricao}>
-  <h1>Serviços</h1>
+  <h1>{t.titulo}</h1>
+  <p>{t.texto}</p>
+
+  <section>
+    <h2>{t.qual.titulo}</h2>
+    {t.qual.opcoes.map((o) => (
+      <article>
+        <p>{o.problema}</p>
+        <p>{o.resposta}</p>
+        <p>
+          <a href={destino[o.destino]}>{o.acao}</a>
+        </p>
+      </article>
+    ))}
+  </section>
+
+  {[
+    { ...t.sites, rota: rotas.sites },
+    { ...t.sistemas, rota: rotas.sistemas },
+  ].map((s) => (
+    <section>
+      <h2>{s.titulo}</h2>
+      <p>{s.frase}</p>
+      <p>{s.texto}</p>
+      <ul>
+        {s.entrega.map((e) => (
+          <li>{e}</li>
+        ))}
+      </ul>
+      <p>
+        <a href={s.rota}>{s.acao}</a>
+      </p>
+    </section>
+  ))}
+
+  <section>
+    <h2>{t.conexao.titulo}</h2>
+    <p>{t.conexao.texto}</p>
+  </section>
+
+  <section>
+    <h2>{t.chamada.titulo}</h2>
+    <p>{t.chamada.texto}</p>
+    <p>
+      <a href={linkWhatsapp()}>{t.chamada.acao}</a>
+    </p>
+  </section>
 </Base>
