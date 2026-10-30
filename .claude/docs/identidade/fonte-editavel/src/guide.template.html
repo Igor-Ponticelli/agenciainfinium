@@ -1,0 +1,440 @@
+<title>Infinium Brand Book</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one long sheet. Purple masthead, sticky section nav, then sections on the brand's tinted grey ground; logo plates in a 3-up grid. */
+:root {
+  --primary: #39135F;
+  --primary-hover: #280D40;
+  --lilac: #E9D5FE;
+  --grad: linear-gradient(135deg, #39135F 0%, #200A34 100%);
+
+  --bg: #F1EFF4;
+  --surface: #FFFFFF;
+  --fg: #211F26;
+  --muted: #625F68;
+  --line: #D9D6DE;
+  --accent: #39135F;
+  --chip: #F3EEFA;
+  --measure: #D6336C;
+
+  --f-sans: "Roboto", "Helvetica Neue", Arial, sans-serif;
+  --f-mono: "Roboto Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #130C1B; --surface: #1C1427; --fg: #F1EDF6; --muted: #ABA3B6; --line: #33284A;
+    --accent: #CEB8F3; --chip: #2A1D3B; --measure: #FF6B9A; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #130C1B; --surface: #1C1427; --fg: #F1EDF6; --muted: #ABA3B6; --line: #33284A;
+  --accent: #CEB8F3; --chip: #2A1D3B; --measure: #FF6B9A; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-sans); font-size: 16px; line-height: 1.6; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+svg { display: block; width: 100%; height: auto; }
+p { margin: 0; }
+h2, h3 { margin: 0; text-wrap: balance; }
+
+/* Masthead */
+.mast { background: var(--grad); color: #fff; }
+.mast .wrap { padding-block: 56px 48px; display: grid; gap: 40px; }
+.mast-top { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--lilac); }
+.mast-logo { width: min(380px, 76%); color: #fff; }
+.mast p { max-width: 58ch; color: #E4DAEE; font-size: 17px; }
+
+nav.toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+nav.toc .wrap { display: flex; gap: 4px; overflow-x: auto; padding-block: 8px; }
+nav.toc a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; padding: 6px 12px; border-radius: 999px; white-space: nowrap; }
+nav.toc a:hover, nav.toc a:focus-visible { background: var(--chip); color: var(--fg); outline: none; }
+
+section { padding-block: 64px 8px; }
+.sec-head { display: grid; gap: 8px; margin-bottom: 28px; max-width: 70ch; }
+.eyebrow { font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+h2 { font-weight: 700; letter-spacing: -0.02em; font-size: clamp(28px, 4vw, 40px); line-height: 1.1; }
+.sec-head p { color: var(--muted); }
+h3 { font-size: 15px; font-weight: 700; }
+
+/* Plates */
+.plates { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.plates.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.plate { margin: 0; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: var(--surface); display: flex; flex-direction: column; }
+.plate .art { aspect-ratio: 4 / 3; display: grid; place-items: center; padding: 15%; }
+.plates.two .plate .art { aspect-ratio: 16 / 6; padding: 6% 10%; }
+.plate .meta { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--line); }
+.plate .meta span { font-size: 13px; color: var(--muted); }
+.on-white { background: #fff; color: var(--primary); }
+.on-ink-l { background: #fff; color: #211F26; }
+.on-grad { background: var(--grad); color: #fff; }
+.on-ink { background: #211F26; color: #fff; }
+.on-lilac { background: var(--lilac); color: var(--primary); }
+.on-deep { background: #200A34; color: var(--lilac); }
+
+button.copy { font: 500 12px var(--f-sans); color: var(--accent); background: var(--chip); border: 0; border-radius: 999px; padding: 6px 12px; cursor: pointer; white-space: nowrap; }
+button.copy:hover { filter: brightness(.96); }
+button.copy:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 24px; min-width: 0; }
+.two-col { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 16px; }
+.list { display: grid; gap: 18px; margin: 0; padding: 0; list-style: none; }
+.list li { display: grid; gap: 4px; }
+.list p { color: var(--muted); font-size: 15px; }
+
+/* Sizes */
+.cuts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.cut { display: grid; gap: 14px; align-content: start; }
+.cut .art { color: var(--primary); padding: 20px 12% 8px; }
+:root[data-theme="dark"] .cut .art { color: var(--lilac); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .cut .art { color: var(--lilac); } }
+.cut .range { font-family: var(--f-mono); font-size: 13px; color: var(--accent); }
+.cut p { color: var(--muted); font-size: 14px; }
+.cut button.copy { justify-self: start; }
+.cut .row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.icons { display: flex; flex-wrap: wrap; gap: 24px; align-items: end; margin-top: 16px; }
+.icon-item { display: grid; gap: 8px; justify-items: start; }
+.icon-item small { color: var(--muted); font-size: 12px; }
+.tile { display: grid; place-items: center; }
+.t-app { width: 120px; height: 120px; border-radius: 27px; background: var(--primary-hover); color: #fff; padding: 16px; }
+.t-fav { width: 48px; height: 48px; border-radius: 10px; background: #fff; color: var(--primary); border: 1px solid var(--line); padding: 6px; }
+.t-fav.dk { background: #211F26; color: var(--lilac); border-color: #211F26; }
+.t-16 { width: 16px; height: 16px; color: var(--primary); }
+
+/* Colors */
+.ramp { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); border-radius: 12px; overflow: hidden; border: 1px solid var(--line); }
+.ramp button { all: unset; cursor: pointer; height: 120px; display: flex; flex-direction: column; justify-content: flex-end; gap: 2px; padding: 8px; font-size: 11px; font-family: var(--f-mono); }
+.ramp button:focus-visible { outline: 2px solid var(--fg); outline-offset: -4px; }
+.ramp b { font-family: var(--f-sans); font-size: 13px; font-weight: 700; }
+.ramp-note { margin-top: 10px; font-size: 13px; color: var(--muted); }
+.swatches { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin-top: 24px; }
+.sw { border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: var(--surface); }
+.sw .chip { height: 72px; }
+.sw .info { padding: 10px 12px; display: grid; gap: 4px; }
+.sw .row { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+.sw b { font-size: 14px; }
+.sw code { font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.sw p { font-size: 12px; color: var(--muted); }
+.grad-card { margin-top: 16px; border-radius: 12px; background: var(--grad); color: #fff; padding: 28px 20px; display: flex; justify-content: space-between; align-items: end; gap: 12px; flex-wrap: wrap; }
+.grad-card b { font-size: 20px; }
+.grad-card code { font-family: var(--f-mono); font-size: 13px; opacity: .85; }
+.grad-card button.copy { background: rgba(255,255,255,.16); color: #fff; }
+table.ctr { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.ctr th, .ctr td { padding: 10px 14px; border-bottom: 1px solid var(--line); text-align: left; }
+.ctr th { font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.ctr td:nth-child(2), .ctr td:nth-child(3) { font-family: var(--f-mono); white-space: nowrap; }
+.ctr tr:last-child td { border-bottom: 0; }
+.dot { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 6px; box-shadow: inset 0 0 0 1px rgba(127,127,127,.3); }
+
+/* Type */
+.type-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 16px; }
+.specimen { font-weight: 700; font-size: clamp(64px, 10vw, 112px); line-height: .9; letter-spacing: -0.04em; color: var(--accent); margin: 12px 0 20px; }
+.kv { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 16px; font-size: 14px; margin: 0; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; }
+.scale > div { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 16px; align-items: baseline; padding: 14px 0; border-top: 1px solid var(--line); }
+.scale > div:first-child { border-top: 0; padding-top: 0; }
+.scale small { font-family: var(--f-mono); font-size: 11px; color: var(--muted); line-height: 1.45; }
+.scale p { overflow-wrap: anywhere; }
+
+/* Rules */
+.rules { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px; }
+.mins { width: 100%; border-collapse: collapse; font-size: 14px; }
+.mins td { padding: 10px 0; border-bottom: 1px solid var(--line); }
+.mins td:last-child { text-align: right; font-family: var(--f-mono); white-space: nowrap; }
+.dos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+.do { border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: var(--surface); }
+.do .art { aspect-ratio: 4 / 3; display: grid; place-items: center; padding: 18%; }
+.do .lbl { padding: 10px 12px; font-size: 13px; display: flex; gap: 8px; align-items: baseline; }
+.do .lbl b { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.yes b { color: #1F7A4D; }
+.no b { color: var(--measure); }
+:root[data-theme="dark"] .yes b { color: #6FD3A0; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .yes b { color: #6FD3A0; } }
+.squash svg { transform: scaleX(1.35); }
+
+.changes { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+.changes li { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); font-size: 15px; }
+.changes li:first-child { border-top: 0; }
+.changes .mono { font-family: var(--f-mono); font-size: 13px; color: var(--accent); padding-top: 2px; }
+.changes p { color: var(--muted); }
+
+footer { padding-block: 72px 48px; color: var(--muted); font-size: 13px; }
+footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 1px solid var(--line); padding-top: 20px; }
+
+@media (max-width: 860px) {
+  .plates, .cuts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .plates.two, .two-col, .type-grid, .rules { grid-template-columns: minmax(0, 1fr); }
+  .swatches { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .dos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 520px) {
+  .plates, .cuts { grid-template-columns: minmax(0, 1fr); }
+  .swatches { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sw:last-child { grid-column: span 2; }
+  .ramp { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .ramp button { height: 80px; }
+  .scale > div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top"><span>Manual de marca · versão 2</span><span>Infinium · CNPJ 49.893.185/0001-08</span></div>
+    <div class="mast-logo">{{LOGO}}</div>
+    <p>Logotipo, símbolo, cores, tipografia e regras de uso da Infinium, já com o refinamento aprovado em outubro de 2026. Use esta página como referência ao aplicar a marca em sites, redes sociais e propostas.</p>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Seções">
+  <div class="wrap">
+    <a href="#logotipo">Logotipo</a>
+    <a href="#simbolo">Símbolo</a>
+    <a href="#tamanhos">Tamanhos</a>
+    <a href="#cores">Cores</a>
+    <a href="#tipografia">Tipografia</a>
+    <a href="#uso">Regras de uso</a>
+    <a href="#mudancas">O que mudou</a>
+  </div>
+</nav>
+
+<main>
+<section id="logotipo">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Logotipo</span>
+      <h2>Versão empilhada, a assinatura principal</h2>
+      <p>Símbolo sobre o nome. Use roxo sobre fundos claros e branco sobre o degradê da marca ou fundos escuros. Em fundos roxo muito escuro, o lilás também funciona.</p>
+    </div>
+    <div class="plates">
+      <figure class="plate"><div class="art on-white">{{LOGO}}</div><figcaption class="meta"><span>Primary sobre branco</span><button class="copy" data-svg="logo" data-color="#39135F">Copiar SVG</button></figcaption></figure>
+      <figure class="plate"><div class="art on-grad">{{LOGO}}</div><figcaption class="meta"><span>Branco sobre degradê</span><button class="copy" data-svg="logo" data-color="#FFFFFF">Copiar SVG</button></figcaption></figure>
+      <figure class="plate"><div class="art on-ink">{{LOGO}}</div><figcaption class="meta"><span>Branco sobre Ink</span><button class="copy" data-svg="logo" data-color="#FFFFFF">Copiar SVG</button></figcaption></figure>
+      <figure class="plate"><div class="art on-ink-l">{{LOGO}}</div><figcaption class="meta"><span>Ink sobre branco</span><button class="copy" data-svg="logo" data-color="#211F26">Copiar SVG</button></figcaption></figure>
+      <figure class="plate"><div class="art on-lilac">{{LOGO}}</div><figcaption class="meta"><span>Primary sobre lilás</span><button class="copy" data-svg="logo" data-color="#39135F">Copiar SVG</button></figcaption></figure>
+      <figure class="plate"><div class="art on-deep">{{LOGO}}</div><figcaption class="meta"><span>Lilás sobre Violeta 900</span><button class="copy" data-svg="logo" data-color="#E9D5FE">Copiar SVG</button></figcaption></figure>
+    </div>
+
+    <div class="sec-head" style="margin-top:48px">
+      <span class="eyebrow">Assinatura horizontal</span>
+      <h2>Para cabeçalhos e faixas largas</h2>
+      <p>Use quando a altura disponível for pequena: menu do site, assinatura de e-mail, rodapés e banners horizontais. O símbolo tem 1,3 vez a altura das maiúsculas e fica centralizado nelas.</p>
+    </div>
+    <div class="plates two">
+      <figure class="plate"><div class="art on-white">{{LOGO_H}}</div><figcaption class="meta"><span>Primary sobre branco</span><button class="copy" data-svg="logo-horizontal" data-color="#39135F">Copiar SVG</button></figcaption></figure>
+      <figure class="plate"><div class="art on-grad">{{LOGO_H}}</div><figcaption class="meta"><span>Branco sobre degradê</span><button class="copy" data-svg="logo-horizontal" data-color="#FFFFFF">Copiar SVG</button></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="simbolo">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Símbolo</span>
+      <h2>Uma fita dupla que nunca termina</h2>
+      <p>O símbolo funciona sozinho onde o nome já aparece ou não cabe: avatar, favicon, marca d'água.</p>
+    </div>
+    <div class="two-col">
+      <div class="card" style="color:var(--fg);padding:36px 8%">{{SYMBOL}}</div>
+      <div class="card">
+        <ul class="list">
+          <li><h3>A fita troca de lado</h3><p>No cruzamento, a linha de dentro passa a ser a de fora, como numa fita de Möbius. É a ideia central da marca.</p></li>
+          <li><h3>Peso igual ao do nome</h3><p>Duas linhas de 16u somam praticamente a haste das letras (31u). Por isso símbolo e nome pesam o mesmo.</p></li>
+          <li><h3>Duas fitas contínuas</h3><p>O desenho é feito de dois traços sem emendas, com pontas retas nos cortes do entrelaçamento. Não redesenhe nem converta em contorno com outra espessura.</p></li>
+          <li><h3>Proporção</h3><p>Cerca de 2,14 : 1. Não estique nem comprima.</p></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tamanhos">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Tamanhos</span>
+      <h2>Um corte do símbolo para cada tamanho</h2>
+      <p>Em tamanhos pequenos as duas linhas se fundem. Escolha o corte pela largura final do símbolo na tela.</p>
+    </div>
+    <div class="cuts">
+      <div class="card cut"><div class="art">{{SYMBOL}}</div><div class="row"><h3>Completo</h3><span class="range">≥ 64px</span></div><p>O desenho padrão, para tudo a partir de 64px de largura.</p><button class="copy" data-svg="symbol" data-color="#39135F">Copiar SVG</button></div>
+      <div class="card cut"><div class="art">{{SYMBOL_C}}</div><div class="row"><h3>Compacto</h3><span class="range">25–63px</span></div><p>Traço 50% mais grosso, para ícones médios, avatares e o favicon de 32px.</p><button class="copy" data-svg="symbol-compact" data-color="#39135F">Copiar SVG</button></div>
+      <div class="card cut"><div class="art">{{SYMBOL_M}}</div><div class="row"><h3>Micro</h3><span class="range">≤ 24px</span></div><p>Uma linha só, no centro da fita, mantendo a passagem por baixo. Para favicon de 16px e notificações.</p><button class="copy" data-svg="symbol-micro" data-color="#39135F">Copiar SVG</button></div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3>Ícones prontos</h3>
+      <div class="icons">
+        <div class="icon-item"><div class="tile t-app">{{SYMBOL}}</div><small>Ícone de app · fundo #280D40</small></div>
+        <div class="icon-item"><div class="tile t-fav">{{SYMBOL_C}}</div><small>Favicon 48 · claro</small></div>
+        <div class="icon-item"><div class="tile t-fav dk">{{SYMBOL_C}}</div><small>Favicon 48 · escuro</small></div>
+        <div class="icon-item"><div class="tile t-16">{{SYMBOL_M}}</div><small>16px real</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cores">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Cores</span>
+      <h2>Escala Violeta e neutros da mesma família</h2>
+      <p>O Primary é o Violeta 700 e o lilás é o Violeta 100. Os tons intermediários servem a estados de interface, links em fundo escuro e gráficos. Toque em um tom para copiar o código.</p>
+    </div>
+    <div class="ramp" aria-label="Escala Violeta">
+      <button type="button" data-hex="#F8F5FE" style="background:#F8F5FE;color:#39135F"><b>50</b>F8F5FE</button>
+      <button type="button" data-hex="#E9D5FE" style="background:#E9D5FE;color:#39135F"><b>100</b>E9D5FE</button>
+      <button type="button" data-hex="#CEB8F3" style="background:#CEB8F3;color:#39135F"><b>200</b>CEB8F3</button>
+      <button type="button" data-hex="#B292E3" style="background:#B292E3;color:#211F26"><b>300</b>B292E3</button>
+      <button type="button" data-hex="#946ACD" style="background:#946ACD;color:#fff"><b>400</b>946ACD</button>
+      <button type="button" data-hex="#7546AE" style="background:#7546AE;color:#fff"><b>500</b>7546AE</button>
+      <button type="button" data-hex="#582B89" style="background:#582B89;color:#fff"><b>600</b>582B89</button>
+      <button type="button" data-hex="#39135F" style="background:#39135F;color:#fff"><b>700</b>39135F</button>
+      <button type="button" data-hex="#280D40" style="background:#280D40;color:#fff"><b>800</b>280D40</button>
+      <button type="button" data-hex="#200A34" style="background:#200A34;color:#fff"><b>900</b>200A34</button>
+    </div>
+    <p class="ramp-note" id="ramp-note">700 = Primary · 800 = Primary hover · 100 = Lilás</p>
+
+    <div class="swatches">
+      <div class="sw"><div class="chip" style="background:#211F26"></div><div class="info"><div class="row"><b>Ink</b><button class="copy" data-hex="#211F26">Copiar</button></div><code>#211F26</code><p>Títulos, logo monocromático, fundo escuro</p></div></div>
+      <div class="sw"><div class="chip" style="background:#625F68"></div><div class="info"><div class="row"><b>Text</b><button class="copy" data-hex="#625F68">Copiar</button></div><code>#625F68</code><p>Texto corrido</p></div></div>
+      <div class="sw"><div class="chip" style="background:#D9D6DE"></div><div class="info"><div class="row"><b>Line</b><button class="copy" data-hex="#D9D6DE">Copiar</button></div><code>#D9D6DE</code><p>Bordas e divisórias</p></div></div>
+      <div class="sw"><div class="chip" style="background:#F1EFF4"></div><div class="info"><div class="row"><b>Body</b><button class="copy" data-hex="#F1EFF4">Copiar</button></div><code>#F1EFF4</code><p>Fundo de página</p></div></div>
+      <div class="sw"><div class="chip" style="background:#FFFFFF;border-bottom:1px solid var(--line)"></div><div class="info"><div class="row"><b>White</b><button class="copy" data-hex="#FFFFFF">Copiar</button></div><code>#FFFFFF</code><p>Superfícies, logo negativo</p></div></div>
+    </div>
+
+    <div class="grad-card"><div><b>Degradê da marca</b><br><code>#39135F → #200A34 · 135°</code></div><button class="copy" data-hex="linear-gradient(135deg, #39135F 0%, #200A34 100%)">Copiar CSS</button></div>
+
+    <table class="ctr">
+      <thead><tr><th>Combinação</th><th>Contraste</th><th>WCAG</th></tr></thead>
+      <tbody>
+        <tr><td><span class="dot" style="background:#fff"></span>Branco sobre Primary</td><td>14,7 : 1</td><td>AAA</td></tr>
+        <tr><td><span class="dot" style="background:#39135F"></span>Primary sobre Lilás</td><td>10,8 : 1</td><td>AAA</td></tr>
+        <tr><td><span class="dot" style="background:#211F26"></span>Ink sobre Body</td><td>14,3 : 1</td><td>AAA</td></tr>
+        <tr><td><span class="dot" style="background:#625F68"></span>Text sobre Body</td><td>5,5 : 1</td><td>AA</td></tr>
+        <tr><td><span class="dot" style="background:#CEB8F3"></span>Violeta 200 sobre Violeta 900</td><td>10,2 : 1</td><td>AAA</td></tr>
+        <tr><td><span class="dot" style="background:#39135F"></span>Primary sobre Ink</td><td>1,1 : 1</td><td>Não usar</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="tipografia">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Tipografia</span>
+      <h2>Roboto em tudo</h2>
+      <p>O nome "Infinium" é desenhado em Roboto Bold e convertido em curvas. Toda a comunicação usa a mesma família, com uma escala fixa.</p>
+    </div>
+    <div class="type-grid">
+      <div class="card">
+        <span class="eyebrow">Marca nominativa</span>
+        <div class="specimen">Infinium</div>
+        <dl class="kv">
+          <dt>Família</dt><dd>Roboto Bold (700)</dd>
+          <dt>Tracking</dt><dd>−4%, com kerning ajustado à mão</dd>
+          <dt>Detalhe</dt><dd>Sem ligadura fi: os dois i têm pingo</dd>
+          <dt>Uso</dt><dd>Só no logotipo, já em curvas. Não redigite o nome.</dd>
+        </dl>
+      </div>
+      <div class="card">
+        <span class="eyebrow">Escala</span>
+        <div class="scale" style="margin-top:14px">
+          <div><small>Display<br>700 · 56/1,0 · −2,5%</small><p style="font-weight:700;font-size:clamp(34px,5vw,56px);line-height:1;letter-spacing:-0.025em">Soluções sem fim</p></div>
+          <div><small>Título<br>700 · 32/1,15 · −1,5%</small><p style="font-weight:700;font-size:clamp(24px,3vw,32px);line-height:1.15;letter-spacing:-0.015em">Orçamento de identidade</p></div>
+          <div><small>Subtítulo<br>500 · 20/1,3</small><p style="font-weight:500;font-size:20px;line-height:1.3">Etapas, prazos e entregas</p></div>
+          <div><small>Texto<br>400 · 16/1,6</small><p style="font-size:16px;color:var(--muted)">Criação de marca e conteúdo para redes sociais, com acompanhamento em cada etapa do projeto.</p></div>
+          <div><small>Rótulo<br>500 · 12 · +8% · caixa-alta</small><p style="font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase">Proposta comercial</p></div>
+          <div><small>Números<br>tabulares</small><p style="font-variant-numeric:tabular-nums">R$ 1.200,00 · R$ 200,00</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="uso">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Regras de uso</span>
+      <h2>Área de proteção, tamanho mínimo e fundos</h2>
+      <p>Valem para qualquer peça, feita por quem for.</p>
+    </div>
+    <div class="rules">
+      <div class="card" style="color:var(--fg)">{{CLEAR}}<p style="margin-top:14px;font-size:14px;color:var(--muted)">A área de proteção (x) é a altura do "n". Nenhum texto, borda ou imagem entra nela.</p></div>
+      <div class="card">
+        <h3>Tamanho mínimo</h3>
+        <table class="mins" style="margin-top:8px">
+          <tr><td>Empilhada</td><td>96px · 25mm de largura</td></tr>
+          <tr><td>Horizontal</td><td>120px · 30mm de largura</td></tr>
+          <tr><td>Símbolo completo</td><td>64px</td></tr>
+          <tr><td>Símbolo compacto</td><td>25–63px</td></tr>
+          <tr><td>Símbolo micro</td><td>até 24px</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="dos">
+      <div class="do yes"><div class="art on-white">{{LOGO}}</div><div class="lbl"><b>Sim</b>Primary em fundo claro</div></div>
+      <div class="do yes"><div class="art on-grad">{{LOGO}}</div><div class="lbl"><b>Sim</b>Branco no degradê</div></div>
+      <div class="do no"><div class="art" style="background:#211F26;color:#39135F">{{LOGO}}</div><div class="lbl"><b>Não</b>Primary em fundo escuro</div></div>
+      <div class="do no"><div class="art squash on-white">{{LOGO}}</div><div class="lbl"><b>Não</b>Esticar ou comprimir</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="mudancas">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">O que mudou</span>
+      <h2>Versão 2, refinamento de outubro de 2026</h2>
+      <p>A essência é a mesma. Estes foram os ajustes aprovados em relação à versão 1.</p>
+    </div>
+    <div class="card">
+      <ul class="changes">
+        <li><span class="mono">R1</span><div><b>Ligadura fi desfeita.</b><p>O primeiro i ganhou pingo, igual ao segundo.</p></div></li>
+        <li><span class="mono">R2</span><div><b>Espaçamento uniforme.</b><p>Vãos entre hastes entre 16u e 16,5u (antes de 14,8u a 18,9u).</p></div></li>
+        <li><span class="mono">R3</span><div><b>Mais respiro.</b><p>Símbolo 10u mais alto: 47u até o nome, antes 37u.</p></div></li>
+        <li><span class="mono">R4</span><div><b>Símbolo reconstruído.</b><p>Duas fitas contínuas no lugar de três traços com emendas.</p></div></li>
+        <li><span class="mono">R5</span><div><b>Cortes por tamanho.</b><p>Completo, compacto e micro. Novo favicon legível em 16px.</p></div></li>
+        <li><span class="mono">R6</span><div><b>Paleta organizada.</b><p>Escala Violeta 50–900, degradê único, neutros com matiz roxo.</p></div></li>
+        <li><span class="mono">R7</span><div><b>Só Roboto.</b><p>Public Sans e Inter saíram. Escala tipográfica definida.</p></div></li>
+        <li><span class="mono">N1</span><div><b>Assinatura horizontal.</b><p>Nova versão para cabeçalhos e faixas.</p></div></li>
+        <li><span class="mono">N2</span><div><b>Regras de uso.</b><p>Área de proteção, tamanhos mínimos e fundos permitidos.</p></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap"><span>Fonte: Figma · Infinium · página Identidade, com refinamento aprovado</span><span>Versão 2 · 30/10/2026</span></div></footer>
+
+<script>
+const SVGS = {{SVG_JSON}};
+async function copyText(text, btn, done) {
+  const label = btn.textContent;
+  let ok = true;
+  try { await navigator.clipboard.writeText(text); }
+  catch (e) {
+    const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select();
+    try { ok = document.execCommand("copy"); } catch (_) { ok = false; }
+    ta.remove();
+  }
+  if (done) return done(ok);
+  btn.textContent = ok ? "Copiado" : "Selecione e copie";
+  setTimeout(() => { btn.textContent = label; }, 1400);
+}
+const note = document.getElementById("ramp-note");
+const noteText = note.textContent;
+document.addEventListener("click", (e) => {
+  const ramp = e.target.closest(".ramp button");
+  if (ramp) return copyText(ramp.dataset.hex, ramp, ok => {
+    note.textContent = ok ? `${ramp.dataset.hex} copiado` : `Copie manualmente: ${ramp.dataset.hex}`;
+    setTimeout(() => { note.textContent = noteText; }, 1600);
+  });
+  const btn = e.target.closest("button.copy"); if (!btn) return;
+  if (btn.dataset.hex) return copyText(btn.dataset.hex, btn);
+  copyText(SVGS[btn.dataset.svg].replaceAll("currentColor", btn.dataset.color), btn);
+});
+</script>

@@ -1,0 +1,14 @@
+# Cache do binário do motor da impeccable (baixado por máquina e por versão)
+.claude/skills/impeccable/scripts/bin/
+.impeccable/hook.cache.json
+
+# Dependências e saída do build
+node_modules/
+dist/
+.astro/
+
+# Vercel e variáveis de ambiente locais
+.vercel/
+.env
+.env.*
+!.env.example
