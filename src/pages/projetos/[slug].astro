@@ -1,7 +1,11 @@
 ---
 import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import { todosProjetos, type Projeto } from '../../data/projetos';
+import { linkWhatsapp } from '../../data/empresa';
+import { rotaProjeto } from '../../i18n/rotas';
+import { textos as t } from '../../i18n/textos';
 
 export const getStaticPaths = (async () => {
   const projetos = await todosProjetos();
@@ -13,8 +17,51 @@ interface Props {
 }
 
 const { projeto } = Astro.props;
+const d = projeto.data;
+const { Content } = await render(projeto);
+
+// O último projeto volta ao primeiro.
+const todos = await todosProjetos();
+const proximo = todos[(todos.findIndex((p) => p.id === projeto.id) + 1) % todos.length]!;
 ---
 
-<Base titulo={projeto.data.titulo} descricao={projeto.data.resumo}>
-  <h1>{projeto.data.titulo}</h1>
+<Base titulo={d.titulo} descricao={d.resumo}>
+  <article>
+    <h1>{d.titulo}</h1>
+    <p>{d.resumo}</p>
+    <dl>
+      <dt>{t.projeto.rotulos.tipo}</dt>
+      <dd>{t.projeto.tipo[d.tipo]}</dd>
+      <dt>{t.projeto.rotulos.ano}</dt>
+      <dd>{d.ano}</dd>
+      <dt>{t.projeto.rotulos.status}</dt>
+      <dd>{t.projeto.status[d.status]}</dd>
+      {d.url && (
+        <>
+          <dt>{t.projeto.rotulos.site}</dt>
+          <dd>
+            <a href={d.url} target="_blank" rel="noopener">
+              {t.acoes.visitarSite} <span class="visualmente-oculto">{t.linkExterno}</span>
+            </a>
+          </dd>
+        </>
+      )}
+    </dl>
+
+    <!-- Espaço reservado da prévia (TODO 5) -->
+
+    <Content />
+
+    <p>
+      <a href={linkWhatsapp(d.tipo === 'site' ? 'site' : 'sistema')}>
+        {d.tipo === 'site' ? t.acoes.queroSite : t.acoes.queroSistema}
+      </a>
+    </p>
+
+    <nav aria-label={t.acoes.proximoProjeto}>
+      <a href={rotaProjeto(proximo.data.slug)}>
+        {t.acoes.proximoProjeto}: {proximo.data.titulo}
+      </a>
+    </nav>
+  </article>
 </Base>

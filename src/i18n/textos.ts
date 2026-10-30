@@ -35,9 +35,14 @@ export const textos = {
     verServico: 'Ver o serviço',
     verProjeto: 'Ver projeto',
     visitarSite: 'Visitar o site',
+    proximoProjeto: 'Próximo projeto',
     voltarInicio: 'Voltar para o início',
   },
   contato: { whatsapp: 'WhatsApp', instagram: 'Instagram', email: 'E-mail' },
+  rodape: {
+    assinatura: 'Sites e sistemas que trabalham por você.',
+    privacidade: 'Política de privacidade',
+  },
   /** Aviso para leitor de tela nos links que abrem em nova aba. */
   linkExterno: '(abre em nova aba)',
   projeto: {
@@ -57,8 +62,9 @@ export const textos = {
 } as const;
 
 /**
- * Title e description de cada página. Provisórios e factuais: a versão final, com os termos de
- * busca e as cidades confirmadas com o Igor, é do TODO 2. As de projeto saem da collection.
+ * Title e description de cada página, com foco em busca. As de projeto saem da collection.
+ * [PENDENTE: cidades do SEO local. Quando o Igor confirmar, os titles de sites e sistemas
+ * ganham "em <cidade> e região".]
  */
 export const metasPaginas: Record<NomeRota, { titulo: string; descricao: string }> = {
   inicio: {
