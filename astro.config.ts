@@ -21,6 +21,9 @@ export default defineConfig({
   output: 'static',
   trailingSlash: 'always',
 
+  // Sem aspas curvas nem conversão de "--" em travessão: regra do projeto (nada de travessão).
+  markdown: { smartypants: false },
+
   fonts: [
     {
       provider: fontProviders.local(),
