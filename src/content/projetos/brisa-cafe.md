@@ -7,7 +7,7 @@ status: publicado
 url: https://brisacafeteria.com.br
 resumo: Site de uma página para uma cafeteria em Brusque (SC), com o horário de funcionamento calculado na hora.
 ordem: 1
-revisadoEm: 2026-10-15
+revisadoEm: 2026-10-30
 atualizadoEm: 2026-10-15
 ---
 
