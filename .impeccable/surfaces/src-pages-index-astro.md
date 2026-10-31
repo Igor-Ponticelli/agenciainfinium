@@ -116,3 +116,8 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 - **Troca de página:** a fita cruza a tela a partir do símbolo e vira o degradê com o título da
   próxima página em branco; total abaixo de 1,2 s; fade curto com movimento reduzido.
 - **Sem JS:** tudo visível, grade e textos incluídos; só a seleção da fita e o laço não existem.
+- **Botão flutuante do WhatsApp** (celular e tablet, pedido do TODO 4: "botão de WhatsApp sempre
+  visível"): pílula Lilás com texto Ink e borda Violeta 300, sem sombra, fixa no canto inferior
+  direito; escondida enquanto a abertura escura está na tela (o cabeçalho já tem a ação) e com
+  o menu aberto. No desktop não existe: o botão fica no cabeçalho. Registrado em 31/10/2026,
+  depois da revisão de acabamento.

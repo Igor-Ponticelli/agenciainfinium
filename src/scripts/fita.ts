@@ -144,10 +144,16 @@ function prepararLacos() {
     { threshold: 0.2 },
   );
   for (const lista of listas) {
+    const itens = Array.from(lista.querySelectorAll<HTMLElement>(':scope > li'));
+    // Posição de repouso: o item que o contrato marca (em /sistemas/, o diagnóstico)
+    const inicio = Math.min(
+      Number(lista.dataset.lacoInicio ?? 0) || 0,
+      Math.max(itens.length - 1, 0),
+    );
     const laco: Laco = {
       lista,
-      itens: Array.from(lista.querySelectorAll<HTMLElement>(':scope > li')),
-      indice: 0,
+      itens,
+      indice: inicio,
       tempo: 0,
       visivel: false,
     };
@@ -175,7 +181,7 @@ adicionar((dt) => {
 
 mqReduzido.addEventListener('change', () => {
   for (const laco of lacos) {
-    laco.indice = 0;
+    laco.indice = Number(laco.lista.dataset.lacoInicio ?? 0) || 0;
     marcar(laco);
   }
   acordar();

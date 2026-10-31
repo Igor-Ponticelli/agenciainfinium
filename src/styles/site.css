@@ -138,7 +138,7 @@ main:focus {
 .titulo-secao {
   grid-column: 2 / -1;
   align-self: end;
-  padding-block: var(--space-xl) var(--space-s);
+  padding: var(--space-xl) var(--celula-pad) var(--space-s);
   font-size: var(--text-h2);
   font-weight: var(--weight-bold);
   line-height: var(--leading-title);
@@ -511,7 +511,7 @@ html[data-menu-aberto] .escuro .logo-escuro {
     gap: 0;
     min-inline-size: 11rem;
     padding: var(--space-2xs) 0;
-    border: 1px solid var(--color-grade);
+    border: 1px solid var(--color-line);
     border-radius: var(--radius-m);
     background-color: var(--color-celula);
     opacity: 0;
@@ -702,12 +702,17 @@ html[data-menu-aberto] .escuro .logo-escuro {
   align-items: center;
   min-block-size: 3rem;
   padding: 0.75rem 1.25rem;
+  border: 1px solid var(--violet-300);
   border-radius: var(--radius-full);
   background-color: var(--color-lilac);
-  box-shadow: 0 6px 18px -8px rgb(32 10 52 / 0.55);
   color: var(--color-heading);
   font-weight: var(--weight-bold);
   text-decoration: none;
+}
+
+/* Com a abertura escura na tela, o cabeçalho já tem a ação: o flutuante espera (flutuante.ts) */
+html[data-topo-visivel] .whatsapp-flutuante {
+  display: none;
 }
 
 html[data-menu-aberto] .whatsapp-flutuante {
@@ -1080,13 +1085,14 @@ html[data-menu-aberto] .whatsapp-flutuante {
   }
 }
 
-/* O laço fica ao lado do texto, nunca por cima dele; no celular não há espaço e ele sai */
+/* O laço da fita atravessa a linha inteira por baixo do texto, sai pela borda direita e volta
+   pela esquerda (a fita de Möbius do símbolo). No celular não há espaço e ele sai. */
 .conexao-laco {
   display: none;
   position: absolute;
-  inset-inline: 60% 0;
+  inset-inline: var(--cabeca-linha) 0;
   inset-block: 0;
-  inline-size: 40%;
+  inline-size: calc(100% - var(--cabeca-linha));
   block-size: 100%;
   overflow: visible;
   pointer-events: none;
@@ -1221,48 +1227,79 @@ html[data-menu-aberto] .whatsapp-flutuante {
     padding-inline: 0;
   }
 
+  /* A moldura grande de um site é 4:3 (cabe o hero inteiro, com o status da Brisa); a de um
+     produto é 16:10; a média é retrato. A prévia escolhe o layout largo a partir de 700 px. */
   .obra-moldura {
     aspect-ratio: 16 / 10;
+  }
+
+  .obra[data-formato='grande'][data-tipo='site'] .obra-moldura {
+    aspect-ratio: 4 / 3;
   }
 
   .obra[data-formato='media'] .obra-moldura {
     aspect-ratio: 4 / 5;
   }
 
-  .obra[data-ficha='lado'] {
-    grid-template-columns: repeat(8, minmax(0, 1fr));
+  /* Na galeria, cada obra ocupa a linha inteira em subgrid, e a moldura e a ficha vão para as
+     colunas do contrato (nth-of-type, porque o Astro renderiza o <script> da Obra entre os
+     artigos): Brisa grande A a H com a ficha em J a L; Linetex média G a L com a
+     ficha ao lado, à esquerda; Lumaj média A a F com a ficha à direita; RetroDash grande E a L
+     com a ficha à esquerda. Pares desencontrados, nunca cards iguais em fila. */
+  .vitrines-grade .obra {
+    grid-column: 2 / -1;
+    grid-template-columns: subgrid;
     column-gap: 0;
+    align-items: end;
   }
 
-  .obra[data-ficha='lado'] .obra-moldura {
-    grid-column: 1 / 7;
+  .vitrines-grade .obra .obra-moldura,
+  .vitrines-grade .obra .ficha {
+    grid-row: 1;
   }
 
-  .obra[data-ficha='lado'] .ficha {
-    grid-column: 7 / -1;
+  .vitrines-grade .obra:nth-of-type(4n + 1) .obra-moldura {
+    grid-column: 1 / 9;
+  }
+
+  .vitrines-grade .obra:nth-of-type(4n + 1) .ficha {
+    grid-column: 10 / 13;
     align-self: start;
-    padding-inline-start: var(--celula-pad);
   }
 
-  /* Pares desencontrados: grande e média, depois o inverso. As prévias rompem as células. */
-  .vitrines-grade .obra:nth-child(4n + 1) {
-    grid-column: 2 / 10;
-  }
-
-  .vitrines-grade .obra:nth-child(4n + 2) {
-    grid-column: 9 / -1;
+  .vitrines-grade .obra:nth-of-type(4n + 2) {
     margin-block-start: 12vh;
-    margin-inline-end: calc(-1 * var(--celula-pad));
   }
 
-  .vitrines-grade .obra:nth-child(4n + 3) {
-    grid-column: 2 / 7;
+  .vitrines-grade .obra:nth-of-type(4n + 2) .obra-moldura {
+    grid-column: 7 / 13;
+  }
+
+  .vitrines-grade .obra:nth-of-type(4n + 2) .ficha {
+    grid-column: 3 / 7;
+    padding-inline-end: var(--space-l);
+  }
+
+  .vitrines-grade .obra:nth-of-type(4n + 3) {
     margin-block-start: 4vh;
   }
 
-  .vitrines-grade .obra:nth-child(4n + 4) {
-    grid-column: 6 / -1;
-    margin-inline-end: calc(-1 * var(--celula-pad));
+  .vitrines-grade .obra:nth-of-type(4n + 3) .obra-moldura {
+    grid-column: 1 / 7;
+  }
+
+  .vitrines-grade .obra:nth-of-type(4n + 3) .ficha {
+    grid-column: 7 / 10;
+    padding-inline-start: var(--celula-pad);
+  }
+
+  .vitrines-grade .obra:nth-of-type(4n + 4) .obra-moldura {
+    grid-column: 5 / 13;
+  }
+
+  .vitrines-grade .obra:nth-of-type(4n + 4) .ficha {
+    grid-column: 1 / 5;
+    padding-inline-end: var(--space-l);
   }
 }
 
@@ -1865,22 +1902,30 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 /* Na página do projeto a obra ocupa a linha inteira: a prévia em 9 das 12 colunas e a ficha
-   nas outras 3 (brief da home). A regra dos pares desencontrados não vale aqui. */
+   nas outras 3 (brief da home). Grade própria: a regra dos pares desencontrados não vale aqui. */
+.projeto-obra {
+  display: grid;
+  grid-template-columns: var(--cabeca-linha) repeat(var(--colunas), minmax(0, 1fr));
+}
+
 @media (min-width: 64rem) {
-  .projeto-obra .obra:nth-child(n) {
+  .projeto-obra .obra {
     grid-column: 2 / -1;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    margin-block-start: 0;
-    margin-inline-end: calc(-1 * var(--celula-pad));
+    grid-template-columns: subgrid;
+    column-gap: 0;
   }
 
-  .projeto-obra .obra[data-ficha='lado'] .obra-moldura {
+  .projeto-obra .obra .obra-moldura {
     grid-column: 1 / 10;
+    grid-row: 1;
     aspect-ratio: 16 / 10;
   }
 
-  .projeto-obra .obra[data-ficha='lado'] .ficha {
+  .projeto-obra .obra .ficha {
     grid-column: 10 / -1;
+    grid-row: 1;
+    align-self: start;
+    padding-inline-start: var(--celula-pad);
   }
 }
 
@@ -2114,6 +2159,13 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 /* Os três últimos posts na home */
+.home-posts-todos {
+  grid-column: 2 / -1;
+  justify-self: start;
+  align-self: center;
+  margin: var(--celula-pad);
+}
+
 .home-posts-item {
   grid-column: 2 / -1;
   display: grid;

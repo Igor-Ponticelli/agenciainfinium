@@ -139,7 +139,8 @@ const ficha = (i: number) => ([0, 3].includes(i % 4) ? 'lado' : 'abaixo');
         preserveAspectRatio="none"
         aria-hidden="true"
       >
-        <path pathLength="1" d="M -40 150 C 260 -40 340 290 600 120 C 860 -50 940 300 1240 110" />
+        <path pathLength="1" d="M -20 205 C 240 205 420 170 640 170 S 1000 140 1230 100" />
+        <path pathLength="1" d="M -20 42 C 160 42 300 30 440 30" />
       </svg>
     </Linha>
   </section>
@@ -214,7 +215,7 @@ const ficha = (i: number) => ([0, 3].includes(i % 4) ? 'lado' : 'abaixo');
         );
       })}
       <Linha>
-        <a class="vitrines-cabeca link-fita home-posts-todos" href={rotas.blog}>
+        <a class="link-fita home-posts-todos" href={rotas.blog}>
           {tb.rotulos.verBlog}
         </a>
       </Linha>
