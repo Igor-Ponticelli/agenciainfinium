@@ -1310,26 +1310,30 @@ html[data-menu-aberto] .whatsapp-flutuante {
 
 /* ---------- Pares chave e valor (resultados, benefícios, canais) ---------- */
 
+/* No celular a chave fica em cima do valor, na mesma linha da planilha; a partir do tablet,
+   lado a lado, nas colunas */
 .par-chave {
-  grid-column: 2 / 3;
-  padding: var(--celula-pad);
+  grid-column: 2 / -1;
+  padding: var(--celula-pad) var(--celula-pad) 0;
   color: var(--color-heading);
   font-weight: var(--weight-bold);
 }
 
 .par-valor {
-  grid-column: 3 / -1;
+  grid-column: 2 / -1;
   max-inline-size: 60ch;
-  padding: var(--celula-pad);
+  padding: var(--space-3xs) var(--celula-pad) var(--celula-pad);
 }
 
 @media (min-width: 48rem) {
   .par-chave {
     grid-column: 2 / 4;
+    padding: var(--celula-pad);
   }
 
   .par-valor {
     grid-column: 4 / -1;
+    padding: var(--celula-pad);
   }
 }
 
@@ -2042,29 +2046,32 @@ html[data-menu-aberto] .whatsapp-flutuante {
 /* ---------- Contato ---------- */
 
 .canal-nome {
-  grid-column: 2 / 3;
+  grid-column: 2 / -1;
   display: flex;
   align-items: center;
-  padding: var(--celula-pad);
+  justify-self: start;
+  margin: var(--celula-pad) var(--celula-pad) 0;
   color: var(--color-heading);
   font-weight: var(--weight-medium);
   overflow-wrap: anywhere;
 }
 
 .canal-texto {
-  grid-column: 3 / -1;
+  grid-column: 2 / -1;
   display: flex;
   align-items: center;
-  padding: var(--celula-pad);
+  padding: var(--space-3xs) var(--celula-pad) var(--celula-pad);
 }
 
 @media (min-width: 48rem) {
   .canal-nome {
     grid-column: 2 / 4;
+    margin: var(--celula-pad);
   }
 
   .canal-texto {
     grid-column: 4 / -1;
+    padding: var(--celula-pad);
   }
 }
 
@@ -2220,6 +2227,60 @@ html:not(.js) [data-enviar='whatsapp'] {
 
 .botao[disabled]::after {
   display: none;
+}
+
+/* ---------- Landing page do Raio-X ---------- */
+
+.cabecalho-landing .cabecalho-faixa {
+  justify-content: flex-start;
+}
+
+.raio-x-acao {
+  display: grid;
+  gap: var(--space-s);
+  justify-items: start;
+}
+
+.raio-x-apoio {
+  color: var(--color-text);
+  font-size: var(--text-s);
+}
+
+.raio-x-preco {
+  grid-column: 2 / -1;
+  display: grid;
+  gap: var(--space-s);
+  justify-items: start;
+  padding: var(--space-l) var(--celula-pad) var(--space-xl);
+}
+
+@media (min-width: 64rem) {
+  .raio-x-preco {
+    grid-column: 2 / 9;
+    padding: var(--space-xl) var(--space-l) var(--space-2xl);
+  }
+}
+
+.raio-x-valor {
+  color: var(--color-heading);
+  font-size: var(--text-h1);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+  font-variant-numeric: tabular-nums;
+}
+
+.raio-x-preco p {
+  max-inline-size: 52ch;
+}
+
+.raio-x-honesto {
+  color: var(--color-text);
+  font-size: var(--text-s);
+}
+
+.rodape-landing .rodape-faixa {
+  padding-block: var(--space-xl) var(--space-l);
 }
 
 /* ---------- Acessos: só os botões, no degradê ---------- */
