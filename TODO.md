@@ -227,7 +227,7 @@ escreve a página de contato`, `content(acessos): escreve a página de links`.
 
 ## TODO 3: Brief da home, material de marca e contrato de direção
 
-**Status:** pendente
+**Status:** feito em 30/10/2026
 **Depende de:** TODO 2
 
 **Leia antes:** [processo.md](.claude/docs/processo.md) (seções 1, 3 e etapa 3),
@@ -259,9 +259,11 @@ não escreve código nesta etapa.
 **Não fazer:** código, mudar paleta, fonte ou logo, cursor customizado sem o Igor pedir.
 
 **Pronto quando:**
-- [ ] direcao-visual.md tem o material e o movimento decididos, com data.
-- [ ] Os surface briefs existem com a seção `## Direction contract` e a referência do seed.
-- [ ] O Igor aprovou o brief da home.
+- [x] direcao-visual.md tem o material e o movimento decididos, com data.
+- [x] Os surface briefs existem com a seção `## Direction contract` e a referência do seed.
+- [x] O Igor aprovou o brief da home (escolheu material, direção e primeira tela em 30/10/2026;
+      o contrato escrito a partir disso está em `.impeccable/surfaces/src-pages-index-astro.md`
+      para ele ler).
 
 **Commits sugeridos:** `docs: registra o material de marca e o movimento`, `docs: adiciona os
 briefs da home e da página de serviço`.
@@ -269,6 +271,30 @@ briefs da home e da página de serviço`.
 **Precisa do Igor:** a escolha do material e a aprovação do brief.
 
 **Notas:**
+- `impeccable context` rodou; o `shape` foi feito pela ferramenta de perguntas (a página de
+  decisão da impeccable precisa de um servidor em espera que este ambiente não segura; a
+  substituição foi dita ao Igor). Uma rodada só, três perguntas: material, direção e primeira
+  tela.
+- `concept-seed --scope direction --mode persuade` rodou **completo** (com desafiantes do
+  catálogo): chave `cb730887c8393104c189a1c58a1c6243`, referência `seed:5ee14c7614ee9655`,
+  índice atribuído 7. Lista própria, por ressonância: 1 linha contínua (mapa do processo), 2
+  rua de vitrines, 3 talão de pedido carbonado, 4 fita métrica da confecção, 5 catálogo com
+  índice numerado, 6 mural de avisos, 7 planilha que vira sistema. Desafiantes: página de
+  secessão (recusada), fileira de fliperama (recusada), fita de proveniência (**competitiva**),
+  torre de argila (recusada), espécime de fonte variável (recusada), sequenciador (recusada).
+  Cada recusada doou uma disciplina, gravada como raise no FORM do brief da home.
+- **O Igor escolheu a sorteada** ("planilha que vira sistema") em vez do pick (linha contínua),
+  a fita como material e a **abertura escura** no degradê. O ping de escolha rodou com
+  `DO_NOT_TRACK=1`, como no portfólio.
+- Sem geração de imagem nesta máquina: build **code-led**, dito no brief. A ambição está no
+  FIRST VIEWPORT e na fita como cursor de seleção da planilha.
+- Briefs gravados com `surface-brief write`: `.impeccable/surfaces/src-pages-index-astro.md`
+  (home) e `.impeccable/surfaces/src-pages-sites-astro.md` (página de serviço, com `sistemas` e
+  `servicos` como alvos relacionados). Os dois têm os seis blocos e a referência do seed.
+- Decisão de composição registrada no brief, além das três perguntas: as páginas de serviço
+  abrem claras (o escuro é assinatura da home e da chamada final); a grade atravessa a fronteira
+  do escuro para o claro; os projetos ficam fora da grade em tamanhos desencontrados; sobre a
+  prévia a fita vira moldura. O Igor confirma no TODO 4 com o site rodando.
 
 ---
 
