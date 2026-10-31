@@ -3,6 +3,7 @@ import { Font, fontData } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
 import logoPrimary from '../assets/marca/logo-horizontal-primary.svg';
 import logoWhite from '../assets/marca/logo-horizontal-white.svg';
+import Consentimento from '../components/Consentimento.astro';
 import Fita from '../components/Fita.astro';
 import Seo from '../components/Seo.astro';
 import { email, linkWhatsapp, nomeCompleto } from '../data/empresa';
@@ -34,9 +35,9 @@ const largura = Math.round((altura * logoPrimary.width) / logoPrimary.height);
 <html lang={codigoIdioma}>
   <head>
     <meta charset="utf-8" />
-    <script is:inline>
-      document.documentElement.classList.add('js');
-    </script>
+    <!-- Uma linha só, sem espaços: o hash deste script está na CSP do .htaccess -->
+    <!-- prettier-ignore -->
+    <script is:inline>document.documentElement.classList.add('js')</script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     {robotoLatin && (
       <link rel="preload" href={robotoLatin} as="font" type="font/woff2" crossorigin />
@@ -109,6 +110,7 @@ const largura = Math.round((altura * logoPrimary.width) / logoPrimary.height);
         </div>
       </footer>
     </div>
+    <Consentimento />
     <Fita />
     <script>
       import '../scripts/metricas';

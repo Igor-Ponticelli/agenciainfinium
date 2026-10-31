@@ -2,6 +2,7 @@
 import logoWhite from '../assets/marca/logo-horizontal-white.svg';
 import { cnpj, email, instagram, linkWhatsapp, nomeCompleto } from '../data/empresa';
 import { rotas } from '../i18n/rotas';
+import { privacidade } from '../i18n/paginas/privacidade';
 import { textos as t } from '../i18n/textos';
 
 /**
@@ -10,6 +11,10 @@ import { textos as t } from '../i18n/textos';
  */
 // [PENDENTE: o Igor decide se o CNPJ aparece no rodapé]
 const mostrarCnpj = false;
+// O link "Preferências de cookies" só existe quando há tags (e, portanto, banner)
+const temRastreamento = Boolean(
+  import.meta.env.PUBLIC_GA4_ID || import.meta.env.PUBLIC_META_PIXEL_ID,
+);
 const altura = 24;
 const largura = Math.round((altura * logoWhite.width) / logoWhite.height);
 ---
@@ -55,6 +60,13 @@ const largura = Math.round((altura * logoWhite.width) / logoWhite.height);
           {t.rodape.privacidade}
         </a>
       </li>
+      {temRastreamento && (
+        <li>
+          <a class="link-fita" href={rotas.privacidade} data-abrir-cookies>
+            {privacidade.banner.reabrir}
+          </a>
+        </li>
+      )}
     </ul>
     <p class="rodape-empresa">
       {nomeCompleto}
