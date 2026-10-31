@@ -24,4 +24,24 @@ const projetos = defineCollection({
   }),
 });
 
-export const collections = { projetos };
+/**
+ * Posts do blog: `blog/<slug>.md`. A data efetiva sai de `src/data/blog.ts`: `data` fixa, ou a
+ * data de publicação do site menos `diasAntes` (decisão do Igor: o último post com a data da
+ * publicação do site, os anteriores escalonados). Rascunhos ficam fora do build.
+ */
+const blog = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/blog' }),
+  schema: z.object({
+    titulo: z.string(),
+    descricao: z.string().max(160),
+    data: z.coerce.date().optional(),
+    diasAntes: z.number().int().min(0).default(0),
+    atualizadoEm: z.coerce.date().optional(),
+    tags: z.array(z.string()).default([]),
+    rascunho: z.boolean().default(false),
+    /** Para onde o post leva no fim: um serviço ou o Raio-X. */
+    chamada: z.enum(['sites', 'sistemas', 'raioX']),
+  }),
+});
+
+export const collections = { projetos, blog };

@@ -5,7 +5,10 @@ import Colunas from '../components/Colunas.astro';
 import Linha from '../components/Linha.astro';
 import FontesPrevias from '../components/FontesPrevias.astro';
 import Obra from '../components/Obra.astro';
+import { dataCurta, dataDoPost, dataIso, postsPublicados } from '../data/blog';
 import { todosProjetos } from '../data/projetos';
+import { blog as tb } from '../i18n/paginas/blog';
+import { rotaPost } from '../i18n/rotas';
 import { linkWhatsapp } from '../data/empresa';
 import { rotas } from '../i18n/rotas';
 import { inicio as t } from '../i18n/paginas/inicio';
@@ -18,6 +21,7 @@ import { metasPaginas } from '../i18n/textos';
  */
 const meta = metasPaginas.inicio;
 const projetos = await todosProjetos();
+const posts = (await postsPublicados()).slice(0, 3);
 
 // Pares desencontrados: grande com a ficha ao lado, média com a ficha embaixo, e o inverso.
 const formato = (i: number) => ([0, 3].includes(i % 4) ? 'grande' : 'media');
@@ -188,6 +192,34 @@ const ficha = (i: number) => ([0, 3].includes(i % 4) ? 'lado' : 'abaixo');
       </Linha>
     ))}
   </section>
+
+  {posts.length > 0 && (
+    <section class="folha" aria-labelledby="posts-titulo">
+      <Linha>
+        <h2 class="titulo-secao" id="posts-titulo">
+          {tb.rotulos.naHome}
+        </h2>
+      </Linha>
+      {posts.map((post) => {
+        const data = dataDoPost(post);
+        return (
+          <Linha>
+            <div class="home-posts-item">
+              <time datetime={dataIso(data)}>{dataCurta(data)}</time>
+              <a class="link-fita" href={rotaPost(post.id)}>
+                {post.data.titulo}
+              </a>
+            </div>
+          </Linha>
+        );
+      })}
+      <Linha>
+        <a class="vitrines-cabeca link-fita home-posts-todos" href={rotas.blog}>
+          {tb.rotulos.verBlog}
+        </a>
+      </Linha>
+    </section>
+  )}
 
   <section class="folha" aria-labelledby="faq-titulo">
     <Linha>

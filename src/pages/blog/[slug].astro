@@ -1,0 +1,134 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ChamadaFinal from '../../components/ChamadaFinal.astro';
+import Colunas from '../../components/Colunas.astro';
+import Linha from '../../components/Linha.astro';
+import {
+  dataDoPost,
+  dataIso,
+  dataLonga,
+  postsPublicados,
+  tempoDeLeitura,
+  type Post,
+} from '../../data/blog';
+import { linkWhatsapp, nomeCompleto } from '../../data/empresa';
+import { rotaPost, rotas } from '../../i18n/rotas';
+import { blog as t } from '../../i18n/paginas/blog';
+
+export const getStaticPaths = (async () => {
+  const posts = await postsPublicados();
+  return posts.map((post, i) => ({
+    params: { slug: post.id },
+    props: { post, anterior: posts[i + 1] ?? null, proximo: posts[i - 1] ?? null },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  post: Post;
+  /** Mais antigo que este. */
+  anterior: Post | null;
+  /** Mais novo que este. */
+  proximo: Post | null;
+}
+
+/** Um post: texto numa coluna confortável, autor, data, a chamada no fim e os vizinhos. */
+const { post, anterior, proximo } = Astro.props;
+const { Content } = await render(post);
+const data = dataDoPost(post);
+const chamada = t.chamadas[post.data.chamada];
+const destino = {
+  sites: rotas.sites,
+  sistemas: rotas.sistemas,
+  raioX: rotas.raioX,
+}[post.data.chamada];
+const site = Astro.site!;
+
+const jsonLd = {
+  '@type': 'BlogPosting',
+  '@id': new URL(rotaPost(post.id), site).href,
+  headline: post.data.titulo,
+  description: post.data.descricao,
+  datePublished: dataIso(data),
+  dateModified: dataIso(post.data.atualizadoEm ?? data),
+  inLanguage: 'pt-BR',
+  author: { '@type': 'Person', name: t.autor },
+  publisher: { '@id': `${site.origin}/#organizacao` },
+  image: new URL('/og.png', site).href,
+  keywords: post.data.tags.join(', '),
+  mainEntityOfPage: new URL(rotaPost(post.id), site).href,
+};
+---
+
+<Base titulo={post.data.titulo} descricao={post.data.descricao} jsonLd={[jsonLd]} tipoOg="article">
+  <article>
+    <section class="folha pagina-cabeca">
+      <Colunas />
+      <Linha>
+        <h1 class="pagina-titulo">{post.data.titulo}</h1>
+      </Linha>
+      <Linha>
+        <p class="post-cabeca">
+          <span>
+            {t.rotulos.escritoPor} {t.autor}
+          </span>
+          <time datetime={dataIso(data)}>{dataLonga(data)}</time>
+          <span>{t.rotulos.leitura(tempoDeLeitura(post))}</span>
+          {post.data.atualizadoEm && (
+            <span>
+              {t.rotulos.atualizado}{' '}
+              <time datetime={dataIso(post.data.atualizadoEm)}>
+                {dataLonga(post.data.atualizadoEm)}
+              </time>
+            </span>
+          )}
+        </p>
+      </Linha>
+    </section>
+
+    <section class="folha">
+      <Linha>
+        <div class="projeto-texto post-texto">
+          <p class="post-abertura">{post.data.descricao}</p>
+          <Content />
+        </div>
+      </Linha>
+      <Linha class="post-chamada">
+        <div class="mesclada post-chamada-bloco">
+          <h2>{chamada.titulo}</h2>
+          <p>{chamada.texto}</p>
+          <a class="botao" href={destino} data-evento={`blog_${post.data.chamada}`}>
+            {chamada.acao}
+          </a>
+        </div>
+      </Linha>
+      <Linha class="post-vizinhos">
+        {anterior && (
+          <a class="post-vizinho" href={rotaPost(anterior.id)}>
+            <span class="proximo-rotulo">{t.rotulos.anterior}</span>
+            <span class="post-vizinho-titulo">{anterior.data.titulo}</span>
+          </a>
+        )}
+        {proximo && (
+          <a class="post-vizinho post-vizinho-proximo" href={rotaPost(proximo.id)}>
+            <span class="proximo-rotulo">{t.rotulos.proximo}</span>
+            <span class="post-vizinho-titulo">{proximo.data.titulo}</span>
+          </a>
+        )}
+        <a class="post-todos link-fita" href={rotas.blog}>
+          {t.rotulos.todos}
+        </a>
+      </Linha>
+    </section>
+  </article>
+
+  <ChamadaFinal
+    slot="fechamento"
+    titulo="Menos trabalho manual, mais crescimento"
+    texto={`Conta para a ${nomeCompleto} o que a sua empresa precisa. A conversa inicial é pelo WhatsApp e não tem compromisso.`}
+    acao="Falar no WhatsApp"
+    href={linkWhatsapp()}
+    evento="whatsapp_chamada_final"
+  />
+</Base>

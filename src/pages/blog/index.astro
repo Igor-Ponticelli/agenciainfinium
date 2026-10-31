@@ -1,26 +1,67 @@
 ---
 import Base from '../../layouts/Base.astro';
+import ChamadaFinal from '../../components/ChamadaFinal.astro';
 import Colunas from '../../components/Colunas.astro';
 import Linha from '../../components/Linha.astro';
+import { dataCurta, dataDoPost, dataIso, postsPublicados, tempoDeLeitura } from '../../data/blog';
+import { linkWhatsapp } from '../../data/empresa';
+import { rotaPost } from '../../i18n/rotas';
+import { blog as t } from '../../i18n/paginas/blog';
 import { metasPaginas } from '../../i18n/textos';
 
-/** Blog: a lista de posts entra no TODO 7. */
+/** Blog: a lista de posts em linhas da planilha, do mais novo para o mais antigo. */
 const meta = metasPaginas.blog;
+const posts = await postsPublicados();
 ---
 
 <Base titulo={meta.titulo} descricao={meta.descricao}>
+  <link
+    slot="head"
+    rel="alternate"
+    type="application/rss+xml"
+    title="Blog da Infinium"
+    href="/blog/rss.xml"
+  />
   <section class="folha pagina-cabeca" aria-labelledby="pagina-titulo">
     <Colunas />
     <Linha>
       <h1 class="pagina-titulo" id="pagina-titulo">
-        Blog
+        {t.titulo}
       </h1>
     </Linha>
     <Linha>
-      <p class="pagina-texto">{meta.descricao}</p>
-    </Linha>
-    <Linha>
-      <p class="pagina-texto">[PENDENTE: os posts entram no TODO 7]</p>
+      <p class="pagina-texto">{t.texto}</p>
     </Linha>
   </section>
+
+  <section class="folha" aria-label={t.rotulos.todos}>
+    {posts.map((post) => {
+      const data = dataDoPost(post);
+      return (
+        <Linha as="article" class="post-linha">
+          <time class="post-data" datetime={dataIso(data)}>
+            {dataCurta(data)}
+          </time>
+          <div class="post-resumo">
+            <h2>
+              <a class="link-fita" href={rotaPost(post.id)}>
+                {post.data.titulo}
+              </a>
+            </h2>
+            <p>{post.data.descricao}</p>
+            <p class="post-meta">{t.rotulos.leitura(tempoDeLeitura(post))}</p>
+          </div>
+        </Linha>
+      );
+    })}
+  </section>
+
+  <ChamadaFinal
+    slot="fechamento"
+    titulo="Ficou com uma dúvida sobre o seu site?"
+    texto="Manda uma mensagem. A conversa inicial é pelo WhatsApp e não tem compromisso."
+    acao="Falar no WhatsApp"
+    href={linkWhatsapp()}
+    evento="whatsapp_chamada_final"
+  />
 </Base>
