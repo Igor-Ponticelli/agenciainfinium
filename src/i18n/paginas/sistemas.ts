@@ -122,7 +122,9 @@ export const sistemas = {
   prova: {
     titulo: 'Um sistema que a Infinium construiu',
     texto:
-      'O RetroDash é um produto nosso, em produção: salas em tempo real, votos, itens de ação e dados protegidos. Ele mostra como a gente constrói sistemas. Quando houver um case de automação de cliente, ele aparece aqui.',
+      'O RetroDash é um produto nosso, em produção: salas em tempo real, votos, itens de ação e dados protegidos. Ele mostra como a gente constrói sistemas.',
+    solto:
+      'Ainda não há um case de automação de cliente publicado. Quando houver, ele aparece aqui.',
   },
 
   faq: {
