@@ -1,49 +1,112 @@
 ---
-import logo from '../assets/marca/logo-horizontal-primary.svg';
+import logoPrimary from '../assets/marca/logo-horizontal-primary.svg';
+import logoWhite from '../assets/marca/logo-horizontal-white.svg';
 import { linkWhatsapp } from '../data/empresa';
 import { normalizar, rotas } from '../i18n/rotas';
 import { textos as t } from '../i18n/textos';
 
-// Esqueleto: só a estrutura e os links reais. Menu do celular, estilo e material são do TODO 4.
+/**
+ * Cabeçalho: logo horizontal (branco sobre o degradê, Primary sobre claro, sempre pelo arquivo
+ * SVG), menu com o grupo Serviços (Sites, Sistemas), Projetos, Blog e Contato, o botão do
+ * WhatsApp e a régua: a fita que sai do logo e corre até a borda. É dela que a troca de página
+ * parte. No celular, botão de dois traços e painel de tela cheia (menu.ts).
+ */
 const atual = normalizar(Astro.url.pathname);
-// Menu: Serviços (Sites, Sistemas) · Projetos · Blog · Contato · WhatsApp. O submenu é do TODO 4;
-// no esqueleto, os cinco são links diretos.
-const itens = [
-  { href: rotas.servicos, rotulo: t.menu.servicos },
-  { href: rotas.sites, rotulo: t.menu.sites },
-  { href: rotas.sistemas, rotulo: t.menu.sistemas },
-  { href: rotas.projetos, rotulo: t.menu.projetos },
-  { href: rotas.blog, rotulo: t.menu.blog },
-  { href: rotas.contato, rotulo: t.menu.contato },
-].map((item) => ({
-  ...item,
-  atual: atual === item.href || (atual.startsWith(item.href) && item.href !== rotas.servicos),
-}));
+const ativo = (rota: string) => atual === rota || (rota !== '/' && atual.startsWith(rota));
+const altura = 28;
+const largura = Math.round((altura * logoPrimary.width) / logoPrimary.height);
+const emServico = ativo(rotas.servicos) || ativo(rotas.sites) || ativo(rotas.sistemas);
 ---
 
-<header>
-  <a href={rotas.inicio}>
-    <img
-      src={logo.src}
-      width="160"
-      height={Math.round((160 * logo.height) / logo.width)}
-      alt={t.logo}
-    />
-  </a>
-  <nav aria-label={t.menu.rotulo}>
-    <ul>
-      {itens.map((item) => (
-        <li>
-          <a href={item.href} aria-current={item.atual ? 'page' : undefined}>
-            {item.rotulo}
-          </a>
-        </li>
-      ))}
-      <li>
-        <a href={linkWhatsapp()} target="_blank" rel="noopener">
-          {t.acoes.falarWhatsapp} <span class="visualmente-oculto">{t.linkExterno}</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
+<header class="cabecalho">
+  <div class="cabecalho-faixa">
+    <a class="logo" href={rotas.inicio} data-fita-logo>
+      <img
+        class="logo-claro"
+        src={logoPrimary.src}
+        width={largura}
+        height={altura}
+        alt={t.logo}
+        decoding="async"
+      />
+      <img
+        class="logo-escuro"
+        src={logoWhite.src}
+        width={largura}
+        height={altura}
+        alt=""
+        aria-hidden="true"
+        decoding="async"
+      />
+    </a>
+    <!-- Só aparece no celular com JS; sem JS, o painel fica sempre aberto -->
+    <button
+      class="menu-botao"
+      type="button"
+      aria-expanded="false"
+      aria-controls="menu-painel"
+      aria-label={t.menu.abrir}
+      data-menu-botao
+      data-rotulo-abrir={t.menu.abrir}
+      data-rotulo-fechar={t.menu.fechar}
+    >
+      <span class="menu-botao-linhas" aria-hidden="true">
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+    <div class="menu-painel" id="menu-painel" data-menu-painel>
+      <nav class="menu" aria-label={t.menu.rotulo}>
+        <ul>
+          <li class="menu-grupo">
+            <a href={rotas.servicos} aria-current={ativo(rotas.servicos) ? 'page' : undefined}>
+              {t.menu.servicos}
+            </a>
+            <ul class="submenu" data-aberto={emServico ? '' : undefined}>
+              <li>
+                <a href={rotas.sites} aria-current={ativo(rotas.sites) ? 'page' : undefined}>
+                  {t.menu.sites}
+                </a>
+              </li>
+              <li>
+                <a href={rotas.sistemas} aria-current={ativo(rotas.sistemas) ? 'page' : undefined}>
+                  {t.menu.sistemas}
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href={rotas.projetos} aria-current={ativo(rotas.projetos) ? 'page' : undefined}>
+              {t.menu.projetos}
+            </a>
+          </li>
+          <li>
+            <a href={rotas.blog} aria-current={ativo(rotas.blog) ? 'page' : undefined}>
+              {t.menu.blog}
+            </a>
+          </li>
+          <li>
+            <a href={rotas.contato} aria-current={ativo(rotas.contato) ? 'page' : undefined}>
+              {t.menu.contato}
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <a
+        class="botao botao-whatsapp"
+        href={linkWhatsapp()}
+        target="_blank"
+        rel="noopener"
+        data-evento="whatsapp_menu"
+      >
+        {t.acoes.falarWhatsapp}
+        <span class="visualmente-oculto">{t.linkExterno}</span>
+      </a>
+    </div>
+  </div>
+  <div class="regua" data-fita-regua aria-hidden="true"></div>
 </header>
+
+<script>
+  import '../scripts/menu';
+</script>

@@ -54,9 +54,21 @@ export const textos = {
       'em-desenvolvimento': 'Em desenvolvimento',
     } satisfies Record<StatusProjeto, string>,
   },
+  previa: {
+    /** Rótulo da região da prévia, para leitor de tela. */
+    rotulo: (titulo: string, tipo: TipoProjeto) =>
+      tipo === 'site' ? `Prévia interativa do site da ${titulo}` : `Prévia interativa do ${titulo}`,
+    aviso: 'Prévia em HTML e CSS. Nada do que você fizer aqui é enviado ou salvo.',
+    emPreparacao: 'Prévia em preparação',
+  },
   naoEncontrada: {
     titulo: 'Página não encontrada',
     texto: 'O endereço pode ter mudado, ou o link veio com algum erro.',
+    voltar: 'Voltar para o início',
+  },
+  enviado: {
+    titulo: 'Mensagem enviada',
+    texto: 'Recebemos a sua mensagem. A gente responde pelo contato que você informou.',
     voltar: 'Voltar para o início',
   },
 } as const;
@@ -101,6 +113,10 @@ export const metasPaginas: Record<NomeRota, { titulo: string; descricao: string 
     titulo: 'Contato',
     descricao:
       'Fale com a Agência Infinium pelo WhatsApp, por e-mail ou pelo formulário de orçamento.',
+  },
+  contatoEnviado: {
+    titulo: 'Mensagem enviada',
+    descricao: 'Recebemos a sua mensagem.',
   },
   raioX: {
     titulo: 'Raio-X do site: análise de SEO, velocidade e segurança',

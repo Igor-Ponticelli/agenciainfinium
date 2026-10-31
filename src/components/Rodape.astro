@@ -1,35 +1,64 @@
 ---
+import logoWhite from '../assets/marca/logo-horizontal-white.svg';
 import { cnpj, email, instagram, linkWhatsapp, nomeCompleto } from '../data/empresa';
 import { rotas } from '../i18n/rotas';
 import { textos as t } from '../i18n/textos';
 
-// Esqueleto: só a estrutura e os links reais. Logo e estilo são do TODO 4.
+/**
+ * Rodapé, sempre sobre o degradê da marca, logo abaixo da chamada final da página.
+ * Sobre o escuro, só White e Lilás. O logo é o arquivo SVG branco.
+ */
 // [PENDENTE: o Igor decide se o CNPJ aparece no rodapé]
 const mostrarCnpj = false;
+const altura = 24;
+const largura = Math.round((altura * logoWhite.width) / logoWhite.height);
 ---
 
-<footer>
-  <p>{t.rodape.assinatura}</p>
-  <ul>
-    <li>
-      <a href={linkWhatsapp()} target="_blank" rel="noopener">
-        {t.contato.whatsapp} <span class="visualmente-oculto">{t.linkExterno}</span>
-      </a>
-    </li>
-    <li>
-      <a href={`mailto:${email}`}>{email}</a>
-    </li>
-    <li>
-      <a href={instagram.url} target="_blank" rel="noopener">
-        {instagram.usuario} <span class="visualmente-oculto">{t.linkExterno}</span>
-      </a>
-    </li>
-    <li>
-      <a href={rotas.privacidade}>{t.rodape.privacidade}</a>
-    </li>
-  </ul>
-  <p>
-    {nomeCompleto}
-    {mostrarCnpj && <span>· CNPJ {cnpj}</span>}
-  </p>
+<footer class="rodape">
+  <div class="rodape-faixa">
+    <div class="rodape-marca">
+      <img
+        src={logoWhite.src}
+        width={largura}
+        height={altura}
+        alt={nomeCompleto}
+        decoding="async"
+      />
+      <p class="rodape-assinatura">{t.rodape.assinatura}</p>
+    </div>
+    <ul class="rodape-links">
+      <li>
+        <a
+          class="link-fita"
+          href={linkWhatsapp()}
+          target="_blank"
+          rel="noopener"
+          data-evento="whatsapp_rodape"
+        >
+          {t.contato.whatsapp}
+          <span class="visualmente-oculto">{t.linkExterno}</span>
+        </a>
+      </li>
+      <li>
+        <a class="link-fita" href={`mailto:${email}`} data-evento="email_rodape">
+          {email}
+        </a>
+      </li>
+      <li>
+        <a class="link-fita" href={instagram.url} target="_blank" rel="noopener">
+          {instagram.usuario}
+          <span class="visualmente-oculto">{t.linkExterno}</span>
+        </a>
+      </li>
+      <li>
+        <a class="link-fita" href={rotas.privacidade}>
+          {t.rodape.privacidade}
+        </a>
+      </li>
+    </ul>
+    <p class="rodape-empresa">
+      {nomeCompleto}
+      {mostrarCnpj && <span> · CNPJ {cnpj}</span>}
+    </p>
+  </div>
 </footer>

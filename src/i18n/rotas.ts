@@ -22,6 +22,8 @@ export const rotas = {
   projetos: '/projetos/',
   blog: '/blog/',
   contato: '/contato/',
+  /** Destino do formulário depois do envio por e-mail (noindex). */
+  contatoEnviado: '/contato/enviado/',
   /** Landing page do produto de entrada, sem menu (TODO 8). */
   raioX: '/raio-x-do-site/',
   privacidade: '/privacidade/',

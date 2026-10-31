@@ -1,0 +1,42 @@
+---
+/**
+ * A chamada final de cada página, sobre o degradê da marca, sem a grade: a planilha foi fechada.
+ * Botão em Lilás com texto Ink (nunca Primary sobre escuro).
+ */
+interface Props {
+  titulo: string;
+  texto?: string;
+  acao: string;
+  href: string;
+  evento: string;
+  /** Segunda ação, discreta (por exemplo, o formulário de contato). */
+  secundaria?: { rotulo: string; href: string };
+  externo?: boolean;
+}
+
+const { titulo, texto, acao, href, evento, secundaria, externo = true } = Astro.props;
+---
+
+<section class="chamada-final" aria-labelledby="chamada-final-titulo">
+  <div class="chamada-final-faixa">
+    <h2 id="chamada-final-titulo">{titulo}</h2>
+    {texto && <p>{texto}</p>}
+    <div class="chamada-final-acoes">
+      <a
+        class="botao botao-claro"
+        href={href}
+        target={externo ? '_blank' : undefined}
+        rel={externo ? 'noopener' : undefined}
+        data-evento={evento}
+      >
+        {acao}
+        {externo && <span class="visualmente-oculto">(abre em nova aba)</span>}
+      </a>
+      {secundaria && (
+        <a class="link-fita" href={secundaria.href}>
+          {secundaria.rotulo}
+        </a>
+      )}
+    </div>
+  </div>
+</section>
