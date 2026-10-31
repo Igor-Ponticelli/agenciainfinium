@@ -3,8 +3,12 @@
 // Uso: node scripts/inspecao-previas.mjs <pasta-saida> [--sem-originais]
 import { chromium } from 'playwright';
 import { mkdirSync } from 'node:fs';
+import { servidor } from './servir.mjs';
 
-const base = 'http://localhost:4321';
+// Serve o dist/ aqui mesmo, com os cabeçalhos do .htaccess (scripts/servir.mjs)
+const porta = 4395;
+const base = `http://localhost:${porta}`;
+await new Promise((r) => servidor.listen(porta, r));
 const saida = process.argv[2] ?? './capturas';
 const semOriginais = process.argv.includes('--sem-originais');
 mkdirSync(saida, { recursive: true });
@@ -134,4 +138,5 @@ if (!semOriginais) {
 }
 
 await browser.close();
+await new Promise((r) => servidor.close(r));
 console.log(relatorio.join('\n'));

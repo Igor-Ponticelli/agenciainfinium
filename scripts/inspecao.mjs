@@ -2,8 +2,12 @@
 // sem JS, movimento reduzido e o tempo da troca de página. Uso: node inspecao.mjs <pasta-saida>
 import { chromium } from 'playwright';
 import { mkdirSync } from 'node:fs';
+import { servidor } from './servir.mjs';
 
-const base = 'http://localhost:4321';
+// Serve o dist/ aqui mesmo, com os cabeçalhos do .htaccess (scripts/servir.mjs)
+const porta = 4396;
+const base = `http://localhost:${porta}`;
+await new Promise((r) => servidor.listen(porta, r));
 const saida = process.argv[2] ?? './capturas';
 mkdirSync(saida, { recursive: true });
 
@@ -145,4 +149,5 @@ for (const [nome, viewport] of Object.entries(viewports)) {
 }
 
 await browser.close();
+await new Promise((r) => servidor.close(r));
 console.log(relatorio.join('\n'));
