@@ -445,6 +445,8 @@ const acoes = [
     align-items: center;
     gap: calc(6 * var(--u));
     inline-size: 100%;
+    /* Alvo de toque mínimo (24 px) mesmo na moldura larga, onde o quadro é miniatura */
+    min-block-size: 24px;
     padding: calc(6 * var(--u)) calc(8 * var(--u));
     border: 1px solid color-mix(in srgb, var(--rd-borda) 60%, transparent);
     border-radius: calc(14 * var(--u));
