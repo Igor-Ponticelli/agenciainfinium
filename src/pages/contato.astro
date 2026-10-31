@@ -1,80 +1,61 @@
 ---
 import Base from '../layouts/Base.astro';
+import Colunas from '../components/Colunas.astro';
+import Formulario from '../components/Formulario.astro';
+import Linha from '../components/Linha.astro';
 import { email, instagram, linkWhatsapp } from '../data/empresa';
-import { rotas } from '../i18n/rotas';
 import { contato as t } from '../i18n/paginas/contato';
 import { metasPaginas, textos } from '../i18n/textos';
 
-// Esqueleto com o texto completo. O envio (Web3Forms, Turnstile, botão do WhatsApp) é do TODO 4;
-// por enquanto o formulário não tem `action`.
+/** Contato: os canais em linhas da planilha e o formulário numa célula mesclada. */
 const meta = metasPaginas.contato;
-const f = t.formulario;
 ---
 
 <Base titulo={meta.titulo} descricao={meta.descricao}>
-  <h1>{t.titulo}</h1>
-  <p>{t.texto}</p>
-
-  <section>
-    <ul>
-      <li>
-        <a href={linkWhatsapp()} target="_blank" rel="noopener">
-          {t.canais.whatsapp.rotulo} <span class="visualmente-oculto">{textos.linkExterno}</span>
-        </a>
-        {t.canais.whatsapp.texto}
-      </li>
-      <li>
-        <a href={`mailto:${email}`}>{email}</a>
-        {t.canais.email.texto}
-      </li>
-      <li>
-        <a href={instagram.url} target="_blank" rel="noopener">
-          {instagram.usuario} <span class="visualmente-oculto">{textos.linkExterno}</span>
-        </a>
-        {t.canais.instagram.texto}
-      </li>
-    </ul>
+  <section class="folha pagina-cabeca" aria-labelledby="pagina-titulo">
+    <Colunas />
+    <Linha>
+      <h1 class="pagina-titulo" id="pagina-titulo">
+        {t.titulo}
+      </h1>
+    </Linha>
+    <Linha>
+      <p class="pagina-texto">{t.texto}</p>
+    </Linha>
   </section>
 
-  <section>
-    <h2>{f.titulo}</h2>
-    <p>{f.texto}</p>
-    <form method="post">
-      <p>
-        <label for="nome">{f.campos.nome}</label>
-        <input id="nome" name="nome" type="text" required maxlength="80" autocomplete="name" />
-      </p>
-      <p>
-        <label for="empresa">{f.campos.empresa}</label>
-        <input id="empresa" name="empresa" type="text" maxlength="80" autocomplete="organization" />
-      </p>
-      <p>
-        <label for="contato">{f.campos.contato}</label>
-        <input id="contato" name="contato" type="text" required maxlength="80" />
-      </p>
-      <fieldset>
-        <legend>{f.campos.precisa}</legend>
-        {f.opcoes.map((o) => (
-          <label>
-            <input type="radio" name="precisa" value={o.valor} /> {o.rotulo}
-          </label>
-        ))}
-      </fieldset>
-      <p>
-        <label for="mensagem">{f.campos.mensagem}</label>
-        <textarea id="mensagem" name="mensagem" rows="5" maxlength="1000"></textarea>
-      </p>
-      <p>
-        {f.privacidade} <a href={rotas.privacidade}>{f.linkPrivacidade}</a>.
-      </p>
-      <p>
-        <button type="submit" name="enviar" value="whatsapp">
-          {f.enviarWhatsapp}
-        </button>
-        <button type="submit" name="enviar" value="email">
-          {f.enviarEmail}
-        </button>
-      </p>
-    </form>
+  <section class="folha" aria-label="Canais de contato">
+    <Linha>
+      <a
+        class="canal-nome link-fita"
+        href={linkWhatsapp()}
+        target="_blank"
+        rel="noopener"
+        data-evento="whatsapp_contato"
+      >
+        {t.canais.whatsapp.rotulo}
+        <span class="visualmente-oculto">{textos.linkExterno}</span>
+      </a>
+      <p class="canal-texto">{t.canais.whatsapp.texto}</p>
+    </Linha>
+    <Linha>
+      <a class="canal-nome link-fita" href={`mailto:${email}`} data-evento="email_contato">
+        {email}
+      </a>
+      <p class="canal-texto">{t.canais.email.texto}</p>
+    </Linha>
+    <Linha>
+      <a class="canal-nome link-fita" href={instagram.url} target="_blank" rel="noopener">
+        {instagram.usuario}
+        <span class="visualmente-oculto">{textos.linkExterno}</span>
+      </a>
+      <p class="canal-texto">{t.canais.instagram.texto}</p>
+    </Linha>
+  </section>
+
+  <section class="folha" aria-labelledby="formulario-titulo">
+    <Linha class="servicos-linha">
+      <Formulario />
+    </Linha>
   </section>
 </Base>

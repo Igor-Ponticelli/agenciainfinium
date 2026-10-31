@@ -1,0 +1,134 @@
+---
+import { numeroWhatsapp } from '../data/empresa';
+import { rotas } from '../i18n/rotas';
+import { contato } from '../i18n/paginas/contato';
+
+/**
+ * Formulário de orçamento (conteudo.md, seção 10; arquitetura.md, seção 7).
+ * Envio por e-mail: POST nativo para o Web3Forms, com honeypot, limite de tamanho, Turnstile
+ * (verificado no servidor deles) e redirecionamento para /contato/enviado/. Funciona sem JS.
+ * Envio pelo WhatsApp: formulario.ts monta a mensagem e abre o wa.me. Nenhum segredo aqui: as
+ * chaves são públicas e vêm do .env (PUBLIC_*). Sem a chave do Web3Forms, o envio por e-mail
+ * fica desligado e a página avisa.
+ */
+const f = contato.formulario;
+const chaveWeb3Forms = import.meta.env.PUBLIC_WEB3FORMS_KEY as string | undefined;
+const chaveTurnstile = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
+const emailAtivo = Boolean(chaveWeb3Forms);
+const redirecionar = new URL(rotas.contatoEnviado, Astro.site).href;
+---
+
+<form
+  class="formulario mesclada"
+  method="post"
+  action={emailAtivo ? 'https://api.web3forms.com/submit' : undefined}
+  data-formulario-contato
+  data-whatsapp={numeroWhatsapp}
+  data-assunto={f.assunto}
+  novalidate={undefined}
+>
+  <h2 id="formulario-titulo">{f.titulo}</h2>
+  <p>{f.texto}</p>
+
+  {emailAtivo && (
+    <>
+      <input type="hidden" name="access_key" value={chaveWeb3Forms} />
+      <input type="hidden" name="subject" value={f.assunto} />
+      <input type="hidden" name="from_name" value="Site da Infinium" />
+      <input type="hidden" name="redirect" value={redirecionar} />
+    </>
+  )}
+  <!-- Honeypot: fica invisível para pessoas; um robô que marcar é descartado pelo Web3Forms -->
+  <input
+    type="checkbox"
+    name="botcheck"
+    class="visualmente-oculto"
+    tabindex="-1"
+    aria-hidden="true"
+    autocomplete="off"
+  />
+
+  <div class="campo">
+    <label for="nome">{f.campos.nome}</label>
+    <input id="nome" name="nome" type="text" required maxlength="80" autocomplete="name" />
+  </div>
+  <div class="campo">
+    <label for="empresa">{f.campos.empresa}</label>
+    <input id="empresa" name="empresa" type="text" maxlength="80" autocomplete="organization" />
+  </div>
+  <div class="campo">
+    <label for="contato">{f.campos.contato}</label>
+    <input
+      id="contato"
+      name="contato"
+      type="text"
+      required
+      maxlength="80"
+      autocomplete="tel email"
+      inputmode="email"
+    />
+  </div>
+  <fieldset class="campo campo-opcoes">
+    <legend>{f.campos.precisa}</legend>
+    <div class="opcoes">
+      {f.opcoes.map((o, i) => (
+        <label class="opcao">
+          <input type="radio" name="precisa" value={o.valor} required={i === 0} />
+          {o.rotulo}
+        </label>
+      ))}
+    </div>
+  </fieldset>
+  <div class="campo">
+    <label for="mensagem">{f.campos.mensagem}</label>
+    <textarea id="mensagem" name="mensagem" rows="5" maxlength="1000"></textarea>
+  </div>
+
+  {emailAtivo && chaveTurnstile && (
+    <div class="cf-turnstile" data-sitekey={chaveTurnstile} data-theme="light"></div>
+  )}
+
+  <p class="formulario-aviso">
+    {f.privacidade}{' '}
+    <a class="link-fita" href={rotas.privacidade}>
+      {f.linkPrivacidade}
+    </a>
+    .
+  </p>
+
+  {!emailAtivo && (
+    <p class="formulario-pendente">
+      [PENDENTE: chave do Web3Forms no .env para o envio por e-mail. O envio pelo WhatsApp já
+      funciona.]
+    </p>
+  )}
+
+  <div class="formulario-acoes">
+    <button class="botao" type="submit" name="enviar" value="whatsapp" data-enviar="whatsapp">
+      {f.enviarWhatsapp}
+    </button>
+    <button
+      class="botao"
+      type="submit"
+      name="enviar"
+      value="email"
+      data-enviar="email"
+      disabled={!emailAtivo}
+    >
+      {f.enviarEmail}
+    </button>
+  </div>
+</form>
+
+{emailAtivo && chaveTurnstile && (
+  <script
+    is:inline
+    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+    async
+    defer
+  ></script>
+)}
+
+<script>
+  import '../scripts/formulario';
+</script>

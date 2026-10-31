@@ -1,0 +1,31 @@
+---
+import Base from '../../layouts/Base.astro';
+import Colunas from '../../components/Colunas.astro';
+import Linha from '../../components/Linha.astro';
+import { rotas } from '../../i18n/rotas';
+import { metasPaginas, textos as t } from '../../i18n/textos';
+
+/** Destino do formulário depois do envio por e-mail. Fora do sitemap e sem indexação. */
+const meta = metasPaginas.contatoEnviado;
+---
+
+<Base titulo={meta.titulo} descricao={meta.descricao} noindex>
+  <section class="folha pagina-cabeca" aria-labelledby="pagina-titulo">
+    <Colunas />
+    <Linha>
+      <h1 class="pagina-titulo" id="pagina-titulo">
+        {t.enviado.titulo}
+      </h1>
+    </Linha>
+    <Linha>
+      <p class="pagina-texto">{t.enviado.texto}</p>
+    </Linha>
+    <Linha>
+      <div class="pagina-acao acoes">
+        <a class="botao" href={rotas.inicio}>
+          {t.enviado.voltar}
+        </a>
+      </div>
+    </Linha>
+  </section>
+</Base>
