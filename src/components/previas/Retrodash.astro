@@ -1,0 +1,597 @@
+---
+/**
+ * Miniprévia do RetroDash: o topo da home (pt-BR) com o quadro do hero.
+ * Interações que existem no produto: votar num card, mudar o estado de um item de ação e
+ * trocar o tema. O botão "Melhorar com IA" não aparece aqui, porque mostraria uma saída
+ * inventada. Fonte: .claude/docs/projetos/retrodash.md.
+ */
+import logo from '../../assets/previas/retrodash-logo.svg?raw';
+
+const rotulos = {
+  tema: 'Alternar entre tema claro e escuro',
+  votar: 'Votar',
+  votos: 'votos',
+  estado: 'Estado',
+  mudar: 'mudar',
+  estados: { pendente: 'Pendente', concluido: 'Concluído', manter: 'Manter' },
+};
+
+const colunas = [
+  {
+    titulo: 'What went well',
+    tom: 'ciano',
+    cards: [
+      ['Great team sync', 4],
+      ['Shipped on time!', 3],
+      ['CI pipeline win', 2],
+    ],
+  },
+  {
+    titulo: 'To improve',
+    tom: 'violeta',
+    cards: [
+      ['Clearer ticket scope', 5],
+      ['More async updates', 2],
+      ['Earlier code review', 1],
+    ],
+  },
+] as const;
+
+const acoes = [
+  ['Add PR template', 'concluido'],
+  ['Daily standups', 'manter'],
+  ['Refine story sizing', 'pendente'],
+] as const;
+---
+
+<div class="rd" data-tema="claro" data-rotulos={JSON.stringify(rotulos)}>
+  <div class="rd-topo">
+    <span class="rd-logo" set:html={logo} />
+    <span class="rd-nav" aria-hidden="true">
+      <span>Funcionalidades</span>
+      <span>Como funciona</span>
+      <span>Casos de Uso</span>
+    </span>
+    <span class="rd-icones">
+      <button
+        class="rd-icone"
+        type="button"
+        aria-label={rotulos.tema}
+        aria-pressed="false"
+        data-rd-tema
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+          <line x1="8" y1="21" x2="16" y2="21"></line>
+          <line x1="12" y1="17" x2="12" y2="21"></line>
+        </svg>
+      </button>
+      <span class="rd-icone" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="2" y1="12" x2="22" y2="12"></line>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+      </span>
+      <span class="rd-sep" aria-hidden="true"></span>
+      <span class="rd-comecar rd-comecar-topo" aria-hidden="true">
+        Começar
+      </span>
+    </span>
+  </div>
+
+  <div class="rd-hero">
+    <div class="rd-texto">
+      <p class="rd-selo">
+        <span class="rd-ponto"></span>Plataforma de Retrospectiva
+      </p>
+      <p class="rd-titulo">
+        Retrospectivas melhores, <span>a cada sprint.</span>
+      </p>
+      <p class="rd-sub">
+        Um quadro de retrospectiva privado e em tempo real para equipes Scrum e Kanban. Reflita com
+        honestidade, vote juntos e defina ações que realmente acontecem.
+      </p>
+      <p class="rd-acoes" aria-hidden="true">
+        <span class="rd-comecar">Começar</span>
+        <span class="rd-veja">Veja como funciona</span>
+      </p>
+    </div>
+
+    <div class="rd-quadro">
+      <div class="rd-barra">
+        <i></i>
+        <i></i>
+        <i></i>
+        <span class="rd-url">retrodash.app/room/sprint-42</span>
+        <span class="rd-live">Live · 4</span>
+      </div>
+      <div class="rd-colunas">
+        {colunas.map((c) => (
+          <div class="rd-coluna">
+            <p class="rd-coluna-titulo">{c.titulo}</p>
+            {c.cards.map(([texto, votos]) => (
+              <button
+                class="rd-card"
+                type="button"
+                data-tom={c.tom}
+                data-rd-voto
+                data-texto={texto}
+                data-votos={votos}
+                aria-label={`${rotulos.votar}: ${texto}, ${votos} ${rotulos.votos}`}
+              >
+                <span>{texto}</span>
+                <b>+{votos}</b>
+              </button>
+            ))}
+          </div>
+        ))}
+        <div class="rd-coluna">
+          <p class="rd-coluna-titulo rd-coluna-acoes">Action items</p>
+          {acoes.map(([texto, estado]) => (
+            <button
+              class="rd-acao"
+              type="button"
+              data-estado={estado}
+              data-rd-acao
+              data-texto={texto}
+              aria-label={`${texto}. ${rotulos.estado}: ${rotulos.estados[estado]} (${rotulos.mudar})`}
+            >
+              <span class="rd-caixa">
+                <svg viewBox="0 0 12 12" aria-hidden="true">
+                  <path d="M2.5 6.2 5 8.5l4.5-5"></path>
+                </svg>
+              </span>
+              <span class="rd-acao-texto">{texto}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .rd {
+    --rd-base: #f8f9fc;
+    --rd-texto: #0f1117;
+    --rd-sec: #4a4f68;
+    --rd-mudo: #8b90a7;
+    --rd-borda: #d0d5e8;
+    --rd-cartao: #e8ebf4;
+    --rd-elevado: #eceef6;
+    --rd-quadro: #f0f2f8;
+    --rd-ciano: #00e5cc;
+    --rd-violeta: #7b61ff;
+    --rd-laranja: #f5a623;
+    --rd-sobre-laranja: #f8f9fc;
+    --u: 0.1cqi;
+
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    background:
+      radial-gradient(40% 50% at 30% 45%, rgb(0 229 204 / 0.06), transparent 70%),
+      radial-gradient(35% 45% at 60% 55%, rgb(123 97 255 / 0.06), transparent 70%), var(--rd-base);
+    color: var(--rd-texto);
+    font-family: sans-serif;
+    font-size: calc(16 * var(--u));
+    letter-spacing: 0.01em;
+    transition:
+      background-color 300ms,
+      color 300ms;
+  }
+
+  :global(.previa[data-ativa]) .rd {
+    font-family: var(--previa-plus-jakarta-sans);
+  }
+
+  .rd[data-tema='escuro'] {
+    --rd-base: #0a0b0f;
+    --rd-texto: #f0f2f5;
+    --rd-sec: #8b90a7;
+    --rd-mudo: #737899;
+    --rd-borda: #252836;
+    --rd-cartao: #1c1e28;
+    --rd-elevado: #171921;
+    --rd-quadro: #0f1117;
+    --rd-sobre-laranja: #0a0b0f;
+  }
+
+  /* Topo */
+  .rd-topo {
+    display: flex;
+    align-items: center;
+    gap: calc(20 * var(--u));
+    height: calc(64 * var(--u));
+    padding-inline: calc(48 * var(--u));
+    border-block-end: 1px solid var(--rd-borda);
+  }
+
+  .rd-logo {
+    display: block;
+    inline-size: calc(110 * var(--u));
+  }
+
+  .rd-logo :global(svg) {
+    display: block;
+    inline-size: 100%;
+    height: auto;
+  }
+
+  .rd-nav {
+    display: flex;
+    gap: calc(20 * var(--u));
+    margin-inline-start: auto;
+    color: var(--rd-mudo);
+    font-size: calc(14 * var(--u));
+  }
+
+  .rd-icones {
+    display: flex;
+    align-items: center;
+    gap: calc(4 * var(--u));
+  }
+
+  .rd-icone {
+    display: grid;
+    place-items: center;
+    inline-size: calc(32 * var(--u));
+    block-size: calc(32 * var(--u));
+    min-inline-size: 24px;
+    min-block-size: 24px;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 14px;
+    background: none;
+    color: var(--rd-mudo);
+  }
+
+  button.rd-icone {
+    cursor: pointer;
+  }
+
+  button.rd-icone:hover {
+    border-color: var(--rd-borda);
+    color: var(--rd-texto);
+  }
+
+  .rd-icone svg {
+    inline-size: calc(15 * var(--u));
+    min-inline-size: 12px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .rd-sep {
+    inline-size: 1px;
+    block-size: calc(18 * var(--u));
+    margin-inline: calc(14 * var(--u));
+    background-color: var(--rd-borda);
+  }
+
+  .rd-comecar {
+    display: inline-flex;
+    align-items: center;
+    padding: calc(12 * var(--u)) calc(28 * var(--u));
+    border-radius: 999px;
+    background-color: var(--rd-laranja);
+    color: var(--rd-sobre-laranja);
+    font-size: calc(14 * var(--u));
+    font-weight: 600;
+  }
+
+  .rd-comecar-topo {
+    padding: calc(6 * var(--u)) calc(16 * var(--u));
+    font-size: calc(12 * var(--u));
+  }
+
+  /* Hero */
+  .rd-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: calc(64 * var(--u));
+    padding: calc(24 * var(--u)) calc(48 * var(--u));
+    min-block-size: 0;
+  }
+
+  .rd-texto {
+    display: grid;
+    gap: calc(20 * var(--u));
+    justify-items: start;
+  }
+
+  .rd-selo {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(8 * var(--u));
+    padding: calc(6 * var(--u)) calc(12 * var(--u));
+    border: 1px solid var(--rd-borda);
+    border-radius: 999px;
+    background-color: var(--rd-cartao);
+    color: var(--rd-mudo);
+    font-size: calc(11 * var(--u));
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .rd-ponto {
+    inline-size: calc(6 * var(--u));
+    block-size: calc(6 * var(--u));
+    border-radius: 50%;
+    background-color: var(--rd-ciano);
+  }
+
+  .rd-titulo {
+    font-size: calc(60 * var(--u));
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+  }
+
+  .rd-titulo span {
+    display: block;
+    background: linear-gradient(90deg, var(--rd-ciano), var(--rd-violeta));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .rd-sub {
+    max-inline-size: 28em;
+    color: var(--rd-sec);
+    font-size: calc(17 * var(--u));
+    line-height: 1.6;
+  }
+
+  .rd-acoes {
+    display: flex;
+    align-items: center;
+    gap: calc(20 * var(--u));
+  }
+
+  .rd-veja {
+    color: var(--rd-mudo);
+    font-size: calc(14 * var(--u));
+  }
+
+  .rd-veja::after {
+    content: ' →';
+  }
+
+  /* Quadro */
+  .rd-quadro {
+    overflow: hidden;
+    border: 1px solid var(--rd-borda);
+    border-radius: calc(16 * var(--u));
+    background-color: var(--rd-quadro);
+    box-shadow:
+      0 0 0 calc(16 * var(--u)) rgb(0 229 204 / 0.04),
+      0 calc(24 * var(--u)) calc(48 * var(--u)) rgb(15 17 23 / 0.08);
+  }
+
+  .rd-barra {
+    display: flex;
+    align-items: center;
+    gap: calc(6 * var(--u));
+    padding: calc(12 * var(--u)) calc(16 * var(--u));
+    border-block-end: 1px solid var(--rd-borda);
+  }
+
+  .rd-barra i {
+    inline-size: calc(10 * var(--u));
+    block-size: calc(10 * var(--u));
+    border-radius: 50%;
+    background-color: var(--rd-borda);
+  }
+
+  .rd-url {
+    flex: 1;
+    margin-inline-start: calc(6 * var(--u));
+    padding: calc(2 * var(--u)) calc(10 * var(--u));
+    border-radius: 14px;
+    background-color: var(--rd-cartao);
+    color: var(--rd-mudo);
+    font-size: calc(10 * var(--u));
+  }
+
+  .rd-live {
+    color: rgb(0 229 204 / 0.6);
+    font-size: calc(9 * var(--u));
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .rd-colunas {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: calc(8 * var(--u));
+    padding: calc(12 * var(--u));
+  }
+
+  .rd-coluna {
+    display: grid;
+    align-content: start;
+    gap: calc(6 * var(--u));
+    padding: calc(8 * var(--u));
+    border-radius: calc(22 * var(--u));
+    background-color: var(--rd-cartao);
+  }
+
+  .rd-coluna-titulo {
+    padding-block-end: calc(6 * var(--u));
+    border-block-end: 1px solid var(--rd-borda);
+    color: var(--rd-mudo);
+    font-size: calc(9 * var(--u));
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .rd-coluna-acoes {
+    color: var(--rd-ciano);
+  }
+
+  .rd-card,
+  .rd-acao {
+    display: flex;
+    align-items: center;
+    gap: calc(6 * var(--u));
+    inline-size: 100%;
+    padding: calc(6 * var(--u)) calc(8 * var(--u));
+    border: 1px solid color-mix(in srgb, var(--rd-borda) 60%, transparent);
+    border-radius: calc(14 * var(--u));
+    background-color: var(--rd-elevado);
+    color: var(--rd-sec);
+    font: inherit;
+    font-size: calc(9 * var(--u));
+    line-height: 1.25;
+    text-align: start;
+    cursor: pointer;
+    transition:
+      border-color 200ms,
+      transform 200ms;
+  }
+
+  .rd-card:hover,
+  .rd-acao:hover {
+    border-color: var(--rd-borda);
+  }
+
+  .rd-card span {
+    flex: 1;
+  }
+
+  .rd-card b {
+    color: rgb(0 229 204 / 0.7);
+    font-weight: 700;
+  }
+
+  .rd-card[data-tom='violeta'] b {
+    color: rgb(123 97 255 / 0.7);
+  }
+
+  .rd-card.votou b {
+    animation: rd-pulo 320ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes rd-pulo {
+    40% {
+      transform: translateY(-20%);
+    }
+  }
+
+  .rd-caixa {
+    display: grid;
+    place-items: center;
+    flex: none;
+    inline-size: calc(10 * var(--u));
+    block-size: calc(10 * var(--u));
+    min-inline-size: 9px;
+    min-block-size: 9px;
+    border: 1px solid var(--rd-mudo);
+    border-radius: 3px;
+  }
+
+  .rd-caixa svg {
+    inline-size: 80%;
+    fill: none;
+    stroke: var(--rd-quadro);
+    stroke-width: 2;
+    opacity: 0;
+  }
+
+  .rd-acao[data-estado='concluido'] .rd-caixa {
+    border-color: var(--rd-ciano);
+    background-color: var(--rd-ciano);
+  }
+
+  .rd-acao[data-estado='concluido'] svg {
+    opacity: 1;
+  }
+
+  .rd-acao[data-estado='concluido'] .rd-acao-texto {
+    color: var(--rd-mudo);
+    text-decoration: line-through;
+  }
+
+  .rd-acao[data-estado='manter'] .rd-caixa {
+    border-color: var(--rd-violeta);
+    background: radial-gradient(circle, var(--rd-quadro) 28%, var(--rd-violeta) 30%);
+  }
+
+  .rd-acao[data-estado='manter'] .rd-acao-texto {
+    color: var(--rd-violeta);
+  }
+
+  /* Moldura larga (desktop): proporções do site, numa largura de referência de 1100px */
+  @container (min-width: 700px) {
+    .rd {
+      --u: calc(100cqi / 1100);
+    }
+  }
+
+  /* Moldura estreita: topo do site no celular, com o quadro abaixo do título (e não o texto) */
+  @container (max-width: 699.98px) {
+    .rd {
+      --u: calc(100cqi / 400);
+    }
+
+    .rd-topo {
+      padding-inline: calc(16 * var(--u));
+    }
+
+    .rd-nav,
+    .rd-icones > .rd-icone:not(button),
+    .rd-sep {
+      display: none;
+    }
+
+    .rd-icones {
+      margin-inline-start: auto;
+    }
+
+    .rd-hero {
+      grid-template-columns: 1fr;
+      align-content: center;
+      gap: calc(16 * var(--u));
+      padding: calc(14 * var(--u)) calc(16 * var(--u));
+    }
+
+    .rd-titulo {
+      font-size: calc(32 * var(--u));
+    }
+
+    .rd-texto {
+      gap: calc(12 * var(--u));
+    }
+
+    .rd-sub,
+    .rd-acoes {
+      display: none;
+    }
+
+    .rd-colunas {
+      gap: calc(6 * var(--u));
+      padding: calc(8 * var(--u));
+    }
+
+    .rd-coluna {
+      padding: calc(6 * var(--u));
+      border-radius: calc(14 * var(--u));
+    }
+
+    .rd-card,
+    .rd-acao,
+    .rd-coluna-titulo {
+      font-size: calc(10 * var(--u));
+    }
+  }
+</style>
