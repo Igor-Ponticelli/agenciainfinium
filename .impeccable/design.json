@@ -1,0 +1,216 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-31T00:00:00-03:00",
+  "title": "Design System: Agência Infinium",
+  "extensions": {
+    "colorMeta": {
+      "primary": { "role": "primary", "displayName": "Primary (Violeta 700)", "canonical": "#39135f", "tonalRamp": ["#200a34", "#280d40", "#39135f", "#582b89", "#7546ae", "#946acd", "#b292e3", "#e9d5fe"] },
+      "primary-hover": { "role": "primary", "displayName": "Primary hover (Violeta 800)", "canonical": "#280d40", "tonalRamp": ["#200a34", "#280d40", "#39135f", "#582b89", "#7546ae", "#946acd", "#b292e3", "#e9d5fe"] },
+      "violet-900": { "role": "primary", "displayName": "Violeta 900", "canonical": "#200a34", "tonalRamp": ["#200a34", "#280d40", "#39135f", "#582b89", "#7546ae", "#946acd", "#b292e3", "#e9d5fe"] },
+      "lilac": { "role": "secondary", "displayName": "Lilás (Violeta 100)", "canonical": "#e9d5fe", "tonalRamp": ["#39135f", "#582b89", "#7546ae", "#946acd", "#b292e3", "#ceb8f3", "#e9d5fe", "#f8f5fe"] },
+      "violet-300": { "role": "secondary", "displayName": "Violeta 300", "canonical": "#b292e3", "tonalRamp": ["#39135f", "#582b89", "#7546ae", "#946acd", "#b292e3", "#ceb8f3", "#e9d5fe", "#f8f5fe"] },
+      "body": { "role": "neutral", "displayName": "Body", "canonical": "#f1eff4", "tonalRamp": ["#211f26", "#3a3740", "#625f68", "#8e8a95", "#b9b5c0", "#d9d6de", "#f1eff4", "#ffffff"] },
+      "white": { "role": "neutral", "displayName": "White", "canonical": "#ffffff", "tonalRamp": ["#211f26", "#3a3740", "#625f68", "#8e8a95", "#b9b5c0", "#d9d6de", "#f1eff4", "#ffffff"] },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "#211f26", "tonalRamp": ["#211f26", "#3a3740", "#625f68", "#8e8a95", "#b9b5c0", "#d9d6de", "#f1eff4", "#ffffff"] },
+      "text": { "role": "neutral", "displayName": "Text", "canonical": "#625f68", "tonalRamp": ["#211f26", "#3a3740", "#625f68", "#8e8a95", "#b9b5c0", "#d9d6de", "#f1eff4", "#ffffff"] },
+      "line": { "role": "neutral", "displayName": "Line", "canonical": "#d9d6de", "tonalRamp": ["#211f26", "#3a3740", "#625f68", "#8e8a95", "#b9b5c0", "#d9d6de", "#f1eff4", "#ffffff"] }
+    },
+    "derivedColors": [
+      { "name": "gradient-brand", "value": "linear-gradient(135deg, #39135f 0%, #200a34 100%)", "purpose": "Abertura da home, chamada final, rodapé, acessos e cortina da troca de página." },
+      { "name": "grade-escuro", "value": "color-mix(in oklab, #e9d5fe 14%, transparent)", "purpose": "Linhas da grade sobre o degradê." },
+      { "name": "rotulo-escuro", "value": "color-mix(in oklab, #e9d5fe 72%, transparent)", "purpose": "Letras de coluna, números de linha e nome da empresa sobre o degradê." },
+      { "name": "apoio-escuro", "value": "color-mix(in oklab, #fff 84%, transparent)", "purpose": "Texto de apoio sobre o degradê (frase da abertura, da chamada final, assinatura do rodapé)." },
+      { "name": "rolagem", "value": "color-mix(in oklab, #39135f 30%, #d9d6de)", "purpose": "Barra de rolagem (60% quando ativa; Lilás a 40% sobre escuro)." }
+    ],
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Só a assinatura da abertura da home, em branco." },
+      "headline": { "displayName": "Headline", "purpose": "Título de página, da chamada final, da cortina, próximo projeto, preço do Raio-X." },
+      "title": { "displayName": "Title", "purpose": "Título de seção na linha da planilha, blocos de serviço, formulário, menu no celular, número das etapas." },
+      "subtitle": { "displayName": "Subtitle", "purpose": "Frase-chave com a fita, título de ficha, de etapa e de post (700), frases de apoio sobre o degradê (400)." },
+      "body": { "displayName": "Body", "purpose": "Texto corrido, medida de 65ch; botões e menu em 500." },
+      "small": { "displayName": "Small", "purpose": "Menu do desktop, dados da ficha, datas, apoios, banner de cookies." },
+      "label": { "displayName": "Label", "purpose": "Letras de coluna, números de linha, cabeçalho de tabela; caixa-alta, tabular." }
+    },
+    "fonts": {
+      "family": "Roboto",
+      "source": "@fontsource-variable/roboto via API de fontes do Astro (fontProviders.local)",
+      "axis": "wght 100 a 900",
+      "subsets": ["latin", "latin-ext"],
+      "preload": "latin",
+      "weightsUsed": [400, 500, 700],
+      "previewFonts": ["Plus Jakarta Sans", "Young Serif", "Figtree", "Lexend", "Lexend Exa"],
+      "previewFontsNote": "Fontes dos sites de clientes; só dentro das prévias e só depois de [data-ativa]. Não fazem parte do sistema."
+    },
+    "shadows": [
+      { "name": "consentimento", "value": "0 12px 32px -12px rgb(32 10 52 / 0.45)", "purpose": "A única sombra do site: o banner de cookies, fixo, sobre conteúdo arbitrário. Não é precedente para outros componentes." }
+    ],
+    "motion": [
+      { "name": "duration-fast", "value": "150ms", "purpose": "Submenu, contorno da moldura, borda de campo, cor da cabeça de linha." },
+      { "name": "duration-base", "value": "260ms", "purpose": "A fita se desenhando (links, botões, linha sob o ponteiro), painel do menu, traços do botão de menu e do FAQ." },
+      { "name": "duration-slow", "value": "420ms", "purpose": "A fita no laço das etapas." },
+      { "name": "duration-page", "value": "1100ms", "purpose": "Teto da troca de página (moderado, abaixo de 1,2 s)." },
+      { "name": "ease-out", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Padrão para tudo que se desenha ou entra; também o título da cortina." },
+      { "name": "ease-in-out", "value": "cubic-bezier(0.65, 0, 0.35, 1)", "purpose": "A cortina cobrindo e descobrindo." },
+      { "name": "cortina-cobrir", "value": "320ms", "purpose": "clip-path inset() da régua até a tela inteira (fita.ts)." },
+      { "name": "cortina-titulo", "value": "200ms", "purpose": "Título da próxima página: opacity 0 a 1 e translateY(0.2em) a 0." },
+      { "name": "cortina-pausa", "value": "100ms", "purpose": "Pausa com o título na tela." },
+      { "name": "cortina-descobrir", "value": "320ms", "purpose": "clip-path da tela inteira de volta à régua; o título some em 140 ms." },
+      { "name": "cortina-reduzida", "value": "150ms", "purpose": "Com prefers-reduced-motion: só um fade do main." },
+      { "name": "laco-intervalo", "value": "1.6s", "purpose": "Tempo por etapa no laço da fita; só com a lista a 20% na tela; parado com movimento reduzido." },
+      { "name": "selecao-cena", "value": "animation-timeline: view(); animation-range: cover 0% cover 100%", "purpose": "O cursor de seleção desce uma linha por vez conforme a rolagem; a primeira linha fica selecionada sem suporte ou com movimento reduzido." },
+      { "name": "laco-conexao", "value": "animation-timeline: view(); animation-range: entry 20% cover 55%", "purpose": "O laço SVG da conexão se desenha por stroke-dashoffset; só no desktop." },
+      { "name": "previas-ativacao", "value": "rootMargin 600px 0px", "purpose": "Cada prévia liga fonte e script quando chega a 600 px da tela (previas.ts)." },
+      { "name": "rolagem-suave", "value": "Lenis, lerp 0.12, âncora 1.1s", "purpose": "Rolagem suave no mesmo loop do motor.ts; desligada com movimento reduzido." },
+      { "name": "motor", "value": "um único requestAnimationFrame baseado em tempo (motor.ts), dt limitado a 50 ms, dorme sem tarefas", "purpose": "Laço, Lenis; só transform, opacity e clip-path animados." }
+    ],
+    "breakpoints": [
+      { "name": "tablet", "value": "48rem", "note": "6 colunas, cabeça de linha 2,25rem, linha 4rem, cabeçalho 4,5rem" },
+      { "name": "desktop", "value": "64rem", "note": "12 colunas, cabeça de linha 2,5rem, submenu por hover, flutuante do WhatsApp some, laço da conexão aparece" },
+      { "name": "banner-estreito", "value": "30rem", "note": "Banner de cookies em largura inteira abaixo disso" }
+    ],
+    "grid": {
+      "container": "min(100% - 2 * clamp(1rem, 4vw, 2.5rem), 80rem)",
+      "columns": { "mobile": 4, "tablet": 6, "desktop": 12 },
+      "rowHead": { "mobile": "1.75rem", "tablet": "2.25rem", "desktop": "2.5rem" },
+      "rowMinHeight": { "mobile": "3.5rem", "tablet": "4rem" },
+      "cellPadding": { "mobile": "0.875rem", "tablet": "1rem" },
+      "headerHeight": { "mobile": "3.5rem", "tablet": "4.5rem" },
+      "gridLine": "1px",
+      "ribbon": "2px",
+      "textMeasure": "65ch"
+    },
+    "focus": { "ring": "2px solid var(--color-fita)", "offset": "3px", "note": "Primary sobre claro, Lilás sobre escuro; pular-conteudo usa outline Ink" },
+    "selection": { "light": "Primary com texto branco", "dark": "Lilás com texto Ink" },
+    "metrics": {
+      "date": "2026-10-31",
+      "tool": "Lighthouse no build servido com gzip",
+      "desktop": { "/": "100/97/100/100 (acessibilidade 97 pelo contraste da prévia do RetroDash, identidade do cliente)", "/sites/": "100/100/100/100" },
+      "mobile": { "/": "99/97/100/100", "/sites/": "99/100/100/100", "/raio-x/": "100/100/100/100" },
+      "cls": 0
+    }
+  },
+  "components": [
+    {
+      "name": "Botão Primary",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "A ação principal sobre fundo claro. A fita se desenha por baixo no hover e no foco.",
+      "html": "<a class=\"ds-botao\" href=\"#\">Falar no WhatsApp</a>",
+      "css": ".ds-botao { --fita: 0; position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 0.5em; min-height: 3rem; padding: 0.75rem 1.5rem; border: 0; border-radius: var(--radius-m, 0.5rem); background: var(--color-accent, #39135f); color: #fff; font-family: var(--font-sans, Roboto, sans-serif); font-weight: 500; text-decoration: none; cursor: pointer; transition: background-color 260ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-botao::after { content: ''; position: absolute; left: 0.75rem; right: 0.75rem; bottom: 0.4rem; height: 2px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-botao:hover { background: var(--color-accent-hover, #280d40); } .ds-botao:hover::after, .ds-botao:focus-visible::after { transform: scaleX(1); } .ds-botao:focus-visible { outline: 2px solid var(--color-accent, #39135f); outline-offset: 3px; }"
+    },
+    {
+      "name": "Botão Lilás (sobre escuro)",
+      "kind": "button",
+      "refersTo": "button-lilac",
+      "description": "A ação principal sobre o degradê: Lilás com texto Ink. Nunca Primary sobre escuro.",
+      "html": "<div class=\"ds-escuro\"><a class=\"ds-botao-claro\" href=\"#\">Falar no WhatsApp</a></div>",
+      "css": ".ds-escuro { padding: 1.5rem; background: linear-gradient(135deg, #39135f 0%, #200a34 100%); } .ds-botao-claro { --fita: 0; position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 3rem; padding: 0.75rem 1.5rem; border-radius: 0.5rem; background: #e9d5fe; color: #211f26; font-family: var(--font-sans, Roboto, sans-serif); font-weight: 500; text-decoration: none; transition: background-color 260ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-botao-claro::after { content: ''; position: absolute; left: 0.75rem; right: 0.75rem; bottom: 0.4rem; height: 2px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-botao-claro:hover { background: #fff; } .ds-botao-claro:hover::after, .ds-botao-claro:focus-visible::after { transform: scaleX(1); } .ds-botao-claro:focus-visible { outline: 2px solid #e9d5fe; outline-offset: 3px; }"
+    },
+    {
+      "name": "Botão de contorno",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secundário do banner de cookies: borda Line, texto Ink, fita Primary por baixo no hover.",
+      "html": "<button class=\"ds-botao-contorno\" type=\"button\">Recusar</button>",
+      "css": ".ds-botao-contorno { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 2.5rem; padding: 0.5rem 0.9rem; border: 1px solid #d9d6de; border-radius: 0.5rem; background: transparent; color: #211f26; font-family: var(--font-sans, Roboto, sans-serif); font-size: 0.9375rem; font-weight: 500; cursor: pointer; transition: background-color 260ms, border-color 260ms; } .ds-botao-contorno::after { content: ''; position: absolute; left: 0.75rem; right: 0.75rem; bottom: 0.4rem; height: 2px; background: #39135f; transform: scaleX(0); transform-origin: left; transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-botao-contorno:hover { border-color: #39135f; background: #f1eff4; } .ds-botao-contorno:hover::after, .ds-botao-contorno:focus-visible::after { transform: scaleX(1); } .ds-botao-contorno:focus-visible { outline: 2px solid #39135f; outline-offset: 3px; }"
+    },
+    {
+      "name": "Link com a fita",
+      "kind": "custom",
+      "refersTo": "link-fita",
+      "description": "Sublinhado de 2 px que se desenha da esquerda para a direita no hover, no foco e na página atual.",
+      "html": "<a class=\"ds-link-fita\" href=\"#\">Ver como funciona</a>",
+      "css": ".ds-link-fita { --fita: 0%; display: inline-block; padding-bottom: 2px; background-image: linear-gradient(#39135f, #39135f); background-repeat: no-repeat; background-position: left bottom; background-size: var(--fita) 2px; color: #211f26; font-family: var(--font-sans, Roboto, sans-serif); font-weight: 500; text-decoration: none; transition: background-size 260ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-link-fita:hover, .ds-link-fita:focus-visible, .ds-link-fita[aria-current='page'] { --fita: 100%; } .ds-link-fita:focus-visible { outline: 2px solid #39135f; outline-offset: 3px; }"
+    },
+    {
+      "name": "Linha da planilha com a fita selecionando",
+      "kind": "card",
+      "refersTo": "cell-merged",
+      "description": "Uma linha da grade: cabeça numerada, células com filete de 1 px, a fita como cursor de seleção (cabeça pintada e contorno de 2 px) na linha selecionada.",
+      "html": "<div class=\"ds-folha\"><div class=\"ds-linha\"><span class=\"ds-num\">1</span><span class=\"ds-celula ds-chave\">Pedidos</span><span class=\"ds-celula\">WhatsApp</span></div><div class=\"ds-linha ds-selecionada\"><span class=\"ds-num\">2</span><span class=\"ds-celula ds-chave\">Controle</span><span class=\"ds-celula\">Excel</span></div><div class=\"ds-linha\"><span class=\"ds-num\">3</span><span class=\"ds-celula ds-chave\">Tarefas</span><span class=\"ds-celula\">Trello</span></div></div>",
+      "css": ".ds-folha { background: #f1eff4; background-image: repeating-linear-gradient(to right, #d9d6de 0 1px, transparent 1px 25%); background-size: calc(100% - 2.5rem) 100%; background-position: right top; background-repeat: no-repeat; border-right: 1px solid #d9d6de; font-family: var(--font-sans, Roboto, sans-serif); color: #625f68; } .ds-linha { position: relative; display: grid; grid-template-columns: 2.5rem 1fr 1fr; min-height: 4rem; border-bottom: 1px solid #d9d6de; } .ds-num { display: grid; place-items: center; align-content: start; padding-top: 1.1rem; border-right: 1px solid #d9d6de; color: #625f68; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; font-variant-numeric: tabular-nums; user-select: none; } .ds-celula { display: flex; align-items: center; padding: 1rem; } .ds-chave { color: #211f26; font-weight: 500; } .ds-selecionada::after { content: ''; position: absolute; inset: -1px 0; box-shadow: inset 0 0 0 2px #39135f; pointer-events: none; } .ds-selecionada .ds-num { background: #39135f; color: #fff; }"
+    },
+    {
+      "name": "Célula mesclada",
+      "kind": "card",
+      "refersTo": "cell-merged",
+      "description": "O bloco sólido que cobre a grade: White sobre Body, com título, frase-chave sublinhada pela fita e a ação. Raio 0, sem borda, sem sombra.",
+      "html": "<div class=\"ds-folha-fundo\"><section class=\"ds-mesclada\"><h2 class=\"ds-mesclada-titulo\">Sites</h2><p class=\"ds-mesclada-frase\">Seja encontrado. Seja escolhido.</p><p class=\"ds-mesclada-texto\">Site institucional, landing page ou página de vendas. Rápido, bom no celular e com a cara do seu negócio.</p><a class=\"ds-botao\" href=\"#\">Ver o serviço de sites</a></section></div>",
+      "css": ".ds-folha-fundo { padding: 1rem; background: #f1eff4; background-image: repeating-linear-gradient(to right, #d9d6de 0 1px, transparent 1px 16.66%); font-family: var(--font-sans, Roboto, sans-serif); } .ds-mesclada { display: grid; gap: 1rem; padding: 3rem 2rem 4rem; background: #fff; color: #625f68; } .ds-mesclada-titulo { margin: 0; color: #211f26; font-size: clamp(1.75rem, 1.25rem + 1.8vw, 2.75rem); font-weight: 700; line-height: 1.15; letter-spacing: -0.015em; } .ds-mesclada-frase { margin: 0; padding-bottom: 0.35rem; background-image: linear-gradient(#39135f, #39135f); background-repeat: no-repeat; background-position: left bottom; background-size: 2.5rem 2px; color: #211f26; font-size: 1.25rem; font-weight: 500; line-height: 1.3; } .ds-mesclada-texto { margin: 0; max-width: 46ch; line-height: 1.6; } .ds-botao { position: relative; display: inline-flex; justify-self: start; align-items: center; min-height: 3rem; padding: 0.75rem 1.5rem; border-radius: 0.5rem; background: #39135f; color: #fff; font-weight: 500; text-decoration: none; transition: background-color 260ms; } .ds-botao::after { content: ''; position: absolute; left: 0.75rem; right: 0.75rem; bottom: 0.4rem; height: 2px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-botao:hover { background: #280d40; } .ds-botao:hover::after { transform: scaleX(1); }"
+    },
+    {
+      "name": "Campo e opções do formulário",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Campo com fundo Body e borda Line (Primary no foco) e as pílulas de opção, a marcada em Primary.",
+      "html": "<div class=\"ds-form\"><label class=\"ds-rotulo\" for=\"ds-nome\">Seu nome</label><input class=\"ds-campo\" id=\"ds-nome\" type=\"text\" /><p class=\"ds-rotulo\">O que você precisa</p><div class=\"ds-opcoes\"><label class=\"ds-opcao\"><input type=\"radio\" name=\"p\" checked /> Um site</label><label class=\"ds-opcao\"><input type=\"radio\" name=\"p\" /> Um sistema</label><label class=\"ds-opcao\"><input type=\"radio\" name=\"p\" /> Os dois</label></div></div>",
+      "css": ".ds-form { display: grid; gap: 0.5rem; padding: 1.5rem; background: #fff; font-family: var(--font-sans, Roboto, sans-serif); color: #625f68; } .ds-rotulo { margin: 0; color: #211f26; font-weight: 500; } .ds-campo { width: 100%; min-height: 3rem; margin-bottom: 1rem; padding: 0.75rem 1rem; border: 1px solid #d9d6de; border-radius: 0.5rem; background: #f1eff4; color: #211f26; font: inherit; caret-color: #39135f; transition: border-color 150ms; } .ds-campo:focus-visible { border-color: #39135f; outline: 2px solid #39135f; outline-offset: 2px; } .ds-opcoes { display: flex; flex-wrap: wrap; gap: 0.5rem; } .ds-opcao { position: relative; display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0.5rem 1rem; border: 1px solid #d9d6de; border-radius: 999px; color: #211f26; cursor: pointer; transition: border-color 150ms, background-color 150ms; } .ds-opcao input { position: absolute; width: 1px; height: 1px; margin: 0; opacity: 0; pointer-events: none; } .ds-opcao:has(input:checked) { border-color: #39135f; background: #39135f; color: #fff; } .ds-opcao:has(input:focus-visible) { outline: 2px solid #39135f; outline-offset: 3px; }"
+    },
+    {
+      "name": "Cabeçalho com a régua da fita",
+      "kind": "nav",
+      "refersTo": "nav-header",
+      "description": "Logo (pelo arquivo SVG, aqui um marcador), menu em texto pequeno com a fita por baixo, botão do WhatsApp e a régua de 2 px que corre até a borda direita.",
+      "html": "<header class=\"ds-cabecalho\"><div class=\"ds-cabecalho-faixa\"><span class=\"ds-logo\">Infinium</span><nav class=\"ds-menu\"><a href=\"#\">Serviços</a><a href=\"#\" aria-current=\"page\">Projetos</a><a href=\"#\">Blog</a><a href=\"#\">Contato</a><a class=\"ds-botao-wa\" href=\"#\">Falar no WhatsApp</a></nav></div><div class=\"ds-regua\"></div></header>",
+      "css": ".ds-cabecalho { background: #f1eff4; font-family: var(--font-sans, Roboto, sans-serif); color: #625f68; } .ds-cabecalho-faixa { display: flex; align-items: center; gap: 2rem; min-height: 4.5rem; padding: 0.75rem 2.5rem; } .ds-logo { color: #39135f; font-size: 1.25rem; font-weight: 700; letter-spacing: -0.04em; } .ds-menu { display: flex; align-items: center; gap: 1.5rem; margin-left: auto; font-size: 0.9375rem; font-weight: 500; } .ds-menu a { --fita: 0%; padding: 0.3rem 0 0.35rem; background-image: linear-gradient(#39135f, #39135f); background-repeat: no-repeat; background-position: left bottom; background-size: var(--fita) 2px; color: inherit; text-decoration: none; transition: background-size 260ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-menu a:hover, .ds-menu a:focus-visible, .ds-menu a[aria-current='page'] { --fita: 100%; } .ds-menu .ds-botao-wa { min-height: 2.5rem; padding: 0.5rem 1rem; border-radius: 0.5rem; background: #39135f; background-image: none; color: #fff; display: inline-flex; align-items: center; } .ds-menu .ds-botao-wa:hover { background: #280d40; } .ds-regua { height: 2px; margin-left: 2.5rem; background: #39135f; }"
+    },
+    {
+      "name": "Chamada final",
+      "kind": "card",
+      "refersTo": "cell-merged-dark",
+      "description": "O fechamento de toda página: degradê sem grade, título Headline branco, frase a 84 %, botão Lilás e um link com a fita.",
+      "html": "<section class=\"ds-chamada\"><h2>Menos trabalho manual, mais crescimento</h2><p>Conta para a gente o que a sua empresa precisa. A conversa inicial é pelo WhatsApp e não tem compromisso.</p><div class=\"ds-chamada-acoes\"><a class=\"ds-botao-claro\" href=\"#\">Falar no WhatsApp</a><a class=\"ds-link-branco\" href=\"#\">Ou pedir um orçamento pelo formulário</a></div></section>",
+      "css": ".ds-chamada { display: grid; gap: 1.5rem; padding: 4rem 2.5rem 3rem; background: linear-gradient(135deg, #39135f 0%, #200a34 100%); color: #fff; font-family: var(--font-sans, Roboto, sans-serif); } .ds-chamada h2 { margin: 0; max-width: 18ch; font-size: clamp(2.5rem, 1.5rem + 4vw, 5rem); font-weight: 700; line-height: 1; letter-spacing: -0.025em; } .ds-chamada p { margin: 0; max-width: 48ch; color: rgb(255 255 255 / 0.84); font-size: 1.25rem; line-height: 1.3; } .ds-chamada-acoes { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 2rem; } .ds-botao-claro { position: relative; display: inline-flex; align-items: center; min-height: 3rem; padding: 0.75rem 1.5rem; border-radius: 0.5rem; background: #e9d5fe; color: #211f26; font-weight: 500; text-decoration: none; transition: background-color 260ms; } .ds-botao-claro::after { content: ''; position: absolute; left: 0.75rem; right: 0.75rem; bottom: 0.4rem; height: 2px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-botao-claro:hover { background: #fff; } .ds-botao-claro:hover::after { transform: scaleX(1); } .ds-link-branco { --fita: 0%; padding-bottom: 2px; background-image: linear-gradient(#e9d5fe, #e9d5fe); background-repeat: no-repeat; background-position: left bottom; background-size: var(--fita) 2px; color: #fff; font-weight: 500; text-decoration: none; transition: background-size 260ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-link-branco:hover, .ds-link-branco:focus-visible { --fita: 100%; }"
+    },
+    {
+      "name": "FAQ com o mais desenhado em CSS",
+      "kind": "custom",
+      "refersTo": "faq-item",
+      "description": "Uma pergunta por linha da planilha; o sinal de mais são dois traços da fita que viram menos ao abrir, e a aberta ganha a fita por baixo.",
+      "html": "<div class=\"ds-faq\"><details class=\"ds-faq-item\"><summary>Já tenho Instagram. Preciso de um site?</summary><p>O Instagram mostra; o site responde a quem busca no Google e recebe o cliente que ainda não te segue.</p></details><details class=\"ds-faq-item\" open><summary>Vou conseguir ver o site antes de ele ficar pronto?</summary><p>Sim. Você aprova o layout antes de qualquer linha de código.</p></details></div>",
+      "css": ".ds-faq { background: #f1eff4; font-family: var(--font-sans, Roboto, sans-serif); color: #625f68; } .ds-faq-item { border-bottom: 1px solid #d9d6de; } .ds-faq-item summary { position: relative; display: block; padding: 1rem 3rem 1rem 1rem; color: #211f26; font-weight: 500; cursor: pointer; list-style: none; } .ds-faq-item summary::-webkit-details-marker { display: none; } .ds-faq-item summary::before, .ds-faq-item summary::after { content: ''; position: absolute; right: 1rem; top: calc(50% - 1px); width: 0.875rem; height: 2px; background: #39135f; transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-faq-item summary::after { transform: rotate(90deg); } .ds-faq-item[open] summary::after { transform: rotate(0deg); } .ds-faq-item[open] summary { box-shadow: inset 0 -2px 0 #39135f; } .ds-faq-item p { margin: 0; max-width: 65ch; padding: 1rem 1rem 1.5rem; line-height: 1.6; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "A planilha que vira sistema",
+    "overview": "O site nasce como a planilha que o cliente usa hoje: uma grade de células com letras de coluna, números de linha e filetes finos. Conforme a página desce, as células se mesclam em blocos sólidos (o sistema) e, na chamada final, a grade some. O único material além da grade é a fita, um traço de 2 px derivado do símbolo da marca (a fita de Möbius): é a régua do cabeçalho, o sublinhado de links e frases-chave, o cursor de seleção da planilha, o laço que percorre as etapas, a moldura das prévias e a cortina da troca de página.\n\nA superfície é plana e clara (Body), com o escuro entrando por seção no degradê da marca. Nada tem sombra, vidro, gradiente em texto ou ícone decorativo; o único \"desenho\" fora de texto e fita são os traços em CSS do menu e do FAQ. A hierarquia vem só de escala e peso da Roboto. As prévias dos sites de clientes ficam fora da grade porque são o que a Infinium entrega, não o que ela tira; cada uma carrega a identidade do próprio cliente e não faz parte deste sistema.\n\nO site recusa o padrão de agência: abertura centralizada sobre degradê, três cards iguais em fila, ícone com título e três benefícios.",
+    "keyCharacteristics": [
+      "Grade de células como layout (12 colunas no desktop, 6 no tablet, 4 no celular), com cabeça de linha numerada e letras de coluna",
+      "Células mescladas como blocos sólidos: White sobre Body, Violeta 900 sobre o degradê, Primary para a coluna \"depois\"",
+      "A fita de 2 px como material único: Primary sobre claro, Lilás sobre escuro",
+      "Só Roboto, variável, em sete papéis; hierarquia só por escala e peso",
+      "Claro por padrão; o degradê 135° da marca abre a home e fecha toda página (chamada final e rodapé)",
+      "Movimento moderado: traço que se desenha, laço, cortina abaixo de 1,2 s; tudo parado com movimento reduzido"
+    ],
+    "rules": [
+      { "name": "A Regra do Primary Nunca Sobre Escuro", "body": "Sobre o degradê, Ink ou Violeta 900, o acento é o Lilás e o texto é branco. Primary sobre escuro dá 1,1:1 e não existe no site: a classe .escuro troca --color-fita, --color-grade, --color-rotulo e --color-celula de uma vez.", "section": "colors" },
+      { "name": "A Regra da Fita Que Muda de Cor", "body": "Tudo que é fita lê --color-fita (Primary no claro, Lilás no escuro) e nunca uma cor fixa. Um elemento novo que usa a fita não decide a cor: herda do fundo em que está.", "section": "colors" },
+      { "name": "A Regra do Bloco Sólido", "body": "Célula mesclada é um bloco opaco (White, Violeta 900 ou Primary) que cobre a grade. Sem transparência, sem borda arredondada, sem sombra.", "section": "colors" },
+      { "name": "A Regra da Fonte Única", "body": "Só Roboto, em 400, 500 e 700. As fontes dos clientes (Plus Jakarta Sans, Young Serif, Figtree, Lexend, Lexend Exa) existem só dentro das prévias, só depois de [data-ativa], e nunca saem de lá.", "section": "typography" },
+      { "name": "A Regra da Escala Sem Adjetivo", "body": "Títulos não ganham cor, gradiente, kicker ou eyebrow: a hierarquia é tamanho e peso, e a ênfase é a fita por baixo da frase-chave.", "section": "typography" },
+      { "name": "A Regra da Linha Inteira", "body": "Nenhum bloco flutua: tudo nasce numa .linha da planilha ou, no caso das prévias, numa obra em subgrid que ocupa a linha inteira. Três cards iguais em fila não existem; o que fica lado a lado são colunas da mesma linha com o mesmo peso.", "section": "layout" },
+      { "name": "A Regra do Plano", "body": "Nada tem sombra em repouso nem em hover. Profundidade é bloco sobre grade e claro sobre escuro; se um elemento novo precisa de sombra para se destacar, o problema é a composição.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do colocar todo conteúdo novo numa .linha da planilha (ou numa obra em subgrid) e deixar a cabeça de linha numerar sozinha.",
+      "Do usar --color-fita, --color-grade, --color-rotulo e --color-celula em vez de cores fixas; a classe .escuro troca as quatro.",
+      "Do fazer a fita se desenhar como traço (background-size, scaleX, stroke-dashoffset), da esquerda para a direita, em 260 ms (--duration-base) ou 420 ms (--duration-slow), sempre com --ease-out.",
+      "Do animar só transform, opacity e clip-path, no loop único do motor.ts, e parar tudo com prefers-reduced-motion.",
+      "Do manter botão Primary com texto branco sobre claro e botão Lilás com texto Ink sobre escuro, com --radius-m e a fita por baixo no hover.",
+      "Do usar números tabulares em tudo que é número alinhado (etapas, datas, tabelas, preço).",
+      "Do manter o foco visível (anel de 2 px em --color-fita, offset 3 px) e a seleção de texto (Primary com branco no claro, Lilás com Ink no escuro).",
+      "Do usar o logo pelo arquivo SVG, Primary sobre claro e branco sobre escuro, 28 px de altura no cabeçalho e 24 no rodapé."
+    ],
+    "donts": [
+      "Don't usar Primary sobre o degradê, Ink ou Violeta 900.",
+      "Don't usar sombra, vidro, blur ou gradiente em texto; o banner de cookies é a única sombra e não serve de precedente.",
+      "Don't usar ícones, glifos ou emoji como ícone; o que precisar de sinal se desenha em CSS, como o \"+\" do FAQ e as duas linhas do menu.",
+      "Don't usar outra fonte além da Roboto fora das prévias dos clientes, nem outro peso além de 400, 500 e 700.",
+      "Don't pôr kicker, eyebrow ou cor em títulos; a ênfase é a fita por baixo da frase-chave.",
+      "Don't arredondar nem bordar células mescladas; bloco é bloco, raio 0.",
+      "Don't fazer três cards iguais em fila nem abertura centralizada sobre degradê.",
+      "Don't usar travessão (nem o longo nem o meia-risca) em texto visível.",
+      "Don't mover a identidade das prévias (fontes, cores, botões dos clientes) para o resto do site; elas não pertencem a este sistema."
+    ]
+  }
+}
