@@ -1,0 +1,176 @@
+---
+import LandingPage from '../layouts/LandingPage.astro';
+import BotaoRaioX from '../components/BotaoRaioX.astro';
+import Colunas from '../components/Colunas.astro';
+import Linha from '../components/Linha.astro';
+import { nomeCompleto } from '../data/empresa';
+import { prazoDias, preco, precoFormatado } from '../data/raioX';
+import { rotas } from '../i18n/rotas';
+import { raioX as t } from '../i18n/paginas/raioX';
+import { metasPaginas } from '../i18n/textos';
+
+/**
+ * Landing page do Raio-X do site (conteudo.md, seção 11): uma oferta, uma ação, sem menu.
+ * O botão vai para o link de pagamento; enquanto ele não existe, vai para o WhatsApp.
+ */
+const meta = metasPaginas.raioX;
+const site = Astro.site!;
+const url = new URL(rotas.raioX, site).href;
+
+const jsonLd = {
+  '@type': 'Service',
+  '@id': `${url}#servico`,
+  name: 'Raio-X do site',
+  serviceType: 'Análise de site: SEO, velocidade, segurança e LGPD',
+  description: meta.descricao,
+  url,
+  provider: { '@id': `${site.origin}/#organizacao` },
+  areaServed: 'BR',
+  ...(preco !== null
+    ? {
+        offers: {
+          '@type': 'Offer',
+          price: preco,
+          priceCurrency: 'BRL',
+          url,
+          availability: 'https://schema.org/InStock',
+        },
+      }
+    : {}),
+};
+---
+
+<LandingPage titulo={meta.titulo} descricao={meta.descricao} jsonLd={[jsonLd]}>
+  <div data-raio-x>
+    <section
+      class="folha pagina-cabeca raio-x-abertura"
+      aria-labelledby="pagina-titulo"
+      data-secao="abertura"
+    >
+      <Colunas />
+      <Linha>
+        <h1
+          class="pagina-titulo"
+          id="pagina-titulo"
+          data-angulo-google={t.abertura.angulos.google}
+          data-angulo-seguranca={t.abertura.angulos.seguranca}
+        >
+          {t.abertura.titulo}
+        </h1>
+      </Linha>
+      <Linha>
+        <p class="pagina-texto">{t.abertura.texto}</p>
+      </Linha>
+      <Linha>
+        <div class="pagina-acao raio-x-acao">
+          <BotaoRaioX evento="raio_x_cta_abertura" />
+          <p class="raio-x-apoio">{t.abertura.apoio}</p>
+        </div>
+      </Linha>
+    </section>
+
+    <section class="folha" aria-labelledby="para-quem-titulo" data-secao="para-quem">
+      <Linha>
+        <h2 class="titulo-secao" id="para-quem-titulo">
+          {t.paraQuem.titulo}
+        </h2>
+      </Linha>
+      <ul class="lista-planilha">
+        {t.paraQuem.itens.map((i) => (
+          <Linha as="li">
+            <span class="item-linha">{i}</span>
+          </Linha>
+        ))}
+      </ul>
+    </section>
+
+    <section class="folha" aria-labelledby="recebe-titulo" data-secao="recebe">
+      <Linha>
+        <h2 class="titulo-secao" id="recebe-titulo">
+          {t.recebe.titulo}
+        </h2>
+        <p class="celula celula-apoio">{t.recebe.texto}</p>
+      </Linha>
+      {t.recebe.itens.map((i) => (
+        <Linha>
+          <h3 class="par-chave">{i.titulo}</h3>
+          <p class="par-valor">{i.texto}</p>
+        </Linha>
+      ))}
+    </section>
+
+    <section class="folha" aria-labelledby="como-titulo" data-secao="como-funciona">
+      <Linha>
+        <h2 class="titulo-secao" id="como-titulo">
+          {t.comoFunciona.titulo}
+        </h2>
+      </Linha>
+      <ol class="passos" data-laco>
+        {t.comoFunciona.passos.map((p) => (
+          <Linha as="li" class="passo">
+            <span class="passo-indice" aria-hidden="true"></span>
+            <h3 class="passo-titulo">{p.titulo}</h3>
+            <p class="passo-texto">{p.texto}</p>
+          </Linha>
+        ))}
+      </ol>
+    </section>
+
+    <section class="folha" aria-labelledby="preco-titulo" data-secao="preco">
+      <Linha>
+        <h2 class="titulo-secao" id="preco-titulo">
+          {t.preco.titulo}
+        </h2>
+      </Linha>
+      <Linha class="servicos-linha">
+        <div class="raio-x-preco mesclada">
+          {preco !== null ? (
+            <p class="raio-x-valor">{precoFormatado(preco)}</p>
+          ) : (
+            <p class="formulario-pendente">{t.preco.pendente}</p>
+          )}
+          {prazoDias !== null && <p>{t.preco.prazo(prazoDias)}</p>}
+          <p>{t.preco.inclui}</p>
+          <BotaoRaioX evento="raio_x_cta_preco" />
+          <p class="raio-x-honesto">{t.preco.honesto}</p>
+        </div>
+      </Linha>
+    </section>
+
+    <section class="folha" aria-labelledby="faq-titulo" data-secao="faq">
+      <Linha>
+        <h2 class="titulo-secao" id="faq-titulo">
+          {t.faq.titulo}
+        </h2>
+      </Linha>
+      {t.faq.itens.map((i) => (
+        <Linha>
+          <details class="faq-item">
+            <summary>{i.pergunta}</summary>
+            <p>{i.resposta}</p>
+          </details>
+        </Linha>
+      ))}
+    </section>
+  </div>
+
+  <section
+    slot="fechamento"
+    class="chamada-final"
+    aria-labelledby="fechamento-titulo"
+    data-secao="fechamento"
+  >
+    <div class="chamada-final-faixa">
+      <h2 id="fechamento-titulo">{t.fechamento.titulo}</h2>
+      <p>{t.fechamento.texto}</p>
+      <div class="chamada-final-acoes">
+        <BotaoRaioX evento="raio_x_cta_fechamento" claro rotulo={t.fechamento.acao} />
+      </div>
+      <p class="rodape-empresa">{nomeCompleto}</p>
+    </div>
+  </section>
+
+  <script>
+    import '../scripts/raio-x';
+  </script>
+</LandingPage>
