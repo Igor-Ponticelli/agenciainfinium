@@ -6,3 +6,4 @@ package-lock.json
 # Documentação escrita à mão: não reformatar
 .claude/
 /*.md
+.impeccable/
