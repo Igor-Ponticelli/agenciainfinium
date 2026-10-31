@@ -1,8 +1,8 @@
 /*
  * Tokens do site. Cores, degradê e tipografia vêm da identidade
  * (.claude/docs/identidade/tokens/tokens.css e MARCA.md), renomeados para o padrão do código
- * conforme direcao-visual.md, seção 2. Espaço, raios e durações são deste TODO 1; a escala
- * fluida de layout é do TODO 4, seguindo o contrato de direção.
+ * conforme direcao-visual.md, seção 2. A escala fluida, a planilha (colunas, linhas) e as
+ * durações seguem o contrato de direção (.impeccable/surfaces/).
  */
 :root {
   /* Escala violeta */
@@ -32,6 +32,12 @@
   --color-rolagem: color-mix(in oklab, var(--color-accent) 30%, var(--color-line));
   --color-rolagem-ativa: color-mix(in oklab, var(--color-accent) 60%, var(--color-line));
 
+  /* A planilha: as linhas da grade e a fita (o cursor de seleção) mudam com o fundo */
+  --color-grade: var(--color-line);
+  --color-rotulo: var(--color-text);
+  --color-fita: var(--color-accent);
+  --color-celula: var(--color-surface);
+
   /* Fonte: --fonte-roboto é gerada pelo Astro (astro.config.ts), com fallback de métricas ajustadas */
   --font-sans: var(--fonte-roboto, 'Roboto', 'Helvetica Neue', Arial, sans-serif);
 
@@ -53,9 +59,22 @@
   --leading-label: 1.4;
   --tracking-label: 0.08em;
 
-  /* Layout */
+  /* Escala fluida derivada dos papéis, para o display e os títulos crescerem com a tela */
+  --text-hero: clamp(2.75rem, 8vw, 7.5rem);
+  --text-h1: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+  --text-h2: clamp(1.75rem, 1.25rem + 1.8vw, 2.75rem);
+  --text-h3: var(--text-subtitle);
+  --text-s: 0.9375rem;
+
+  /* Layout e planilha */
   --largura: 80rem;
   --texto-medida: 65ch;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --colunas: 4;
+  --cabeca-linha: 1.75rem;
+  --linha-altura: 3.5rem;
+  --celula-pad: 0.875rem;
+  --cabecalho-altura: 3.5rem;
 
   /* Espaço */
   --space-3xs: 0.25rem;
@@ -68,7 +87,6 @@
   --space-2xl: 4rem;
   --space-3xl: 6rem;
   --space-4xl: 8rem;
-  --gutter: clamp(1rem, 4vw, 2.5rem);
 
   /* Raios */
   --radius-none: 0;
@@ -77,7 +95,7 @@
   --radius-l: 1rem;
   --radius-full: 999px;
 
-  /* Movimento moderado: troca de página abaixo de 1,2 s (direcao-visual.md, seção 3) */
+  /* Movimento moderado: troca de página abaixo de 1,2 s (direcao-visual.md, seções 3 e 5) */
   --duration-fast: 150ms;
   --duration-base: 260ms;
   --duration-slow: 420ms;
@@ -86,7 +104,34 @@
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 
   /* Foco: anel em Primary sobre claro; em Lilás sobre escuro (direcao-visual.md, seção 4) */
-  --focus-ring: 2px solid var(--color-accent);
-  --focus-ring-dark: 2px solid var(--color-lilac);
+  --focus-ring: 2px solid var(--color-fita);
   --focus-offset: 3px;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --colunas: 6;
+    --cabeca-linha: 2.25rem;
+    --linha-altura: 4rem;
+    --celula-pad: 1rem;
+    --cabecalho-altura: 4.5rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --colunas: 12;
+    --cabeca-linha: 2.5rem;
+  }
+}
+
+/* Seções escuras no degradê da marca: só White e Lilás sobre elas. Nunca Primary. */
+.escuro {
+  --color-grade: color-mix(in oklab, var(--color-lilac) 14%, transparent);
+  --color-rotulo: color-mix(in oklab, var(--color-lilac) 72%, transparent);
+  --color-fita: var(--color-lilac);
+  --color-celula: var(--violet-900);
+  --color-rolagem: color-mix(in oklab, var(--color-lilac) 40%, transparent);
+  background-image: var(--gradient-brand);
+  color: #ffffff;
 }

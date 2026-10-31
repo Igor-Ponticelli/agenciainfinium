@@ -1,0 +1,19 @@
+---
+/**
+ * Uma linha da planilha: o número na cabeça da linha (decorativo, fora da árvore de
+ * acessibilidade) e as células no slot. As células se posicionam nas colunas pelas classes de
+ * cada seção (site.css).
+ */
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'div'> {
+  as?: 'div' | 'li' | 'section' | 'header' | 'article';
+}
+
+const { as: Tag = 'div', class: classe, ...resto } = Astro.props;
+---
+
+<Tag class:list={['linha', classe]} {...resto}>
+  <span class="num" aria-hidden="true"></span>
+  <slot />
+</Tag>

@@ -1,0 +1,2132 @@
+/*
+ * Layout e tipografia do site. Mundo do contrato (.impeccable/surfaces/): a planilha que vira
+ * sistema. Fundo Body com a grade em Line; seções escuras no degradê com a grade em Lilás; a fita
+ * (2 px, Primary sobre claro, Lilás sobre escuro) como cursor de seleção, sublinhado e moldura.
+ * Roboto em tudo. Nunca Primary sobre o escuro.
+ */
+
+/* ---------- Moldura geral ---------- */
+
+body {
+  counter-reset: linha;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+}
+
+main:focus {
+  outline: none;
+}
+
+.faixa,
+.cabecalho-faixa,
+.folha,
+.chamada-final-faixa,
+.rodape-faixa {
+  width: min(100% - 2 * var(--gutter), var(--largura));
+  margin-inline: auto;
+}
+
+/* ---------- A planilha ---------- */
+
+.folha {
+  --col: calc(100% / var(--colunas));
+  position: relative;
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--color-grade) 0 1px,
+    transparent 1px var(--col)
+  );
+  background-size: calc(100% - var(--cabeca-linha)) 100%;
+  background-position: right top;
+  background-repeat: no-repeat;
+  border-inline-end: 1px solid var(--color-grade);
+}
+
+.folha-sem-grade {
+  background-image: none;
+  border-inline-end: 0;
+}
+
+.linha,
+.colunas {
+  display: grid;
+  grid-template-columns: var(--cabeca-linha) repeat(var(--colunas), minmax(0, 1fr));
+  border-block-end: 1px solid var(--color-grade);
+}
+
+.linha {
+  min-block-size: var(--linha-altura);
+}
+
+.linha > * {
+  min-inline-size: 0;
+}
+
+.num,
+.coluna {
+  display: grid;
+  place-items: center;
+  color: var(--color-rotulo);
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+}
+
+.num {
+  grid-column: 1;
+  align-self: stretch;
+  padding-block: calc(var(--celula-pad) + 0.1em);
+  align-content: start;
+  border-inline-end: 1px solid var(--color-grade);
+}
+
+.linha .num::before {
+  counter-increment: linha;
+  content: counter(linha) / '';
+}
+
+.colunas {
+  min-block-size: 1.75rem;
+}
+
+.colunas .num {
+  padding-block: 0;
+}
+
+.coluna {
+  display: none;
+}
+
+.coluna:nth-child(-n + 5) {
+  display: grid;
+}
+
+@media (min-width: 48rem) {
+  .coluna:nth-child(-n + 7) {
+    display: grid;
+  }
+}
+
+@media (min-width: 64rem) {
+  .coluna {
+    display: grid;
+  }
+}
+
+.celula {
+  padding: var(--celula-pad);
+}
+
+/* Célula mesclada: um bloco sólido que cobre a grade. É a imagem do sistema. */
+.mesclada {
+  background-color: var(--color-celula);
+}
+
+/* Linhas que são só espaço (respiro medido em linhas da planilha) */
+.linha-vazia {
+  min-block-size: calc(var(--linha-altura) / 2);
+}
+
+/* Título de seção numa linha da planilha */
+.titulo-secao {
+  grid-column: 2 / -1;
+  align-self: end;
+  padding-block: var(--space-xl) var(--space-s);
+  font-size: var(--text-h2);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-title);
+  letter-spacing: var(--tracking-title);
+}
+
+.titulo-secao + .celula-apoio {
+  grid-column: 2 / -1;
+}
+
+.celula-apoio {
+  max-inline-size: 56ch;
+  align-self: end;
+  color: var(--color-text);
+}
+
+.escuro .celula-apoio {
+  color: color-mix(in oklab, #fff 82%, transparent);
+}
+
+.texto {
+  max-inline-size: var(--texto-medida);
+}
+
+.texto p + p {
+  margin-block-start: var(--space-s);
+}
+
+/* ---------- Links, botões e a fita ---------- */
+
+a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+/* A fita como sublinhado: desenha-se da esquerda para a direita no hover e no foco */
+.link-fita {
+  --fita-largura: 0%;
+  display: inline-block;
+  padding-block-end: 2px;
+  background-image: linear-gradient(var(--color-fita), var(--color-fita));
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: var(--fita-largura) 2px;
+  color: inherit;
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  transition: background-size var(--duration-base) var(--ease-out);
+}
+
+.link-fita:hover,
+.link-fita:focus-visible,
+.link-fita[aria-current='page'] {
+  --fita-largura: 100%;
+}
+
+.botao {
+  --fita-largura: 0%;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-block-size: 3rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-m);
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color var(--duration-base) var(--ease-out);
+}
+
+/* No hover a fita contorna o botão por baixo, da esquerda para a direita */
+.botao::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0.75rem;
+  inset-block-end: 0.4rem;
+  block-size: 2px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.botao:hover {
+  background-color: var(--color-accent-hover);
+}
+
+.botao:hover::after,
+.botao:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* Sobre o escuro: Lilás com texto Ink. Nunca Primary. */
+.botao-claro {
+  background-color: var(--color-lilac);
+  color: var(--color-heading);
+}
+
+.botao-claro:hover {
+  background-color: #fff;
+}
+
+.botao-grande {
+  min-block-size: 3.75rem;
+  font-size: var(--text-subtitle);
+  font-weight: var(--weight-bold);
+}
+
+button.botao {
+  border: 0;
+  font: inherit;
+  font-weight: var(--weight-medium);
+}
+
+.acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-s) var(--space-l);
+}
+
+@media (max-width: 47.99rem) {
+  .acoes {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .acoes .link-fita {
+    align-self: flex-start;
+  }
+}
+
+/* Foco e seleção sobre o escuro */
+.escuro ::selection {
+  background-color: var(--color-lilac);
+  color: var(--color-heading);
+}
+
+.escuro h1,
+.escuro h2,
+.escuro h3 {
+  color: #fff;
+}
+
+/* ---------- Cabeçalho ---------- */
+
+.cabecalho {
+  position: relative;
+  z-index: 3;
+}
+
+.cabecalho-faixa {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-s) var(--space-l);
+  min-block-size: var(--cabecalho-altura);
+  padding-block: var(--space-xs);
+}
+
+/* A régua: a fita que sai do logo e corre até a borda direita. A troca de página parte dela. */
+.regua {
+  block-size: 2px;
+  margin-inline-start: max(var(--gutter), (100% - var(--largura)) / 2);
+  background-color: var(--color-fita);
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logo img {
+  block-size: 1.625rem;
+  inline-size: auto;
+}
+
+@media (min-width: 48rem) {
+  .logo img {
+    block-size: 1.75rem;
+  }
+}
+
+.logo-escuro {
+  display: none;
+}
+
+.escuro .logo-claro {
+  display: none;
+}
+
+.escuro .logo-escuro {
+  display: block;
+}
+
+/* Com o painel do celular aberto, o fundo é claro: o logo volta ao Primary */
+html[data-menu-aberto] .escuro .logo-claro {
+  display: block;
+}
+
+html[data-menu-aberto] .escuro .logo-escuro {
+  display: none;
+}
+
+.menu-painel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-s) var(--space-l);
+  margin-inline-start: auto;
+}
+
+.menu-botao {
+  display: none;
+}
+
+.menu ul {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2xs) var(--space-m);
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-s);
+  font-weight: var(--weight-medium);
+}
+
+.menu a {
+  --fita-largura: 0%;
+  display: inline-block;
+  padding-block: 0.3rem 0.35rem;
+  background-image: linear-gradient(var(--color-fita), var(--color-fita));
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: var(--fita-largura) 2px;
+  text-decoration: none;
+  transition: background-size var(--duration-base) var(--ease-out);
+}
+
+.menu a:hover,
+.menu a:focus-visible,
+.menu a[aria-current='page'] {
+  --fita-largura: 100%;
+}
+
+.botao-whatsapp {
+  min-block-size: 2.5rem;
+  padding: 0.5rem 1rem;
+  font-size: var(--text-s);
+}
+
+/* Submenu de Serviços no desktop: abre no hover e no foco, fecha sozinho */
+@media (min-width: 64rem) {
+  .menu-grupo {
+    position: relative;
+  }
+
+  .menu-grupo > a {
+    padding-inline-end: 1.1em;
+  }
+
+  .menu-grupo > a::after {
+    content: '';
+    position: absolute;
+    inset-inline-end: 0.15em;
+    inset-block-start: 0.85em;
+    inline-size: 0.4em;
+    block-size: 0.4em;
+    border-inline-end: 1.5px solid currentColor;
+    border-block-end: 1.5px solid currentColor;
+    transform: rotate(45deg);
+  }
+
+  .submenu {
+    position: absolute;
+    inset-block-start: 100%;
+    inset-inline-start: calc(-1 * var(--space-s));
+    z-index: 4;
+    display: grid;
+    gap: 0;
+    min-inline-size: 11rem;
+    padding: var(--space-2xs) 0;
+    border: 1px solid var(--color-grade);
+    border-radius: var(--radius-m);
+    background-color: var(--color-celula);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-0.25rem);
+    transition:
+      opacity var(--duration-fast) var(--ease-out),
+      transform var(--duration-fast) var(--ease-out),
+      visibility 0s linear var(--duration-fast);
+  }
+
+  .menu-grupo:hover .submenu,
+  .menu-grupo:focus-within .submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0s;
+  }
+
+  .submenu a {
+    display: block;
+    padding: var(--space-xs) var(--space-s);
+    background-position: var(--space-s) calc(100% - 0.45rem);
+    background-size: calc(var(--fita-largura) - 2 * var(--space-s) * (var(--fita-largura) / 100%))
+      2px;
+  }
+
+  .submenu a:hover,
+  .submenu a:focus-visible,
+  .submenu a[aria-current='page'] {
+    background-size: calc(100% - 2 * var(--space-s)) 2px;
+  }
+}
+
+@media (max-width: 63.99rem) {
+  /* Sem JS: o painel se desfaz no cabeçalho e tudo fica visível */
+  html:not(.js) .menu-painel {
+    display: contents;
+  }
+
+  html:not(.js) .menu {
+    order: 3;
+    inline-size: 100%;
+  }
+
+  html:not(.js) .submenu {
+    display: contents;
+  }
+
+  html:not(.js) .botao-whatsapp {
+    margin-inline-start: auto;
+  }
+
+  /* Com JS: botão de dois traços e painel de tela cheia */
+  html.js .logo,
+  html.js .menu-botao {
+    position: relative;
+    z-index: 2;
+  }
+
+  html.js .menu-botao {
+    display: inline-grid;
+    place-items: center;
+    inline-size: 2.75rem;
+    block-size: 2.75rem;
+    margin-inline: auto calc(-1 * var(--space-2xs));
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  html.js .menu-painel {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: var(--space-xl);
+    margin: 0;
+    padding: calc(var(--cabecalho-altura) + var(--space-xl)) var(--gutter) var(--space-xl);
+    background-color: var(--color-bg);
+    color: var(--color-heading);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-0.5rem);
+    transition:
+      opacity var(--duration-base) var(--ease-out),
+      transform var(--duration-base) var(--ease-out),
+      visibility 0s linear var(--duration-base);
+  }
+
+  html[data-menu-aberto] .menu-painel {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0s;
+  }
+
+  html[data-menu-aberto] {
+    overflow: hidden;
+  }
+
+  html[data-menu-aberto] .cabecalho {
+    color: var(--color-heading);
+  }
+
+  html[data-menu-aberto] .escuro .menu-botao {
+    color: var(--color-heading);
+  }
+
+  html.js .menu-painel .menu a {
+    --color-fita: var(--color-accent);
+  }
+
+  html.js .menu ul {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-xs);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-title);
+    line-height: var(--leading-title);
+  }
+
+  html.js .submenu {
+    display: grid;
+    gap: var(--space-2xs);
+    margin-block-start: var(--space-2xs);
+    padding-inline-start: var(--space-m);
+    font-size: var(--text-subtitle);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0;
+  }
+
+  html.js .menu-painel .botao-whatsapp {
+    display: flex;
+    min-block-size: 3.25rem;
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+    font-size: var(--text-body);
+  }
+}
+
+.menu-botao-linhas {
+  position: relative;
+  display: block;
+  inline-size: 22px;
+  block-size: 10px;
+}
+
+.menu-botao-linhas span {
+  position: absolute;
+  inset-inline-start: 0;
+  inline-size: 100%;
+  block-size: 2px;
+  background-color: currentColor;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.menu-botao-linhas span:first-child {
+  inset-block-start: 0;
+}
+
+.menu-botao-linhas span:last-child {
+  inset-block-end: 0;
+}
+
+.menu-botao[aria-expanded='true'] .menu-botao-linhas span:first-child {
+  transform: translateY(4px) rotate(45deg);
+}
+
+.menu-botao[aria-expanded='true'] .menu-botao-linhas span:last-child {
+  transform: translateY(-4px) rotate(-45deg);
+}
+
+/* ---------- Botão flutuante do WhatsApp (celular e tablet) ---------- */
+
+.whatsapp-flutuante {
+  position: fixed;
+  inset-block-end: var(--space-m);
+  inset-inline-end: var(--space-m);
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 3rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-full);
+  background-color: var(--color-lilac);
+  box-shadow: 0 6px 18px -8px rgb(32 10 52 / 0.55);
+  color: var(--color-heading);
+  font-weight: var(--weight-bold);
+  text-decoration: none;
+}
+
+html[data-menu-aberto] .whatsapp-flutuante {
+  display: none;
+}
+
+@media (min-width: 64rem) {
+  .whatsapp-flutuante {
+    display: none;
+  }
+}
+
+/* ---------- Abertura da home (escura, no degradê) ---------- */
+
+.topo-escuro {
+  position: relative;
+}
+
+.abertura {
+  display: flex;
+  flex-direction: column;
+  /* O título da próxima seção aparece na base da primeira tela, chamando para rolar */
+  min-block-size: calc(100svh - var(--cabecalho-altura) - 1.75rem - 12svh);
+}
+
+.abertura .colunas {
+  flex: none;
+}
+
+.abertura-assinatura {
+  flex: 1;
+  align-content: center;
+  border-block-end: 0;
+}
+
+.abertura-assinatura h1 {
+  grid-column: 2 / -1;
+  align-self: center;
+  padding: var(--space-xl) var(--celula-pad) var(--space-m);
+  font-size: var(--text-hero);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+  text-wrap: balance;
+}
+
+/* A fita sublinha a assinatura como a linha selecionada da planilha */
+.abertura-assinatura .num {
+  background-color: var(--color-fita);
+  color: var(--color-heading);
+}
+
+.abertura-assinatura {
+  box-shadow: inset 0 -2px 0 var(--color-fita);
+}
+
+.abertura-frase {
+  grid-column: 2 / -1;
+  max-inline-size: 48ch;
+  padding: var(--space-m) var(--celula-pad);
+  color: color-mix(in oklab, #fff 84%, transparent);
+  font-size: var(--text-subtitle);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-subtitle);
+}
+
+.abertura-acoes {
+  grid-column: 2 / -1;
+  padding: var(--space-s) var(--celula-pad) var(--space-l);
+}
+
+.abertura-acoes .link-fita {
+  color: #fff;
+}
+
+@media (min-width: 64rem) {
+  .abertura-assinatura h1 {
+    grid-column: 2 / 11;
+    padding-block: var(--space-2xl) var(--space-l);
+  }
+
+  .abertura-frase {
+    grid-column: 2 / 8;
+  }
+
+  .abertura-acoes {
+    grid-column: 2 / 8;
+  }
+}
+
+/* ---------- A cena do problema: a planilha de verdade ---------- */
+
+.cena-titulo .titulo-secao {
+  padding-block-start: var(--space-l);
+}
+
+.cena-tabela {
+  display: grid;
+  grid-template-columns: var(--cabeca-linha) repeat(var(--colunas), minmax(0, 1fr));
+  grid-auto-rows: minmax(var(--linha-altura), auto);
+}
+
+.cena-linha {
+  position: relative;
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  border-block-end: 1px solid var(--color-grade);
+}
+
+.cena-linha .num::before {
+  counter-increment: linha;
+  content: counter(linha) / '';
+}
+
+.cena-chave,
+.cena-valor {
+  display: flex;
+  align-items: center;
+  padding: var(--celula-pad);
+  color: var(--color-heading);
+  font-weight: var(--weight-medium);
+}
+
+.cena-chave {
+  grid-column: 2 / 4;
+}
+
+.cena-valor {
+  grid-column: 4 / -1;
+  border-inline-start: 0;
+  color: var(--color-text);
+  font-weight: var(--weight-regular);
+}
+
+.cena-texto {
+  grid-column: 1 / -1;
+  padding: var(--space-m) var(--celula-pad) var(--space-xl)
+    calc(var(--cabeca-linha) + var(--celula-pad));
+  border-block-end: 1px solid var(--color-grade);
+}
+
+@media (min-width: 64rem) {
+  .cena-linha {
+    grid-column: 1 / 8;
+  }
+
+  .cena-chave {
+    grid-column: 2 / 5;
+  }
+
+  .cena-valor {
+    grid-column: 5 / 8;
+  }
+
+  .cena-texto {
+    grid-column: 8 / -1;
+    grid-row: 1 / span 4;
+    padding: var(--celula-pad) var(--celula-pad) var(--celula-pad) var(--space-l);
+    border-block-end: 0;
+  }
+}
+
+/* A seleção: a fita contorna a linha e pinta a cabeça dela. Sem suporte a animação por rolagem
+   (ou com movimento reduzido), a primeira linha fica selecionada. */
+.cena-linha::after {
+  content: '';
+  position: absolute;
+  inset: -1px 0 -1px 0;
+  box-shadow: inset 0 0 0 2px var(--color-fita);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cena-linha .num {
+  transition:
+    background-color var(--duration-fast) linear,
+    color var(--duration-fast) linear;
+}
+
+.cena-linha:first-of-type::after {
+  opacity: 1;
+}
+
+.cena-linha:first-of-type .num {
+  background-color: var(--color-fita);
+  color: var(--color-on-accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .cena-linha:first-of-type::after {
+      opacity: 0;
+    }
+
+    .cena-linha:first-of-type .num {
+      background-color: transparent;
+      color: var(--color-rotulo);
+    }
+
+    .cena-linha::after,
+    .cena-linha .num {
+      animation: selecionar linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+
+    .cena-linha .num {
+      animation-name: selecionar-cabeca;
+    }
+  }
+}
+
+@keyframes selecionar {
+  0%,
+  44% {
+    opacity: 0;
+  }
+
+  47%,
+  53% {
+    opacity: 1;
+  }
+
+  56%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes selecionar-cabeca {
+  0%,
+  44% {
+    background-color: transparent;
+    color: var(--color-rotulo);
+  }
+
+  47%,
+  53% {
+    background-color: var(--color-fita);
+    color: var(--color-on-accent);
+  }
+
+  56%,
+  100% {
+    background-color: transparent;
+    color: var(--color-rotulo);
+  }
+}
+
+/* ---------- Dois serviços: duas faixas de células mescladas, com o mesmo peso ---------- */
+
+.servicos-linha {
+  align-items: stretch;
+}
+
+.servico {
+  position: relative;
+  grid-column: 2 / -1;
+  display: grid;
+  gap: var(--space-s);
+  align-content: start;
+  padding: var(--space-l) var(--celula-pad) var(--space-xl);
+}
+
+.servico + .servico {
+  border-block-start: 1px solid var(--color-grade);
+}
+
+@media (min-width: 64rem) {
+  .servico {
+    padding: var(--space-xl) var(--space-l) var(--space-2xl);
+  }
+
+  .servico-sites {
+    grid-column: 2 / 8;
+  }
+
+  .servico-sistemas {
+    grid-column: 8 / -1;
+  }
+
+  .servico + .servico {
+    border-block-start: 0;
+    border-inline-start: 1px solid var(--color-grade);
+  }
+}
+
+/* No bloco de sistemas as células em volta ainda aparecem se fundindo nele */
+.servico-sistemas::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(to right, var(--color-grade) 0 1px, transparent 1px calc(100% / 6)),
+    repeating-linear-gradient(to bottom, var(--color-grade) 0 1px, transparent 1px 4rem);
+  mask-image: radial-gradient(ellipse at center, transparent 35%, #000 100%);
+  pointer-events: none;
+}
+
+.servico > * {
+  position: relative;
+}
+
+.servico > h2,
+.servico > h3 {
+  font-size: var(--text-h2);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-title);
+  letter-spacing: var(--tracking-title);
+}
+
+.servico-frase {
+  --fita-largura: 2.5rem;
+  padding-block-end: 0.35rem;
+  background-image: linear-gradient(var(--color-fita), var(--color-fita));
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: var(--fita-largura) 2px;
+  color: var(--color-heading);
+  font-size: var(--text-subtitle);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-subtitle);
+}
+
+.servico p {
+  max-inline-size: 46ch;
+}
+
+.servico-para {
+  color: var(--color-text);
+  font-size: var(--text-s);
+}
+
+.servico .acoes {
+  margin-block-start: var(--space-s);
+}
+
+/* ---------- Conexão: uma linha só, de largura inteira, com o laço da fita ---------- */
+
+.conexao {
+  position: relative;
+  overflow: hidden;
+}
+
+.conexao-texto {
+  grid-column: 2 / -1;
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: var(--space-s);
+  padding: var(--space-2xl) var(--celula-pad);
+}
+
+.conexao-texto h2 {
+  max-inline-size: 22ch;
+  font-size: var(--text-h2);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-title);
+  letter-spacing: var(--tracking-title);
+}
+
+.conexao-texto p {
+  max-inline-size: 60ch;
+}
+
+@media (min-width: 64rem) {
+  .conexao-texto {
+    grid-column: 2 / 9;
+  }
+}
+
+/* O laço fica ao lado do texto, nunca por cima dele; no celular não há espaço e ele sai */
+.conexao-laco {
+  display: none;
+  position: absolute;
+  inset-inline: 60% 0;
+  inset-block: 0;
+  inline-size: 40%;
+  block-size: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+@media (min-width: 64rem) {
+  .conexao-laco {
+    display: block;
+  }
+}
+
+.conexao-laco path {
+  fill: none;
+  stroke: var(--color-fita);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .conexao-laco path {
+      animation: desenhar linear both;
+      animation-timeline: view();
+      animation-range: entry 20% cover 55%;
+    }
+  }
+}
+
+@keyframes desenhar {
+  from {
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ---------- Projetos, fora da grade ---------- */
+
+.vitrines-cabeca .celula-apoio {
+  padding-block-end: var(--space-s);
+}
+
+.vitrines-cabeca .link-fita {
+  grid-column: 2 / -1;
+  justify-self: start;
+  margin: 0 var(--celula-pad) var(--space-m);
+}
+
+.vitrines-grade {
+  display: grid;
+  grid-template-columns: var(--cabeca-linha) repeat(var(--colunas), minmax(0, 1fr));
+  gap: var(--space-2xl) 0;
+  padding-block: var(--space-l) var(--space-3xl);
+  border-block-end: 1px solid var(--color-grade);
+}
+
+.obra {
+  grid-column: 2 / -1;
+  display: grid;
+  gap: var(--space-s);
+  align-content: start;
+  padding-inline: var(--celula-pad);
+}
+
+.obra-moldura {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: var(--radius-s);
+  background-color: var(--obra-fundo, var(--color-surface));
+  outline: 1px solid var(--color-line);
+  outline-offset: 0;
+  container-type: size;
+  transition: outline-color var(--duration-fast) var(--ease-out);
+}
+
+/* Sobre a prévia, a fita vira moldura. O cursor nativo continua lá dentro. */
+.obra-moldura:hover,
+.obra-moldura:focus-within,
+.obra-moldura:active {
+  outline: 2px solid var(--color-fita);
+}
+
+.obra-link {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  color: transparent;
+  font-size: 0;
+}
+
+.obra-placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: end;
+  gap: 0.25rem;
+  padding: var(--space-m);
+  color: var(--obra-texto, var(--color-heading));
+  pointer-events: none;
+}
+
+.obra-placeholder strong {
+  font-size: var(--text-h3);
+  font-weight: var(--weight-bold);
+}
+
+.obra-placeholder span {
+  font-size: var(--text-s);
+  opacity: 0.8;
+}
+
+/* Miniprévias: só os controles recebem o ponteiro; o resto da área leva à página do projeto */
+.previa {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.previa :is(button, a, input, select, textarea, label) {
+  pointer-events: auto;
+}
+
+@media (min-width: 64rem) {
+  .obra {
+    padding-inline: 0;
+  }
+
+  .obra-moldura {
+    aspect-ratio: 16 / 10;
+  }
+
+  .obra[data-formato='media'] .obra-moldura {
+    aspect-ratio: 4 / 5;
+  }
+
+  .obra[data-ficha='lado'] {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    column-gap: 0;
+  }
+
+  .obra[data-ficha='lado'] .obra-moldura {
+    grid-column: 1 / 7;
+  }
+
+  .obra[data-ficha='lado'] .ficha {
+    grid-column: 7 / -1;
+    align-self: start;
+    padding-inline-start: var(--celula-pad);
+  }
+
+  /* Pares desencontrados: grande e média, depois o inverso. As prévias rompem as células. */
+  .vitrines-grade .obra:nth-child(4n + 1) {
+    grid-column: 2 / 10;
+  }
+
+  .vitrines-grade .obra:nth-child(4n + 2) {
+    grid-column: 9 / -1;
+    margin-block-start: 12vh;
+    margin-inline-end: calc(-1 * var(--celula-pad));
+  }
+
+  .vitrines-grade .obra:nth-child(4n + 3) {
+    grid-column: 2 / 7;
+    margin-block-start: 4vh;
+  }
+
+  .vitrines-grade .obra:nth-child(4n + 4) {
+    grid-column: 6 / -1;
+    margin-inline-end: calc(-1 * var(--celula-pad));
+  }
+}
+
+/* ---------- Ficha técnica: dados da planilha ---------- */
+
+.ficha {
+  display: grid;
+  gap: var(--space-xs);
+  align-content: start;
+}
+
+.ficha-titulo {
+  font-size: var(--text-h3);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-subtitle);
+}
+
+.ficha-titulo a {
+  text-decoration: none;
+}
+
+.ficha-dados {
+  display: grid;
+  border-block-start: 1px solid var(--color-grade);
+  font-size: var(--text-s);
+}
+
+.ficha-dados div {
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+  gap: var(--space-2xs);
+  padding-block: 0.35rem;
+  border-block-end: 1px solid var(--color-grade);
+}
+
+.ficha-dados dt {
+  color: var(--color-text);
+}
+
+.ficha-dados dd {
+  color: var(--color-heading);
+}
+
+.ficha-acao {
+  justify-self: start;
+  margin-block-start: var(--space-3xs);
+}
+
+/* ---------- Como funciona: as linhas numeradas e o laço ---------- */
+
+.passos {
+  padding: 0;
+  list-style: none;
+  counter-reset: passo;
+}
+
+.passo {
+  position: relative;
+  counter-increment: passo;
+}
+
+.passo-indice {
+  grid-column: 2 / 3;
+  padding: var(--celula-pad);
+  color: var(--color-text);
+  font-size: var(--text-h2);
+  font-weight: var(--weight-bold);
+  line-height: 1;
+  letter-spacing: var(--tracking-title);
+  font-variant-numeric: tabular-nums;
+  transition: color var(--duration-base) var(--ease-out);
+}
+
+.passo-indice::before {
+  content: counter(passo);
+}
+
+.passo-titulo {
+  grid-column: 3 / -1;
+  padding: var(--celula-pad) var(--celula-pad) 0;
+  color: var(--color-heading);
+  font-size: var(--text-h3);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-subtitle);
+}
+
+.passo-texto {
+  grid-column: 3 / -1;
+  max-inline-size: 60ch;
+  padding: 0.25rem var(--celula-pad) var(--celula-pad);
+}
+
+@media (min-width: 64rem) {
+  .passo-indice {
+    grid-column: 2 / 3;
+  }
+
+  .passo-titulo {
+    grid-column: 3 / 6;
+    padding-block-end: var(--celula-pad);
+  }
+
+  .passo-texto {
+    grid-column: 6 / -1;
+    padding-block-start: var(--celula-pad);
+  }
+}
+
+/* A fita percorre os passos (fita.ts) e sublinha o ativo */
+.passo::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: -1px;
+  block-size: 2px;
+  background-color: var(--color-fita);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.passo[data-ativo]::after {
+  transform: scaleX(1);
+}
+
+.passo[data-ativo] .passo-indice {
+  color: var(--color-fita);
+}
+
+/* ---------- Pares chave e valor (resultados, benefícios, canais) ---------- */
+
+.par-chave {
+  grid-column: 2 / 3;
+  padding: var(--celula-pad);
+  color: var(--color-heading);
+  font-weight: var(--weight-bold);
+}
+
+.par-valor {
+  grid-column: 3 / -1;
+  max-inline-size: 60ch;
+  padding: var(--celula-pad);
+}
+
+@media (min-width: 48rem) {
+  .par-chave {
+    grid-column: 2 / 4;
+  }
+
+  .par-valor {
+    grid-column: 4 / -1;
+  }
+}
+
+@media (min-width: 64rem) {
+  .par-chave {
+    grid-column: 2 / 5;
+  }
+
+  .par-valor {
+    grid-column: 5 / -1;
+  }
+}
+
+/* ---------- Perguntas frequentes ---------- */
+
+.faq-item {
+  grid-column: 2 / -1;
+}
+
+.faq-item summary {
+  position: relative;
+  display: block;
+  padding: var(--celula-pad) calc(var(--celula-pad) + 2rem) var(--celula-pad) var(--celula-pad);
+  color: var(--color-heading);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  list-style: none;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+/* O sinal de mais, desenhado em dois traços; vira menos quando abre */
+.faq-item summary::before,
+.faq-item summary::after {
+  content: '';
+  position: absolute;
+  inset-inline-end: var(--celula-pad);
+  inset-block-start: calc(50% - 1px);
+  inline-size: 0.875rem;
+  block-size: 2px;
+  background-color: var(--color-fita);
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.faq-item summary::after {
+  transform: rotate(90deg);
+}
+
+.faq-item[open] summary::after {
+  transform: rotate(0deg);
+}
+
+.faq-item[open] summary {
+  box-shadow: inset 0 -2px 0 var(--color-fita);
+}
+
+.faq-item p {
+  max-inline-size: var(--texto-medida);
+  padding: var(--space-s) var(--celula-pad) var(--space-m);
+}
+
+/* ---------- Fechamento: chamada final e rodapé, no degradê, sem a grade ---------- */
+
+.fechamento {
+  position: relative;
+  z-index: 1;
+}
+
+.chamada-final-faixa {
+  display: grid;
+  gap: var(--space-m);
+  padding-block: var(--space-3xl) var(--space-2xl);
+}
+
+.chamada-final h2 {
+  max-inline-size: 18ch;
+  font-size: var(--text-h1);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+}
+
+.chamada-final p {
+  max-inline-size: 48ch;
+  color: color-mix(in oklab, #fff 84%, transparent);
+  font-size: var(--text-subtitle);
+  line-height: var(--leading-subtitle);
+}
+
+.chamada-final-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-s) var(--space-l);
+  margin-block-start: var(--space-s);
+}
+
+.chamada-final-acoes .link-fita {
+  color: #fff;
+}
+
+.rodape-faixa {
+  display: grid;
+  gap: var(--space-l);
+  padding-block: var(--space-2xl) var(--space-xl);
+  border-block-start: 1px solid var(--color-grade);
+}
+
+.rodape-marca {
+  display: grid;
+  gap: var(--space-s);
+}
+
+.rodape-marca img {
+  block-size: 1.5rem;
+  inline-size: auto;
+}
+
+.rodape-assinatura {
+  color: color-mix(in oklab, #fff 84%, transparent);
+}
+
+.rodape-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-s) var(--space-l);
+  padding: 0;
+  list-style: none;
+}
+
+.rodape-links a {
+  color: #fff;
+}
+
+.rodape-empresa {
+  color: var(--color-rotulo);
+  font-size: var(--text-s);
+}
+
+@media (min-width: 64rem) {
+  .rodape-faixa {
+    grid-template-columns: 1fr auto;
+    align-items: start;
+  }
+
+  .rodape-empresa {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ---------- Páginas internas: a planilha aberta na primeira linha ---------- */
+
+.pagina-cabeca .linha {
+  border-block-end-color: var(--color-grade);
+}
+
+.pagina-titulo {
+  grid-column: 2 / -1;
+  padding: var(--space-xl) var(--celula-pad) var(--space-s);
+  font-size: var(--text-h1);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+  text-wrap: balance;
+}
+
+.pagina-frase {
+  grid-column: 2 / -1;
+  align-self: center;
+  justify-self: start;
+  margin: var(--space-2xs) var(--celula-pad);
+  padding-block-end: 0.4rem;
+  box-shadow: inset 0 -2px 0 var(--color-fita);
+  color: var(--color-heading);
+  font-size: var(--text-subtitle);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-subtitle);
+}
+
+/* A frase-chave é a linha selecionada: a cabeça da linha fica na cor da fita */
+.linha-selecionada .num {
+  background-color: var(--color-fita);
+  color: var(--color-on-accent);
+}
+
+.pagina-texto {
+  grid-column: 2 / -1;
+  max-inline-size: 56ch;
+  padding: var(--space-s) var(--celula-pad);
+  font-size: var(--text-subtitle);
+  line-height: var(--leading-subtitle);
+}
+
+.pagina-acao {
+  grid-column: 2 / -1;
+  padding: var(--space-s) var(--celula-pad) var(--space-l);
+}
+
+@media (min-width: 64rem) {
+  .pagina-titulo {
+    grid-column: 2 / 10;
+    padding-block-start: var(--space-2xl);
+  }
+
+  .pagina-texto {
+    grid-column: 2 / 9;
+  }
+}
+
+/* Linha de texto corrido */
+.linha-texto .texto {
+  grid-column: 2 / -1;
+  padding: var(--space-m) var(--celula-pad) var(--space-l);
+}
+
+@media (min-width: 64rem) {
+  .linha-texto .texto {
+    grid-column: 2 / 10;
+  }
+}
+
+/* Listas em linhas da planilha ("todo site inclui", a cena espalhada): a fita marca a linha sob o
+   ponteiro */
+.lista-planilha {
+  padding: 0;
+  list-style: none;
+}
+
+.item-linha {
+  grid-column: 2 / -1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: var(--celula-pad);
+  color: var(--color-heading);
+}
+
+.item-linha::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: -1px;
+  block-size: 2px;
+  background-color: var(--color-fita);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.linha:hover > .item-linha::after {
+  transform: scaleX(1);
+}
+
+/* Antes e depois: células com borda de um lado, uma célula mesclada do outro */
+.antes-depois {
+  display: grid;
+  grid-template-columns: var(--cabeca-linha) repeat(var(--colunas), minmax(0, 1fr));
+  border-block-end: 1px solid var(--color-grade);
+}
+
+.antes-depois .num {
+  grid-column: 1;
+  grid-row: 1 / -1;
+  align-content: start;
+}
+
+.antes-depois .num::before {
+  counter-increment: linha;
+  content: counter(linha) / '';
+}
+
+.antes-depois th,
+.antes-depois td {
+  text-align: start;
+  font-weight: inherit;
+}
+
+.antes-depois .cabecalho-tabela {
+  grid-column: 2 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+}
+
+.antes-depois .cabecalho-tabela > * {
+  padding: var(--celula-pad);
+  color: var(--color-rotulo);
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.antes-depois .antes,
+.antes-depois .depois,
+.antes-depois .cabecalho-tabela > * {
+  grid-column: span calc(var(--colunas) / 2);
+}
+
+.antes-depois .corpo-tabela {
+  grid-column: 2 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+}
+
+.antes-depois .linha-tabela {
+  display: contents;
+}
+
+.antes-depois .antes {
+  padding: var(--celula-pad);
+  border-block-start: 1px solid var(--color-grade);
+  color: var(--color-heading);
+}
+
+.antes-depois .depois {
+  padding: var(--celula-pad);
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
+  font-weight: var(--weight-medium);
+}
+
+.antes-depois .antes,
+.antes-depois .depois {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Quatro células se fundindo num bloco (Centraliza, Automatiza, Integra, Mostra) */
+.fusao {
+  align-items: stretch;
+}
+
+.fusao-celula {
+  grid-column: 2 / -1;
+  display: grid;
+  gap: var(--space-2xs);
+  align-content: start;
+  padding: var(--celula-pad);
+  background-color: var(--color-celula);
+}
+
+.fusao-celula + .fusao-celula {
+  border-block-start: 1px solid var(--color-grade);
+}
+
+.fusao-celula strong {
+  color: var(--color-heading);
+  font-size: var(--text-h3);
+  font-weight: var(--weight-bold);
+}
+
+@media (min-width: 48rem) {
+  .fusao-celula {
+    grid-column: span 3;
+  }
+
+  .fusao-celula:nth-child(n + 4) {
+    border-block-start: 1px solid var(--color-grade);
+  }
+
+  .fusao-celula:nth-child(3) {
+    border-block-start: 0;
+  }
+
+  .fusao-celula:nth-child(even) {
+    border-inline-start: 1px solid var(--color-grade);
+  }
+}
+
+@media (min-width: 64rem) {
+  .fusao-celula {
+    grid-column: span 3;
+    padding: var(--space-m);
+  }
+
+  .fusao-celula + .fusao-celula {
+    border-block-start: 0;
+    border-inline-start: 1px solid var(--color-grade);
+  }
+
+  .fusao-celula:nth-child(n + 4) {
+    border-block-start: 0;
+  }
+}
+
+/* Texto em traço solto da fita: o que ainda não existe */
+.solto {
+  grid-column: 2 / -1;
+  max-inline-size: 48ch;
+  margin: var(--space-s) var(--celula-pad) var(--space-l);
+  padding-inline-start: var(--space-s);
+  border-inline-start: 2px dashed var(--color-fita);
+  color: var(--color-text);
+  font-size: var(--text-s);
+}
+
+/* Hub de serviços: "qual é o seu problema hoje?" */
+.qual-problema {
+  grid-column: 2 / -1;
+  padding: var(--celula-pad) var(--celula-pad) 0;
+  color: var(--color-heading);
+  font-weight: var(--weight-medium);
+}
+
+.qual-resposta {
+  grid-column: 2 / -1;
+  padding: var(--space-2xs) var(--celula-pad);
+}
+
+.qual-acao {
+  grid-column: 2 / -1;
+  justify-self: start;
+  margin: 0 var(--celula-pad) var(--celula-pad);
+}
+
+@media (min-width: 64rem) {
+  .qual-problema {
+    grid-column: 2 / 8;
+    padding: var(--celula-pad);
+  }
+
+  .qual-resposta {
+    grid-column: 8 / 11;
+    padding: var(--celula-pad);
+  }
+
+  .qual-acao {
+    grid-column: 11 / -1;
+    align-self: center;
+    margin: 0 var(--celula-pad);
+  }
+}
+
+/* ---------- Página de projeto ---------- */
+
+.projeto-obra {
+  padding-block: var(--space-l) var(--space-2xl);
+  border-block-end: 1px solid var(--color-grade);
+}
+
+.projeto-obra .obra {
+  grid-column: 2 / -1;
+}
+
+@media (min-width: 64rem) {
+  .projeto-obra .obra {
+    grid-column: 2 / -1;
+    margin-inline-end: calc(-1 * var(--celula-pad));
+  }
+
+  .projeto-obra .obra[data-ficha='lado'] .obra-moldura {
+    aspect-ratio: 16 / 10;
+  }
+}
+
+.projeto-texto {
+  grid-column: 2 / -1;
+  display: grid;
+  gap: var(--space-s);
+  max-inline-size: var(--texto-medida);
+  padding: var(--space-l) var(--celula-pad) var(--space-2xl);
+}
+
+.projeto-texto h2 {
+  margin-block-start: var(--space-m);
+  font-size: var(--text-h3);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-subtitle);
+}
+
+.projeto-texto h2:first-child {
+  margin-block-start: 0;
+}
+
+.projeto-texto ul {
+  display: grid;
+  gap: var(--space-2xs);
+  padding-inline-start: 1.1em;
+}
+
+.projeto-texto li::marker {
+  color: var(--color-accent);
+}
+
+@media (min-width: 64rem) {
+  .projeto-texto {
+    grid-column: 2 / 10;
+  }
+}
+
+.proximo {
+  grid-column: 2 / -1;
+  display: grid;
+  gap: var(--space-2xs);
+  padding: var(--space-l) var(--celula-pad) var(--space-2xl);
+  text-decoration: none;
+}
+
+.proximo-rotulo {
+  color: var(--color-text);
+  font-size: var(--text-s);
+}
+
+.proximo-titulo {
+  --fita-largura: 0%;
+  justify-self: start;
+  background-image: linear-gradient(var(--color-fita), var(--color-fita));
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: var(--fita-largura) 2px;
+  color: var(--color-heading);
+  font-size: var(--text-h1);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+  transition: background-size var(--duration-base) var(--ease-out);
+}
+
+.proximo:hover .proximo-titulo,
+.proximo:focus-visible .proximo-titulo {
+  --fita-largura: 100%;
+}
+
+/* ---------- Contato ---------- */
+
+.canal-nome {
+  grid-column: 2 / 3;
+  display: flex;
+  align-items: center;
+  padding: var(--celula-pad);
+  color: var(--color-heading);
+  font-weight: var(--weight-medium);
+  overflow-wrap: anywhere;
+}
+
+.canal-texto {
+  grid-column: 3 / -1;
+  display: flex;
+  align-items: center;
+  padding: var(--celula-pad);
+}
+
+@media (min-width: 48rem) {
+  .canal-nome {
+    grid-column: 2 / 4;
+  }
+
+  .canal-texto {
+    grid-column: 4 / -1;
+  }
+}
+
+@media (min-width: 64rem) {
+  .canal-nome {
+    grid-column: 2 / 6;
+  }
+
+  .canal-texto {
+    grid-column: 6 / -1;
+  }
+}
+
+.formulario {
+  grid-column: 2 / -1;
+  display: grid;
+  gap: var(--space-m);
+  padding: var(--space-l) var(--celula-pad) var(--space-xl);
+}
+
+@media (min-width: 64rem) {
+  .formulario {
+    grid-column: 2 / 10;
+    padding: var(--space-xl) var(--space-l) var(--space-2xl);
+  }
+}
+
+.formulario h2 {
+  font-size: var(--text-h2);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-title);
+  letter-spacing: var(--tracking-title);
+}
+
+.campo {
+  display: grid;
+  gap: var(--space-2xs);
+}
+
+.campo label,
+.campo legend {
+  color: var(--color-heading);
+  font-weight: var(--weight-medium);
+}
+
+.campo input,
+.campo textarea {
+  inline-size: 100%;
+  min-block-size: 3rem;
+  padding: 0.75rem var(--space-s);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-m);
+  background-color: var(--color-bg);
+  color: var(--color-heading);
+  caret-color: var(--color-accent);
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.campo textarea {
+  resize: vertical;
+}
+
+.campo input:focus-visible,
+.campo textarea:focus-visible {
+  border-color: var(--color-accent);
+  outline-offset: 2px;
+}
+
+.campo input::placeholder,
+.campo textarea::placeholder {
+  color: var(--color-text);
+}
+
+.campo-opcoes {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-inline-size: 0;
+}
+
+.campo-opcoes legend {
+  margin-block-end: var(--space-2xs);
+}
+
+.campo-opcoes .opcoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+}
+
+.opcao {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 2.75rem;
+  padding: 0.5rem var(--space-s);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-full);
+  color: var(--color-heading);
+  cursor: pointer;
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+}
+
+.opcao input {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.opcao:has(input:checked) {
+  border-color: var(--color-accent);
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.opcao:has(input:focus-visible) {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.formulario-aviso {
+  color: var(--color-text);
+  font-size: var(--text-s);
+}
+
+.formulario-pendente {
+  padding: var(--space-xs) var(--space-s);
+  border: 2px dashed var(--color-fita);
+  border-radius: var(--radius-m);
+  font-size: var(--text-s);
+}
+
+.formulario-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-s);
+}
+
+html:not(.js) [data-enviar='whatsapp'] {
+  display: none;
+}
+
+.botao[disabled] {
+  background-color: var(--color-line);
+  color: var(--color-text);
+  cursor: not-allowed;
+}
+
+.botao[disabled]::after {
+  display: none;
+}
+
+/* ---------- Acessos: só os botões, no degradê ---------- */
+
+.acessos {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: var(--space-l);
+  min-block-size: 100svh;
+  padding: var(--space-2xl) var(--gutter);
+  background-image: var(--gradient-brand);
+  color: #fff;
+}
+
+.acessos-conteudo {
+  display: grid;
+  gap: var(--space-l);
+  inline-size: min(100%, 26rem);
+  margin-inline: auto;
+}
+
+.acessos-conteudo img {
+  inline-size: 7.5rem;
+  block-size: auto;
+}
+
+.acessos h1 {
+  font-size: var(--text-h2);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-title);
+  letter-spacing: var(--tracking-title);
+}
+
+.acessos-botoes {
+  display: grid;
+  gap: var(--space-s);
+  padding: 0;
+  list-style: none;
+}
+
+.acessos-botoes .botao {
+  inline-size: 100%;
+}
+
+.acessos-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-s) var(--space-l);
+}
+
+.acessos-links a {
+  color: #fff;
+}
+
+/* ---------- 404 ---------- */
+
+.pagina-404 .simbolo {
+  grid-column: 2 / -1;
+  inline-size: 4rem;
+  block-size: auto;
+  margin: var(--space-xl) var(--celula-pad) 0;
+}
+
+/* ---------- A fita: a cortina da troca de página ---------- */
+
+.fita-cortina {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: var(--gutter);
+  background-image: var(--gradient-brand);
+  color: #fff;
+  clip-path: inset(50% 0 50% 0);
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.fita-cortina.ativa {
+  visibility: visible;
+}
+
+.fita-cortina-titulo {
+  max-inline-size: 20ch;
+  font-size: var(--text-h1);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+  text-align: center;
+  text-wrap: balance;
+  opacity: 0;
+}
