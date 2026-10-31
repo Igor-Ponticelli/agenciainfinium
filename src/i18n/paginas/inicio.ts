@@ -19,6 +19,13 @@ export const inicio = {
 
   problema: {
     titulo: 'Reconhece essa cena?',
+    /** As células da planilha: o que a empresa controla e onde. */
+    celulas: [
+      ['Pedidos', 'WhatsApp'],
+      ['Controle', 'Excel'],
+      ['Tarefas', 'Trello'],
+      ['Financeiro', 'ERP'],
+    ],
     paragrafos: [
       'Os pedidos chegam pelo WhatsApp. O controle fica no Excel, as tarefas no Trello, o financeiro no ERP. Alguém passa o dia copiando informação de um lugar para outro, erros aparecem, clientes ficam sem retorno e ninguém tem uma visão clara do negócio.',
       'Do lado de fora, a empresa também não aparece. Sem site, ou com um site lento e desatualizado, ela perde para o concorrente que foi encontrado primeiro.',

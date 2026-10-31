@@ -1,110 +1,214 @@
 ---
 import Base from '../layouts/Base.astro';
+import ChamadaFinal from '../components/ChamadaFinal.astro';
+import Colunas from '../components/Colunas.astro';
+import Linha from '../components/Linha.astro';
+import Obra from '../components/Obra.astro';
 import { todosProjetos } from '../data/projetos';
 import { linkWhatsapp } from '../data/empresa';
-import { rotaProjeto, rotas } from '../i18n/rotas';
+import { rotas } from '../i18n/rotas';
 import { inicio as t } from '../i18n/paginas/inicio';
 import { metasPaginas } from '../i18n/textos';
 
-// Esqueleto com o texto completo (TODO 2). Layout, composição e prévias são dos TODOs 4 e 5.
+/**
+ * Home: a planilha que vira sistema (contrato em .impeccable/surfaces/src-pages-index-astro.md).
+ * Abertura escura no degradê; a cena do problema é a planilha de verdade; os dois serviços são
+ * células mescladas; os projetos ficam fora da grade; a chamada final fecha a planilha.
+ */
 const meta = metasPaginas.inicio;
 const projetos = await todosProjetos();
+
+// Pares desencontrados: grande com a ficha ao lado, média com a ficha embaixo, e o inverso.
+const formato = (i: number) => ([0, 3].includes(i % 4) ? 'grande' : 'media');
+const ficha = (i: number) => ([0, 3].includes(i % 4) ? 'lado' : 'abaixo');
 ---
 
-<Base titulo={meta.titulo} descricao={meta.descricao} tituloCompleto>
-  <section>
-    <h1>{t.abertura.titulo}</h1>
-    <p>{t.abertura.texto}</p>
-    <p>
-      <a href={linkWhatsapp()}>{t.abertura.acaoPrincipal}</a>
-      <a href={`#${t.abertura.ancoraComoFunciona}`}>{t.abertura.acaoSecundaria}</a>
-    </p>
+<Base titulo={meta.titulo} descricao={meta.descricao} tituloCompleto aberturaEscura>
+  <section slot="abertura" class="abertura folha" aria-labelledby="assinatura">
+    <Colunas />
+    <Linha class="abertura-assinatura">
+      <h1 id="assinatura">{t.abertura.titulo}</h1>
+    </Linha>
+    <Linha>
+      <p class="abertura-frase">{t.abertura.texto}</p>
+    </Linha>
+    <Linha>
+      <div class="abertura-acoes acoes">
+        <a
+          class="botao botao-claro"
+          href={linkWhatsapp()}
+          target="_blank"
+          rel="noopener"
+          data-evento="whatsapp_abertura"
+        >
+          {t.abertura.acaoPrincipal}
+          <span class="visualmente-oculto">(abre em nova aba)</span>
+        </a>
+        <a class="link-fita" href={`#${t.abertura.ancoraComoFunciona}`}>
+          {t.abertura.acaoSecundaria}
+        </a>
+      </div>
+    </Linha>
   </section>
 
-  <section>
-    <h2>{t.problema.titulo}</h2>
-    {t.problema.paragrafos.map((p) => (
-      <p>{p}</p>
-    ))}
-  </section>
-
-  <section>
-    <h2>{t.servicos.titulo}</h2>
-    {[
-      { ...t.servicos.sites, rota: rotas.sites, assunto: 'site' as const },
-      { ...t.servicos.sistemas, rota: rotas.sistemas, assunto: 'sistema' as const },
-    ].map((s) => (
-      <article>
-        <h3>{s.titulo}</h3>
-        <p>{s.frase}</p>
-        <p>{s.texto}</p>
-        <p>{s.paraQuem}</p>
-        <p>
-          <a href={s.rota}>{s.verServico}</a>
-          <a href={linkWhatsapp(s.assunto)}>{s.whatsapp}</a>
-        </p>
-      </article>
-    ))}
-  </section>
-
-  <section>
-    <h2>{t.conexao.titulo}</h2>
-    <p>{t.conexao.texto}</p>
-  </section>
-
-  <section>
-    <h2>{t.projetos.titulo}</h2>
-    <p>{t.projetos.texto}</p>
-    <ul>
-      {projetos.map((p) => (
-        <li>
-          <a href={rotaProjeto(p.data.slug)}>{p.data.titulo}</a>: {p.data.resumo}
-        </li>
+  <section class="folha cena" aria-labelledby="cena-titulo">
+    <Linha class="cena-titulo">
+      <h2 class="titulo-secao" id="cena-titulo">
+        {t.problema.titulo}
+      </h2>
+    </Linha>
+    <div class="cena-tabela">
+      {t.problema.celulas.map(([chave, valor]) => (
+        <div class="cena-linha">
+          <span class="num" aria-hidden="true"></span>
+          <span class="cena-chave">{chave}</span>
+          <span class="cena-valor">{valor}</span>
+        </div>
       ))}
-    </ul>
-    <p>
-      <a href={rotas.projetos}>{t.projetos.acao}</a>
-    </p>
+      <div class="cena-texto texto">
+        {t.problema.paragrafos.map((p) => (
+          <p>{p}</p>
+        ))}
+      </div>
+    </div>
   </section>
 
-  <section id={t.abertura.ancoraComoFunciona}>
-    <h2>{t.comoFunciona.titulo}</h2>
-    <p>{t.comoFunciona.texto}</p>
-    <ol>
+  <section class="folha" aria-labelledby="servicos-titulo">
+    <Linha>
+      <h2 class="titulo-secao" id="servicos-titulo">
+        {t.servicos.titulo}
+      </h2>
+    </Linha>
+    <Linha class="servicos-linha">
+      {[
+        {
+          ...t.servicos.sites,
+          classe: 'servico-sites',
+          rota: rotas.sites,
+          assunto: 'site' as const,
+          evento: 'whatsapp_sites',
+        },
+        {
+          ...t.servicos.sistemas,
+          classe: 'servico-sistemas',
+          rota: rotas.sistemas,
+          assunto: 'sistema' as const,
+          evento: 'whatsapp_sistemas',
+        },
+      ].map((s) => (
+        <article class:list={['servico', 'mesclada', s.classe]}>
+          <h3>{s.titulo}</h3>
+          <p class="servico-frase">{s.frase}</p>
+          <p>{s.texto}</p>
+          <p class="servico-para">{s.paraQuem}</p>
+          <div class="acoes">
+            <a class="botao" href={s.rota} data-evento={`servico_${s.assunto}`}>
+              {s.verServico}
+            </a>
+            <a
+              class="link-fita"
+              href={linkWhatsapp(s.assunto)}
+              target="_blank"
+              rel="noopener"
+              data-evento={s.evento}
+            >
+              {s.whatsapp}
+              <span class="visualmente-oculto">(abre em nova aba)</span>
+            </a>
+          </div>
+        </article>
+      ))}
+    </Linha>
+  </section>
+
+  <section class="folha" aria-labelledby="conexao-titulo">
+    <Linha class="conexao">
+      <div class="conexao-texto">
+        <h2 id="conexao-titulo">{t.conexao.titulo}</h2>
+        <p>{t.conexao.texto}</p>
+      </div>
+      <svg
+        class="conexao-laco"
+        viewBox="0 0 1200 240"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <path pathLength="1" d="M -40 150 C 260 -40 340 290 600 120 C 860 -50 940 300 1240 110" />
+      </svg>
+    </Linha>
+  </section>
+
+  <section class="folha vitrines" id="projetos" aria-labelledby="projetos-titulo">
+    <Linha class="vitrines-cabeca">
+      <h2 class="titulo-secao" id="projetos-titulo">
+        {t.projetos.titulo}
+      </h2>
+      <p class="celula celula-apoio">{t.projetos.texto}</p>
+      <a class="link-fita" href={rotas.projetos}>
+        {t.projetos.acao}
+      </a>
+    </Linha>
+    <div class="vitrines-grade">
+      {projetos.map((p, i) => (
+        <Obra projeto={p} formato={formato(i)} ficha={ficha(i)} />
+      ))}
+    </div>
+  </section>
+
+  <section class="folha" id={t.abertura.ancoraComoFunciona} aria-labelledby="como-titulo">
+    <Linha>
+      <h2 class="titulo-secao" id="como-titulo">
+        {t.comoFunciona.titulo}
+      </h2>
+      <p class="celula celula-apoio">{t.comoFunciona.texto}</p>
+    </Linha>
+    <ol class="passos" data-laco>
       {t.comoFunciona.passos.map((p) => (
-        <li>
-          <strong>{p.titulo}.</strong> {p.texto}
-        </li>
+        <Linha as="li" class="passo">
+          <span class="passo-indice" aria-hidden="true"></span>
+          <h3 class="passo-titulo">{p.titulo}</h3>
+          <p class="passo-texto">{p.texto}</p>
+        </Linha>
       ))}
     </ol>
   </section>
 
-  <section>
-    <h2>{t.resultados.titulo}</h2>
-    <ul>
-      {t.resultados.itens.map((i) => (
-        <li>
-          <strong>{i.titulo}.</strong> {i.texto}
-        </li>
-      ))}
-    </ul>
-  </section>
-
-  <section>
-    <h2>{t.faq.titulo}</h2>
-    {t.faq.itens.map((i) => (
-      <details>
-        <summary>{i.pergunta}</summary>
-        <p>{i.resposta}</p>
-      </details>
+  <section class="folha" aria-labelledby="resultados-titulo">
+    <Linha>
+      <h2 class="titulo-secao" id="resultados-titulo">
+        {t.resultados.titulo}
+      </h2>
+    </Linha>
+    {t.resultados.itens.map((i) => (
+      <Linha>
+        <h3 class="par-chave">{i.titulo}</h3>
+        <p class="par-valor">{i.texto}</p>
+      </Linha>
     ))}
   </section>
 
-  <section>
-    <h2>{t.chamadaFinal.titulo}</h2>
-    <p>{t.chamadaFinal.texto}</p>
-    <p>
-      <a href={linkWhatsapp()}>{t.chamadaFinal.acao}</a>
-    </p>
+  <section class="folha" aria-labelledby="faq-titulo">
+    <Linha>
+      <h2 class="titulo-secao" id="faq-titulo">
+        {t.faq.titulo}
+      </h2>
+    </Linha>
+    {t.faq.itens.map((i) => (
+      <Linha>
+        <details class="faq-item">
+          <summary>{i.pergunta}</summary>
+          <p>{i.resposta}</p>
+        </details>
+      </Linha>
+    ))}
   </section>
+
+  <ChamadaFinal
+    slot="fechamento"
+    titulo={t.chamadaFinal.titulo}
+    texto={t.chamadaFinal.texto}
+    acao={t.chamadaFinal.acao}
+    href={linkWhatsapp()}
+    evento="whatsapp_chamada_final"
+  />
 </Base>
