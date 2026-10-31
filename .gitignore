@@ -16,3 +16,5 @@ dist/
 .impeccable/questions/
 # Capturas da revisão da impeccable: artefatos de trabalho, não entram no git
 .impeccable/review/
+# Pacote para a Hostinger (gerado por npm run empacotar)
+infinium-site.zip
