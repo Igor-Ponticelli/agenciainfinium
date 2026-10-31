@@ -403,7 +403,7 @@ de métricas`, `feat: adiciona a troca de página`, `feat(acessos): constrói a 
 
 ## TODO 5: Prévias dos sites de clientes
 
-**Status:** pendente
+**Status:** feito em 30/10/2026
 **Depende de:** TODO 4
 
 **Leia antes:** [arquitetura.md](.claude/docs/arquitetura.md) (seção 5),
@@ -432,10 +432,15 @@ de cada site, interativas, leves e acessíveis.
 foto sem aval.
 
 **Pronto quando:**
-- [ ] As prévias aparecem na home e na página de cada projeto.
-- [ ] Cada interação listada funciona com mouse, toque e teclado.
-- [ ] A comparação lado a lado não mostra diferença de identidade.
-- [ ] Orçamento respeitado e sem layout shift ao carregar fontes.
+- [x] As prévias aparecem na home, nas páginas de serviço, no portfólio e na página de cada
+      projeto.
+- [x] Cada interação listada funciona com mouse, toque e teclado (`scripts/inspecao-previas.mjs`:
+      tema da Brisa, "Cotar" da Linetex, "Adicionar" da Lumaj, voto do RetroDash; todos os
+      controles focáveis).
+- [x] A comparação lado a lado não mostra diferença de identidade (capturas dos quatro originais
+      em 1440 e das prévias em 1440 e 390).
+- [x] Orçamento respeitado e sem layout shift ao carregar fontes (fallback com `size-adjust`
+      gerado pelo Astro).
 
 **Commits sugeridos:** um por prévia, `feat(projetos): adiciona prévia da brisa café`, e
 `perf: carrega fontes das prévias sob demanda`.
@@ -443,6 +448,34 @@ foto sem aval.
 **Precisa do Igor:** nada, salvo se um site mudou desde o `revisadoEm`.
 
 **Notas:**
+- Copiados do portfólio como estavam: `src/components/previas/{BrisaCafe,Linetex,Lumaj,Retrodash}.astro`,
+  `fotosCatalogo.ts`, `src/scripts/previas/*.ts`, `src/scripts/previas.ts`, os logos em
+  `src/assets/previas/`, as fotos com aval (salão e espresso da Brisa; miniaturas de catálogo da
+  Linetex e da Lumaj) e as seis fontes com subset em `src/assets/fontes-previas/` (Figtree, Young
+  Serif, Lexend Exa, Lexend, Montserrat, Plus Jakarta Sans). O script
+  `scripts/subsetar-fontes-previas.py` ficou com só essas seis; regenerar exige instalar os
+  pacotes do Fontsource, que este repositório não tem.
+- Adaptação: a prop `idioma` e os rótulos em inglês saíram (site só em PT-BR). O resto é igual,
+  inclusive o `--u` por container, o layout largo (referência 1100 px, container a partir de
+  700 px) e o estreito (400 px).
+- Conferido em 30/10/2026 contra os sites publicados (title, h1, palavras-chave das interações):
+  os quatro batem. **A Linetex mudou**: o site passou a dizer "em Brusque e região" (title,
+  description, hero e endereço em Brusque). A prévia, o arquivo de projeto, o `resumo` e o corpo
+  do case foram atualizados. `revisadoEm: 2026-10-30` nos quatro.
+- Integração com a planilha: `Obra.astro` renderiza a prévia na moldura (`region` com rótulo,
+  fora de `<a>`; só os controles recebem o ponteiro; o resto da área leva à página do projeto).
+  Sobre a moldura, a fita vira contorno de 2 px (CSS, `hover`, `focus-within` e `active`). Na
+  página do projeto a prévia ocupa 9 das 12 colunas e nasce ativa; na home e nas páginas de
+  serviço, ativa a 600 px da tela (`IntersectionObserver`), que é quando a fonte do site é
+  baixada. `FontesPrevias.astro` entra no `head` das páginas com prévia.
+- Peso (gzip): CSS das quatro prévias 8,5 KB; JS das prévias 4,2 KB (Lumaj 1,6, Linetex 1,3,
+  Brisa 0,9, RetroDash 0,5); JS total do site 16 KB; HTML da home 35 KB (210 KB cru, pelos SVGs
+  repetidos nas listas). Fontes dos clientes só são baixadas quando a prévia ativa.
+- Verificação (`scripts/inspecao-previas.mjs`): captura de cada prévia ativa em 1440 e 390 e
+  do original em 1440, as quatro interações, fontes carregadas, controles focáveis, console sem
+  erro. Comparação visual: identidade, tipografia, proporção e espaçamento batem; na home as
+  molduras de 8 e 5 colunas mostram a composição estreita dos sites (como no celular), e na
+  página do projeto a composição larga.
 
 ---
 
