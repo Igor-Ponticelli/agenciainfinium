@@ -20,13 +20,15 @@ const emServico = ativo(rotas.servicos) || ativo(rotas.sites) || ativo(rotas.sis
 
 <header class="cabecalho">
   <div class="cabecalho-faixa">
-    <a class="logo" href={rotas.inicio} data-fita-logo>
+    <!-- O nome acessível fica no link: as duas imagens (clara e escura) alternam por CSS -->
+    <a class="logo" href={rotas.inicio} aria-label={t.logo} data-fita-logo>
       <img
         class="logo-claro"
         src={logoPrimary.src}
         width={largura}
         height={altura}
-        alt={t.logo}
+        alt=""
+        aria-hidden="true"
         decoding="async"
       />
       <img
