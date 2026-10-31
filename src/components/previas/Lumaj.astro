@@ -1,0 +1,1466 @@
+---
+/**
+ * Miniprévia da Lumaj: o cabeçalho com "Pedido", o hero grafite (título, traço limão, faísca e
+ * "Fazer meu pedido") e os departamentos. Como no site, os departamentos levam às listas com
+ * "Adicionar", que vira o seletor de quantidade; "Pedido" abre "Meu pedido". O envio pelo
+ * WhatsApp não existe aqui: nada sai da prévia. Fonte: .claude/docs/projetos/lumaj.md.
+ *
+ * As miniaturas de produto são as fotos do site, com aval do cliente.
+ */
+import { Picture } from 'astro:assets';
+import { fotoCatalogo } from './fotosCatalogo';
+import logo from '../../assets/previas/lumaj-logo.svg?raw';
+
+const rotuloInicio = 'Lumaj Distribuidora, página inicial';
+
+// Departamentos e itens como estão no site (home e página de produtos)
+const departamentos = [
+  {
+    titulo: 'Embalagens e e‑commerce',
+    foto: 'envelope-seguranca',
+    alt: 'Envelope de segurança',
+    cena: true,
+    resumo: 'Para embalar, proteger e enviar pedidos da loja e do e‑commerce.',
+    itens: [
+      'Envelope de segurança',
+      'Caixas de papelão',
+      'Sacolas plásticas',
+      'Sacos PP e PE',
+      'Plástico bolha',
+      'Filme stretch',
+      'Papel kraft em bobina',
+      'Papelão ondulado em bobina',
+      'Bobinas plásticas',
+    ],
+  },
+  {
+    titulo: 'Fitas adesivas',
+    foto: 'fita-transparente',
+    alt: 'Fita adesiva transparente',
+    resumo: 'Fita transparente, crepe, gomada e impressa, e o que ajuda a aplicar.',
+    itens: [
+      'Fita adesiva transparente',
+      'Fita larga transparente e marrom',
+      'Fita impressa “Frágil”',
+      'Fita crepe e fita kraft',
+      'Fita de papel gomada',
+      'Aplicador manual de fita',
+      'Suporte de fita para mesa',
+    ],
+  },
+  {
+    titulo: 'Produtos de limpeza',
+    foto: 'cloro',
+    alt: 'Cloro e cloro concentrado',
+    cena: true,
+    resumo: 'Para a casa, o comércio, a indústria e a oficina.',
+    itens: [
+      'Cloro e cloro concentrado',
+      'Limpador desinfetante sem cloro',
+      'Desengraxante e limpa-alumínio',
+      'Lava-roupas e multiuso',
+      'Limpeza automotiva',
+      'Difusores de aromas',
+      'Sacos de lixo',
+    ],
+  },
+  {
+    titulo: 'Higiene e banheiro',
+    foto: 'papel-higienico',
+    alt: 'Papel higiênico e papel toalha',
+    cena: true,
+    resumo: 'Para banheiros de empresas, comércios e da sua casa.',
+    itens: ['Papel higiênico e papel toalha', 'Sabonete líquido'],
+  },
+  {
+    titulo: 'Descartáveis',
+    foto: 'copos',
+    alt: 'Copos descartáveis',
+    cena: true,
+    resumo: 'Para copa, refeitório, festas e entregas.',
+    itens: ['Copos descartáveis', 'Talheres e pratos descartáveis'],
+  },
+  {
+    titulo: 'Escritório e papelaria',
+    foto: 'papel-sulfite',
+    alt: 'Papel sulfite',
+    resumo: 'Papel e material de expediente para a empresa, a escola e a casa.',
+    itens: ['Papel sulfite', 'Material de escritório'],
+  },
+  {
+    titulo: 'Fitas e artigos para arqueação',
+    foto: 'fita-arquear-pp',
+    alt: 'Fita de arquear PP',
+    resumo: 'Fitas, selos e ferramentas para cintar caixas, fardos e paletes.',
+    itens: [
+      'Fita de arquear PP',
+      'Fita de arquear PET',
+      'Fita de arquear preta',
+      'Fitilho',
+      'Selos e grampos',
+      'Tensionador e selador manual',
+      'Carrinho desbobinador',
+    ],
+  },
+  {
+    titulo: 'Máquinas e equipamentos',
+    foto: 'arqueadora',
+    alt: 'Arqueadora semiautomática',
+    resumo: 'Equipamentos para a expedição embalar mais rápido.',
+    itens: [
+      'Arqueadora semiautomática',
+      'Seladora de pedal',
+      'Dispensador de fita gomada',
+      'Dispensador de bancada',
+      'Grampeador pneumático para caixas',
+      'Aplicador de tag',
+    ],
+  },
+];
+const n = (i: number) => String(i + 1).padStart(2, '0');
+const whatsapp =
+  'M12.04 2a9.9 9.9 0 0 0-8.5 15l-1.4 5 5.2-1.36A9.93 9.93 0 1 0 12.04 2zm0 18.1a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.08.8.82-3-.2-.31a8.2 8.2 0 1 1 6.94 3.84zm4.5-6.14c-.25-.12-1.46-.72-1.69-.8-.23-.08-.39-.12-.55.12-.16.25-.63.8-.78.97-.14.16-.29.18-.53.06a6.74 6.74 0 0 1-3.37-2.94c-.25-.44.25-.41.72-1.36.08-.16.04-.3-.02-.42-.06-.12-.55-1.33-.76-1.82-.2-.48-.4-.41-.55-.42h-.47a.9.9 0 0 0-.65.3 2.74 2.74 0 0 0-.86 2.04 4.77 4.77 0 0 0 1 2.53 10.9 10.9 0 0 0 4.18 3.69c1.55.67 2.16.73 2.94.61.47-.07 1.46-.6 1.66-1.17.2-.58.2-1.07.14-1.17-.06-.11-.22-.17-.47-.29z';
+const faisca =
+  'M12 1.5C12.9 9.3 13.6 10.6 22 12 13.6 13.4 12.9 14.7 12 22.5 11.1 14.7 10.4 13.4 2 12 10.4 10.6 11.1 9.3 12 1.5Z';
+const seta = 'M4 12h15M13 6l6 6-6 6';
+const id = 'lm-pedido';
+---
+
+<div class="lm" lang="pt-BR" data-vista="inicio">
+  <div class="lm-topo">
+    <button class="lm-marca" type="button" aria-label={rotuloInicio} data-lm-inicio>
+      <span set:html={logo} />
+    </button>
+    <span class="lm-nav" aria-hidden="true">
+      <span class="lm-nav-produtos">Produtos</span>
+      <span>A loja</span>
+      <span>Contato</span>
+    </span>
+    <button class="lm-abrir" type="button" aria-haspopup="dialog" aria-controls={id} data-lm-abrir>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M5 8h14l-1 12H6L5 8z"></path>
+        <path d="M9 10V6.5a3 3 0 0 1 6 0V10"></path>
+      </svg>
+      <span class="lm-so-largo" aria-hidden="true">
+        Pedido
+      </span>
+      <span class="lm-contador" aria-hidden="true" data-lm-contador>
+        0
+      </span>
+      <span class="lm-sr" data-lm-contador-leitor>
+        Meu pedido, vazio
+      </span>
+    </button>
+    <span class="lm-telefone lm-so-largo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" class="lm-cheio">
+        <path d={whatsapp}></path>
+      </svg>
+      (47) 93389-6243
+    </span>
+    <span class="lm-menu" aria-hidden="true">
+      <svg viewBox="0 0 24 24">
+        <path d="M3 7h18M3 12h18M3 17h12"></path>
+      </svg>
+    </span>
+  </div>
+
+  <div class="lm-vista" data-lm-vista="inicio">
+    <div class="lm-abertura">
+      <p class="lm-titulo">
+        Tudo o que você precisa, em um só{' '}
+        <span class="lm-fim">
+          lugar.
+          <svg class="lm-faisca lm-cheio" viewBox="0 0 24 24" aria-hidden="true">
+            <path d={faisca}></path>
+          </svg>
+        </span>
+      </p>
+      <div class="lm-lado">
+        <p class="lm-apoio">
+          Embalagens, descartáveis, produtos de limpeza, higiene e papelaria, no atacado e no
+          varejo. Escolha os itens e as quantidades e mande o pedido pelo WhatsApp.
+        </p>
+        <p class="lm-acoes">
+          <button class="lm-botao" type="button" data-lm-dep="0">
+            Fazer meu pedido
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d={seta}></path>
+            </svg>
+          </button>
+          <span class="lm-whats" aria-hidden="true">
+            <svg viewBox="0 0 24 24" class="lm-cheio">
+              <path d={whatsapp}></path>
+            </svg>
+            Chamar no WhatsApp
+          </span>
+        </p>
+        <p class="lm-loja">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"></path>
+            <path d="M12 12.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+          </svg>
+          <span>Loja na Rua Luiz Boos, 145, Santa Terezinha · Entrega em Brusque e região</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="lm-indice">
+      <p class="lm-indice-topo">
+        <span class="lm-rotulo">Departamentos</span>
+        <button class="lm-link-seta" type="button" data-lm-dep="0">
+          Ver catálogo completo
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d={seta}></path>
+          </svg>
+        </button>
+      </p>
+      <ol class="lm-indice-lista">
+        {departamentos.map((d, i) => (
+          <li>
+            <button class="lm-linha" type="button" data-lm-dep={i}>
+              <span class="lm-foto" data-cena={d.cena ? '' : undefined}>
+                <Picture
+                  src={fotoCatalogo(d.foto)}
+                  formats={['avif', 'webp']}
+                  widths={[96, 160]}
+                  sizes="64px"
+                  loading="lazy"
+                  alt=""
+                />
+              </span>
+              <span class="lm-nome">
+                <span class="lm-linha-titulo">
+                  <span class="lm-numero">{n(i)}</span> {d.titulo}
+                </span>
+                <span class="lm-resumo">{d.resumo}</span>
+              </span>
+              <svg class="lm-seta" viewBox="0 0 24 24" aria-hidden="true">
+                <path d={seta}></path>
+              </svg>
+            </button>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+
+  {departamentos.map((d, i) => (
+    <div class="lm-vista lm-dep" data-lm-vista={i} hidden>
+      <span class="lm-dep-foto" data-cena={d.cena ? '' : undefined}>
+        <Picture
+          src={fotoCatalogo(d.foto)}
+          formats={['avif', 'webp']}
+          widths={[360, 560, 720]}
+          sizes="(min-width: 64rem) 34vw, 1px"
+          loading="lazy"
+          alt={d.alt}
+        />
+      </span>
+      <div class="lm-dep-texto">
+        <p class="lm-dep-titulo" tabindex="-1">
+          <span class="lm-dep-n">{n(i)}</span>
+          {d.titulo}
+        </p>
+        <p class="lm-dep-resumo">{d.resumo}</p>
+        <ul class="lm-itens">
+          {d.itens.map((item, j) => (
+            <li data-lm-item={item}>
+              <span class="lm-numero lm-item-n">
+                {n(i)}.{j + 1}
+              </span>
+              <span class="lm-item-nome">{item}</span>
+              <span class="lm-acao">
+                <button class="lm-add" type="button" data-lm-add>
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 5v14M5 12h14"></path>
+                  </svg>
+                  Adicionar<span class="lm-sr"> {item} ao pedido</span>
+                </button>
+                <span class="lm-qtd" role="group" aria-label={`Quantidade de ${item}`} hidden>
+                  <button type="button" data-lm-passo="-1">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M5 12h14"></path>
+                    </svg>
+                    <span class="lm-sr">Diminuir</span>
+                  </button>
+                  <input
+                    class="lm-numero"
+                    type="number"
+                    inputmode="numeric"
+                    min="0"
+                    max="9999"
+                    value="0"
+                    aria-label={`Quantidade de ${item}`}
+                    data-lm-campo
+                  />
+                  <button type="button" data-lm-passo="1">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 5v14M5 12h14"></path>
+                    </svg>
+                    <span class="lm-sr">Aumentar</span>
+                  </button>
+                </span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  ))}
+
+  <div class="lm-barra" hidden data-lm-barra>
+    <p data-lm-resumo></p>
+    <button class="lm-botao lm-botao-pequeno" type="button" data-lm-abrir>
+      Ver pedido
+    </button>
+  </div>
+
+  <div class="lm-fundo" hidden data-lm-fundo></div>
+  <div
+    class="lm-pedido"
+    id={id}
+    role="dialog"
+    aria-labelledby={`${id}-titulo`}
+    hidden
+    data-lm-pedido
+  >
+    <div class="lm-pedido-topo">
+      <div>
+        <p class="lm-pedido-titulo" id={`${id}-titulo`} tabindex="-1">
+          Meu pedido
+        </p>
+        <p class="lm-pedido-sub">
+          O pedido vai pelo WhatsApp. A Lumaj confirma valores e disponibilidade. Entregamos em
+          Brusque e região.
+        </p>
+      </div>
+      <button class="lm-fechar" type="button" data-lm-fechar>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 5l14 14M19 5L5 19"></path>
+        </svg>
+        <span class="lm-sr">Fechar pedido</span>
+      </button>
+    </div>
+    <div class="lm-vazio" data-lm-vazio>
+      <p>Seu pedido está vazio.</p>
+      <p>
+        No catálogo, toque em <strong>Adicionar</strong> e escolha a quantidade de cada item.
+      </p>
+      <button class="lm-link-seta" type="button" data-lm-dep="0">
+        Abrir o catálogo
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d={seta}></path>
+        </svg>
+      </button>
+    </div>
+    <div class="lm-form" hidden data-lm-form>
+      <ol class="lm-pedido-itens" data-lm-itens></ol>
+      <p class="lm-total" data-lm-total></p>
+      <fieldset class="lm-receber">
+        <legend class="lm-pedido-rotulo">Como você quer receber?</legend>
+        <div class="lm-opcoes">
+          <label class="lm-opcao">
+            <input type="radio" name="lm-receber" value="entrega" data-lm-receber />
+            <span>
+              Entrega <small>Brusque e região</small>
+            </span>
+          </label>
+          <label class="lm-opcao">
+            <input type="radio" name="lm-receber" value="retirada" data-lm-receber />
+            <span>
+              Retirar na loja <small>Rua Luiz Boos, 145</small>
+            </span>
+          </label>
+        </div>
+        <label class="lm-campo" hidden data-lm-endereco>
+          <span class="lm-pedido-rotulo">Endereço de entrega</span>
+          <input type="text" autocomplete="off" placeholder="Rua, número, bairro e cidade" />
+        </label>
+      </fieldset>
+      <label class="lm-campo">
+        <span class="lm-pedido-rotulo">
+          Seu nome <span>(opcional)</span>
+        </span>
+        <input type="text" autocomplete="off" />
+      </label>
+      <label class="lm-campo">
+        <span class="lm-pedido-rotulo">
+          Observações <span>(opcional)</span>
+        </span>
+        <textarea rows="2" placeholder="Cor, tamanho, melhor horário…"></textarea>
+      </label>
+      <div class="lm-pedido-acoes">
+        <span class="lm-botao" aria-hidden="true">
+          <svg viewBox="0 0 24 24" class="lm-cheio">
+            <path d={whatsapp}></path>
+          </svg>
+          Enviar pedido pelo WhatsApp
+        </span>
+        <button class="lm-limpar" type="button" data-lm-limpar>
+          Esvaziar pedido
+        </button>
+      </div>
+    </div>
+  </div>
+  <p class="lm-sr" aria-live="polite" data-lm-aviso></p>
+</div>
+
+<style>
+  .lm {
+    --papel: #fff;
+    --papel-2: #f4f4f2;
+    --tinta: #242424;
+    --tinta-2: #555;
+    --tinta-3: #6e6e6e;
+    --grafite: #474747;
+    --limao: #a9cd4c;
+    --limao-claro: #eef5da;
+    --verde-texto: #4c6b12;
+    --filete: #e2e2de;
+    --filete-forte: #bdbdb7;
+    --gradiente-grafite: radial-gradient(
+      120% 160% at 85% 0%,
+      #5c5c5c 0%,
+      #474747 42%,
+      #343434 100%
+    );
+    --gradiente-limao: linear-gradient(115deg, #8cc63f 0%, #a9cd4c 48%, #d2e96e 100%);
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --raio: calc(12 * var(--u));
+    --u: 0.1cqi;
+    --margem: calc(56 * var(--u));
+
+    color-scheme: light;
+
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+    background-color: var(--papel);
+    color: var(--tinta);
+    font-family: sans-serif;
+    font-size: calc(13 * var(--u));
+    font-weight: 450;
+    line-height: 1.55;
+  }
+
+  :global(.previa[data-ativa]) .lm {
+    font-family: var(--previa-montserrat);
+  }
+
+  .lm svg {
+    flex: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: square;
+  }
+
+  .lm svg.lm-cheio {
+    fill: currentColor;
+    stroke: none;
+  }
+
+  .lm :is(button, input, textarea):focus-visible {
+    outline: 2px solid var(--tinta);
+    outline-offset: 2px;
+  }
+
+  .lm :global(:is(.lm-qtd, .lm-linha-qtd) :is(button, input):focus-visible) {
+    outline-offset: -2px;
+  }
+
+  .lm :global(.lm-sr) {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .lm :global(.lm-numero) {
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .lm-rotulo {
+    color: var(--tinta-3);
+    font-size: calc(9.5 * var(--u));
+    font-weight: 650;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* Cabeçalho grafite com o filete limão */
+  .lm-topo {
+    display: flex;
+    align-items: center;
+    gap: calc(12 * var(--u));
+    block-size: calc(61 * var(--u));
+    padding-inline: var(--margem);
+    border-block-end: calc(3 * var(--u)) solid;
+    border-image: var(--gradiente-limao) 1;
+    background-color: var(--grafite);
+    color: #fff;
+  }
+
+  .lm-marca {
+    block-size: calc(38 * var(--u));
+    margin-inline-end: auto;
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+
+  .lm-marca :global(svg) {
+    block-size: 100%;
+    inline-size: auto;
+  }
+
+  .lm-nav {
+    display: flex;
+    margin-inline-end: calc(6 * var(--u));
+    color: #fffc;
+    font-size: calc(12 * var(--u));
+    font-weight: 600;
+  }
+
+  .lm-nav span {
+    padding: calc(6 * var(--u)) calc(13 * var(--u));
+    border-block-end: 2px solid transparent;
+  }
+
+  .lm:not([data-vista='inicio']) .lm-nav-produtos {
+    border-block-end-color: var(--limao);
+    color: #fff;
+  }
+
+  .lm-abrir {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(7 * var(--u));
+    block-size: max(24px, calc(35 * var(--u)));
+    padding: 0 calc(10 * var(--u));
+    border: 1px solid #ffffff59;
+    border-radius: 999px;
+    background-color: #ffffff0a;
+    color: #fff;
+    font-size: calc(12 * var(--u));
+    font-weight: 700;
+    line-height: 1;
+    transition: border-color 200ms var(--ease);
+  }
+
+  .lm-abrir:hover {
+    border-color: #fff;
+  }
+
+  .lm-abrir svg {
+    inline-size: calc(16 * var(--u));
+    min-inline-size: 12px;
+  }
+
+  .lm-contador {
+    display: inline-grid;
+    place-items: center;
+    min-inline-size: calc(19 * var(--u));
+    block-size: calc(19 * var(--u));
+    padding: 0 calc(5 * var(--u));
+    border-radius: 999px;
+    background-color: #ffffff24;
+    font-size: calc(10.5 * var(--u));
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    transition:
+      background-color 250ms var(--ease),
+      color 250ms var(--ease);
+  }
+
+  .lm[data-itens] .lm-contador {
+    background: var(--gradiente-limao);
+    color: var(--tinta);
+  }
+
+  .lm-telefone,
+  .lm-whats {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(7 * var(--u));
+    font-weight: 700;
+  }
+
+  .lm-telefone {
+    font-size: calc(12 * var(--u));
+    font-variant-numeric: tabular-nums;
+  }
+
+  .lm-telefone svg,
+  .lm-whats svg {
+    inline-size: calc(16 * var(--u));
+    color: var(--limao);
+  }
+
+  .lm-menu {
+    display: none;
+  }
+
+  /* Botões em pílula limão */
+  .lm-botao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: calc(8 * var(--u));
+    min-block-size: calc(42 * var(--u));
+    padding: 0 calc(20 * var(--u));
+    border: 0;
+    border-radius: 999px;
+    background: var(--gradiente-limao);
+    background-size: 180% 100%;
+    box-shadow: 0 calc(10 * var(--u)) calc(28 * var(--u)) calc(-12 * var(--u)) #7eb02cbf;
+    color: var(--tinta);
+    font-size: calc(13 * var(--u));
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+    transition:
+      background-position 500ms var(--ease),
+      box-shadow 300ms var(--ease),
+      transform 200ms var(--ease);
+  }
+
+  .lm-botao:hover {
+    background-position: 100% 0;
+    box-shadow: 0 calc(14 * var(--u)) calc(32 * var(--u)) calc(-12 * var(--u)) #7eb02ce6;
+    transform: translateY(-1px);
+  }
+
+  .lm-botao svg {
+    inline-size: calc(16 * var(--u));
+  }
+
+  .lm-botao-pequeno {
+    min-block-size: calc(35 * var(--u));
+    padding-inline: calc(15 * var(--u));
+  }
+
+  .lm-link-seta {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(5 * var(--u));
+    min-block-size: 24px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--verde-texto);
+    font-size: calc(11.5 * var(--u));
+    font-weight: 700;
+  }
+
+  .lm-link-seta:hover {
+    text-decoration: underline;
+  }
+
+  .lm-link-seta svg,
+  .lm-seta {
+    inline-size: calc(14 * var(--u));
+    min-inline-size: 10px;
+    transition: transform 250ms var(--ease);
+  }
+
+  .lm-link-seta:hover svg {
+    transform: translateX(3px);
+  }
+
+  /* Vistas */
+  .lm-vista {
+    min-block-size: 0;
+    overflow: hidden;
+  }
+
+  .lm-vista[hidden] {
+    display: none;
+  }
+
+  /* Abertura grafite */
+  .lm-abertura {
+    display: grid;
+    grid-template-columns: 7fr 5fr;
+    align-items: end;
+    gap: calc(50 * var(--u));
+    padding: calc(45 * var(--u)) var(--margem);
+    background-image:
+      radial-gradient(
+        calc(608 * var(--u)) calc(416 * var(--u)) at 92% 115%,
+        #a9cd4c42,
+        transparent 70%
+      ),
+      radial-gradient(
+        calc(480 * var(--u)) calc(320 * var(--u)) at 8% -20%,
+        #ffffff12,
+        transparent 70%
+      ),
+      var(--gradiente-grafite);
+    color: #fff;
+  }
+
+  .lm-titulo {
+    position: relative;
+    max-inline-size: 13ch;
+    padding-block-end: calc(14 * var(--u));
+    font-size: calc(54 * var(--u));
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+
+  .lm-titulo::after {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-start: 0;
+    inline-size: calc(58 * var(--u));
+    block-size: calc(4 * var(--u));
+    border-radius: 5px;
+    background: var(--gradiente-limao);
+    content: '';
+  }
+
+  .lm-fim {
+    position: relative;
+    white-space: nowrap;
+  }
+
+  .lm .lm-faisca {
+    position: absolute;
+    inset-block-start: -0.18em;
+    inset-inline-end: -0.42em;
+    inline-size: 0.4em;
+    block-size: 0.4em;
+    color: var(--limao);
+  }
+
+  .lm-apoio {
+    max-inline-size: 30em;
+    color: #ffffffdb;
+    font-size: calc(13.5 * var(--u));
+  }
+
+  .lm-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: calc(10 * var(--u)) calc(20 * var(--u));
+    margin-block-start: calc(19 * var(--u));
+  }
+
+  .lm-whats {
+    font-size: calc(13 * var(--u));
+  }
+
+  .lm-loja {
+    display: flex;
+    align-items: center;
+    gap: calc(7 * var(--u));
+    margin-block-start: calc(19 * var(--u));
+    color: #ffffffbf;
+    font-size: calc(11 * var(--u));
+  }
+
+  .lm-loja svg {
+    inline-size: calc(14 * var(--u));
+    color: var(--limao);
+  }
+
+  /* Departamentos */
+  .lm-indice {
+    padding: calc(30 * var(--u)) var(--margem) 0;
+  }
+
+  .lm-indice-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: calc(13 * var(--u));
+    padding-block-end: calc(6 * var(--u));
+    border-block-end: 2px solid var(--tinta);
+  }
+
+  .lm-indice-lista,
+  .lm-itens,
+  .lm-pedido-itens {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .lm-indice-lista {
+    display: grid;
+    grid-template-rows: repeat(4, auto);
+    grid-template-columns: 1fr 1fr;
+    grid-auto-flow: column;
+    column-gap: calc(38 * var(--u));
+  }
+
+  .lm-linha {
+    display: grid;
+    grid-template-columns: calc(58 * var(--u)) 1fr calc(16 * var(--u));
+    align-items: center;
+    gap: calc(13 * var(--u));
+    inline-size: 100%;
+    padding: calc(7 * var(--u)) calc(6 * var(--u)) calc(7 * var(--u)) 0;
+    border: 0;
+    border-block-end: 1px solid var(--filete);
+    background: none;
+    text-align: start;
+    transition: background-color 220ms var(--ease);
+  }
+
+  .lm-linha:hover {
+    background-color: var(--papel-2);
+  }
+
+  .lm-foto,
+  .lm-dep-foto {
+    display: block;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border: 1px solid var(--filete);
+    background-color: #fff;
+  }
+
+  :is(.lm-foto, .lm-dep-foto) :global(picture) {
+    display: contents;
+  }
+
+  :is(.lm-foto, .lm-dep-foto) :global(img) {
+    display: block;
+    box-sizing: border-box;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: contain;
+  }
+
+  .lm-dep-foto :global(img) {
+    padding: 4%;
+  }
+
+  :is(.lm-foto, .lm-dep-foto)[data-cena] :global(img) {
+    padding: 0;
+    object-fit: cover;
+  }
+
+  .lm-nome {
+    display: grid;
+    gap: calc(2 * var(--u));
+    min-inline-size: 0;
+  }
+
+  .lm-linha-titulo {
+    font-size: calc(13.5 * var(--u));
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+  }
+
+  .lm-linha-titulo .lm-numero {
+    margin-inline-end: calc(2 * var(--u));
+    color: var(--tinta-3);
+    font-size: calc(10.5 * var(--u));
+  }
+
+  .lm-resumo {
+    color: var(--tinta-2);
+    font-size: calc(10.5 * var(--u));
+  }
+
+  .lm-seta {
+    color: var(--tinta-3);
+  }
+
+  .lm-linha:hover .lm-seta {
+    color: var(--tinta);
+    transform: translateX(3px);
+  }
+
+  /* Departamento (o bloco do site com a lista de itens e o Adicionar) */
+  .lm-dep {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    gap: calc(50 * var(--u));
+    padding: calc(30 * var(--u)) var(--margem) 0;
+  }
+
+  .lm-dep-foto {
+    border: 0;
+  }
+
+  .lm-dep-titulo {
+    display: flex;
+    align-items: center;
+    gap: calc(11 * var(--u));
+    font-size: calc(26 * var(--u));
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    outline: none;
+  }
+
+  .lm-dep-n {
+    display: grid;
+    place-items: center;
+    flex: none;
+    inline-size: calc(34 * var(--u));
+    block-size: calc(34 * var(--u));
+    border-radius: var(--raio);
+    background-image: var(--gradiente-grafite);
+    color: var(--limao);
+    font-size: calc(13 * var(--u));
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0;
+  }
+
+  .lm-dep-resumo {
+    margin-block-start: calc(8 * var(--u));
+    color: var(--tinta-2);
+  }
+
+  .lm-itens {
+    margin-block-start: calc(16 * var(--u));
+    border-block-start: 1px solid var(--filete);
+  }
+
+  .lm-itens li {
+    display: grid;
+    grid-template-columns: calc(40 * var(--u)) 1fr calc(108 * var(--u));
+    align-items: center;
+    gap: calc(10 * var(--u));
+    min-block-size: calc(40 * var(--u));
+    border-block-end: 1px solid var(--filete);
+    font-size: calc(12 * var(--u));
+    font-weight: 600;
+  }
+
+  .lm-item-n {
+    color: var(--tinta-3);
+    font-size: calc(10.5 * var(--u));
+  }
+
+  .lm-add,
+  .lm-qtd {
+    inline-size: 100%;
+    block-size: max(24px, calc(34 * var(--u)));
+    border-radius: 999px;
+  }
+
+  .lm-add {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: calc(4 * var(--u));
+    border: 1px solid var(--filete-forte);
+    background-color: var(--papel);
+    font-size: calc(11 * var(--u));
+    font-weight: 700;
+    line-height: 1;
+    transition:
+      border-color 200ms var(--ease),
+      background-color 200ms var(--ease);
+  }
+
+  .lm-add:hover {
+    border-color: var(--tinta);
+    background-color: var(--limao-claro);
+  }
+
+  .lm-add svg,
+  .lm-qtd svg {
+    inline-size: calc(13 * var(--u));
+    min-inline-size: 10px;
+  }
+
+  .lm-add[hidden],
+  .lm-qtd[hidden] {
+    display: none;
+  }
+
+  .lm-qtd {
+    display: grid;
+    grid-template-columns: calc(32 * var(--u)) 1fr calc(32 * var(--u));
+    overflow: hidden;
+    background: var(--gradiente-limao);
+  }
+
+  .lm-qtd button {
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+
+  .lm-qtd button:hover {
+    background-color: #24242414;
+  }
+
+  .lm-qtd input,
+  .lm :global(.lm-linha-qtd input) {
+    inline-size: 100%;
+    min-inline-size: 0;
+    border: 0;
+    background: none;
+    font-size: calc(12.5 * var(--u));
+    text-align: center;
+    appearance: textfield;
+  }
+
+  .lm :global(input[type='number']::-webkit-inner-spin-button),
+  .lm :global(input[type='number']::-webkit-outer-spin-button) {
+    margin: 0;
+    appearance: none;
+  }
+
+  /* Barra de baixo, quando há itens no pedido */
+  .lm-barra {
+    position: absolute;
+    inset: auto 0 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: calc(12 * var(--u));
+    padding: calc(8 * var(--u)) var(--margem);
+    background-image: var(--gradiente-grafite);
+    box-shadow: 0 calc(-10 * var(--u)) calc(30 * var(--u)) #00000029;
+    color: #fff;
+    font-size: calc(12 * var(--u));
+    font-weight: 600;
+    animation: lm-subir 400ms var(--ease);
+  }
+
+  .lm-barra[hidden] {
+    display: none;
+  }
+
+  @keyframes lm-subir {
+    from {
+      transform: translateY(100%);
+    }
+  }
+
+  /* Meu pedido */
+  .lm-fundo {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    background-color: #24242480;
+    pointer-events: auto;
+    animation: lm-escurecer 380ms var(--ease);
+  }
+
+  .lm-fundo[hidden],
+  .lm-pedido[hidden],
+  .lm-form[hidden],
+  .lm-vazio[hidden],
+  .lm-campo[hidden] {
+    display: none;
+  }
+
+  @keyframes lm-escurecer {
+    from {
+      opacity: 0;
+    }
+  }
+
+  .lm-pedido {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    inline-size: min(calc(410 * var(--u)), 100%);
+    overflow: auto;
+    background-color: var(--papel);
+    box-shadow: calc(-24 * var(--u)) 0 calc(60 * var(--u)) #00000038;
+    pointer-events: auto;
+    animation: lm-entrar 380ms var(--ease);
+  }
+
+  @keyframes lm-entrar {
+    from {
+      transform: translateX(100%);
+    }
+  }
+
+  .lm-pedido-topo {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: calc(13 * var(--u));
+    padding: calc(19 * var(--u)) calc(24 * var(--u)) calc(16 * var(--u));
+    border-block-end: calc(3 * var(--u)) solid;
+    border-image: var(--gradiente-limao) 1;
+    background-image: var(--gradiente-grafite);
+    color: #fff;
+  }
+
+  .lm-pedido-titulo {
+    font-size: calc(21 * var(--u));
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    outline: none;
+  }
+
+  .lm-pedido-sub {
+    margin-block-start: calc(4 * var(--u));
+    color: #ffffffd1;
+    font-size: calc(11 * var(--u));
+  }
+
+  .lm-fechar {
+    display: grid;
+    place-items: center;
+    flex: none;
+    inline-size: max(24px, calc(35 * var(--u)));
+    block-size: max(24px, calc(35 * var(--u)));
+    margin: calc(-5 * var(--u)) calc(-8 * var(--u)) 0 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #fff;
+  }
+
+  .lm-fechar svg {
+    inline-size: calc(18 * var(--u));
+    min-inline-size: 14px;
+  }
+
+  .lm-vazio {
+    display: grid;
+    justify-items: start;
+    gap: calc(10 * var(--u));
+    padding: calc(26 * var(--u)) calc(24 * var(--u));
+    color: var(--tinta-2);
+  }
+
+  .lm-vazio p:first-child {
+    color: var(--tinta);
+    font-size: calc(15 * var(--u));
+    font-weight: 800;
+  }
+
+  .lm-form {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 0 calc(24 * var(--u)) calc(16 * var(--u));
+  }
+
+  .lm :global(.lm-linha-pedido) {
+    display: grid;
+    grid-template-columns: 1fr calc(102 * var(--u)) calc(35 * var(--u));
+    align-items: center;
+    gap: calc(8 * var(--u));
+    padding-block: calc(8 * var(--u));
+    border-block-end: 1px solid var(--filete);
+    font-size: calc(12 * var(--u));
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .lm :global(.lm-linha-qtd) {
+    display: grid;
+    grid-template-columns: calc(32 * var(--u)) 1fr calc(32 * var(--u));
+    block-size: max(24px, calc(35 * var(--u)));
+    overflow: hidden;
+    border: 1px solid var(--filete-forte);
+    border-radius: 999px;
+  }
+
+  .lm :global(:is(.lm-linha-qtd, .lm-linha-pedido) button) {
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+
+  .lm :global(.lm-linha-qtd button:hover) {
+    background-color: var(--limao-claro);
+  }
+
+  .lm :global(.lm-remover) {
+    block-size: max(24px, calc(35 * var(--u)));
+    color: var(--tinta-3);
+  }
+
+  .lm :global(.lm-linha-pedido svg) {
+    inline-size: calc(13 * var(--u));
+    min-inline-size: 10px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+  }
+
+  .lm-total {
+    padding-block-start: calc(11 * var(--u));
+    color: var(--tinta-2);
+    font-size: calc(11 * var(--u));
+  }
+
+  .lm-receber {
+    margin: calc(18 * var(--u)) 0 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .lm-receber legend {
+    margin-block-end: calc(8 * var(--u));
+    padding: 0;
+  }
+
+  .lm-pedido-rotulo {
+    font-size: calc(12 * var(--u));
+    font-weight: 700;
+  }
+
+  .lm-pedido-rotulo span {
+    color: var(--tinta-3);
+    font-weight: 450;
+  }
+
+  .lm-opcoes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: calc(6 * var(--u));
+  }
+
+  .lm-opcao {
+    display: flex;
+    align-items: start;
+    gap: calc(8 * var(--u));
+    padding: calc(10 * var(--u));
+    border: 1px solid var(--filete-forte);
+    border-radius: var(--raio);
+    font-size: calc(12 * var(--u));
+    font-weight: 700;
+    line-height: 1.25;
+    transition:
+      border-color 200ms var(--ease),
+      background-color 200ms var(--ease);
+  }
+
+  .lm-opcao:has(input:checked) {
+    border-color: var(--tinta);
+    background-color: var(--limao-claro);
+  }
+
+  .lm-opcao input {
+    inline-size: max(12px, calc(14 * var(--u)));
+    block-size: max(12px, calc(14 * var(--u)));
+    margin: calc(2 * var(--u)) 0 0;
+    accent-color: var(--tinta);
+  }
+
+  .lm-opcao small {
+    display: block;
+    margin-block-start: calc(2 * var(--u));
+    color: var(--tinta-2);
+    font-size: calc(10.5 * var(--u));
+    font-weight: 450;
+  }
+
+  .lm-campo {
+    display: grid;
+    gap: calc(5 * var(--u));
+    margin-block-start: calc(15 * var(--u));
+  }
+
+  .lm-campo :is(input, textarea) {
+    box-sizing: border-box;
+    padding: calc(9 * var(--u));
+    border: 1px solid var(--filete-forte);
+    border-radius: var(--raio);
+    background-color: var(--papel);
+    font-size: calc(12.5 * var(--u));
+    resize: none;
+  }
+
+  .lm-campo :is(input, textarea)::placeholder {
+    color: var(--tinta-3);
+  }
+
+  .lm-campo :is(input, textarea):focus {
+    border-color: var(--tinta);
+    box-shadow: 0 0 0 3px var(--limao);
+    outline: none;
+  }
+
+  .lm-pedido-acoes {
+    display: grid;
+    gap: calc(8 * var(--u));
+    margin-block-start: auto;
+    padding-block-start: calc(18 * var(--u));
+  }
+
+  .lm-limpar {
+    justify-self: center;
+    min-block-size: max(24px, calc(35 * var(--u)));
+    padding: 0 calc(12 * var(--u));
+    border: 0;
+    background: none;
+    color: var(--tinta-2);
+    font-size: calc(12 * var(--u));
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 0.22em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lm * {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+
+  /* Moldura larga: proporções do site numa largura de referência de 1100px */
+  @container (min-width: 700px) {
+    .lm {
+      --u: calc(100cqi / 1100);
+    }
+  }
+
+  /* Moldura estreita: o site no celular, com o menu e os departamentos em uma coluna */
+  @container (max-width: 699.98px) {
+    .lm {
+      --u: calc(100cqi / 400);
+      --margem: calc(16 * var(--u));
+
+      font-size: calc(14 * var(--u));
+    }
+
+    .lm-topo {
+      block-size: calc(60 * var(--u));
+    }
+
+    .lm-marca {
+      block-size: calc(34 * var(--u));
+    }
+
+    .lm-nav,
+    .lm-so-largo,
+    .lm-resumo,
+    .lm-dep-foto {
+      display: none;
+    }
+
+    .lm-abrir {
+      block-size: max(24px, calc(42 * var(--u)));
+      padding-inline: calc(14 * var(--u));
+    }
+
+    .lm-menu {
+      display: grid;
+      place-items: center;
+      inline-size: calc(36 * var(--u));
+    }
+
+    .lm-menu svg {
+      inline-size: calc(22 * var(--u));
+    }
+
+    .lm-abertura {
+      grid-template-columns: 1fr;
+      gap: calc(22 * var(--u));
+      padding: calc(30 * var(--u)) var(--margem);
+    }
+
+    .lm-titulo {
+      font-size: calc(33 * var(--u));
+    }
+
+    .lm-apoio {
+      font-size: calc(15.5 * var(--u));
+    }
+
+    .lm-acoes {
+      flex-direction: column;
+      align-items: start;
+    }
+
+    .lm-botao {
+      min-block-size: calc(48 * var(--u));
+      padding-inline: calc(24 * var(--u));
+      font-size: calc(15.5 * var(--u));
+    }
+
+    .lm-botao-pequeno {
+      min-block-size: calc(40 * var(--u));
+      font-size: calc(14 * var(--u));
+    }
+
+    .lm-whats {
+      font-size: calc(15.5 * var(--u));
+    }
+
+    .lm-loja {
+      font-size: calc(13 * var(--u));
+    }
+
+    .lm-indice-lista {
+      grid-template-rows: none;
+      grid-template-columns: 1fr;
+      grid-auto-flow: row;
+    }
+
+    .lm-linha-titulo {
+      font-size: calc(15.5 * var(--u));
+    }
+
+    .lm-link-seta {
+      font-size: calc(13.5 * var(--u));
+    }
+
+    .lm-rotulo {
+      font-size: calc(11.5 * var(--u));
+    }
+
+    .lm-dep {
+      grid-template-columns: 1fr;
+      padding-block-start: calc(22 * var(--u));
+    }
+
+    .lm-itens li {
+      grid-template-columns: calc(38 * var(--u)) 1fr calc(116 * var(--u));
+      min-block-size: calc(48 * var(--u));
+      font-size: calc(13.5 * var(--u));
+    }
+
+    .lm-add {
+      font-size: calc(13 * var(--u));
+    }
+
+    .lm-qtd {
+      block-size: calc(40 * var(--u));
+    }
+
+    .lm-barra {
+      font-size: calc(13.5 * var(--u));
+    }
+
+    .lm-pedido-topo,
+    .lm-vazio,
+    .lm-form {
+      padding-inline: var(--margem);
+    }
+
+    .lm :global(.lm-linha-pedido) {
+      font-size: calc(14 * var(--u));
+      grid-template-columns: 1fr calc(108 * var(--u)) calc(32 * var(--u));
+    }
+  }
+</style>
