@@ -17,9 +17,20 @@ import { metasPaginas } from '../i18n/textos';
  */
 const meta = metasPaginas.sistemas;
 const produtos = (await todosProjetos()).filter((p) => p.data.tipo === 'produto');
+const site = Astro.site!;
+const jsonLd = {
+  '@type': 'Service',
+  '@id': new URL(rotas.sistemas, site).href + '#servico',
+  name: 'Sistemas sob medida e automação de processos',
+  serviceType: 'Desenvolvimento de sistemas sob medida e automação de processos',
+  description: meta.descricao,
+  url: new URL(rotas.sistemas, site).href,
+  provider: { '@id': `${site.origin}/#organizacao` },
+  areaServed: 'BR',
+};
 ---
 
-<Base titulo={meta.titulo} descricao={meta.descricao}>
+<Base titulo={meta.titulo} descricao={meta.descricao} jsonLd={[jsonLd]}>
   <FontesPrevias slot="head" />
   <section class="folha pagina-cabeca" aria-labelledby="pagina-titulo">
     <Colunas />

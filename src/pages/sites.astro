@@ -16,9 +16,20 @@ const meta = metasPaginas.sites;
 const projetos = (await todosProjetos()).filter((p) => p.data.tipo === 'site');
 const formato = (i: number) => (i % 4 === 0 ? 'grande' : 'media');
 const ficha = (i: number) => (i % 4 === 0 ? 'lado' : 'abaixo');
+const site = Astro.site!;
+const jsonLd = {
+  '@type': 'Service',
+  '@id': new URL(rotas.sites, site).href + '#servico',
+  name: 'Criação de sites',
+  serviceType: 'Criação de sites institucionais, landing pages e páginas de venda',
+  description: meta.descricao,
+  url: new URL(rotas.sites, site).href,
+  provider: { '@id': `${site.origin}/#organizacao` },
+  areaServed: 'BR',
+};
 ---
 
-<Base titulo={meta.titulo} descricao={meta.descricao}>
+<Base titulo={meta.titulo} descricao={meta.descricao} jsonLd={[jsonLd]}>
   <FontesPrevias slot="head" />
   <section class="folha pagina-cabeca" aria-labelledby="pagina-titulo">
     <Colunas />

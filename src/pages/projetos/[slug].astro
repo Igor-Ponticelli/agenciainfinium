@@ -30,9 +30,25 @@ const { Content } = await render(projeto);
 const todos = await todosProjetos();
 const proximo = todos[(todos.findIndex((p) => p.id === projeto.id) + 1) % todos.length]!;
 const assunto = d.tipo === 'site' ? 'site' : 'sistema';
+const site = Astro.site!;
+const imagem = `/og/${d.slug}.png`;
+
+const jsonLd = {
+  '@type': d.tipo === 'site' ? 'WebSite' : 'SoftwareApplication',
+  '@id': new URL(rotaProjeto(d.slug), site).href + '#obra',
+  name: d.titulo,
+  description: d.resumo,
+  ...(d.url ? { url: d.url } : {}),
+  dateCreated: String(d.ano),
+  inLanguage: 'pt-BR',
+  creator: { '@id': `${site.origin}/#organizacao` },
+  ...(d.tipo === 'produto'
+    ? { applicationCategory: 'BusinessApplication', operatingSystem: 'Web' }
+    : {}),
+};
 ---
 
-<Base titulo={d.titulo} descricao={d.resumo}>
+<Base titulo={d.titulo} descricao={d.resumo} imagem={imagem} jsonLd={[jsonLd]}>
   <FontesPrevias slot="head" />
   <article>
     <section class="folha pagina-cabeca">
