@@ -17,6 +17,8 @@ interface Props {
   descricao: string;
   tituloCompleto?: boolean;
   noindex?: boolean;
+  jsonLd?: Record<string, unknown>[];
+  tipoOg?: 'website' | 'article';
   /** A página de acessos não tem cabeçalho nem rodapé (conteudo.md, seção 1). */
   semCabecalho?: boolean;
   /**
