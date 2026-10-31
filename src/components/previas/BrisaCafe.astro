@@ -1,0 +1,471 @@
+---
+/**
+ * Miniprévia da Brisa Café: o hero (título, subtítulo, os dois botões e o status) com a foto do
+ * salão e a xícara sobreposta. Interações que existem no site: o status aberto/fechado pelo
+ * horário real, o tema claro/escuro (no site segue o sistema; aqui também é um botão) e os
+ * hovers dos botões. Fonte: .claude/docs/projetos/brisa-cafe.md.
+ *
+ * Fotos do salão e da xícara: são da Brisa, com aval. As fotos de terceiros (cuca e pão de
+ * queijo) não entram.
+ */
+import { Picture } from 'astro:assets';
+import salao from '../../assets/previas/fotos/brisa/salao.jpg';
+import espresso from '../../assets/previas/fotos/brisa/espresso.jpg';
+import logo from '../../assets/previas/brisa-logo.svg?raw';
+import { statusBrisa } from '../../scripts/previas/brisa-cafe';
+
+const rotuloTema = 'Alternar entre tema claro e escuro';
+// Valor do build, para quem está sem JS; o script recalcula com o relógio do visitante
+const status = statusBrisa();
+const whatsapp =
+  'M187.58,144.84l-32-16a8,8,0,0,0-8,.5l-14.69,9.8a40.55,40.55,0,0,1-16-16l9.8-14.69a8,8,0,0,0,.5-8l-16-32A8,8,0,0,0,104,64a40,40,0,0,0-40,40,88.1,88.1,0,0,0,88,88,40,40,0,0,0,40-40A8,8,0,0,0,187.58,144.84ZM152,176a72.08,72.08,0,0,1-72-72A24,24,0,0,1,99.29,80.46l11.48,23L101,118a8,8,0,0,0-.73,7.51,56.47,56.47,0,0,0,30.15,30.15A8,8,0,0,0,138,155l14.61-9.74,23,11.48A24,24,0,0,1,152,176ZM128,24A104,104,0,0,0,36.18,176.88L24.83,210.93a16,16,0,0,0,20.24,20.24l34.05-11.35A104,104,0,1,0,128,24Zm0,192a87.87,87.87,0,0,1-44.06-11.81,8,8,0,0,0-6.54-.67L40,216,52.47,178.6a8,8,0,0,0-.66-6.54A88,88,0,1,1,128,216Z';
+---
+
+<div class="br" lang="pt-BR" data-tema="claro">
+  <div class="br-topo">
+    <span class="br-logo" set:html={logo} />
+    <span class="br-nav" aria-hidden="true">
+      <span>Balcão</span>
+      <span>O espaço</span>
+      <span>Visite</span>
+      <span>Cardápio</span>
+    </span>
+    <button class="br-tema" type="button" aria-label={rotuloTema} aria-pressed="false" data-br-tema>
+      <svg class="br-sol" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+      </svg>
+      <svg class="br-lua" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+      </svg>
+    </button>
+    <span class="br-botao br-botao-pequeno" aria-hidden="true">
+      <svg viewBox="0 0 256 256">
+        <path d={whatsapp}></path>
+      </svg>
+      <span class="br-so-largo">Chamar no WhatsApp</span>
+    </span>
+  </div>
+
+  <div class="br-hero">
+    <div class="br-texto">
+      <p class="br-titulo">Seu café no Catarina Moda Shopping</p>
+      <p class="br-sub">
+        Cafeteria aberta ao público em Brusque, com salão e garden. Espresso, cucas, bolos caseiros
+        e salgados fresquinhos.
+      </p>
+      <p class="br-acoes" aria-hidden="true">
+        <span class="br-botao">
+          <svg viewBox="0 0 256 256">
+            <path d={whatsapp}></path>
+          </svg>
+          Chamar no WhatsApp
+        </span>
+        <span class="br-contorno">
+          Ver cardápio
+          <svg viewBox="0 0 256 256">
+            <path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"></path>
+          </svg>
+        </span>
+      </p>
+      <p class="br-hoje" data-estado={status.aberto ? 'aberto' : 'fechado'} data-br-status>
+        <span class="br-ponto" aria-hidden="true"></span>
+        <span>{status.texto}</span>
+      </p>
+    </div>
+    <div class="br-fotos">
+      <span class="br-foto-grande">
+        <Picture
+          src={salao}
+          formats={['avif', 'webp']}
+          widths={[400, 640, 900, 1200]}
+          sizes="(min-width: 64rem) 34vw, 90vw"
+          loading="lazy"
+          alt="Salão da Brisa Café, com paredes terracota, luz embutida, banco estofado e janela em arco para o garden."
+        />
+      </span>
+      <span class="br-foto-pequena">
+        <Picture
+          src={espresso}
+          formats={['avif', 'webp']}
+          widths={[160, 240, 360]}
+          sizes="(min-width: 64rem) 12vw, 30vw"
+          loading="lazy"
+          alt="Xícara de espresso vista de cima, sobre mesa de madeira."
+        />
+      </span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .br {
+    --fundo: #faf4e6;
+    --texto: #2b1d14;
+    --texto-2: #6b4a33;
+    --marca: #85593c;
+    --marca-texto: #faf4e6;
+    --caramelo: #cc9b7a;
+    --linha: #2b1d1424;
+    --sombra: 107 74 51;
+    --logo-caramelo: #c19a7f;
+    --logo-marrom: #7f5a41;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --u: 0.1cqi;
+
+    color-scheme: light;
+
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    background-color: var(--fundo);
+    color: var(--texto);
+    font-family: sans-serif;
+    font-size: calc(17 * var(--u));
+    line-height: 1.6;
+    transition:
+      background-color 300ms,
+      color 300ms;
+  }
+
+  :global(.previa[data-ativa]) .br {
+    font-family: var(--previa-figtree);
+  }
+
+  .br[data-tema='escuro'] {
+    color-scheme: dark;
+    --fundo: #1c1410;
+    --texto: #f2e6d6;
+    --texto-2: #d9a57c;
+    --marca: #cc9b7a;
+    --marca-texto: #1c1410;
+    --linha: #f2e6d624;
+    --sombra: 0 0 0;
+    --logo-caramelo: #cc9b7a;
+    --logo-marrom: #f2e6d6;
+  }
+
+  .br svg {
+    fill: currentColor;
+  }
+
+  /* Topo */
+  .br-topo {
+    display: flex;
+    align-items: center;
+    gap: calc(32 * var(--u));
+    min-block-size: calc(84 * var(--u));
+    padding-inline: calc(56 * var(--u));
+  }
+
+  .br-logo {
+    display: block;
+    inline-size: calc(80 * var(--u));
+    margin-inline-end: auto;
+    line-height: 0;
+  }
+
+  .br-logo :global(svg) {
+    inline-size: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .br-nav {
+    display: flex;
+    gap: calc(32 * var(--u));
+    font-size: calc(15 * var(--u));
+    font-weight: 500;
+  }
+
+  .br-tema {
+    display: grid;
+    place-items: center;
+    inline-size: max(24px, calc(40 * var(--u)));
+    block-size: max(24px, calc(40 * var(--u)));
+    padding: 0;
+    border: 1px solid var(--linha);
+    border-radius: 50%;
+    background: none;
+    color: var(--texto);
+    cursor: pointer;
+    transition:
+      border-color 250ms var(--ease),
+      background-color 250ms var(--ease);
+  }
+
+  .br-tema:hover {
+    border-color: var(--marca);
+    background-color: color-mix(in oklab, var(--caramelo) 14%, transparent);
+  }
+
+  .br-tema:focus-visible {
+    outline: 2px solid var(--marca);
+    outline-offset: 2px;
+  }
+
+  .br .br-tema svg {
+    inline-size: calc(17 * var(--u));
+    min-inline-size: 12px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .br[data-tema='claro'] .br-sol,
+  .br[data-tema='escuro'] .br-lua {
+    display: none;
+  }
+
+  /* Botões em pílula (hover do site; sem destino, porque não levam a lugar nenhum daqui) */
+  .br-botao,
+  .br-contorno {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55em;
+    border-radius: 999px;
+    font-weight: 600;
+    line-height: 1.6;
+    white-space: nowrap;
+    pointer-events: auto;
+    transition:
+      background-color 250ms var(--ease),
+      border-color 250ms var(--ease),
+      box-shadow 250ms var(--ease);
+  }
+
+  .br-botao {
+    padding: 0.85em 1.4em;
+    background-color: var(--marca);
+    color: var(--marca-texto);
+    box-shadow: 0 calc(8 * var(--u)) calc(20 * var(--u)) calc(-10 * var(--u))
+      rgb(var(--sombra) / 0.7);
+  }
+
+  .br-botao:hover {
+    background-color: color-mix(in oklab, var(--marca) 86%, black);
+    box-shadow: 0 calc(12 * var(--u)) calc(26 * var(--u)) calc(-12 * var(--u))
+      rgb(var(--sombra) / 0.8);
+  }
+
+  .br-botao-pequeno {
+    padding: 0.65em 1.15em;
+    font-size: calc(15 * var(--u));
+  }
+
+  .br-contorno {
+    padding: 0.8em 1.3em;
+    border: 1px solid var(--linha);
+  }
+
+  .br-contorno:hover {
+    border-color: var(--marca);
+    background-color: color-mix(in oklab, var(--caramelo) 14%, transparent);
+  }
+
+  .br-botao svg {
+    inline-size: 1.25em;
+    block-size: 1.25em;
+  }
+
+  .br-contorno svg {
+    inline-size: 1.1em;
+    block-size: 1.1em;
+  }
+
+  /* Hero */
+  .br-hero {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    align-items: center;
+    gap: calc(56 * var(--u));
+    padding: calc(8 * var(--u)) calc(56 * var(--u)) calc(32 * var(--u));
+    min-block-size: 0;
+  }
+
+  .br-texto {
+    display: grid;
+    justify-items: start;
+    gap: calc(20 * var(--u));
+  }
+
+  .br-titulo {
+    max-inline-size: 13ch;
+    font-family: serif;
+    font-size: calc(56 * var(--u));
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  :global(.previa[data-ativa]) .br-titulo {
+    font-family: var(--previa-young-serif);
+  }
+
+  .br-sub {
+    max-inline-size: 40ch;
+    color: var(--texto-2);
+  }
+
+  .br-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(12 * var(--u));
+    margin-block-start: calc(4 * var(--u));
+    font-size: calc(16 * var(--u));
+  }
+
+  .br-hoje {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    color: var(--texto-2);
+    font-size: calc(15 * var(--u));
+    font-weight: 500;
+  }
+
+  .br-hoje[data-estado='aberto'] {
+    color: var(--texto);
+  }
+
+  .br-ponto {
+    inline-size: 0.6em;
+    block-size: 0.6em;
+    border-radius: 50%;
+    background-color: var(--texto-2);
+    opacity: 0.5;
+  }
+
+  .br-hoje[data-estado='aberto'] .br-ponto {
+    background-color: #3f8a4c;
+    box-shadow: 0 0 0 4px #3f8a4c2e;
+    opacity: 1;
+  }
+
+  /* Fotos: o salão com a xícara sobreposta (a cor fica por baixo enquanto a foto carrega) */
+  .br-fotos {
+    position: relative;
+    padding-block-end: calc(36 * var(--u));
+  }
+
+  .br-foto-grande,
+  .br-foto-pequena {
+    display: block;
+    overflow: hidden;
+    border-radius: calc(16 * var(--u));
+  }
+
+  .br-fotos :global(picture) {
+    display: contents;
+  }
+
+  .br-fotos :global(img) {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  .br-foto-pequena :global(img) {
+    object-position: 45% 40%;
+  }
+
+  .br-foto-grande {
+    aspect-ratio: 4 / 4.2;
+    max-block-size: calc(100cqb - 160 * var(--u));
+    margin-inline-start: auto;
+    background-color: var(--caramelo);
+    box-shadow: 0 calc(24 * var(--u)) calc(50 * var(--u)) calc(-28 * var(--u))
+      rgb(var(--sombra) / 0.7);
+  }
+
+  .br-foto-pequena {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-start: calc(-48 * var(--u));
+    inline-size: calc(180 * var(--u));
+    aspect-ratio: 1;
+    border: calc(6 * var(--u)) solid var(--fundo);
+    background-color: color-mix(in oklab, var(--marca) 80%, var(--fundo));
+    box-shadow: 0 calc(18 * var(--u)) calc(36 * var(--u)) calc(-20 * var(--u))
+      rgb(var(--sombra) / 0.8);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .br,
+    .br * {
+      transition: none !important;
+    }
+  }
+
+  /* Moldura larga: proporções do site numa largura de referência de 1100px */
+  @container (min-width: 700px) {
+    .br {
+      --u: calc(100cqi / 1100);
+    }
+  }
+
+  /* Moldura estreita: o topo do site no celular, com a foto do salão aparecendo embaixo */
+  @container (max-width: 699.98px) {
+    .br {
+      --u: calc(100cqi / 400);
+
+      grid-template-rows: auto auto;
+      align-content: start;
+      font-size: calc(15.5 * var(--u));
+    }
+
+    .br-topo {
+      gap: calc(10 * var(--u));
+      min-block-size: calc(72 * var(--u));
+      padding-inline: calc(16 * var(--u));
+    }
+
+    .br-logo {
+      inline-size: calc(72 * var(--u));
+    }
+
+    .br-nav,
+    .br-so-largo {
+      display: none;
+    }
+
+    .br-botao-pequeno {
+      padding: 0.85em;
+    }
+
+    .br-hero {
+      grid-template-columns: 1fr;
+      gap: calc(28 * var(--u));
+      padding: calc(14 * var(--u)) calc(16 * var(--u)) 0;
+    }
+
+    .br-texto {
+      gap: calc(16 * var(--u));
+    }
+
+    .br-titulo {
+      font-size: calc(36 * var(--u));
+    }
+
+    .br-acoes {
+      font-size: calc(15 * var(--u));
+    }
+
+    .br-foto-grande {
+      aspect-ratio: 4 / 3;
+      max-block-size: none;
+      inline-size: 100%;
+    }
+
+    .br-foto-pequena {
+      inset-block-end: auto;
+      inset-block-start: 60%;
+      inset-inline-start: calc(-8 * var(--u));
+      inline-size: calc(120 * var(--u));
+    }
+  }
+</style>
