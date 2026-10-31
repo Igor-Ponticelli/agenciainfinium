@@ -18,6 +18,9 @@ const paginas = [
   '/sistemas/',
   '/projetos/',
   '/projetos/brisa-cafe/',
+  '/blog/',
+  '/blog/por-que-seu-site-nao-aparece-no-google/',
+  '/raio-x-do-site/',
   '/contato/',
   '/acessos/',
   '/nao-existe/',
@@ -58,6 +61,29 @@ for (const [nome, viewport] of Object.entries(viewports)) {
     if (rota === '/' || rota === '/sites/' || rota === '/sistemas/') {
       await pagina.screenshot({ path: arquivo.replace('.png', '-primeira-tela.png') });
     }
+    // O holofote e a célula ativa sob o ponteiro (só com ponteiro fino), na abertura e na cena
+    if (nome === 'desktop' && rota === '/') {
+      await pagina.mouse.move(420, 380);
+      await pagina.mouse.move(460, 400);
+      await pagina.waitForTimeout(500);
+      await pagina.screenshot({ path: arquivo.replace('.png', '-holofote.png') });
+      await pagina.evaluate(() => document.querySelector('.cena')?.scrollIntoView());
+      await pagina.waitForTimeout(300);
+      await pagina.mouse.move(300, 420);
+      await pagina.mouse.move(340, 440);
+      await pagina.waitForTimeout(500);
+      await pagina.screenshot({ path: arquivo.replace('.png', '-holofote-cena.png') });
+      await pagina.mouse.move(0, 0);
+    }
+    // Os ícones no meio do desenho: a lista "todo site inclui" entrando na tela
+    if (nome === 'desktop' && rota === '/sites/') {
+      await pagina.evaluate(() => {
+        const alvo = document.querySelector('#inclui-titulo');
+        if (alvo) scrollTo(0, alvo.getBoundingClientRect().top + scrollY - innerHeight * 0.45);
+      });
+      await pagina.waitForTimeout(400);
+      await pagina.screenshot({ path: arquivo.replace('.png', '-icones.png') });
+    }
     // Overflow horizontal?
     const overflow = await pagina.evaluate(
       () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
@@ -67,7 +93,9 @@ for (const [nome, viewport] of Object.entries(viewports)) {
     const estouros = await pagina.evaluate(() => {
       const achados = [];
       for (const el of document.querySelectorAll('h1, h2, h3, p, a, li, dd, dt, span')) {
-        const pai = el.parentElement;
+        // Um pai com display: contents não tem caixa: a medida é a do avô
+        let pai = el.parentElement;
+        while (pai && getComputedStyle(pai).display === 'contents') pai = pai.parentElement;
         if (!pai) continue;
         const r = el.getBoundingClientRect();
         const rp = pai.getBoundingClientRect();
