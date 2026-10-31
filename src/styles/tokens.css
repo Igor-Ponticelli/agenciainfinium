@@ -37,6 +37,10 @@
   --color-rotulo: var(--color-text);
   --color-fita: var(--color-accent);
   --color-celula: var(--color-surface);
+  /* O holofote (a luz sob o ponteiro) e o brilho dos ícones, na cor da fita */
+  --color-holofote: color-mix(in oklab, var(--color-accent) 12%, transparent);
+  --color-icone-brilho: color-mix(in oklab, var(--color-accent) 22%, transparent);
+  --color-icone-sombra: color-mix(in oklab, var(--color-accent) 45%, transparent);
 
   /* Fonte: --fonte-roboto é gerada pelo Astro (astro.config.ts), com fallback de métricas ajustadas */
   --font-sans: var(--fonte-roboto, 'Roboto', 'Helvetica Neue', Arial, sans-serif);
@@ -128,6 +132,9 @@
   --color-rotulo: color-mix(in oklab, var(--color-lilac) 72%, transparent);
   --color-fita: var(--color-lilac);
   --color-celula: var(--violet-900);
+  --color-holofote: color-mix(in oklab, var(--color-lilac) 14%, transparent);
+  --color-icone-brilho: color-mix(in oklab, var(--color-lilac) 30%, transparent);
+  --color-icone-sombra: color-mix(in oklab, var(--color-lilac) 60%, transparent);
   --color-rolagem: color-mix(in oklab, var(--color-lilac) 40%, transparent);
   background-image: var(--gradient-brand);
   color: #ffffff;

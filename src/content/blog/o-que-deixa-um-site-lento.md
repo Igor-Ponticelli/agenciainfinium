@@ -4,6 +4,7 @@ descricao: Imagem pesada, tema cheio de plugin, hospedagem fraca. Os motivos mai
 diasAntes: 3
 tags: [sites, velocidade]
 chamada: raioX
+capa: notebook
 ---
 
 Um site lento custa cliente. A pessoa toca no link, espera, e volta para a busca. Ela nem chega a ver o que você faz. Isso acontece em silêncio, todo dia, e não aparece em relatório nenhum.

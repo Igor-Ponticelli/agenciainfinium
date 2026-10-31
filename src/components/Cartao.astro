@@ -1,0 +1,26 @@
+---
+import Icone from './Icone.astro';
+import type { NomeIcone } from '../data/icones';
+
+/**
+ * Um cartão da planilha (pedido do Igor, 31/10/2026): uma célula mesclada numa linha `.cartoes`,
+ * com o ícone desenhado pela fita, um título e um texto. Sem sombra nem canto arredondado: é
+ * uma célula, separada das vizinhas pelos filetes de 1 px da própria grade.
+ */
+interface Props {
+  icone?: NomeIcone;
+  titulo?: string;
+  texto?: string;
+  as?: 'div' | 'li' | 'article';
+  class?: string;
+}
+
+const { icone, titulo, texto, as: Tag = 'div', class: classe } = Astro.props;
+---
+
+<Tag class:list={['cartao', classe]}>
+  {icone && <Icone nome={icone} />}
+  {titulo && <h3 class="cartao-titulo">{titulo}</h3>}
+  {texto && <p class:list={['cartao-texto', { 'cartao-frase': !titulo }]}>{texto}</p>}
+  <slot />
+</Tag>

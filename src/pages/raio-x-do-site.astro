@@ -1,8 +1,12 @@
 ---
 import LandingPage from '../layouts/LandingPage.astro';
 import BotaoRaioX from '../components/BotaoRaioX.astro';
+import Cartao from '../components/Cartao.astro';
+import Foto from '../components/Foto.astro';
 import Linha from '../components/Linha.astro';
+import Secao from '../components/Secao.astro';
 import { nomeCompleto } from '../data/empresa';
+import type { NomeIcone } from '../data/icones';
 import { prazoDias, preco, precoFormatado } from '../data/raioX';
 import { rotas } from '../i18n/rotas';
 import { raioX as t } from '../i18n/paginas/raioX';
@@ -11,10 +15,13 @@ import { metasPaginas } from '../i18n/textos';
 /**
  * Landing page do Raio-X do site (conteudo.md, seção 11): uma oferta, uma ação, sem menu.
  * O botão vai para o link de pagamento; enquanto ele não existe, vai para o WhatsApp.
+ * Em bandas, com a foto na cabeça e cartões com ícone (31/10/2026).
  */
 const meta = metasPaginas.raioX;
 const site = Astro.site!;
 const url = new URL(rotas.raioX, site).href;
+const iconesParaQuem: NomeIcone[] = ['olho', 'lupa', 'relogio', 'janela'];
+const iconesRecebe: NomeIcone[] = ['lupa', 'velocimetro', 'escudo', 'documento', 'video'];
 
 const jsonLd = {
   '@type': 'Service',
@@ -41,10 +48,12 @@ const jsonLd = {
 
 <LandingPage titulo={meta.titulo} descricao={meta.descricao} jsonLd={[jsonLd]}>
   <div data-raio-x>
-    <section
-      class="folha pagina-cabeca raio-x-abertura"
+    <Secao
+      cabeca
+      folha="pagina-cabeca cabeca-com-foto raio-x-abertura"
       aria-labelledby="pagina-titulo"
       data-secao="abertura"
+      style="--cabeca-linhas: 3"
     >
       <Linha>
         <h1
@@ -65,39 +74,37 @@ const jsonLd = {
           <p class="raio-x-apoio">{t.abertura.apoio}</p>
         </div>
       </Linha>
-    </section>
+      <Foto class="cabeca-foto" nome="lupa" prioridade sizes="(min-width: 64rem) 28rem, 100vw" />
+    </Secao>
 
-    <section class="folha" aria-labelledby="para-quem-titulo" data-secao="para-quem">
+    <Secao tom="branco" aria-labelledby="para-quem-titulo" data-secao="para-quem">
       <Linha>
         <h2 class="titulo-secao" id="para-quem-titulo">
           {t.paraQuem.titulo}
         </h2>
       </Linha>
-      <ul class="lista-planilha">
-        {t.paraQuem.itens.map((i) => (
-          <Linha as="li">
-            <span class="item-linha">{i}</span>
-          </Linha>
+      <Linha as="ul" class="cartoes" data-cartoes={t.paraQuem.itens.length}>
+        {t.paraQuem.itens.map((i, idx) => (
+          <Cartao as="li" icone={iconesParaQuem[idx]} texto={i} />
         ))}
-      </ul>
-    </section>
+      </Linha>
+    </Secao>
 
-    <section class="folha" aria-labelledby="recebe-titulo" data-secao="recebe">
+    <Secao aria-labelledby="recebe-titulo" data-secao="recebe">
       <Linha>
         <h2 class="titulo-secao" id="recebe-titulo">
           {t.recebe.titulo}
         </h2>
         <p class="celula celula-apoio">{t.recebe.texto}</p>
       </Linha>
-      {t.recebe.itens.map((i) => (
-        <Linha>
-          <h3 class="par-chave">{i.titulo}</h3>
-          <p class="par-valor">{i.texto}</p>
-        </Linha>
-      ))}
-    </section>
+      <Linha class="cartoes" data-cartoes={t.recebe.itens.length}>
+        {t.recebe.itens.map((i, idx) => (
+          <Cartao icone={iconesRecebe[idx]} titulo={i.titulo} texto={i.texto} />
+        ))}
+      </Linha>
+    </Secao>
 
-    <section class="folha" aria-labelledby="como-titulo" data-secao="como-funciona">
+    <Secao tom="branco" aria-labelledby="como-titulo" data-secao="como-funciona">
       <Linha>
         <h2 class="titulo-secao" id="como-titulo">
           {t.comoFunciona.titulo}
@@ -112,9 +119,9 @@ const jsonLd = {
           </Linha>
         ))}
       </ol>
-    </section>
+    </Secao>
 
-    <section class="folha" aria-labelledby="preco-titulo" data-secao="preco">
+    <Secao aria-labelledby="preco-titulo" data-secao="preco">
       <Linha>
         <h2 class="titulo-secao" id="preco-titulo">
           {t.preco.titulo}
@@ -133,9 +140,9 @@ const jsonLd = {
           <p class="raio-x-honesto">{t.preco.honesto}</p>
         </div>
       </Linha>
-    </section>
+    </Secao>
 
-    <section class="folha" aria-labelledby="faq-titulo" data-secao="faq">
+    <Secao tom="branco" aria-labelledby="faq-titulo" data-secao="faq">
       <Linha>
         <h2 class="titulo-secao" id="faq-titulo">
           {t.faq.titulo}
@@ -149,7 +156,7 @@ const jsonLd = {
           </details>
         </Linha>
       ))}
-    </section>
+    </Secao>
   </div>
 
   <section

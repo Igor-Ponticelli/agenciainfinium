@@ -1,10 +1,15 @@
 ---
 import Base from '../layouts/Base.astro';
+import Cartao from '../components/Cartao.astro';
 import ChamadaFinal from '../components/ChamadaFinal.astro';
-import Linha from '../components/Linha.astro';
 import FontesPrevias from '../components/FontesPrevias.astro';
+import Foto from '../components/Foto.astro';
+import Icone from '../components/Icone.astro';
+import Linha from '../components/Linha.astro';
 import Obra from '../components/Obra.astro';
+import Secao from '../components/Secao.astro';
 import { dataCurta, dataDoPost, dataIso, postsPublicados } from '../data/blog';
+import type { NomeIcone } from '../data/icones';
 import { todosProjetos } from '../data/projetos';
 import { blog as tb } from '../i18n/paginas/blog';
 import { rotaPost } from '../i18n/rotas';
@@ -14,9 +19,11 @@ import { inicio as t } from '../i18n/paginas/inicio';
 import { metasPaginas } from '../i18n/textos';
 
 /**
- * Home: a planilha que vira sistema (contrato em .impeccable/surfaces/src-pages-index-astro.md).
- * Abertura escura no degradê; a cena do problema é a planilha de verdade; os dois serviços são
- * células mescladas; os projetos ficam fora da grade; a chamada final fecha a planilha.
+ * Home: a planilha que vira sistema (contrato em .impeccable/surfaces/src-pages-index-astro.md),
+ * em bandas (decisão do Igor, 31/10/2026): abertura escura com a foto; a cena do problema é a
+ * planilha de verdade; os dois serviços são células mescladas com foto; a conexão volta ao
+ * degradê; os projetos ficam fora da grade; os resultados são cartões com ícone; a chamada
+ * final fecha a planilha.
  */
 const meta = metasPaginas.inicio;
 const projetos = await todosProjetos();
@@ -25,6 +32,10 @@ const posts = (await postsPublicados()).slice(0, 3);
 // Pares desencontrados: grande com a ficha ao lado, média com a ficha embaixo, e o inverso.
 const formato = (i: number) => ([0, 3].includes(i % 4) ? 'grande' : 'media');
 const ficha = (i: number) => ([0, 3].includes(i % 4) ? 'lado' : 'abaixo');
+
+// A ferramenta de cada linha da cena, e o ícone de cada resultado
+const iconesCena: NomeIcone[] = ['balao', 'planilha', 'quadro', 'nota'];
+const iconesResultados: NomeIcone[] = ['relogio', 'certo', 'usuarios', 'painel', 'crescimento'];
 ---
 
 <Base titulo={meta.titulo} descricao={meta.descricao} tituloCompleto aberturaEscura>
@@ -53,30 +64,48 @@ const ficha = (i: number) => ([0, 3].includes(i % 4) ? 'lado' : 'abaixo');
         </a>
       </div>
     </Linha>
+    <Foto
+      class="abertura-foto"
+      nome="celular"
+      tom="violeta"
+      prioridade
+      posicao="50% 35%"
+      sizes="(min-width: 64rem) 34rem, 100vw"
+      widths={[480, 800, 1100, 1600]}
+    />
   </section>
 
-  <section class="folha cena" aria-labelledby="cena-titulo">
+  <Secao folha="cena" aria-labelledby="cena-titulo">
     <Linha class="cena-titulo">
       <h2 class="titulo-secao" id="cena-titulo">
         {t.problema.titulo}
       </h2>
     </Linha>
     <div class="cena-tabela">
-      {t.problema.celulas.map(([chave, valor]) => (
+      {t.problema.celulas.map(([chave, valor], i) => (
         <div class="cena-linha">
           <span class="cena-chave">{chave}</span>
-          <span class="cena-valor">{valor}</span>
+          <span class="cena-valor">
+            {iconesCena[i] && <Icone nome={iconesCena[i]} class="icone-inline" tamanho={22} />}
+            {valor}
+          </span>
         </div>
       ))}
+      <Foto
+        class="cena-foto"
+        nome="planilha"
+        posicao="50% 45%"
+        sizes="(min-width: 64rem) 34rem, 100vw"
+      />
       <div class="cena-texto texto">
         {t.problema.paragrafos.map((p) => (
           <p>{p}</p>
         ))}
       </div>
     </div>
-  </section>
+  </Secao>
 
-  <section class="folha" aria-labelledby="servicos-titulo">
+  <Secao tom="branco" aria-labelledby="servicos-titulo">
     <Linha>
       <h2 class="titulo-secao" id="servicos-titulo">
         {t.servicos.titulo}
@@ -90,6 +119,7 @@ const ficha = (i: number) => ([0, 3].includes(i % 4) ? 'lado' : 'abaixo');
           rota: rotas.sites,
           assunto: 'site' as const,
           evento: 'whatsapp_sites',
+          foto: 'entre' as const,
         },
         {
           ...t.servicos.sistemas,
@@ -97,9 +127,11 @@ const ficha = (i: number) => ([0, 3].includes(i % 4) ? 'lado' : 'abaixo');
           rota: rotas.sistemas,
           assunto: 'sistema' as const,
           evento: 'whatsapp_sistemas',
+          foto: 'estoque' as const,
         },
       ].map((s) => (
         <article class:list={['servico', 'mesclada', s.classe]}>
+          <Foto class="servico-foto" nome={s.foto} sizes="(min-width: 64rem) 40rem, 100vw" />
           <h3>{s.titulo}</h3>
           <p class="servico-frase">{s.frase}</p>
           <p>{s.texto}</p>
@@ -122,9 +154,9 @@ const ficha = (i: number) => ([0, 3].includes(i % 4) ? 'lado' : 'abaixo');
         </article>
       ))}
     </Linha>
-  </section>
+  </Secao>
 
-  <section class="folha" aria-labelledby="conexao-titulo">
+  <Secao tom="escuro" aria-labelledby="conexao-titulo">
     <Linha class="conexao">
       <div class="conexao-texto">
         <h2 id="conexao-titulo">{t.conexao.titulo}</h2>
@@ -140,9 +172,9 @@ const ficha = (i: number) => ([0, 3].includes(i % 4) ? 'lado' : 'abaixo');
         <path pathLength="1" d="M -20 42 C 180 42 360 30 520 30" />
       </svg>
     </Linha>
-  </section>
+  </Secao>
 
-  <section class="folha vitrines" id="projetos" aria-labelledby="projetos-titulo">
+  <Secao folha="vitrines" id="projetos" aria-labelledby="projetos-titulo">
     <Linha class="vitrines-cabeca">
       <h2 class="titulo-secao" id="projetos-titulo">
         {t.projetos.titulo}
@@ -157,9 +189,9 @@ const ficha = (i: number) => ([0, 3].includes(i % 4) ? 'lado' : 'abaixo');
         <Obra projeto={p} formato={formato(i)} ficha={ficha(i)} />
       ))}
     </div>
-  </section>
+  </Secao>
 
-  <section class="folha" id={t.abertura.ancoraComoFunciona} aria-labelledby="como-titulo">
+  <Secao tom="branco" id={t.abertura.ancoraComoFunciona} aria-labelledby="como-titulo">
     <Linha>
       <h2 class="titulo-secao" id="como-titulo">
         {t.comoFunciona.titulo}
@@ -175,24 +207,23 @@ const ficha = (i: number) => ([0, 3].includes(i % 4) ? 'lado' : 'abaixo');
         </Linha>
       ))}
     </ol>
-  </section>
+  </Secao>
 
-  <section class="folha" aria-labelledby="resultados-titulo">
+  <Secao aria-labelledby="resultados-titulo">
     <Linha>
       <h2 class="titulo-secao" id="resultados-titulo">
         {t.resultados.titulo}
       </h2>
     </Linha>
-    {t.resultados.itens.map((i) => (
-      <Linha>
-        <h3 class="par-chave">{i.titulo}</h3>
-        <p class="par-valor">{i.texto}</p>
-      </Linha>
-    ))}
-  </section>
+    <Linha class="cartoes" data-cartoes={t.resultados.itens.length}>
+      {t.resultados.itens.map((i, idx) => (
+        <Cartao icone={iconesResultados[idx]} titulo={i.titulo} texto={i.texto} />
+      ))}
+    </Linha>
+  </Secao>
 
   {posts.length > 0 && (
-    <section class="folha" aria-labelledby="posts-titulo">
+    <Secao tom="branco" aria-labelledby="posts-titulo">
       <Linha>
         <h2 class="titulo-secao" id="posts-titulo">
           {tb.rotulos.naHome}
@@ -201,7 +232,13 @@ const ficha = (i: number) => ([0, 3].includes(i % 4) ? 'lado' : 'abaixo');
       {posts.map((post) => {
         const data = dataDoPost(post);
         return (
-          <Linha>
+          <Linha class="home-posts-linha">
+            <Foto
+              class="home-posts-capa"
+              nome={post.data.capa}
+              widths={[360, 640]}
+              sizes="(min-width: 64rem) 12rem, 50vw"
+            />
             <div class="home-posts-item">
               <time datetime={dataIso(data)}>{dataCurta(data)}</time>
               <a class="link-fita" href={rotaPost(post.id)}>
@@ -216,10 +253,10 @@ const ficha = (i: number) => ([0, 3].includes(i % 4) ? 'lado' : 'abaixo');
           {tb.rotulos.verBlog}
         </a>
       </Linha>
-    </section>
+    </Secao>
   )}
 
-  <section class="folha" aria-labelledby="faq-titulo">
+  <Secao aria-labelledby="faq-titulo">
     <Linha>
       <h2 class="titulo-secao" id="faq-titulo">
         {t.faq.titulo}
@@ -233,7 +270,7 @@ const ficha = (i: number) => ([0, 3].includes(i % 4) ? 'lado' : 'abaixo');
         </details>
       </Linha>
     ))}
-  </section>
+  </Secao>
 
   <ChamadaFinal
     slot="fechamento"

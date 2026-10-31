@@ -1,14 +1,16 @@
 ---
 import Base from '../../layouts/Base.astro';
 import ChamadaFinal from '../../components/ChamadaFinal.astro';
+import Foto from '../../components/Foto.astro';
 import Linha from '../../components/Linha.astro';
+import Secao from '../../components/Secao.astro';
 import { dataCurta, dataDoPost, dataIso, postsPublicados, tempoDeLeitura } from '../../data/blog';
 import { linkWhatsapp } from '../../data/empresa';
 import { rotaPost } from '../../i18n/rotas';
 import { blog as t } from '../../i18n/paginas/blog';
 import { metasPaginas } from '../../i18n/textos';
 
-/** Blog: a lista de posts em linhas da planilha, do mais novo para o mais antigo. */
+/** Blog: a lista de posts em linhas da planilha, com a capa de cada um, do mais novo para o mais antigo. */
 const meta = metasPaginas.blog;
 const posts = await postsPublicados();
 ---
@@ -21,7 +23,7 @@ const posts = await postsPublicados();
     title="Blog da Infinium"
     href="/blog/rss.xml"
   />
-  <section class="folha pagina-cabeca" aria-labelledby="pagina-titulo">
+  <Secao cabeca folha="pagina-cabeca" aria-labelledby="pagina-titulo">
     <Linha>
       <h1 class="pagina-titulo" id="pagina-titulo">
         {t.titulo}
@@ -30,13 +32,19 @@ const posts = await postsPublicados();
     <Linha>
       <p class="pagina-texto">{t.texto}</p>
     </Linha>
-  </section>
+  </Secao>
 
-  <section class="folha" aria-label={t.rotulos.todos}>
+  <Secao tom="branco" aria-label={t.rotulos.todos}>
     {posts.map((post) => {
       const data = dataDoPost(post);
       return (
         <Linha as="article" class="post-linha">
+          <Foto
+            class="post-capa"
+            nome={post.data.capa}
+            widths={[360, 640, 960]}
+            sizes="(min-width: 64rem) 12rem, 100vw"
+          />
           <time class="post-data" datetime={dataIso(data)}>
             {dataCurta(data)}
           </time>
@@ -52,7 +60,7 @@ const posts = await postsPublicados();
         </Linha>
       );
     })}
-  </section>
+  </Secao>
 
   <ChamadaFinal
     slot="fechamento"

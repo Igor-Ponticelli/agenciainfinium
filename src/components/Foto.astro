@@ -1,0 +1,53 @@
+---
+import { Picture } from 'astro:assets';
+import { fotos, type NomeFoto } from '../data/fotos';
+
+/**
+ * Uma foto do site numa célula mesclada: proporção fixa (sem layout shift), AVIF e WebP nos
+ * tamanhos usados, carregada só quando se aproxima da tela (menos a da abertura, que é o LCP).
+ * Sobre o degradê, `tom="violeta"` cobre a foto com o degradê da marca em multiplicação, para
+ * ela pertencer à seção escura (só White e Lilás por cima, nunca Primary).
+ */
+interface Props {
+  nome: NomeFoto;
+  /** Proporção da célula, no formato do CSS (`3 / 2`, `4 / 5`). Sem ela, o CSS da classe decide. */
+  proporcao?: string;
+  /** Larguras geradas; a maior deve cobrir 2x a largura exibida. */
+  widths?: number[];
+  sizes?: string;
+  tom?: 'natural' | 'violeta';
+  /** A foto da abertura: carrega na hora, com prioridade (é o LCP da home). */
+  prioridade?: boolean;
+  class?: string;
+  posicao?: string;
+}
+
+const {
+  nome,
+  proporcao,
+  widths = [480, 800, 1200, 1600],
+  sizes = '(min-width: 64rem) 40vw, 100vw',
+  tom = 'natural',
+  prioridade = false,
+  class: classe,
+  posicao = '50% 50%',
+} = Astro.props;
+const foto = fotos[nome];
+---
+
+<figure
+  class:list={['foto', `foto-${tom}`, classe]}
+  style={`${proporcao ? `--foto-proporcao: ${proporcao}; ` : ''}--foto-posicao: ${posicao}`}
+>
+  <Picture
+    src={foto.imagem}
+    formats={['avif', 'webp']}
+    fallbackFormat="webp"
+    widths={widths}
+    sizes={sizes}
+    alt={foto.alt}
+    loading={prioridade ? 'eager' : 'lazy'}
+    fetchpriority={prioridade ? 'high' : undefined}
+    decoding={prioridade ? 'sync' : 'async'}
+  />
+</figure>

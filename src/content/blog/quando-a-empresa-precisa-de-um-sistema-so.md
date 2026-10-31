@@ -4,6 +4,7 @@ descricao: As ferramentas soltas funcionam até o dia em que alguém passa o dia
 diasAntes: 0
 tags: [sistemas, automacao]
 chamada: sistemas
+capa: planilha
 ---
 
 Toda empresa pequena começa com ferramentas soltas, e está certo. O pedido chega pelo WhatsApp, vai para uma planilha, a tarefa entra no Trello, a nota sai do ERP. Enquanto são poucos pedidos e uma pessoa cuida de tudo, funciona.

@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Linha from '../../components/Linha.astro';
+import Secao from '../../components/Secao.astro';
 import { rotas } from '../../i18n/rotas';
 import { metasPaginas, textos as t } from '../../i18n/textos';
 
@@ -9,7 +10,7 @@ const meta = metasPaginas.contatoEnviado;
 ---
 
 <Base titulo={meta.titulo} descricao={meta.descricao} noindex>
-  <section class="folha pagina-cabeca" aria-labelledby="pagina-titulo">
+  <Secao cabeca folha="pagina-cabeca" aria-labelledby="pagina-titulo">
     <Linha>
       <h1 class="pagina-titulo" id="pagina-titulo">
         {t.enviado.titulo}
@@ -25,5 +26,5 @@ const meta = metasPaginas.contatoEnviado;
         </a>
       </div>
     </Linha>
-  </section>
+  </Secao>
 </Base>

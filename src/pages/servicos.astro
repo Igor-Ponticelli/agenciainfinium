@@ -1,19 +1,28 @@
 ---
 import Base from '../layouts/Base.astro';
+import Cartao from '../components/Cartao.astro';
 import ChamadaFinal from '../components/ChamadaFinal.astro';
+import Icone from '../components/Icone.astro';
 import Linha from '../components/Linha.astro';
+import Secao from '../components/Secao.astro';
+import type { NomeIcone } from '../data/icones';
 import { linkWhatsapp } from '../data/empresa';
 import { rotas } from '../i18n/rotas';
 import { servicos as t } from '../i18n/paginas/servicos';
 import { metasPaginas } from '../i18n/textos';
 
-/** Hub de serviços: uma planilha curta de duas colunas (brief da página de serviço). */
+/** Hub de serviços: a pergunta em três cartões, os dois serviços lado a lado e a conexão. */
 const meta = metasPaginas.servicos;
 const destino = { sites: rotas.sites, sistemas: rotas.sistemas, whatsapp: linkWhatsapp() };
+const iconesQual: NomeIcone[] = ['lupa', 'planilha', 'conexoes'];
+const iconesEntrega: Record<'sites' | 'sistemas', NomeIcone[]> = {
+  sites: ['janela', 'alvo', 'etiqueta'],
+  sistemas: ['banco', 'ciclo', 'conexoes', 'painel'],
+};
 ---
 
 <Base titulo={meta.titulo} descricao={meta.descricao}>
-  <section class="folha pagina-cabeca" aria-labelledby="pagina-titulo">
+  <Secao cabeca folha="pagina-cabeca" aria-labelledby="pagina-titulo">
     <Linha>
       <h1 class="pagina-titulo" id="pagina-titulo">
         {t.titulo}
@@ -22,51 +31,63 @@ const destino = { sites: rotas.sites, sistemas: rotas.sistemas, whatsapp: linkWh
     <Linha>
       <p class="pagina-texto">{t.texto}</p>
     </Linha>
-  </section>
+  </Secao>
 
-  <section class="folha" aria-labelledby="qual-titulo">
+  <Secao tom="branco" aria-labelledby="qual-titulo">
     <Linha>
       <h2 class="titulo-secao" id="qual-titulo">
         {t.qual.titulo}
       </h2>
     </Linha>
-    {t.qual.opcoes.map((o) => (
-      <Linha>
-        <p class="qual-problema">{o.problema}</p>
-        <p class="qual-resposta">{o.resposta}</p>
-        {o.destino === 'whatsapp' ? (
-          <a
-            class="qual-acao botao"
-            href={destino[o.destino]}
-            target="_blank"
-            rel="noopener"
-            data-evento="whatsapp_hub"
-          >
-            {o.acao}
-            <span class="visualmente-oculto">(abre em nova aba)</span>
-          </a>
-        ) : (
-          <a class="qual-acao botao" href={destino[o.destino]} data-evento={`servico_${o.destino}`}>
-            {o.acao}
-          </a>
-        )}
-      </Linha>
-    ))}
-  </section>
+    <Linha class="cartoes" data-cartoes={t.qual.opcoes.length}>
+      {t.qual.opcoes.map((o, idx) => (
+        <Cartao icone={iconesQual[idx]}>
+          <p class="cartao-frase">{o.problema}</p>
+          <p class="cartao-texto">{o.resposta}</p>
+          {o.destino === 'whatsapp' ? (
+            <a
+              class="botao"
+              href={destino[o.destino]}
+              target="_blank"
+              rel="noopener"
+              data-evento="whatsapp_hub"
+            >
+              {o.acao}
+              <span class="visualmente-oculto">(abre em nova aba)</span>
+            </a>
+          ) : (
+            <a class="botao" href={destino[o.destino]} data-evento={`servico_${o.destino}`}>
+              {o.acao}
+            </a>
+          )}
+        </Cartao>
+      ))}
+    </Linha>
+  </Secao>
 
-  <section class="folha" aria-label="Os dois serviços">
+  <Secao aria-label="Os dois serviços">
     <Linha class="servicos-linha">
       {[
-        { ...t.sites, classe: 'servico-sites', rota: rotas.sites, chave: 'sites' },
-        { ...t.sistemas, classe: 'servico-sistemas', rota: rotas.sistemas, chave: 'sistemas' },
+        { ...t.sites, classe: 'servico-sites', rota: rotas.sites, chave: 'sites' as const },
+        {
+          ...t.sistemas,
+          classe: 'servico-sistemas',
+          rota: rotas.sistemas,
+          chave: 'sistemas' as const,
+        },
       ].map((s) => (
         <article class:list={['servico', 'mesclada', s.classe]}>
           <h2>{s.titulo}</h2>
           <p class="servico-frase">{s.frase}</p>
           <p>{s.texto}</p>
           <ul class="servico-entrega">
-            {s.entrega.map((e) => (
-              <li>{e}</li>
+            {s.entrega.map((e, idx) => (
+              <li>
+                {iconesEntrega[s.chave][idx] && (
+                  <Icone nome={iconesEntrega[s.chave][idx]} class="icone-inline" tamanho={22} />
+                )}
+                {e}
+              </li>
             ))}
           </ul>
           <div class="acoes">
@@ -77,9 +98,9 @@ const destino = { sites: rotas.sites, sistemas: rotas.sistemas, whatsapp: linkWh
         </article>
       ))}
     </Linha>
-  </section>
+  </Secao>
 
-  <section class="folha" aria-labelledby="conexao-titulo">
+  <Secao tom="escuro" aria-labelledby="conexao-titulo">
     <Linha class="conexao">
       <div class="conexao-texto">
         <h2 id="conexao-titulo">{t.conexao.titulo}</h2>
@@ -95,7 +116,7 @@ const destino = { sites: rotas.sites, sistemas: rotas.sistemas, whatsapp: linkWh
         <path pathLength="1" d="M -20 42 C 180 42 360 30 520 30" />
       </svg>
     </Linha>
-  </section>
+  </Secao>
 
   <ChamadaFinal
     slot="fechamento"

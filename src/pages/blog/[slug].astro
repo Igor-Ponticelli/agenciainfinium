@@ -3,7 +3,9 @@ import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import ChamadaFinal from '../../components/ChamadaFinal.astro';
+import Foto from '../../components/Foto.astro';
 import Linha from '../../components/Linha.astro';
+import Secao from '../../components/Secao.astro';
 import {
   dataDoPost,
   dataIso,
@@ -32,7 +34,7 @@ interface Props {
   proximo: Post | null;
 }
 
-/** Um post: texto numa coluna confortável, autor, data, a chamada no fim e os vizinhos. */
+/** Um post: a capa na cabeça, texto numa coluna confortável, autor, data, a chamada e os vizinhos. */
 const { post, anterior, proximo } = Astro.props;
 const { Content } = await render(post);
 const data = dataDoPost(post);
@@ -62,7 +64,7 @@ const jsonLd = {
 
 <Base titulo={post.data.titulo} descricao={post.data.descricao} jsonLd={[jsonLd]} tipoOg="article">
   <article>
-    <section class="folha pagina-cabeca">
+    <Secao cabeca folha="pagina-cabeca cabeca-com-foto" style="--cabeca-linhas: 2">
       <Linha>
         <h1 class="pagina-titulo">{post.data.titulo}</h1>
       </Linha>
@@ -83,9 +85,15 @@ const jsonLd = {
           )}
         </p>
       </Linha>
-    </section>
+      <Foto
+        class="cabeca-foto"
+        nome={post.data.capa}
+        prioridade
+        sizes="(min-width: 64rem) 28rem, 100vw"
+      />
+    </Secao>
 
-    <section class="folha">
+    <Secao tom="branco">
       <Linha>
         <div class="projeto-texto post-texto">
           <p class="post-abertura">{post.data.descricao}</p>
@@ -118,7 +126,7 @@ const jsonLd = {
           {t.rotulos.todos}
         </a>
       </Linha>
-    </section>
+    </Secao>
   </article>
 
   <ChamadaFinal

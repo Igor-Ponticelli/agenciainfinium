@@ -1,17 +1,19 @@
 ---
 import Base from '../layouts/Base.astro';
+import Cartao from '../components/Cartao.astro';
 import Formulario from '../components/Formulario.astro';
 import Linha from '../components/Linha.astro';
+import Secao from '../components/Secao.astro';
 import { email, instagram, linkWhatsapp } from '../data/empresa';
 import { contato as t } from '../i18n/paginas/contato';
 import { metasPaginas, textos } from '../i18n/textos';
 
-/** Contato: os canais em linhas da planilha e o formulário numa célula mesclada. */
+/** Contato: os canais em três cartões com ícone e o formulário numa célula mesclada. */
 const meta = metasPaginas.contato;
 ---
 
 <Base titulo={meta.titulo} descricao={meta.descricao}>
-  <section class="folha pagina-cabeca" aria-labelledby="pagina-titulo">
+  <Secao cabeca folha="pagina-cabeca" aria-labelledby="pagina-titulo">
     <Linha>
       <h1 class="pagina-titulo" id="pagina-titulo">
         {t.titulo}
@@ -20,40 +22,48 @@ const meta = metasPaginas.contato;
     <Linha>
       <p class="pagina-texto">{t.texto}</p>
     </Linha>
-  </section>
+  </Secao>
 
-  <section class="folha" aria-label="Canais de contato">
-    <Linha>
-      <a
-        class="canal-nome link-fita"
-        href={linkWhatsapp()}
-        target="_blank"
-        rel="noopener"
-        data-evento="whatsapp_contato"
-      >
-        {t.canais.whatsapp.rotulo}
-        <span class="visualmente-oculto">{textos.linkExterno}</span>
-      </a>
-      <p class="canal-texto">{t.canais.whatsapp.texto}</p>
+  <Secao tom="branco" aria-label="Canais de contato">
+    <Linha class="cartoes" data-cartoes={3}>
+      <Cartao icone="balao">
+        <h3 class="cartao-titulo">
+          <a
+            class="link-fita"
+            href={linkWhatsapp()}
+            target="_blank"
+            rel="noopener"
+            data-evento="whatsapp_contato"
+          >
+            {t.canais.whatsapp.rotulo}
+            <span class="visualmente-oculto">{textos.linkExterno}</span>
+          </a>
+        </h3>
+        <p class="cartao-texto">{t.canais.whatsapp.texto}</p>
+      </Cartao>
+      <Cartao icone="envelope">
+        <h3 class="cartao-titulo cartao-titulo-longo">
+          <a class="link-fita" href={`mailto:${email}`} data-evento="email_contato">
+            {email}
+          </a>
+        </h3>
+        <p class="cartao-texto">{t.canais.email.texto}</p>
+      </Cartao>
+      <Cartao icone="instagram">
+        <h3 class="cartao-titulo">
+          <a class="link-fita" href={instagram.url} target="_blank" rel="noopener">
+            {instagram.usuario}
+            <span class="visualmente-oculto">{textos.linkExterno}</span>
+          </a>
+        </h3>
+        <p class="cartao-texto">{t.canais.instagram.texto}</p>
+      </Cartao>
     </Linha>
-    <Linha>
-      <a class="canal-nome link-fita" href={`mailto:${email}`} data-evento="email_contato">
-        {email}
-      </a>
-      <p class="canal-texto">{t.canais.email.texto}</p>
-    </Linha>
-    <Linha>
-      <a class="canal-nome link-fita" href={instagram.url} target="_blank" rel="noopener">
-        {instagram.usuario}
-        <span class="visualmente-oculto">{textos.linkExterno}</span>
-      </a>
-      <p class="canal-texto">{t.canais.instagram.texto}</p>
-    </Linha>
-  </section>
+  </Secao>
 
-  <section class="folha" aria-labelledby="formulario-titulo">
+  <Secao aria-labelledby="formulario-titulo">
     <Linha class="servicos-linha">
       <Formulario />
     </Linha>
-  </section>
+  </Secao>
 </Base>

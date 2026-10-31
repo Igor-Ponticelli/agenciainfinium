@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { nomesFotos } from './data/fotos';
 import { statusProjeto, tiposProjeto } from './i18n/textos';
 
 /** Um arquivo por projeto: `projetos/<slug>.md`. O id da entrada é o slug. */
@@ -41,6 +42,8 @@ const blog = defineCollection({
     rascunho: z.boolean().default(false),
     /** Para onde o post leva no fim: um serviço ou o Raio-X. */
     chamada: z.enum(['sites', 'sistemas', 'raioX']),
+    /** A foto de capa (src/data/fotos.ts), na lista, na home e na cabeça do post. */
+    capa: z.enum(nomesFotos),
   }),
 });
 

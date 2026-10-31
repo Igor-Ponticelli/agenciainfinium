@@ -3,6 +3,11 @@
  * sistema. Fundo Body com a grade em Line; seções escuras no degradê com a grade em Lilás; a fita
  * (2 px, Primary sobre claro, Lilás sobre escuro) como cursor de seleção, sublinhado e moldura.
  * Roboto em tudo. Nunca Primary sobre o escuro.
+ *
+ * Animação por rolagem: sempre nas propriedades longas (animation-name, -timing-function,
+ * -fill-mode, -timeline), nunca no atalho `animation` ao lado de `animation-timeline`. O
+ * Lightning CSS do build funde os dois num atalho que o Chrome rejeita, e a animação some
+ * (descoberto em 31/10/2026; tests/fumaca.test.mjs confere no build).
  */
 
 /* ---------- Moldura geral ---------- */
@@ -27,28 +32,26 @@ main:focus {
 
 /* ---------- A planilha ---------- */
 
+/* A folha é a planilha sem as linhas desenhadas (decisão do Igor, 31/10/2026: "não gostei mais
+   dos quadradinhos"). As doze colunas continuam sendo o layout de tudo, mas nenhuma linha
+   vertical aparece; o filete entre linhas fica só onde há lista. `isolation` guarda o holofote
+   atrás do conteúdo. */
 .folha {
-  --col: calc(100% / var(--colunas));
   position: relative;
-  background-image: repeating-linear-gradient(
-    to right,
-    var(--color-grade) 0 1px,
-    transparent 1px var(--col)
-  );
-  background-size: 100% 100%;
-  background-position: left top;
-  background-repeat: no-repeat;
-  border-inline-end: 1px solid var(--color-grade);
-}
-
-.folha-sem-grade {
-  background-image: none;
-  border-inline-end: 0;
+  isolation: isolate;
 }
 
 .linha {
   display: grid;
   grid-template-columns: repeat(var(--colunas), minmax(0, 1fr));
+}
+
+/* Filetes só nas listas: passos, posts, perguntas, a cena e as listas da planilha */
+.passo,
+.post-linha,
+.home-posts-linha,
+.lista-planilha > .linha,
+.linha:has(> .faq-item) {
   border-block-end: 1px solid var(--color-grade);
 }
 
@@ -78,7 +81,7 @@ main:focus {
 .titulo-secao {
   grid-column: 1 / -1;
   align-self: end;
-  padding: var(--space-xl) var(--celula-pad) var(--space-s);
+  padding: var(--space-m) var(--celula-pad) var(--space-s);
   font-size: var(--text-h2);
   font-weight: var(--weight-bold);
   line-height: var(--leading-title);
@@ -105,6 +108,267 @@ main:focus {
 
 .texto p + p {
   margin-block-start: var(--space-s);
+}
+
+/* ---------- Bandas: cada seção é uma coisa só ---------- */
+
+/* Pedido do Igor (31/10/2026): as seções se separam como bandas de largura inteira, cada uma
+   com o próprio fundo e respiro, com pelo menos 85% da altura da tela e o conteúdo centrado na
+   vertical ("acho mais elegante"). Os fundos se alternam (Body, White, o degradê) e é isso que
+   marca onde uma seção acaba e a outra começa. */
+.banda {
+  display: grid;
+  align-content: center;
+  min-block-size: 85svh;
+  padding-block: var(--space-2xl);
+}
+
+.banda-branco {
+  --color-celula: var(--color-bg);
+  background-color: var(--color-surface);
+}
+
+.banda-cabeca {
+  padding-block: var(--space-m) var(--space-2xl);
+}
+
+@media (min-width: 64rem) {
+  .banda {
+    padding-block: var(--space-3xl);
+  }
+
+  .banda-cabeca {
+    padding-block: var(--space-l) var(--space-3xl);
+  }
+}
+
+/* ---------- Cartões: células mescladas em grade, com o ícone da fita ---------- */
+
+/* Uma linha `.cartoes` é uma grade de células mescladas separadas por 1 px (o fundo da linha é
+   a cor do filete e os cartões deixam 1 px entre si), com um filete em volta. Nada de sombra nem
+   canto: são células. Três por linha no desktop, duas no tablet, uma no celular. */
+.cartoes {
+  gap: 1px;
+  padding: 0;
+  border: 1px solid var(--color-grade);
+  background-color: var(--color-grade);
+  list-style: none;
+}
+
+.cartao {
+  grid-column: 1 / -1;
+  position: relative;
+  display: grid;
+  gap: var(--space-xs);
+  align-content: start;
+  padding: var(--space-m) var(--celula-pad);
+  background-color: var(--color-celula);
+}
+
+.cartao .icone {
+  margin-block-end: var(--space-2xs);
+}
+
+.cartao-titulo {
+  color: var(--color-heading);
+  font-size: var(--text-h3);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-subtitle);
+}
+
+.cartao-titulo a {
+  text-decoration: none;
+}
+
+.cartao-texto {
+  max-inline-size: 38ch;
+}
+
+.cartao-frase {
+  color: var(--color-heading);
+  font-weight: var(--weight-medium);
+}
+
+.cartao .botao {
+  justify-self: start;
+  margin-block-start: var(--space-xs);
+}
+
+@media (min-width: 48rem) {
+  .cartao {
+    grid-column: span 3;
+    padding: var(--space-m);
+  }
+
+  .cartoes[data-cartoes='3'] .cartao:last-child,
+  .cartoes[data-cartoes='5'] .cartao:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 64rem) {
+  .cartao {
+    grid-column: span 4;
+    padding: var(--space-l) var(--space-m);
+  }
+
+  .cartoes[data-cartoes='2'] .cartao {
+    grid-column: span 6;
+  }
+
+  .cartoes[data-cartoes='4'] .cartao {
+    grid-column: span 3;
+  }
+
+  .cartoes[data-cartoes='3'] .cartao:last-child,
+  .cartoes[data-cartoes='5'] .cartao:last-child {
+    grid-column: span 4;
+  }
+
+  .cartoes[data-cartoes='5'] .cartao:nth-child(n + 4) {
+    grid-column: span 6;
+  }
+}
+
+/* ---------- Ícones: a fita desenha o traço conforme a rolagem ---------- */
+
+/* Pedido do Igor (31/10/2026): ícones de traço, desenhados pela própria fita enquanto a página
+   desce, com um brilho discreto na cor da fita. Sem suporte a animação por rolagem ou com
+   movimento reduzido, aparecem prontos e acesos. */
+.icone {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  inline-size: 3rem;
+  block-size: 3rem;
+  color: var(--color-fita);
+  view-timeline: --icone block;
+}
+
+.icone-inline {
+  inline-size: 2rem;
+  block-size: 2rem;
+  flex: none;
+}
+
+/* O brilho: um halo na cor da fita atrás do traço */
+.icone::before {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  border-radius: 50%;
+  background-image: radial-gradient(closest-side, var(--color-icone-brilho), transparent);
+}
+
+.icone svg {
+  position: relative;
+  filter: drop-shadow(0 0 6px var(--color-icone-sombra));
+}
+
+.icone svg > * {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .icone svg > * {
+      stroke-dashoffset: 1;
+      animation-name: desenhar;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --icone;
+      animation-range: cover 0% cover 30%;
+    }
+
+    .icone svg > :nth-child(2) {
+      animation-range: cover 8% cover 38%;
+    }
+
+    .icone svg > :nth-child(n + 3) {
+      animation-range: cover 16% cover 46%;
+    }
+
+    .icone::before {
+      opacity: 0;
+      animation-name: acender;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --icone;
+      animation-range: cover 18% cover 46%;
+    }
+  }
+}
+
+@keyframes acender {
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------- Fotos: células mescladas com imagem ---------- */
+
+/* Fotos do Unsplash, escolhidas uma a uma (31/10/2026; créditos em .claude/docs/fotos.md).
+   A foto é uma célula mesclada: cobre a grade, tem proporção fixa (sem salto de layout) e é
+   cortada pelo centro. Sobre o degradê, só a luz da foto fica, nas cores da marca. */
+.foto {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: var(--foto-proporcao, 3 / 2);
+  background-color: var(--color-celula);
+}
+
+.foto picture,
+.foto img {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  max-width: none;
+}
+
+.foto img {
+  object-fit: cover;
+  object-position: var(--foto-posicao, 50% 50%);
+}
+
+.foto-violeta {
+  isolation: isolate;
+  background-image: var(--gradient-brand);
+}
+
+.foto-violeta img {
+  mix-blend-mode: luminosity;
+}
+
+/* ---------- Holofote: a luz sob o ponteiro (holofote.ts) ---------- */
+
+/* A luz: um disco suave na cor da fita que acompanha o ponteiro sobre a folha. Fica atrás do
+   conteúdo (as células mescladas a cobrem) e é movido só por transform. */
+.holofote {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--ease-out);
+  pointer-events: none;
+}
+
+.folha[data-holofote] .holofote {
+  opacity: 1;
+}
+
+.holofote-luz {
+  --raio: 24rem;
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: calc(2 * var(--raio));
+  block-size: calc(2 * var(--raio));
+  background-image: radial-gradient(closest-side, var(--color-holofote), transparent);
+  transform: translate(calc(var(--hx, 0px) - var(--raio)), calc(var(--hy, 0px) - var(--raio)));
+  will-change: transform;
 }
 
 /* ---------- Links, botões e a fita ---------- */
@@ -671,17 +935,25 @@ html[data-menu-aberto] .whatsapp-flutuante {
   position: relative;
 }
 
+/* A abertura é uma grade: as três linhas do texto e, à direita, a foto numa célula mesclada que
+   ocupa as três; no celular a foto fecha a primeira tela por baixo. */
 .abertura {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(var(--colunas), minmax(0, 1fr));
+  grid-template-rows: 1fr auto auto auto;
   /* O título da próxima seção aparece na base da primeira tela, chamando para rolar */
   min-block-size: calc(100svh - var(--cabecalho-altura) - 12svh);
 }
 
+.abertura > .linha {
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+}
+
 .abertura-assinatura {
-  flex: 1;
   align-content: center;
   border-block-end: 0;
+  box-shadow: inset 0 -2px 0 var(--color-fita);
 }
 
 .abertura-assinatura h1 {
@@ -693,10 +965,6 @@ html[data-menu-aberto] .whatsapp-flutuante {
   line-height: var(--leading-display);
   letter-spacing: var(--tracking-display);
   text-wrap: balance;
-}
-
-.abertura-assinatura {
-  box-shadow: inset 0 -2px 0 var(--color-fita);
 }
 
 .abertura-frase {
@@ -718,26 +986,38 @@ html[data-menu-aberto] .whatsapp-flutuante {
   color: #fff;
 }
 
+.abertura-foto {
+  --foto-proporcao: 4 / 3;
+  grid-column: 1 / -1;
+}
+
 @media (min-width: 64rem) {
+  .abertura {
+    grid-template-rows: 1fr auto auto;
+  }
+
+  .abertura > .linha {
+    grid-column: 1 / 8;
+  }
+
   .abertura-assinatura h1 {
-    grid-column: 1 / 10;
     padding-block: var(--space-2xl) var(--space-l);
   }
 
-  .abertura-frase {
+  .abertura-frase,
+  .abertura-acoes {
     grid-column: 1 / 7;
   }
 
-  .abertura-acoes {
-    grid-column: 1 / 7;
+  .abertura-foto {
+    grid-column: 8 / -1;
+    grid-row: 1 / -1;
+    aspect-ratio: auto;
+    min-block-size: 0;
   }
 }
 
 /* ---------- A cena do problema: a planilha de verdade ---------- */
-
-.cena-titulo .titulo-secao {
-  padding-block-start: var(--space-l);
-}
 
 .cena-tabela {
   display: grid;
@@ -757,6 +1037,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 .cena-valor {
   display: flex;
   align-items: center;
+  gap: var(--space-xs);
   padding: var(--celula-pad);
   color: var(--color-heading);
   font-weight: var(--weight-medium);
@@ -773,10 +1054,16 @@ html[data-menu-aberto] .whatsapp-flutuante {
   font-weight: var(--weight-regular);
 }
 
+/* A foto da planilha de verdade: uma célula mesclada à direita, da altura das linhas e do
+   texto; no celular, entre a tabela e o texto */
+.cena-foto {
+  --foto-proporcao: 3 / 2;
+  grid-column: 1 / -1;
+}
+
 .cena-texto {
   grid-column: 1 / -1;
-  padding: var(--space-m) var(--celula-pad) var(--space-xl);
-  border-block-end: 1px solid var(--color-grade);
+  padding: var(--space-m) var(--celula-pad) var(--space-l);
 }
 
 @media (min-width: 64rem) {
@@ -792,21 +1079,28 @@ html[data-menu-aberto] .whatsapp-flutuante {
     grid-column: 4 / 7;
   }
 
-  .cena-texto {
+  .cena-foto {
     grid-column: 7 / -1;
-    grid-row: 1 / span 4;
-    padding: var(--celula-pad) var(--celula-pad) var(--celula-pad) var(--space-l);
-    border-block-end: 0;
+    grid-row: 1 / 6;
+    aspect-ratio: auto;
+    min-block-size: 0;
+  }
+
+  .cena-texto {
+    grid-column: 1 / 7;
+    grid-row: 5;
+    padding: var(--space-m) var(--space-l) var(--space-l) var(--celula-pad);
   }
 }
 
-/* A seleção: a fita contorna a linha e pinta a cabeça dela. Sem suporte a animação por rolagem
-   (ou com movimento reduzido), a primeira linha fica selecionada. */
+/* A seleção: a fita sublinha uma linha por vez, conforme a rolagem. Sem suporte a animação
+   por rolagem (ou com movimento reduzido), a primeira linha fica selecionada. */
 .cena-linha::after {
   content: '';
   position: absolute;
-  inset: -1px 0 -1px 0;
-  box-shadow: inset 0 0 0 2px var(--color-fita);
+  inset: auto 0 -1px 0;
+  block-size: 2px;
+  background-color: var(--color-fita);
   opacity: 0;
   pointer-events: none;
 }
@@ -822,11 +1116,13 @@ html[data-menu-aberto] .whatsapp-flutuante {
     }
 
     .cena-linha::after {
-      animation: selecionar linear both;
+      animation-name: selecionar;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
       animation-timeline: view();
       animation-range: cover 0% cover 100%;
     }
-
+  }
 }
 
 @keyframes selecionar {
@@ -884,18 +1180,6 @@ html[data-menu-aberto] .whatsapp-flutuante {
   }
 }
 
-/* No bloco de sistemas as células em volta ainda aparecem se fundindo nele */
-.servico-sistemas::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    repeating-linear-gradient(to right, var(--color-grade) 0 1px, transparent 1px calc(100% / 6)),
-    repeating-linear-gradient(to bottom, var(--color-grade) 0 1px, transparent 1px 4rem);
-  mask-image: radial-gradient(ellipse at center, transparent 35%, #000 100%);
-  pointer-events: none;
-}
-
 .servico > * {
   position: relative;
 }
@@ -932,6 +1216,34 @@ html[data-menu-aberto] .whatsapp-flutuante {
 
 .servico .acoes {
   margin-block-start: var(--space-s);
+}
+
+/* A foto de cada serviço: uma célula com imagem no alto do bloco, sangrando até as bordas */
+.servico-foto {
+  --foto-proporcao: 16 / 9;
+  margin: calc(-1 * var(--space-l)) calc(-1 * var(--celula-pad)) var(--space-2xs);
+}
+
+@media (min-width: 64rem) {
+  .servico-foto {
+    --foto-proporcao: 2 / 1;
+    margin: calc(-1 * var(--space-xl)) calc(-1 * var(--space-l)) var(--space-2xs);
+  }
+}
+
+/* A lista do que cada serviço entrega (hub de serviços) */
+.servico-entrega {
+  display: grid;
+  gap: var(--space-2xs);
+  padding: 0;
+  list-style: none;
+}
+
+.servico-entrega li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  color: var(--color-heading);
 }
 
 /* ---------- Conexão: uma linha só, de largura inteira, com o laço da fita ---------- */
@@ -999,7 +1311,9 @@ html[data-menu-aberto] .whatsapp-flutuante {
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
     .conexao-laco path {
-      animation: desenhar linear both;
+      animation-name: desenhar;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
       animation-timeline: view();
       animation-range: entry 20% cover 55%;
     }
@@ -1033,7 +1347,6 @@ html[data-menu-aberto] .whatsapp-flutuante {
   grid-template-columns: repeat(var(--colunas), minmax(0, 1fr));
   gap: var(--space-2xl) 0;
   padding-block: var(--space-l) var(--space-3xl);
-  border-block-end: 1px solid var(--color-grade);
 }
 
 .obra {
@@ -1312,45 +1625,6 @@ html[data-menu-aberto] .whatsapp-flutuante {
   color: var(--color-fita);
 }
 
-/* ---------- Pares chave e valor (resultados, benefícios, canais) ---------- */
-
-/* No celular a chave fica em cima do valor, na mesma linha da planilha; a partir do tablet,
-   lado a lado, nas colunas */
-.par-chave {
-  grid-column: 1 / -1;
-  padding: var(--celula-pad) var(--celula-pad) 0;
-  color: var(--color-heading);
-  font-weight: var(--weight-bold);
-}
-
-.par-valor {
-  grid-column: 1 / -1;
-  max-inline-size: 60ch;
-  padding: var(--space-3xs) var(--celula-pad) var(--celula-pad);
-}
-
-@media (min-width: 48rem) {
-  .par-chave {
-    grid-column: 1 / 3;
-    padding: var(--celula-pad);
-  }
-
-  .par-valor {
-    grid-column: 3 / -1;
-    padding: var(--celula-pad);
-  }
-}
-
-@media (min-width: 64rem) {
-  .par-chave {
-    grid-column: 1 / 4;
-  }
-
-  .par-valor {
-    grid-column: 4 / -1;
-  }
-}
-
 /* ---------- Perguntas frequentes ---------- */
 
 .faq-item {
@@ -1493,10 +1767,6 @@ html[data-menu-aberto] .whatsapp-flutuante {
 
 /* ---------- Páginas internas: a planilha aberta na primeira linha ---------- */
 
-.pagina-cabeca .linha {
-  border-block-end-color: var(--color-grade);
-}
-
 .pagina-titulo {
   grid-column: 1 / -1;
   padding: var(--space-xl) var(--celula-pad) var(--space-s);
@@ -1568,6 +1838,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
   position: relative;
   display: flex;
   align-items: center;
+  gap: var(--space-s);
   padding: var(--celula-pad);
   color: var(--color-heading);
 }
@@ -1668,6 +1939,10 @@ html[data-menu-aberto] .whatsapp-flutuante {
   border-block-start: 1px solid var(--color-grade);
 }
 
+.fusao-celula .icone {
+  margin-block-end: var(--space-3xs);
+}
+
 .fusao-celula strong {
   color: var(--color-heading);
   font-size: var(--text-h3);
@@ -1719,40 +1994,33 @@ html[data-menu-aberto] .whatsapp-flutuante {
   font-size: var(--text-s);
 }
 
-/* Hub de serviços: "qual é o seu problema hoje?" */
-.qual-problema {
-  grid-column: 1 / -1;
-  padding: var(--celula-pad) var(--celula-pad) 0;
-  color: var(--color-heading);
-  font-weight: var(--weight-medium);
+/* A cabeça com foto: as linhas do texto à esquerda e, à direita, a foto numa célula mesclada
+   que ocupa todas as linhas (`--cabeca-linhas`); no celular, a foto fecha a cabeça por baixo */
+.cabeca-com-foto {
+  display: grid;
+  grid-template-columns: repeat(var(--colunas), minmax(0, 1fr));
 }
 
-.qual-resposta {
+.cabeca-com-foto > .linha {
   grid-column: 1 / -1;
-  padding: var(--space-2xs) var(--celula-pad);
+  grid-template-columns: subgrid;
 }
 
-.qual-acao {
+.cabeca-foto {
+  --foto-proporcao: 3 / 2;
   grid-column: 1 / -1;
-  justify-self: start;
-  margin: 0 var(--celula-pad) var(--celula-pad);
 }
 
 @media (min-width: 64rem) {
-  .qual-problema {
-    grid-column: 1 / 7;
-    padding: var(--celula-pad);
+  .cabeca-com-foto > .linha {
+    grid-column: 1 / 9;
   }
 
-  .qual-resposta {
-    grid-column: 7 / 10;
-    padding: var(--celula-pad);
-  }
-
-  .qual-acao {
-    grid-column: 10 / -1;
-    align-self: center;
-    margin: 0 var(--celula-pad);
+  .cabeca-foto {
+    grid-column: 9 / -1;
+    grid-row: 1 / span var(--cabeca-linhas, 2);
+    aspect-ratio: auto;
+    min-block-size: 0;
   }
 }
 
@@ -1760,7 +2028,6 @@ html[data-menu-aberto] .whatsapp-flutuante {
 
 .projeto-obra {
   padding-block: var(--space-l) var(--space-2xl);
-  border-block-end: 1px solid var(--color-grade);
 }
 
 .projeto-obra .obra {
@@ -1865,12 +2132,22 @@ html[data-menu-aberto] .whatsapp-flutuante {
 
 /* ---------- Blog ---------- */
 
+/* A lista: a capa numa célula à esquerda, a data e o resumo ao lado; no celular a capa abre a
+   linha. A linha inteira leva ao post (o link do título se estende pela célula). */
 .post-linha {
+  position: relative;
   align-items: start;
+}
+
+.post-capa {
+  --foto-proporcao: 2 / 1;
+  grid-column: 1 / -1;
+  grid-row: 1;
 }
 
 .post-data {
   grid-column: 1 / -1;
+  grid-row: 2;
   padding: var(--celula-pad) var(--celula-pad) 0;
   color: var(--color-text);
   font-size: var(--text-s);
@@ -1879,6 +2156,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 
 .post-resumo {
   grid-column: 1 / -1;
+  grid-row: 3;
   display: grid;
   gap: var(--space-2xs);
   max-inline-size: 60ch;
@@ -1891,6 +2169,12 @@ html[data-menu-aberto] .whatsapp-flutuante {
   line-height: var(--leading-subtitle);
 }
 
+.post-resumo h2 a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
 .post-meta,
 .post-cabeca {
   color: var(--color-text);
@@ -1898,13 +2182,23 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 @media (min-width: 64rem) {
-  .post-data {
+  .post-capa {
+    --foto-proporcao: 3 / 2;
     grid-column: 1 / 3;
+    align-self: stretch;
+    aspect-ratio: auto;
+    min-block-size: 8rem;
+  }
+
+  .post-data {
+    grid-column: 3 / 5;
+    grid-row: 1;
     padding: var(--celula-pad);
   }
 
   .post-resumo {
-    grid-column: 3 / -1;
+    grid-column: 5 / -1;
+    grid-row: 1;
     padding: var(--celula-pad);
   }
 }
@@ -2032,11 +2326,30 @@ html[data-menu-aberto] .whatsapp-flutuante {
   margin: var(--celula-pad);
 }
 
+.home-posts-linha {
+  position: relative;
+  align-items: center;
+}
+
+.home-posts-capa {
+  --foto-proporcao: 3 / 2;
+  grid-column: 1 / 3;
+  align-self: stretch;
+  aspect-ratio: auto;
+  min-block-size: 6rem;
+}
+
 .home-posts-item {
-  grid-column: 1 / -1;
+  grid-column: 3 / -1;
   display: grid;
   gap: var(--space-3xs);
   padding: var(--celula-pad);
+}
+
+.home-posts-item a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
 }
 
 .home-posts-item time {
@@ -2046,46 +2359,6 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 /* ---------- Contato ---------- */
-
-.canal-nome {
-  grid-column: 1 / -1;
-  display: flex;
-  align-items: center;
-  justify-self: start;
-  margin: var(--celula-pad) var(--celula-pad) 0;
-  color: var(--color-heading);
-  font-weight: var(--weight-medium);
-  overflow-wrap: anywhere;
-}
-
-.canal-texto {
-  grid-column: 1 / -1;
-  display: flex;
-  align-items: center;
-  padding: var(--space-3xs) var(--celula-pad) var(--celula-pad);
-}
-
-@media (min-width: 48rem) {
-  .canal-nome {
-    grid-column: 1 / 3;
-    margin: var(--celula-pad);
-  }
-
-  .canal-texto {
-    grid-column: 3 / -1;
-    padding: var(--celula-pad);
-  }
-}
-
-@media (min-width: 64rem) {
-  .canal-nome {
-    grid-column: 1 / 5;
-  }
-
-  .canal-texto {
-    grid-column: 5 / -1;
-  }
-}
 
 .formulario {
   grid-column: 1 / -1;

@@ -4,6 +4,7 @@ descricao: O Instagram traz a pessoa até você. O site é onde ela confirma que
 diasAntes: 4
 tags: [sites, instagram]
 chamada: sites
+capa: redes
 ---
 
 "Eu já tenho Instagram, para que eu quero um site?" É uma pergunta justa. O Instagram funciona, traz gente, e muita venda começa no direct. Mas ele faz uma parte do trabalho, não o trabalho inteiro.

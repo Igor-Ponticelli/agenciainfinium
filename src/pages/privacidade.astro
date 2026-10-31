@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Linha from '../components/Linha.astro';
+import Secao from '../components/Secao.astro';
 import { privacidade as t } from '../i18n/paginas/privacidade';
 import { metasPaginas } from '../i18n/textos';
 
@@ -15,7 +16,7 @@ const atualizado = new Intl.DateTimeFormat('pt-BR', {
 ---
 
 <Base titulo={meta.titulo} descricao={meta.descricao}>
-  <section class="folha pagina-cabeca" aria-labelledby="pagina-titulo">
+  <Secao cabeca folha="pagina-cabeca" aria-labelledby="pagina-titulo">
     <Linha>
       <h1 class="pagina-titulo" id="pagina-titulo">
         {t.titulo}
@@ -31,9 +32,9 @@ const atualizado = new Intl.DateTimeFormat('pt-BR', {
         </span>
       </p>
     </Linha>
-  </section>
+  </Secao>
 
-  <section class="folha" aria-label={t.titulo}>
+  <Secao tom="branco" aria-label={t.titulo}>
     {t.secoes.map((s) => (
       <Linha>
         <div class="projeto-texto">
@@ -44,5 +45,5 @@ const atualizado = new Intl.DateTimeFormat('pt-BR', {
         </div>
       </Linha>
     ))}
-  </section>
+  </Secao>
 </Base>

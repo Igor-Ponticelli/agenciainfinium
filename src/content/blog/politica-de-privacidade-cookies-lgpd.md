@@ -4,6 +4,7 @@ descricao: Se o seu site tem formulário, WhatsApp ou Google Analytics, ele trat
 diasAntes: 1
 tags: [sites, lgpd, privacidade]
 chamada: sites
+capa: pastas
 ---
 
 A Lei Geral de Proteção de Dados, a LGPD, vale para qualquer empresa que trate dado pessoal, e o site da sua empresa trata. Nome e telefone no formulário, e-mail no pedido de orçamento, o número de quem clicou no WhatsApp, os cookies do Google Analytics e do pixel de anúncio: tudo isso é dado pessoal.

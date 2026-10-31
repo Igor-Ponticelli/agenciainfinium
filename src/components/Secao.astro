@@ -1,0 +1,33 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+/**
+ * Uma seção do site como banda de largura inteira (pedido do Igor, 31/10/2026: cada seção é
+ * uma coisa só). A banda tem o próprio fundo (Body, White ou o degradê da marca) e o respiro
+ * vertical; dentro dela, a folha da planilha, fechada como um retângulo. As bandas se alternam
+ * ao longo da página, e é isso que separa uma seção da outra.
+ */
+interface Props extends HTMLAttributes<'section'> {
+  tom?: 'claro' | 'branco' | 'escuro';
+  /** Classes extras da folha (a planilha de dentro), como `cena` ou `vitrines`. */
+  folha?: string;
+  /** A banda de abertura das páginas internas: menos respiro em cima, logo abaixo da régua. */
+  cabeca?: boolean;
+}
+
+const { tom = 'claro', folha, cabeca = false, class: classe, ...resto } = Astro.props;
+---
+
+<section
+  class:list={[
+    'banda',
+    `banda-${tom}`,
+    { escuro: tom === 'escuro', 'banda-cabeca': cabeca },
+    classe,
+  ]}
+  {...resto}
+>
+  <div class:list={['folha', folha]}>
+    <slot />
+  </div>
+</section>

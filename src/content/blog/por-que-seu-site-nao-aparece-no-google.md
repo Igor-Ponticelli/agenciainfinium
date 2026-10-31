@@ -4,6 +4,7 @@ descricao: O site existe, mas ninguém acha. Os motivos mais comuns e o que voc�
 diasAntes: 5
 tags: [google, seo, sites]
 chamada: raioX
+capa: lupaGlobo
 ---
 
 Você digita o nome do seu serviço e a sua cidade no Google e aparece todo mundo, menos você. Isso acontece com muita empresa pequena, e quase sempre por um destes motivos.

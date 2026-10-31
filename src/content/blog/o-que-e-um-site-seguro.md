@@ -4,6 +4,7 @@ descricao: Site de empresa pequena também é invadido. Quatro coisas que separa
 diasAntes: 2
 tags: [sites, seguranca]
 chamada: raioX
+capa: cadeado
 ---
 
 Ninguém acha que o site da própria empresa é alvo. Mas a maior parte das invasões não é dirigida: são programas que varrem a internet procurando qualquer site com uma brecha conhecida. O tamanho da empresa não importa. O que importa é a brecha.

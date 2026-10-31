@@ -1,20 +1,30 @@
 ---
 import Base from '../layouts/Base.astro';
+import Cartao from '../components/Cartao.astro';
 import ChamadaFinal from '../components/ChamadaFinal.astro';
-import Linha from '../components/Linha.astro';
 import FontesPrevias from '../components/FontesPrevias.astro';
+import Foto from '../components/Foto.astro';
+import Linha from '../components/Linha.astro';
 import Obra from '../components/Obra.astro';
+import Secao from '../components/Secao.astro';
+import type { NomeIcone } from '../data/icones';
 import { todosProjetos } from '../data/projetos';
 import { linkWhatsapp } from '../data/empresa';
 import { rotas } from '../i18n/rotas';
 import { sites as t } from '../i18n/paginas/sites';
 import { metasPaginas } from '../i18n/textos';
 
-/** Página de sites: a planilha do serviço, aberta na primeira linha (brief da página de serviço). */
+/**
+ * Página de sites: a planilha do serviço, em bandas. A cabeça abre com a foto; "o que a gente
+ * faz" e "todo site inclui" são cartões com ícone (brief da página de serviço, revisto em
+ * 31/10/2026).
+ */
 const meta = metasPaginas.sites;
 const projetos = (await todosProjetos()).filter((p) => p.data.tipo === 'site');
 const formato = (i: number) => (i % 4 === 0 ? 'grande' : 'media');
 const ficha = (i: number) => (i % 4 === 0 ? 'lado' : 'abaixo');
+const iconesTipos: NomeIcone[] = ['janela', 'alvo', 'etiqueta'];
+const iconesInclui: NomeIcone[] = ['telas', 'raio', 'lupa', 'balao', 'grafico', 'cadeado'];
 const site = Astro.site!;
 const jsonLd = {
   '@type': 'Service',
@@ -30,7 +40,12 @@ const jsonLd = {
 
 <Base titulo={meta.titulo} descricao={meta.descricao} jsonLd={[jsonLd]}>
   <FontesPrevias slot="head" />
-  <section class="folha pagina-cabeca" aria-labelledby="pagina-titulo">
+  <Secao
+    cabeca
+    folha="pagina-cabeca cabeca-com-foto"
+    aria-labelledby="pagina-titulo"
+    style="--cabeca-linhas: 4"
+  >
     <Linha>
       <h1 class="pagina-titulo" id="pagina-titulo">
         {t.titulo}
@@ -56,9 +71,10 @@ const jsonLd = {
         </a>
       </div>
     </Linha>
-  </section>
+    <Foto class="cabeca-foto" nome="aberto" prioridade sizes="(min-width: 64rem) 28rem, 100vw" />
+  </Secao>
 
-  <section class="folha" aria-labelledby="problema-titulo">
+  <Secao tom="branco" aria-labelledby="problema-titulo">
     <Linha>
       <h2 class="titulo-secao" id="problema-titulo">
         {t.problema.titulo}
@@ -69,38 +85,35 @@ const jsonLd = {
         <p>{t.problema.texto}</p>
       </div>
     </Linha>
-  </section>
+  </Secao>
 
-  <section class="folha" aria-labelledby="tipos-titulo">
+  <Secao aria-labelledby="tipos-titulo">
     <Linha>
       <h2 class="titulo-secao" id="tipos-titulo">
         {t.tipos.titulo}
       </h2>
     </Linha>
-    {t.tipos.itens.map((i) => (
-      <Linha>
-        <h3 class="par-chave">{i.titulo}</h3>
-        <p class="par-valor">{i.texto}</p>
-      </Linha>
-    ))}
-  </section>
+    <Linha class="cartoes" data-cartoes={t.tipos.itens.length}>
+      {t.tipos.itens.map((i, idx) => (
+        <Cartao icone={iconesTipos[idx]} titulo={i.titulo} texto={i.texto} />
+      ))}
+    </Linha>
+  </Secao>
 
-  <section class="folha" aria-labelledby="inclui-titulo">
+  <Secao tom="branco" aria-labelledby="inclui-titulo">
     <Linha>
       <h2 class="titulo-secao" id="inclui-titulo">
         {t.inclui.titulo}
       </h2>
     </Linha>
-    <ul class="lista-planilha">
-      {t.inclui.itens.map((i) => (
-        <Linha as="li">
-          <span class="item-linha">{i}</span>
-        </Linha>
+    <Linha as="ul" class="cartoes" data-cartoes={t.inclui.itens.length}>
+      {t.inclui.itens.map((i, idx) => (
+        <Cartao as="li" icone={iconesInclui[idx]} texto={i} />
       ))}
-    </ul>
-  </section>
+    </Linha>
+  </Secao>
 
-  <section class="folha" aria-labelledby="como-titulo">
+  <Secao aria-labelledby="como-titulo">
     <Linha>
       <h2 class="titulo-secao" id="como-titulo">
         {t.comoFunciona.titulo}
@@ -115,9 +128,9 @@ const jsonLd = {
         </Linha>
       ))}
     </ol>
-  </section>
+  </Secao>
 
-  <section class="folha vitrines" aria-labelledby="prova-titulo">
+  <Secao tom="branco" folha="vitrines" aria-labelledby="prova-titulo">
     <Linha class="vitrines-cabeca">
       <h2 class="titulo-secao" id="prova-titulo">
         {t.prova.titulo}
@@ -129,9 +142,9 @@ const jsonLd = {
         <Obra projeto={p} formato={formato(i)} ficha={ficha(i)} />
       ))}
     </div>
-  </section>
+  </Secao>
 
-  <section class="folha" aria-labelledby="faq-titulo">
+  <Secao aria-labelledby="faq-titulo">
     <Linha>
       <h2 class="titulo-secao" id="faq-titulo">
         {t.faq.titulo}
@@ -145,7 +158,7 @@ const jsonLd = {
         </details>
       </Linha>
     ))}
-  </section>
+  </Secao>
 
   <ChamadaFinal
     slot="fechamento"
