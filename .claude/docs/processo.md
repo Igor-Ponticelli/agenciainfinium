@@ -154,7 +154,11 @@ referência visual é direcao-visual.md e o pacote de identidade.
 - [ ] Anima só `transform`, `opacity` e `clip-path`.
 - [ ] Commit pequeno, em português, sem coautoria.
 
-## 6. Próximo passo
+## 6. Onde o projeto está
 
-Fazer o **TODO 1** em [TODO.md](../../TODO.md). As pendências que dependem do Igor estão em
-conteudo.md, seção 8. Nenhuma delas bloqueia a base técnica.
+Em 31/10/2026 os TODOs 1 a 8 estão feitos no repositório (base, conteúdo, brief e contrato,
+build, prévias, blog, Raio-X e a revisão final). O que falta é do Igor e está listado nas
+"Notas" do TODO 6 em [TODO.md](../../TODO.md): contas e chaves (Web3Forms, Turnstile, GA4,
+Pixel), preço, prazo e link de pagamento do Raio-X, valor do diagnóstico, cidades do SEO local,
+CNPJ no rodapé, data de publicação, a leitura dos textos, e a publicação na Hostinger com DNS e
+Search Console. O design construído está registrado em `DESIGN.md` e `.impeccable/design.json`.
