@@ -544,7 +544,7 @@ Search Console.
 
 ## TODO 7: Blog
 
-**Status:** pendente
+**Status:** feito em 30/10/2026 (falta a leitura do Igor e a data real de publicação)
 **Depende de:** TODO 4
 
 **Leia antes:** [conteudo.md](.claude/docs/conteudo.md) (seção 9), [arquitetura.md](.claude/docs/arquitetura.md)
@@ -573,9 +573,11 @@ serviço ou no Raio-X.
 **Não fazer:** CMS, comentários, categorias além de tags, post sem CTA, post com data futura.
 
 **Pronto quando:**
-- [ ] Os posts aprovados pelo Igor estão publicados, com as datas escalonadas.
-- [ ] Lista e post renderizam em 390 e 1440 px, sem travessão, sem dado inventado.
-- [ ] Sitemap, RSS e JSON-LD conferidos no `dist/`.
+- [ ] Os posts aprovados pelo Igor estão publicados, com as datas escalonadas. Os seis posts
+      estão escritos e publicados no build; falta o Igor ler. As datas já ficam escalonadas a
+      partir de `dataPublicacao` em `src/data/blog.ts`.
+- [x] Lista e post renderizam em 390 e 1440 px, sem travessão, sem dado inventado.
+- [x] Sitemap, RSS e JSON-LD conferidos no `dist/`.
 
 **Commits sugeridos:** `feat(blog): adiciona coleção e páginas do blog`, `content(blog): escreve
 os posts de lançamento`, `feat(seo): adiciona json-ld e rss do blog`.
@@ -583,6 +585,30 @@ os posts de lançamento`, `feat(seo): adiciona json-ld e rss do blog`.
 **Precisa do Igor:** a lista de posts, a leitura final e a data de publicação do site.
 
 **Notas:**
+- Sem rodada de perguntas (o Igor pediu para seguir até o fim): entraram seis dos sete temas de
+  conteudo.md, seção 9. Ficou de fora "quanto custa um site", que sem preço público vira texto
+  vago. Posts, do mais antigo ao mais novo: por que o site não aparece no Google (5 dias antes),
+  Instagram não substitui site (4), o que deixa um site lento (3), o que é um site seguro (2),
+  política de privacidade, cookies e LGPD (1) e quando a empresa precisa de um sistema só (dia
+  da publicação). Cada um termina numa chamada: Raio-X (3 posts), sites (2) ou sistemas (1).
+- **Datas:** `src/data/blog.ts` tem `dataPublicacao` (hoje, 30/10/2026, como marcador
+  `[PENDENTE]`); cada post tem `diasAntes` no frontmatter e a data efetiva é calculada. Quando
+  o site for ao ar, basta trocar a constante. `data` fixa no frontmatter também funciona. O
+  build derruba post com data futura.
+- Collection `blog` em `src/content/blog/` (`titulo`, `descricao` até 160, `data` opcional,
+  `diasAntes`, `atualizadoEm`, `tags`, `rascunho`, `chamada`). Páginas `/blog/` e
+  `/blog/<slug>/` em `src/pages/blog/`, com autor, data, tempo de leitura (200 palavras por
+  minuto), a chamada numa célula mesclada, post anterior e próximo e "Todos os posts". Textos
+  de interface em `src/i18n/paginas/blog.ts`.
+- SEO: `Seo.astro` ganhou `jsonLd` (nós extras no grafo) e `tipoOg`; cada post tem `BlogPosting`
+  (autor, datas, publisher apontando para a `Organization`) e `og:type article`. RSS em
+  `/blog/rss.xml` gerado por um endpoint próprio, sem dependência, com `<link rel="alternate">`
+  na lista. Os seis posts e `/blog/` estão no sitemap.
+- Home: seção "Do blog" com os três últimos posts (data e título) antes do FAQ, e "Ver o blog".
+- Título com dois-pontos precisa de aspas no YAML (o post de segurança quebrou o build na
+  primeira tentativa).
+- Verificado: `astro check`, build, Prettier, nenhum travessão em `src/content/blog/`, capturas
+  da lista e de um post em 1440 e 390.
 
 ---
 
