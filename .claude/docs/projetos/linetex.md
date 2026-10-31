@@ -6,9 +6,10 @@
 ## Fatos (do site)
 
 - Embalagens, fitas, arqueação, máquinas, limpeza, higiene, escritório e descartáveis, no atacado
-  e no varejo. A empresa fica em Guabiruba (SC) e atende a cidade e a região; o
-  portfólio diz "Guabiruba e região" (Igor, 17/10/2026). O site ainda diz só "em Guabiruba"; a prévia, a pedido do Igor,
-  diz "em Guabiruba e região", como a Lumaj ("Brusque e região").
+  e no varejo. Em 30/10/2026 o site publicado passou a dizer **"em Brusque e região"** (title,
+  description, hero e endereço em Brusque, CEP 88352-325); a prévia reproduz isso. Antes
+  (17/10/2026) o site dizia "em Guabiruba" e a prévia do portfólio dizia "Guabiruba e região" a
+  pedido do Igor.
 - O site funciona como **catálogo com lista de cotação**: o visitante toca em "Cotar" nos itens,
   abre a "Lista" no topo, anota quantidades e medidas e envia tudo numa única mensagem de
   WhatsApp. "Nada é comprado: é só uma mensagem."

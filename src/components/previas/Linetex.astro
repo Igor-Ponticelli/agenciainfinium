@@ -1,0 +1,1264 @@
+---
+/**
+ * Miniprévia da Linetex: a home (cabeçalho com "Lista", título, CTA, índice do catálogo e o
+ * trilho 01 a 09). Como no site, o índice e o trilho levam a cada departamento, onde "Cotar"
+ * monta a lista de cotação; a "Lista" abre a folha com os itens. O envio pelo WhatsApp não
+ * existe aqui: nada sai da prévia. Fonte: .claude/docs/projetos/linetex.md.
+ *
+ * As miniaturas de produto são as fotos do site, com aval do cliente.
+ */
+import { Picture } from 'astro:assets';
+import { fotoCatalogo } from './fotosCatalogo';
+import logo from '../../assets/previas/linetex-logo.svg?raw';
+
+const rotulos = {
+  inicio: 'Linetex Embalagens, página inicial',
+};
+
+// Departamentos e itens como estão no site (índice da home e página de produtos)
+const departamentos = [
+  {
+    curto: 'Fitas',
+    titulo: 'Fitas adesivas',
+    foto: 'fita-transparente',
+    alt: 'Fita adesiva transparente',
+    resumo: 'Para fechar caixas, lacrar pacotes e identificar volumes.',
+    itens: [
+      'Fita adesiva transparente',
+      'Fita larga transparente e marrom',
+      'Fita impressa “Frágil”',
+      'Fita crepe e fita kraft',
+      'Fita de papel gomada',
+      'Aplicador manual de fita',
+      'Suporte de fita para mesa',
+    ],
+  },
+  {
+    curto: 'Arqueação',
+    titulo: 'Fitas e artigos para arqueação',
+    foto: 'fita-arquear-pp',
+    alt: 'Fita de arquear PP',
+    resumo: 'Fitas, selos e ferramentas para cintar caixas, fardos e paletes.',
+    itens: [
+      'Fita de arquear PP',
+      'Fita de arquear PET',
+      'Fita de arquear preta',
+      'Fitilho',
+      'Selos e grampos',
+      'Tensionador e selador manual',
+      'Carrinho desbobinador',
+    ],
+  },
+  {
+    curto: 'Proteção',
+    titulo: 'Proteção e bobinas',
+    foto: 'filme-stretch',
+    alt: 'Filme stretch',
+    resumo: 'Para envolver, forrar e proteger a mercadoria no transporte.',
+    itens: [
+      'Filme stretch',
+      'Plástico bolha',
+      'Papel kraft em bobina',
+      'Papelão ondulado em bobina',
+      'Bobinas plásticas',
+    ],
+  },
+  {
+    curto: 'Sacos e caixas',
+    titulo: 'Sacos, sacolas, envelopes e caixas',
+    foto: 'sacos-plasticos',
+    alt: 'Sacos plásticos',
+    resumo: 'Para a loja, o estoque e o envio de pedidos de e-commerce.',
+    itens: ['Sacos plásticos', 'Sacolas plásticas', 'Envelope de segurança', 'Caixas de papelão'],
+  },
+  {
+    curto: 'Máquinas',
+    titulo: 'Máquinas e equipamentos',
+    foto: 'arqueadora',
+    alt: 'Arqueadora semiautomática',
+    resumo: 'Equipamentos para a expedição embalar mais rápido.',
+    itens: [
+      'Arqueadora semiautomática',
+      'Seladora de pedal',
+      'Dispensador de fita gomada',
+      'Dispensador de bancada',
+      'Grampeador pneumático para caixas',
+      'Aplicador de tag',
+    ],
+  },
+  {
+    curto: 'Limpeza',
+    titulo: 'Produtos de limpeza',
+    foto: 'cloro',
+    alt: 'Cloro e alvejantes',
+    cena: true,
+    resumo: 'Para a casa, o comércio, a indústria e a oficina.',
+    itens: [
+      'Cloro e alvejantes',
+      'Limpadores e desinfetantes',
+      'Desengraxantes e limpeza pesada',
+      'Lava-roupas e multiuso',
+      'Limpeza automotiva',
+      'Aromatizadores de ambiente',
+      'Sacos de lixo',
+    ],
+  },
+  {
+    curto: 'Higiene',
+    titulo: 'Higiene',
+    foto: 'papel-higienico',
+    alt: 'Papel higiênico e papel toalha',
+    cena: true,
+    resumo: 'Para banheiros de empresas, comércios e condomínios.',
+    itens: ['Papel higiênico e papel toalha', 'Sabonete líquido e álcool'],
+  },
+  {
+    curto: 'Escritório',
+    titulo: 'Escritório e papelaria',
+    foto: 'papel-sulfite',
+    alt: 'Papel sulfite',
+    resumo: 'Papel e material de expediente para a empresa.',
+    itens: ['Papel sulfite', 'Material de escritório'],
+  },
+  {
+    curto: 'Descartáveis',
+    titulo: 'Descartáveis',
+    foto: 'copos',
+    alt: 'Copos descartáveis',
+    cena: true,
+    resumo: 'Para copa, refeitório, eventos e food service.',
+    itens: ['Copos descartáveis', 'Talheres e pratos descartáveis'],
+  },
+];
+const n = (i: number) => String(i + 1).padStart(2, '0');
+const whatsapp =
+  'M12.04 2a9.9 9.9 0 0 0-8.5 15l-1.4 5 5.2-1.36A9.93 9.93 0 1 0 12.04 2zm0 18.1a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.08.8.82-3-.2-.31a8.2 8.2 0 1 1 6.94 3.84zm4.5-6.14c-.25-.12-1.46-.72-1.69-.8-.23-.08-.39-.12-.55.12-.16.25-.63.8-.78.97-.14.16-.29.18-.53.06a6.74 6.74 0 0 1-3.37-2.94c-.25-.44.25-.41.72-1.36.08-.16.04-.3-.02-.42-.06-.12-.55-1.33-.76-1.82-.2-.48-.4-.41-.55-.42h-.47a.9.9 0 0 0-.65.3 2.74 2.74 0 0 0-.86 2.04 4.77 4.77 0 0 0 1 2.53 10.9 10.9 0 0 0 4.18 3.69c1.55.67 2.16.73 2.94.61.47-.07 1.46-.6 1.66-1.17.2-.58.2-1.07.14-1.17-.06-.11-.22-.17-.47-.29z';
+const seta = 'M4 12h15M13 6l6 6-6 6';
+const id = 'lx-lista';
+---
+
+<div class="lx" lang="pt-BR" data-vista="inicio">
+  <div class="lx-regua"></div>
+  <div class="lx-topo">
+    <button class="lx-marca" type="button" aria-label={rotulos.inicio} data-lx-inicio>
+      <span set:html={logo} />
+    </button>
+    <span class="lx-nav" aria-hidden="true">
+      <span class="lx-nav-produtos">Produtos</span>
+      <span>A Linetex</span>
+      <span>Contato</span>
+    </span>
+    <button
+      class="lx-abrir-lista"
+      type="button"
+      aria-haspopup="dialog"
+      aria-controls={id}
+      data-lx-abrir
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M9 6h11M9 12h11M9 18h11"></path>
+        <path d="M4 5.5h1.5v1.5H4zM4 11.25h1.5v1.5H4zM4 17h1.5v1.5H4z"></path>
+      </svg>
+      <span class="lx-so-largo" aria-hidden="true">
+        Lista
+      </span>
+      <span class="lx-contador" aria-hidden="true" data-lx-contador>
+        0
+      </span>
+      <span class="lx-sr" data-lx-contador-leitor>
+        Lista de cotação, nenhum item
+      </span>
+    </button>
+    <span class="lx-botao lx-so-largo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" class="lx-cheio">
+        <path d={whatsapp}></path>
+      </svg>
+      WhatsApp
+    </span>
+    <span class="lx-menu" aria-hidden="true">
+      <svg viewBox="0 0 24 24">
+        <path d="M3 7h18M3 12h18M3 17h12"></path>
+      </svg>
+    </span>
+  </div>
+
+  <ol class="lx-trilho">
+    {departamentos.map((d, i) => (
+      <li>
+        <button type="button" aria-label={d.titulo} data-lx-dep={i}>
+          <span class="lx-numero">{n(i)}</span>
+          <span class="lx-trilho-nome" aria-hidden="true">
+            {d.curto}
+          </span>
+        </button>
+      </li>
+    ))}
+  </ol>
+
+  <div class="lx-vista lx-abertura" data-lx-vista="inicio">
+    <div class="lx-abertura-texto">
+      <p class="lx-titulo">Embalagem, limpeza e escritório para a sua empresa.</p>
+      <p class="lx-apoio">
+        Fitas, arqueação, filmes, sacos, máquinas, produtos de limpeza, higiene e papelaria. No
+        atacado e no varejo, em Brusque e região.
+      </p>
+      <p class="lx-acoes">
+        <span class="lx-botao lx-botao-grande" aria-hidden="true">
+          <svg viewBox="0 0 24 24" class="lx-cheio">
+            <path d={whatsapp}></path>
+          </svg>
+          Chamar no WhatsApp
+        </span>
+        <button class="lx-link-seta" type="button" data-lx-dep="0">
+          Ver o catálogo
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d={seta}></path>
+          </svg>
+        </button>
+      </p>
+    </div>
+    <div class="lx-indice">
+      <p class="lx-indice-topo">
+        <span class="lx-rotulo">Índice do catálogo</span>
+        <span class="lx-rotulo">9 departamentos</span>
+      </p>
+      <ol class="lx-indice-lista">
+        {departamentos.map((d, i) => (
+          <li>
+            <button class="lx-linha" type="button" data-lx-dep={i}>
+              <span class="lx-numero lx-n">{n(i)}</span>
+              <span class="lx-nome">
+                <span class="lx-linha-titulo">{d.titulo}</span>
+                <span class="lx-resumo">{d.resumo}</span>
+              </span>
+              <span class="lx-foto" data-cena={d.cena ? '' : undefined}>
+                <Picture
+                  src={fotoCatalogo(d.foto)}
+                  formats={['avif', 'webp']}
+                  widths={[96, 160]}
+                  sizes="64px"
+                  loading="lazy"
+                  alt=""
+                />
+              </span>
+              <svg class="lx-seta" viewBox="0 0 24 24" aria-hidden="true">
+                <path d={seta}></path>
+              </svg>
+            </button>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+
+  {departamentos.map((d, i) => (
+    <div class="lx-vista lx-dep" data-lx-vista={i} hidden>
+      <span class="lx-dep-foto" data-cena={d.cena ? '' : undefined}>
+        <Picture
+          src={fotoCatalogo(d.foto)}
+          formats={['avif', 'webp']}
+          widths={[360, 560, 720]}
+          sizes="(min-width: 64rem) 34vw, 1px"
+          loading="lazy"
+          alt={d.alt}
+        />
+      </span>
+      <div class="lx-dep-texto">
+        <p class="lx-dep-n">{n(i)}</p>
+        <p class="lx-dep-titulo" tabindex="-1">
+          {d.titulo}
+        </p>
+        <p class="lx-dep-resumo">{d.resumo}</p>
+        <ul class="lx-itens">
+          {d.itens.map((item, j) => (
+            <li>
+              <span class="lx-numero">
+                {n(i)}.{j + 1}
+              </span>
+              <span>{item}</span>
+              <button class="lx-cotar" type="button" aria-pressed="false" data-lx-cotar={item}>
+                <span data-lx-rotulo>Cotar</span>
+                <span class="lx-sr">{item}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  ))}
+
+  <div class="lx-barra" hidden data-lx-barra>
+    <p>
+      <b class="lx-numero" data-lx-barra-n>
+        0
+      </b>{' '}
+      <span data-lx-barra-rotulo>itens</span> na lista
+    </p>
+    <button class="lx-botao" type="button" data-lx-abrir>
+      Ver e enviar
+    </button>
+  </div>
+
+  <div class="lx-fundo" hidden data-lx-fundo></div>
+  <div class="lx-lista" id={id} role="dialog" aria-labelledby={`${id}-titulo`} hidden data-lx-lista>
+    <div class="lx-lista-topo">
+      <div>
+        <p class="lx-lista-titulo" id={`${id}-titulo`} tabindex="-1">
+          Lista de cotação
+        </p>
+        <p class="lx-lista-sub">
+          Os itens vão numa mensagem só pelo WhatsApp. Sem compromisso de compra.
+        </p>
+        <p class="lx-folio">
+          Folha de <span data-lx-data></span>
+        </p>
+      </div>
+      <button class="lx-fechar" type="button" data-lx-fechar>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 5l14 14M19 5L5 19"></path>
+        </svg>
+        <span class="lx-sr">Fechar lista</span>
+      </button>
+    </div>
+    <div class="lx-vazia" data-lx-vazia>
+      <p>Sua lista está vazia.</p>
+      <p>
+        No catálogo, toque em <strong>Cotar</strong> nos itens que você precisa. Eles aparecem aqui.
+      </p>
+      <button class="lx-link-seta" type="button" data-lx-dep="0">
+        Abrir o catálogo
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d={seta}></path>
+        </svg>
+      </button>
+    </div>
+    <div class="lx-folha" hidden data-lx-folha>
+      <p class="lx-lista-cabecalho lx-rotulo" aria-hidden="true">
+        <span>Item</span>
+        <span>Quantidade</span>
+      </p>
+      <ol class="lx-lista-itens" data-lx-itens></ol>
+      <label class="lx-obs">
+        <span class="lx-rotulo">Observações</span>
+        <textarea rows="3" placeholder="Medidas, cores, cidade de entrega…"></textarea>
+      </label>
+      <div class="lx-lista-acoes">
+        <span class="lx-botao lx-botao-grande" aria-hidden="true">
+          <svg viewBox="0 0 24 24" class="lx-cheio">
+            <path d={whatsapp}></path>
+          </svg>
+          Enviar pelo WhatsApp
+        </span>
+        <button class="lx-limpar" type="button" data-lx-limpar>
+          Limpar lista
+        </button>
+      </div>
+    </div>
+  </div>
+  <p class="lx-sr" aria-live="polite" data-lx-aviso></p>
+</div>
+
+<style>
+  .lx {
+    --papel: #fff;
+    --papel-2: #f4f5f9;
+    --tinta: #0e1240;
+    --tinta-2: #4a4f72;
+    --tinta-3: #6b7091;
+    --indigo: #1b1f7a;
+    --azul: #2b5be3;
+    --azul-texto: #2348c4;
+    --azul-claro: #e9eefc;
+    --filete: #dde0ea;
+    --filete-forte: #b8bdd2;
+    --gradiente: linear-gradient(90deg, var(--indigo), var(--azul));
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --texto: sans-serif;
+    --titulo: sans-serif;
+    --u: 0.1cqi;
+    --margem: calc(56 * var(--u));
+
+    color-scheme: light;
+
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    overflow: hidden;
+    background-color: var(--papel);
+    color: var(--tinta);
+    font-family: var(--texto);
+    font-size: calc(13 * var(--u));
+    font-weight: 350;
+    line-height: 1.55;
+  }
+
+  :global(.previa[data-ativa]) .lx {
+    --texto: var(--previa-lexend);
+    --titulo: var(--previa-lexend-exa);
+  }
+
+  .lx svg {
+    flex: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: square;
+  }
+
+  .lx svg.lx-cheio {
+    fill: currentColor;
+    stroke: none;
+  }
+
+  .lx :is(button, textarea, input):focus-visible {
+    outline: 2px solid var(--azul);
+    outline-offset: 2px;
+  }
+
+  .lx :global(.lx-sr) {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .lx :global(.lx-numero) {
+    font-family: var(--titulo);
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+
+  .lx-rotulo {
+    color: var(--tinta-3);
+    font-size: calc(9.5 * var(--u));
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  /* Cabeçalho */
+  .lx-regua {
+    block-size: calc(3 * var(--u));
+    background: var(--gradiente);
+  }
+
+  .lx-topo {
+    display: flex;
+    align-items: center;
+    gap: calc(12 * var(--u));
+    block-size: calc(61 * var(--u));
+    padding-inline: var(--margem) calc(var(--margem) + 34 * var(--u));
+    border-block-end: 1px solid var(--filete);
+  }
+
+  .lx-marca {
+    margin-inline-end: auto;
+    padding: 0;
+    border: 0;
+    background: none;
+    line-height: 0;
+  }
+
+  .lx-marca :global(svg) {
+    inline-size: calc(146 * var(--u));
+    height: auto;
+  }
+
+  .lx-nav {
+    display: flex;
+    margin-inline-end: calc(6 * var(--u));
+    color: var(--tinta-2);
+    font-size: calc(12 * var(--u));
+  }
+
+  .lx-nav span {
+    padding: calc(6 * var(--u)) calc(13 * var(--u));
+    border-block-end: 2px solid transparent;
+  }
+
+  .lx:not([data-vista='inicio']) .lx-nav-produtos {
+    border-block-end-color: var(--azul);
+    color: var(--tinta);
+  }
+
+  .lx-abrir-lista {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(7 * var(--u));
+    block-size: max(24px, calc(35 * var(--u)));
+    padding: 0 calc(10 * var(--u));
+    border: 1px solid var(--filete-forte);
+    background-color: var(--papel);
+    font-size: calc(12 * var(--u));
+    font-weight: 500;
+    line-height: 1;
+    transition: border-color 200ms var(--ease);
+  }
+
+  .lx-abrir-lista:hover {
+    border-color: var(--tinta);
+  }
+
+  .lx-abrir-lista svg {
+    inline-size: calc(16 * var(--u));
+    min-inline-size: 12px;
+  }
+
+  .lx-contador {
+    display: inline-grid;
+    place-items: center;
+    min-inline-size: calc(19 * var(--u));
+    block-size: calc(19 * var(--u));
+    padding: 0 calc(4 * var(--u));
+    background-color: var(--papel-2);
+    color: var(--tinta-2);
+    font: 600 calc(10.5 * var(--u)) / 1 var(--titulo);
+    font-variant-numeric: tabular-nums;
+    transition:
+      background-color 250ms var(--ease),
+      color 250ms var(--ease);
+  }
+
+  .lx[data-itens] .lx-contador {
+    background-color: var(--azul);
+    color: #fff;
+  }
+
+  .lx-botao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: calc(8 * var(--u));
+    min-block-size: calc(35 * var(--u));
+    padding: 0 calc(15 * var(--u));
+    border: 0;
+    background: var(--gradiente);
+    background-size: 140% 100%;
+    color: #fff;
+    font-size: calc(12.5 * var(--u));
+    font-weight: 500;
+    line-height: 1.2;
+    white-space: nowrap;
+    transition: background-position 200ms var(--ease);
+  }
+
+  .lx-botao:hover {
+    background-position: 100% 0;
+  }
+
+  .lx-botao svg {
+    inline-size: calc(16 * var(--u));
+  }
+
+  .lx-botao-grande {
+    min-block-size: calc(42 * var(--u));
+    padding-inline: calc(20 * var(--u));
+    font-size: calc(13 * var(--u));
+  }
+
+  .lx-menu {
+    display: none;
+  }
+
+  /* Trilho 01 a 09 */
+  .lx-trilho {
+    position: absolute;
+    inset-block-start: calc(90 * var(--u));
+    inset-inline-end: 0;
+    z-index: 2;
+    display: grid;
+    justify-items: end;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .lx-trilho button {
+    display: flex;
+    align-items: center;
+    gap: calc(8 * var(--u));
+    block-size: calc(33 * var(--u));
+    min-block-size: 20px;
+    padding: 0 calc(11 * var(--u));
+    border: 0;
+    background-color: var(--indigo);
+    color: #fff;
+    font-size: calc(10.5 * var(--u));
+    transition: background-color 250ms var(--ease);
+  }
+
+  .lx-trilho .lx-numero {
+    font-size: calc(9.5 * var(--u));
+  }
+
+  .lx-trilho-nome {
+    display: none;
+    white-space: nowrap;
+  }
+
+  .lx-trilho button:is(:hover, :focus-visible, [aria-current='true']) {
+    background: var(--gradiente);
+  }
+
+  .lx-trilho button:is(:hover, :focus-visible, [aria-current='true']) .lx-trilho-nome {
+    display: inline;
+  }
+
+  /* Abertura */
+  .lx-vista {
+    min-block-size: 0;
+    overflow: hidden;
+    padding: calc(34 * var(--u)) calc(var(--margem) + 34 * var(--u)) 0 var(--margem);
+  }
+
+  .lx-vista[hidden] {
+    display: none;
+  }
+
+  .lx-abertura {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    align-items: start;
+    gap: calc(50 * var(--u));
+  }
+
+  .lx-abertura-texto {
+    padding-block-start: calc(12 * var(--u));
+  }
+
+  .lx-titulo {
+    max-inline-size: 15ch;
+    font-family: var(--titulo);
+    font-size: calc(43 * var(--u));
+    font-weight: 600;
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+  }
+
+  .lx-apoio {
+    max-inline-size: 34em;
+    margin-block-start: calc(14 * var(--u));
+    color: var(--tinta-2);
+    font-size: calc(13.5 * var(--u));
+  }
+
+  .lx-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: calc(13 * var(--u)) calc(22 * var(--u));
+    margin-block-start: calc(22 * var(--u));
+  }
+
+  .lx-link-seta {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(5 * var(--u));
+    min-block-size: 24px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--azul-texto);
+    font-size: calc(13 * var(--u));
+    font-weight: 500;
+  }
+
+  .lx-link-seta:hover {
+    text-decoration: underline;
+  }
+
+  .lx-link-seta svg,
+  .lx-seta {
+    inline-size: calc(14 * var(--u));
+    min-inline-size: 10px;
+    transition:
+      transform 250ms var(--ease),
+      color 250ms var(--ease);
+  }
+
+  .lx-link-seta:hover svg {
+    transform: translateX(3px);
+  }
+
+  .lx-indice-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-block-end: calc(8 * var(--u));
+    border-block-end: 2px solid var(--tinta);
+  }
+
+  .lx-indice-lista,
+  .lx-itens,
+  .lx-lista-itens {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .lx-linha {
+    display: grid;
+    grid-template-columns: calc(44 * var(--u)) 1fr calc(58 * var(--u)) calc(20 * var(--u));
+    align-items: center;
+    gap: calc(16 * var(--u));
+    inline-size: 100%;
+    padding: calc(8 * var(--u)) calc(6 * var(--u)) calc(8 * var(--u)) 0;
+    border: 0;
+    border-block-end: 1px solid var(--filete);
+    background: none;
+    text-align: start;
+    transition: background-color 220ms var(--ease);
+  }
+
+  .lx-linha:hover {
+    background-color: var(--papel-2);
+  }
+
+  .lx-n {
+    color: var(--azul-texto);
+    font-size: calc(11 * var(--u));
+  }
+
+  .lx-nome {
+    display: grid;
+    gap: calc(2 * var(--u));
+    min-inline-size: 0;
+  }
+
+  .lx-linha-titulo {
+    font: 600 calc(14.5 * var(--u)) / 1.2 var(--titulo);
+    letter-spacing: -0.03em;
+  }
+
+  .lx-resumo {
+    color: var(--tinta-3);
+    font-size: calc(10.5 * var(--u));
+  }
+
+  .lx-foto,
+  .lx-dep-foto {
+    display: block;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border: 1px solid var(--filete);
+    background-color: #fff;
+  }
+
+  :is(.lx-foto, .lx-dep-foto) :global(picture) {
+    display: contents;
+  }
+
+  :is(.lx-foto, .lx-dep-foto) :global(img) {
+    display: block;
+    box-sizing: border-box;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: contain;
+  }
+
+  .lx-dep-foto :global(img) {
+    padding: 4%;
+  }
+
+  :is(.lx-foto, .lx-dep-foto)[data-cena] :global(img) {
+    padding: 0;
+    object-fit: cover;
+  }
+
+  .lx-seta {
+    color: var(--tinta-3);
+  }
+
+  .lx-linha:hover .lx-seta {
+    color: var(--azul-texto);
+    transform: translateX(3px);
+  }
+
+  /* Departamento (o bloco "espalhado" do site, com a lista de itens e o Cotar) */
+  .lx-dep {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    gap: calc(50 * var(--u));
+    padding-block-start: calc(30 * var(--u));
+  }
+
+  .lx-dep-foto {
+    border: 0;
+  }
+
+  .lx-dep-texto {
+    padding-block-start: calc(6 * var(--u));
+  }
+
+  .lx-dep-n {
+    color: var(--azul);
+    font-family: var(--titulo);
+    font-size: calc(45 * var(--u));
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .lx-dep-titulo {
+    margin-block-start: calc(10 * var(--u));
+    font-family: var(--titulo);
+    font-size: calc(26 * var(--u));
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    outline: none;
+  }
+
+  .lx-dep-resumo {
+    margin-block-start: calc(8 * var(--u));
+    color: var(--tinta-2);
+  }
+
+  .lx-itens {
+    margin-block-start: calc(16 * var(--u));
+    border-block-start: 1px solid var(--filete);
+  }
+
+  .lx-itens li {
+    display: grid;
+    grid-template-columns: calc(44 * var(--u)) 1fr auto;
+    align-items: center;
+    gap: calc(10 * var(--u));
+    min-block-size: calc(38 * var(--u));
+    border-block-end: 1px solid var(--filete);
+    font-size: calc(12 * var(--u));
+  }
+
+  .lx-itens .lx-numero {
+    color: var(--tinta-3);
+    font-size: calc(10.5 * var(--u));
+  }
+
+  .lx-cotar {
+    min-inline-size: calc(70 * var(--u));
+    min-block-size: max(24px, calc(35 * var(--u)));
+    padding: 0 calc(11 * var(--u));
+    border: 1px solid var(--filete-forte);
+    background-color: var(--papel);
+    font-size: calc(11 * var(--u));
+    font-weight: 500;
+    line-height: 1;
+    transition:
+      background-color 200ms var(--ease),
+      color 200ms var(--ease),
+      border-color 200ms var(--ease);
+  }
+
+  .lx-cotar:hover {
+    border-color: var(--tinta);
+  }
+
+  .lx-cotar[aria-pressed='true'] {
+    border-color: var(--tinta);
+    background-color: var(--tinta);
+    color: #fff;
+  }
+
+  /* Barra de baixo, quando há itens na lista */
+  .lx-barra {
+    position: absolute;
+    inset: auto 0 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: calc(12 * var(--u));
+    padding: calc(8 * var(--u)) calc(var(--margem) + 34 * var(--u)) calc(8 * var(--u)) var(--margem);
+    border-block-start: 1px solid var(--filete-forte);
+    background-color: var(--papel);
+    box-shadow: 0 calc(-10 * var(--u)) calc(30 * var(--u)) #0e124014;
+    font-size: calc(12 * var(--u));
+    animation: lx-subir 400ms var(--ease);
+  }
+
+  .lx-barra[hidden] {
+    display: none;
+  }
+
+  .lx-barra b {
+    font-weight: 600;
+  }
+
+  @keyframes lx-subir {
+    from {
+      transform: translateY(100%);
+    }
+  }
+
+  /* Folha da lista de cotação */
+  .lx-fundo {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    background-color: #0e124061;
+    pointer-events: auto;
+    animation: lx-escurecer 380ms var(--ease);
+  }
+
+  .lx-fundo[hidden],
+  .lx-lista[hidden],
+  .lx-folha[hidden],
+  .lx-vazia[hidden] {
+    display: none;
+  }
+
+  @keyframes lx-escurecer {
+    from {
+      opacity: 0;
+    }
+  }
+
+  .lx-lista {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    inline-size: min(calc(410 * var(--u)), 100%);
+    overflow: auto;
+    padding: 0 calc(24 * var(--u)) calc(16 * var(--u));
+    border-block-start: calc(3 * var(--u)) solid;
+    border-image: var(--gradiente) 1;
+    background-color: var(--papel);
+    box-shadow: calc(-24 * var(--u)) 0 calc(60 * var(--u)) #0e12402e;
+    pointer-events: auto;
+    animation: lx-entrar 380ms var(--ease);
+  }
+
+  @keyframes lx-entrar {
+    from {
+      transform: translateX(100%);
+    }
+  }
+
+  .lx-lista-topo {
+    display: flex;
+    justify-content: space-between;
+    padding-block: calc(20 * var(--u)) calc(16 * var(--u));
+    border-block-end: 2px solid var(--tinta);
+  }
+
+  .lx-lista-titulo {
+    font-family: var(--titulo);
+    font-size: calc(19 * var(--u));
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    outline: none;
+  }
+
+  .lx-lista-sub {
+    margin-block-start: calc(4 * var(--u));
+    color: var(--tinta-2);
+    font-size: calc(11 * var(--u));
+  }
+
+  .lx-folio {
+    margin-block-start: calc(4 * var(--u));
+    color: var(--tinta-3);
+    font-size: calc(10 * var(--u));
+    font-variant-numeric: tabular-nums;
+  }
+
+  .lx-fechar {
+    display: grid;
+    place-items: center;
+    flex: none;
+    inline-size: max(24px, calc(35 * var(--u)));
+    block-size: max(24px, calc(35 * var(--u)));
+    margin: calc(-5 * var(--u)) calc(-8 * var(--u)) 0 0;
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+
+  .lx-fechar svg {
+    inline-size: calc(18 * var(--u));
+    min-inline-size: 14px;
+  }
+
+  .lx-vazia {
+    display: grid;
+    justify-items: start;
+    gap: calc(8 * var(--u));
+    padding-block: calc(20 * var(--u));
+    color: var(--tinta-2);
+  }
+
+  .lx-folha {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .lx-lista-cabecalho {
+    display: grid;
+    grid-template-columns: 1fr calc(108 * var(--u)) calc(35 * var(--u));
+    gap: calc(10 * var(--u));
+    padding: calc(12 * var(--u)) 0 calc(6 * var(--u)) calc(29 * var(--u));
+  }
+
+  .lx-lista-cabecalho span:last-child {
+    grid-column: 2 / 4;
+  }
+
+  .lx-lista-itens {
+    border-block-start: 1px solid var(--filete);
+  }
+
+  .lx :global(.lx-item) {
+    display: grid;
+    grid-template-columns: calc(19 * var(--u)) 1fr calc(108 * var(--u)) calc(35 * var(--u));
+    align-items: center;
+    gap: calc(10 * var(--u));
+    padding-block: calc(8 * var(--u));
+    border-block-end: 1px solid var(--filete);
+    font-size: calc(12 * var(--u));
+    line-height: 1.3;
+  }
+
+  .lx :global(.lx-item-n) {
+    color: var(--azul-texto);
+    font-size: calc(10.5 * var(--u));
+  }
+
+  .lx :global(.lx-qtd),
+  .lx-obs textarea {
+    box-sizing: border-box;
+    inline-size: 100%;
+    min-inline-size: 0;
+    border: 1px solid var(--filete-forte);
+    border-radius: 0;
+    background-color: var(--papel);
+    color: var(--tinta);
+    font: 400 calc(12 * var(--u)) / 1.5 var(--texto);
+  }
+
+  .lx :global(.lx-qtd) {
+    block-size: max(24px, calc(35 * var(--u)));
+    padding: 0 calc(8 * var(--u));
+  }
+
+  .lx :global(:is(.lx-qtd, textarea))::placeholder {
+    color: var(--tinta-3);
+  }
+
+  .lx :global(:is(.lx-qtd, textarea)):focus {
+    border-color: var(--azul);
+    box-shadow: 0 0 0 3px var(--azul-claro);
+    outline: none;
+  }
+
+  .lx :global(.lx-remover) {
+    display: grid;
+    place-items: center;
+    inline-size: max(24px, calc(35 * var(--u)));
+    block-size: max(24px, calc(35 * var(--u)));
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--tinta-3);
+  }
+
+  .lx :global(.lx-remover:hover) {
+    color: var(--tinta);
+  }
+
+  .lx :global(.lx-remover svg) {
+    inline-size: calc(14 * var(--u));
+    min-inline-size: 11px;
+  }
+
+  .lx-obs {
+    display: grid;
+    gap: calc(6 * var(--u));
+    margin-block-start: calc(18 * var(--u));
+  }
+
+  .lx-obs textarea {
+    padding: calc(10 * var(--u));
+    resize: none;
+  }
+
+  .lx-lista-acoes {
+    display: grid;
+    gap: calc(8 * var(--u));
+    margin-block-start: auto;
+    padding-block-start: calc(18 * var(--u));
+  }
+
+  .lx-limpar {
+    justify-self: center;
+    min-block-size: max(24px, calc(35 * var(--u)));
+    padding: 0 calc(12 * var(--u));
+    border: 0;
+    background: none;
+    color: var(--tinta-2);
+    font-size: calc(12 * var(--u));
+    text-decoration: underline;
+    text-underline-offset: 0.22em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lx * {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+
+  /* Moldura larga: proporções do site numa largura de referência de 1100px */
+  @container (min-width: 700px) {
+    .lx {
+      --u: calc(100cqi / 1100);
+    }
+  }
+
+  /* Moldura estreita: o site no celular, sem o trilho e com o menu */
+  @container (max-width: 699.98px) {
+    .lx {
+      --u: calc(100cqi / 400);
+      --margem: calc(16 * var(--u));
+
+      font-size: calc(14 * var(--u));
+    }
+
+    .lx-topo {
+      gap: calc(10 * var(--u));
+      block-size: calc(60 * var(--u));
+      padding-inline: var(--margem);
+    }
+
+    .lx-marca :global(svg) {
+      inline-size: calc(150 * var(--u));
+    }
+
+    .lx-nav,
+    .lx-trilho,
+    .lx-so-largo,
+    .lx-resumo,
+    .lx-dep-foto {
+      display: none;
+    }
+
+    .lx-abrir-lista {
+      block-size: max(24px, calc(42 * var(--u)));
+      padding-inline: calc(14 * var(--u));
+    }
+
+    .lx-menu {
+      display: grid;
+      place-items: center;
+      inline-size: calc(36 * var(--u));
+    }
+
+    .lx-menu svg {
+      inline-size: calc(22 * var(--u));
+    }
+
+    .lx-vista {
+      padding: calc(28 * var(--u)) var(--margem) 0;
+    }
+
+    .lx-abertura {
+      grid-template-columns: 1fr;
+      gap: calc(26 * var(--u));
+    }
+
+    .lx-abertura-texto {
+      padding: 0;
+    }
+
+    .lx-titulo {
+      max-inline-size: none;
+      font-size: calc(33 * var(--u));
+      line-height: 1.05;
+    }
+
+    .lx-apoio {
+      font-size: calc(15 * var(--u));
+    }
+
+    .lx-acoes {
+      flex-direction: column;
+      align-items: start;
+    }
+
+    .lx-botao-grande {
+      min-block-size: calc(48 * var(--u));
+      font-size: calc(15 * var(--u));
+    }
+
+    .lx-link-seta {
+      font-size: calc(15 * var(--u));
+    }
+
+    .lx-rotulo {
+      font-size: calc(10.5 * var(--u));
+    }
+
+    .lx-linha {
+      grid-template-columns: calc(36 * var(--u)) 1fr calc(54 * var(--u)) calc(18 * var(--u));
+      gap: calc(12 * var(--u));
+    }
+
+    .lx-linha-titulo {
+      font-size: calc(15 * var(--u));
+    }
+
+    .lx-n {
+      font-size: calc(13 * var(--u));
+    }
+
+    .lx-dep {
+      grid-template-columns: 1fr;
+      padding-block-start: calc(22 * var(--u));
+    }
+
+    .lx-itens li {
+      grid-template-columns: calc(38 * var(--u)) 1fr auto;
+      min-block-size: calc(44 * var(--u));
+      font-size: calc(13.5 * var(--u));
+    }
+
+    .lx-cotar {
+      font-size: calc(13 * var(--u));
+    }
+
+    .lx-barra {
+      padding-inline: var(--margem);
+      font-size: calc(13.5 * var(--u));
+    }
+
+    .lx-lista {
+      padding-inline: var(--margem);
+    }
+
+    .lx :global(.lx-item) {
+      grid-template-columns: calc(22 * var(--u)) 1fr calc(35 * var(--u));
+      row-gap: calc(6 * var(--u));
+      font-size: calc(14 * var(--u));
+    }
+
+    .lx :global(.lx-qtd) {
+      grid-area: 2 / 2;
+    }
+
+    .lx :global(.lx-remover) {
+      grid-area: 1 / 3;
+    }
+
+    .lx-lista-cabecalho {
+      display: none;
+    }
+  }
+</style>

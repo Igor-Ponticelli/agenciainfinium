@@ -5,15 +5,15 @@ tipo: site
 ano: 2026
 status: publicado
 url: https://linetexembalagens.com.br
-resumo: Catálogo de embalagens para Guabiruba (SC) e região, com lista de cotação enviada pelo WhatsApp.
+resumo: Catálogo de embalagens para Brusque e região (SC), com lista de cotação enviada pelo WhatsApp.
 ordem: 2
-revisadoEm: 2026-10-15
+revisadoEm: 2026-10-30
 atualizadoEm: 2026-10-17
 ---
 
 ## O negócio
 
-A Linetex vende embalagens, fitas, arqueação, máquinas e produtos de limpeza, higiene, escritório e descartáveis, no atacado e no varejo, em Guabiruba (SC) e região.
+A Linetex vende embalagens, fitas, arqueação, máquinas e produtos de limpeza, higiene, escritório e descartáveis, no atacado e no varejo, em Brusque e região (SC).
 
 ## O objetivo do site
 
