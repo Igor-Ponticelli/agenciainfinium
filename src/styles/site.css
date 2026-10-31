@@ -1776,14 +1776,23 @@ html[data-menu-aberto] .whatsapp-flutuante {
   grid-column: 2 / -1;
 }
 
+/* Na página do projeto a obra ocupa a linha inteira: a prévia em 9 das 12 colunas e a ficha
+   nas outras 3 (brief da home). A regra dos pares desencontrados não vale aqui. */
 @media (min-width: 64rem) {
-  .projeto-obra .obra {
+  .projeto-obra .obra:nth-child(n) {
     grid-column: 2 / -1;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    margin-block-start: 0;
     margin-inline-end: calc(-1 * var(--celula-pad));
   }
 
   .projeto-obra .obra[data-ficha='lado'] .obra-moldura {
+    grid-column: 1 / 10;
     aspect-ratio: 16 / 10;
+  }
+
+  .projeto-obra .obra[data-ficha='lado'] .ficha {
+    grid-column: 10 / -1;
   }
 }
 

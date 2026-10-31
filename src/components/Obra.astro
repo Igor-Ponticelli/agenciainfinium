@@ -3,26 +3,30 @@ import type { Projeto } from '../data/projetos';
 import { rotaProjeto } from '../i18n/rotas';
 import { textos as t } from '../i18n/textos';
 import Ficha from './Ficha.astro';
+import { previas } from './previas';
 
 /**
- * Um projeto exposto fora da grade: a moldura da prévia e a ficha nas células ao lado.
- * A prévia real entra no TODO 5; até lá, a moldura mostra o fundo do site e o nome.
+ * Um projeto exposto fora da grade: a moldura com a prévia em HTML/CSS do site (ou do produto)
+ * e a ficha nas células ao lado. A prévia é uma `region` com rótulo, fora de `<a>`, e só os
+ * controles dela recebem o ponteiro; o resto da área leva à página do projeto. Ela é ativada
+ * quando chega perto da tela (src/scripts/previas.ts).
  */
 interface Props {
   projeto: Projeto;
   formato: 'grande' | 'media';
   /** Onde a ficha fica em telas largas. No celular, sempre embaixo. */
   ficha: 'lado' | 'abaixo';
-  /** Na página do projeto a obra vem sozinha, com a ficha completa. */
+  /** Na página do projeto a obra vem sozinha, com a ficha completa, e a prévia já nasce ativa. */
   completa?: boolean;
 }
 
 const { projeto, formato, ficha, completa = false } = Astro.props;
 const d = projeto.data;
 const idTitulo = `obra-${d.slug}`;
+const Previa = previas[d.slug];
 
 // O fundo e a cor de texto reais de cada projeto (.claude/docs/projetos/), que aparecem antes
-// de a prévia existir ou ganhar fonte e script.
+// de a prévia ganhar fonte e script.
 const cores: Record<string, { fundo: string; texto: string }> = {
   'brisa-cafe': { fundo: '#faf4e6', texto: '#2b1d14' },
   linetex: { fundo: '#ffffff', texto: '#0e1240' },
@@ -49,10 +53,20 @@ const cor = cores[d.slug] ?? { fundo: '#ffffff', texto: '#211f26' };
         {d.titulo}
       </a>
     )}
-    <div class="obra-placeholder" aria-hidden="true">
-      <strong>{d.titulo}</strong>
-      <span>{t.previa.emPreparacao}</span>
-    </div>
+    {Previa ? (
+      <div class="previa" data-previa={d.slug} data-ativa={completa ? '' : undefined}>
+        <Previa />
+      </div>
+    ) : (
+      <div class="obra-placeholder" aria-hidden="true">
+        <strong>{d.titulo}</strong>
+        <span>{t.previa.emPreparacao}</span>
+      </div>
+    )}
   </div>
   <Ficha projeto={projeto} completa={completa} idTitulo={idTitulo} />
 </article>
+
+<script>
+  import '../scripts/previas';
+</script>

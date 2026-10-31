@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import ChamadaFinal from '../components/ChamadaFinal.astro';
 import Colunas from '../components/Colunas.astro';
 import Linha from '../components/Linha.astro';
+import FontesPrevias from '../components/FontesPrevias.astro';
 import Obra from '../components/Obra.astro';
 import { todosProjetos } from '../data/projetos';
 import { linkWhatsapp } from '../data/empresa';
@@ -24,6 +25,7 @@ const ficha = (i: number) => ([0, 3].includes(i % 4) ? 'lado' : 'abaixo');
 ---
 
 <Base titulo={meta.titulo} descricao={meta.descricao} tituloCompleto aberturaEscura>
+  <FontesPrevias slot="head" />
   <section slot="abertura" class="abertura folha" aria-labelledby="assinatura">
     <Colunas />
     <Linha class="abertura-assinatura">

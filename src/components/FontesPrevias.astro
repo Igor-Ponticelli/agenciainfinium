@@ -1,0 +1,15 @@
+---
+/**
+ * @font-face das fontes dos sites de clientes, sem preload. O navegador só baixa uma fonte
+ * quando uma prévia ativa (perto da tela) passa a usá-la: ver src/scripts/previas.ts.
+ * Entra no <head> das páginas que mostram prévias.
+ */
+import { Font } from 'astro:assets';
+---
+
+<Font cssVariable="--previa-plus-jakarta-sans" />
+<Font cssVariable="--previa-young-serif" />
+<Font cssVariable="--previa-figtree" />
+<Font cssVariable="--previa-lexend-exa" />
+<Font cssVariable="--previa-lexend" />
+<Font cssVariable="--previa-montserrat" />
