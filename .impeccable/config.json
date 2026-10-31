@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "src/components/previas/Retrodash.astro"
+        ],
+        "createdAt": "2026-10-31T03:43:23.014Z",
+        "reason": "Prévia reproduz a identidade do RetroDash, cujo título usa degradê no site original (.claude/docs/projetos/retrodash.md, decisão do projeto: só o que existe no original)"
+      }
+    ]
+  }
+}
