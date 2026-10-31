@@ -1,10 +1,26 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Colunas from '../../components/Colunas.astro';
+import Linha from '../../components/Linha.astro';
 import { metasPaginas } from '../../i18n/textos';
 
+/** Blog: a lista de posts entra no TODO 7. */
 const meta = metasPaginas.blog;
 ---
 
 <Base titulo={meta.titulo} descricao={meta.descricao}>
-  <h1>Blog</h1>
+  <section class="folha pagina-cabeca" aria-labelledby="pagina-titulo">
+    <Colunas />
+    <Linha>
+      <h1 class="pagina-titulo" id="pagina-titulo">
+        Blog
+      </h1>
+    </Linha>
+    <Linha>
+      <p class="pagina-texto">{meta.descricao}</p>
+    </Linha>
+    <Linha>
+      <p class="pagina-texto">[PENDENTE: os posts entram no TODO 7]</p>
+    </Linha>
+  </section>
 </Base>
