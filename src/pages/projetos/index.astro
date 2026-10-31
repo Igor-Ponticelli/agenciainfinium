@@ -1,39 +1,58 @@
 ---
 import Base from '../../layouts/Base.astro';
+import ChamadaFinal from '../../components/ChamadaFinal.astro';
+import Colunas from '../../components/Colunas.astro';
+import Linha from '../../components/Linha.astro';
+import Obra from '../../components/Obra.astro';
 import { todosProjetos } from '../../data/projetos';
 import { linkWhatsapp } from '../../data/empresa';
-import { rotaProjeto } from '../../i18n/rotas';
 import { projetos as t } from '../../i18n/paginas/projetos';
 import { metasPaginas, tiposProjeto } from '../../i18n/textos';
 
+/** Portfólio: os projetos fora da grade, agrupados por tipo. */
 const meta = metasPaginas.projetos;
 const todos = await todosProjetos();
+const formato = (i: number) => ([0, 3].includes(i % 4) ? 'grande' : 'media');
+const ficha = (i: number) => ([0, 3].includes(i % 4) ? 'lado' : 'abaixo');
 ---
 
 <Base titulo={meta.titulo} descricao={meta.descricao}>
-  <h1>{t.titulo}</h1>
-  <p>{t.texto}</p>
-
-  {tiposProjeto.map((tipo) => (
-    <section>
-      <h2>{t.grupos[tipo].titulo}</h2>
-      <p>{t.grupos[tipo].texto}</p>
-      <ul>
-        {todos
-          .filter((p) => p.data.tipo === tipo)
-          .map((p) => (
-            <li>
-              <a href={rotaProjeto(p.data.slug)}>{p.data.titulo}</a>: {p.data.resumo}
-            </li>
-          ))}
-      </ul>
-    </section>
-  ))}
-
-  <section>
-    <h2>{t.chamada.titulo}</h2>
-    <p>
-      <a href={linkWhatsapp()}>{t.chamada.acao}</a>
-    </p>
+  <section class="folha pagina-cabeca" aria-labelledby="pagina-titulo">
+    <Colunas />
+    <Linha>
+      <h1 class="pagina-titulo" id="pagina-titulo">
+        {t.titulo}
+      </h1>
+    </Linha>
+    <Linha>
+      <p class="pagina-texto">{t.texto}</p>
+    </Linha>
   </section>
+
+  {tiposProjeto.map((tipo) => {
+    const grupo = todos.filter((p) => p.data.tipo === tipo);
+    return (
+      <section class="folha vitrines" aria-labelledby={`grupo-${tipo}`}>
+        <Linha class="vitrines-cabeca">
+          <h2 class="titulo-secao" id={`grupo-${tipo}`}>
+            {t.grupos[tipo].titulo}
+          </h2>
+          <p class="celula celula-apoio">{t.grupos[tipo].texto}</p>
+        </Linha>
+        <div class="vitrines-grade">
+          {grupo.map((p, i) => (
+            <Obra projeto={p} formato={formato(i)} ficha={ficha(i)} />
+          ))}
+        </div>
+      </section>
+    );
+  })}
+
+  <ChamadaFinal
+    slot="fechamento"
+    titulo={t.chamada.titulo}
+    acao={t.chamada.acao}
+    href={linkWhatsapp()}
+    evento="whatsapp_chamada_final"
+  />
 </Base>

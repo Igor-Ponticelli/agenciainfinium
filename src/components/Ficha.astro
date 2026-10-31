@@ -1,0 +1,51 @@
+---
+import type { Projeto } from '../data/projetos';
+import { rotaProjeto } from '../i18n/rotas';
+import { textos as t } from '../i18n/textos';
+
+interface Props {
+  projeto: Projeto;
+  /** Na página do projeto: sem título nem "Ver projeto", com o link para o site. */
+  completa?: boolean;
+  idTitulo?: string;
+}
+
+const { projeto, completa = false, idTitulo } = Astro.props;
+const d = projeto.data;
+const href = rotaProjeto(d.slug);
+---
+
+<div class="ficha">
+  {!completa && (
+    <h3 class="ficha-titulo" id={idTitulo}>
+      <a href={href}>{d.titulo}</a>
+    </h3>
+  )}
+  <dl class="ficha-dados">
+    <div>
+      <dt>{t.projeto.rotulos.tipo}</dt>
+      <dd>{t.projeto.tipo[d.tipo]}</dd>
+    </div>
+    <div>
+      <dt>{t.projeto.rotulos.ano}</dt>
+      <dd>{d.ano}</dd>
+    </div>
+    <div>
+      <dt>{t.projeto.rotulos.status}</dt>
+      <dd>{t.projeto.status[d.status]}</dd>
+    </div>
+  </dl>
+  {completa ? (
+    d.url && (
+      <a class="ficha-acao link-fita" href={d.url} target="_blank" rel="noopener noreferrer">
+        {t.acoes.visitarSite}
+        <span class="visualmente-oculto"> {t.linkExterno}</span>
+      </a>
+    )
+  ) : (
+    <a class="ficha-acao link-fita" href={href}>
+      {t.acoes.verProjeto}
+      <span class="visualmente-oculto">: {d.titulo}</span>
+    </a>
+  )}
+</div>
