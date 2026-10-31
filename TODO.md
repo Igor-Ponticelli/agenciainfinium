@@ -614,7 +614,7 @@ os posts de lançamento`, `feat(seo): adiciona json-ld e rss do blog`.
 
 ## TODO 8: Raio-X do site (produto de entrada)
 
-**Status:** pendente
+**Status:** feito em 30/10/2026, menos preço, prazo e link de pagamento (do Igor, ver Notas)
 **Depende de:** TODO 4
 
 **Leia antes:** [conteudo.md](.claude/docs/conteudo.md) (seção 11), [arquitetura.md](.claude/docs/arquitetura.md)
@@ -643,9 +643,12 @@ para receber tráfego pago e vender a análise de SEO, velocidade, segurança e 
 **Não fazer:** menu, duas ofertas, pagamento dentro do site, promessa de resultado, "grátis".
 
 **Pronto quando:**
-- [ ] A LP está no ar com preço, prazo e link de pagamento reais.
+- [ ] A LP está no ar com preço, prazo e link de pagamento reais. `[PENDENTE: os três são do
+      Igor; até lá a página mostra o aviso no preço e o botão leva ao WhatsApp]`
 - [ ] Um teste de ponta a ponta: clique, pagamento em modo de teste, mensagem de confirmação.
-- [ ] Eventos chegando no GA4 e no Pixel (depois do TODO 6).
+      `[PENDENTE: depende do link de pagamento]`
+- [ ] Eventos chegando no GA4 e no Pixel (depois do TODO 6). Os eventos já são registrados em
+      `metricas.ts`; chegar ao GA4 depende dos IDs.
 
 **Commits sugeridos:** `feat(raio-x): adiciona a landing page do raio-x do site`, `content(raio-x):
 escreve a oferta`, `docs: adiciona o checklist do raio-x`.
@@ -653,3 +656,28 @@ escreve a oferta`, `docs: adiciona o checklist do raio-x`.
 **Precisa do Igor:** preço, prazo, provedor de pagamento e o conteúdo do PDF.
 
 **Notas:**
+- Sem rodada de perguntas (o Igor pediu para seguir até o fim). `src/data/raioX.ts` guarda
+  `preco`, `prazoDias` e `linkPagamento`, todos `null` com `[PENDENTE]`. Com `null`, a página
+  mostra o aviso tracejado no lugar do preço e o botão leva ao WhatsApp com a mensagem do
+  Raio-X; o JSON-LD `Service` só ganha `offers` quando houver preço. Basta preencher as três
+  constantes.
+- Layout `src/layouts/LandingPage.astro`: sem menu (nenhum `nav` na página), logo sem link,
+  régua da fita, fechamento no degradê com o botão e um rodapé curto (WhatsApp, e-mail,
+  privacidade). Mesmo mundo da planilha. `BotaoRaioX.astro` é o CTA, repetido três vezes
+  (abertura, preço, fechamento).
+- Texto em `src/i18n/paginas/raioX.ts`: abertura, para quem é, o que você recebe (Google,
+  velocidade, segurança, LGPD, conversa), como funciona em três passos, preço, FAQ e
+  fechamento. Sem "grátis", sem promessa de resultado, sem número. O parágrafo "honesto" diz
+  que o Raio-X mostra e não conserta.
+- Ângulos de anúncio: `?angulo=google` e `?angulo=seguranca` trocam o `h1` pela abertura do
+  ângulo (`src/scripts/raio-x.ts`); sem parâmetro, a abertura cobre os dois. Testado.
+- Métricas: `raio_x_cta_*` nos três botões e `raio_x_secao_vista` por seção (uma vez cada),
+  via `metricas.ts`. Os parâmetros `utm_*` da URL são copiados para o link de pagamento
+  (`data-raio-x-pagamento`), que só existe quando o link estiver preenchido.
+- SEO: indexável, title e description em `textos.ts`, JSON-LD `Service` com `provider`
+  apontando para a `Organization`. Está no sitemap.
+- Checklist interno em `.claude/docs/raio-x.md`: só leitura passiva (Google, PageSpeed,
+  cabeçalhos, formulário, LGPD), com a regra explícita de nunca varrer nem testar invasão.
+- Ajuste de layout que apareceu aqui e valia para o site todo: no celular, as linhas "chave e
+  valor" (resultados, benefícios, tipos, o que você recebe) empilham a chave sobre o valor em
+  vez de dividir as quatro colunas. Os canais do contato também.
