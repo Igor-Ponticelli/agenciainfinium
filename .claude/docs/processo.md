@@ -162,3 +162,8 @@ build, prévias, blog, Raio-X e a revisão final). O que falta é do Igor e est�
 Pixel), preço, prazo e link de pagamento do Raio-X, valor do diagnóstico, cidades do SEO local,
 CNPJ no rodapé, data de publicação, a leitura dos textos, e a publicação na Hostinger com DNS e
 Search Console. O design construído está registrado em `DESIGN.md` e `.impeccable/design.json`.
+
+Em 31/10/2026, depois de o Igor ver o site, entrou uma rodada de revisão (TODO 9): a grade perdeu
+as letras e os números, as seções viraram bandas, entraram fotos do Unsplash, cartões com ícones
+desenhados pela fita e o holofote sob o ponteiro. As decisões estão em
+[direcao-visual.md](direcao-visual.md), seção 5.

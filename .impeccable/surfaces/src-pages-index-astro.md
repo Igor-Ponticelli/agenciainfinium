@@ -121,3 +121,28 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   direito; escondida enquanto a abertura escura está na tela (o cabeçalho já tem a ação) e com
   o menu aberto. No desktop não existe: o botão fica no cabeçalho. Registrado em 31/10/2026,
   depois da revisão de acabamento.
+
+## Revisão de 31/10/2026 (pedidos do Igor depois de ver o site)
+
+Vale sobre o contrato acima onde houver conflito:
+- **Sem letras de coluna nem números de linha.** A grade é só linhas, células e fita.
+- **Fotos** do Unsplash como células mescladas: à direita da abertura (tinta violeta, ocupa as
+  três linhas; no celular fecha a primeira tela por baixo), na cena do problema (à direita da
+  tabela, da altura das linhas e do texto), no alto dos dois blocos de serviço e como capa dos
+  três posts. Créditos em `.claude/docs/fotos.md`.
+- **Seções como bandas** (`Secao.astro`): cada seção é uma faixa de largura inteira com fundo
+  próprio e respiro, alternando Body com a grade, White e o degradê (abertura, conexão, chamada
+  final). A folha fica fechada dentro, como um retângulo. É a separação "tipo Apple ou
+  Microsoft" que o Igor pediu, sem mudar o mundo.
+- **Cartões** (`.cartoes`, `Cartao.astro`): células mescladas em grade, três por linha no desktop,
+  separadas por 1 px da própria grade; sem sombra nem canto. Substituem os pares chave e valor
+  dos resultados. A regra "nunca três cards iguais em fila" sai; o que não existe é card
+  flutuante.
+- **Ícones desenhados pela fita** (`Icone.astro`): traço de 2 px em `--color-fita`, 24 x 24, que
+  se desenha conforme a rolagem, com um brilho na cor da fita por trás. Nos cartões e nas
+  células da cena (a ferramenta de cada linha).
+- **Holofote** (`holofote.ts`): sobre a folha, uma luz na cor da fita segue o ponteiro. Só
+  ponteiro fino.
+- **Mais tarde no mesmo dia:** "não gostei mais dos quadradinhos": saem as linhas verticais da
+  grade, as bordas da folha e a célula ativa; o filete fica só nas listas; a seleção da cena vira
+  a fita por baixo da linha. E toda seção passa a ter pelo menos 85svh, com o conteúdo centrado.

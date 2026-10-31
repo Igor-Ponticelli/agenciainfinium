@@ -67,8 +67,17 @@ escalona as datas dos posts, em `src/data/blog.ts`.
 ## Como adicionar um post
 
 Um arquivo em `src/content/blog/<slug>.md` com `titulo`, `descricao` (até 160 caracteres),
-`data` ou `diasAntes`, `tags`, `chamada` (`sites`, `sistemas` ou `raioX`) e o texto em Markdown.
-Sem travessão. `rascunho: true` deixa o post fora do build.
+`data` ou `diasAntes`, `tags`, `chamada` (`sites`, `sistemas` ou `raioX`), `capa` (um nome de
+`src/data/fotos.ts`) e o texto em Markdown. Sem travessão. `rascunho: true` deixa o post fora do
+build.
+
+## Fotos e ícones
+
+As fotos são do Unsplash, escolhidas uma a uma, e ficam em `src/assets/fotos/` com o registro
+(alt, autor, página) em `src/data/fotos.ts`; o componente `Foto.astro` gera AVIF e WebP nos
+tamanhos usados. Créditos e o passo a passo para trocar uma foto em `.claude/docs/fotos.md`.
+Os ícones são desenhados à mão em `src/data/icones.ts` (traço de 24 x 24) e animados pela fita
+conforme a rolagem (`Icone.astro`); sem biblioteca de ícones.
 
 ## Commits
 

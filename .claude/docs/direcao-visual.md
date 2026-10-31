@@ -111,3 +111,40 @@ Formato: data, o que foi decidido, por quê.
   branco, assinatura em branco, botão em Lilás com texto Ink. O claro começa na segunda tela e
   o degradê volta na chamada final e nas capas de projeto. Primary nunca sobre o escuro. As
   páginas de serviço abrem claras: o escuro é assinatura da home e da chamada final.
+- **31/10/2026, a grade sem letras nem números.** O Igor não quis as letras de coluna (A a L)
+  nem os números de linha. A planilha fica só com as linhas, as células e a fita; a cabeça de
+  linha saiu de todas as grades e cada célula andou uma coluna para a esquerda.
+- **31/10/2026, fotos.** O Igor sentiu falta de imagem. Entram fotos do Unsplash, escolhidas uma
+  a uma (registro e créditos em [fotos.md](fotos.md)), sempre como célula mesclada da planilha:
+  à direita da abertura da home e das cabeças de `/sites/`, `/sistemas/` e do Raio-X, na cena
+  do problema, no alto dos dois blocos de serviço e como capa de cada post (lista, home e
+  cabeça do post). Sobre o degradê, a foto fica em `mix-blend-mode: luminosity`: só a luz dela,
+  nas cores da marca. Sobre o claro, cor natural. Nunca pessoa posando como equipe ou cliente.
+- **31/10/2026, seções como bandas.** O Igor achou a página "muito um blog" e pediu separação
+  de seção no espírito de Apple e Microsoft (separação, não estética). Cada seção vira uma
+  banda de largura inteira (`Secao.astro`) com fundo próprio e respiro, alternando Body com a
+  grade, White e o degradê; a folha da planilha fica fechada dentro dela, como um retângulo.
+- **31/10/2026, cartões.** O Igor pediu mais cards. Entram como células mescladas em grade
+  (`.cartoes`, `Cartao.astro`): três por linha no desktop, duas no tablet, uma no celular,
+  separadas por 1 px da própria grade, sem sombra nem canto. A regra antiga do contrato ("nunca
+  três cards iguais em fila") foi substituída por esta decisão: os cartões existem, mas são
+  células, e cada um carrega um ícone.
+- **31/10/2026, ícones desenhados pela fita.** Ícones de traço próprios (`src/data/icones.ts`,
+  `Icone.astro`), 24 x 24, traço de 2 px em `--color-fita`. A fita desenha cada forma conforme
+  a rolagem (`stroke-dashoffset` com `animation-timeline: view()`), e um brilho discreto na cor
+  da fita acende por trás quando o traço fecha. O Igor pediu brilho de propósito ("chama a
+  atenção"): é a única luz do site além do holofote, e fica nos ícones. Com movimento reduzido
+  ou sem suporte, o ícone aparece pronto e aceso.
+- **31/10/2026, holofote.** Pedido de "um detalhe em algum fundo, um efeito com mouse", a partir
+  do cursor spotlight do 21st.dev. Sobre uma folha, uma luz na cor da fita segue o ponteiro e
+  acende as linhas da grade perto dele; e a fita contorna a célula sob o ponteiro, como o cursor
+  de seleção da planilha (`holofote.ts`, um passo do motor, só `transform`). Só com ponteiro
+  fino; nada no toque, nada com movimento reduzido, nada sem JS.
+- **31/10/2026, mais tarde: a grade some e cada seção tem pelo menos 85svh.** Vendo o site, o
+  Igor voltou atrás nos "quadradinhos": "Se eu falei que gostei desses quadradinhos, eu não
+  gostei mais. Pode remover." Saem as linhas verticais da planilha, as bordas da folha, as
+  células que se fundiam no bloco de sistemas e a célula ativa do holofote; fica só a luz. As
+  doze colunas continuam como layout invisível; o filete entre linhas fica só nas listas (passos,
+  posts, perguntas, a cena); a seleção da cena vira a fita por baixo da linha. E "sobre cada
+  seção, queria que ocupasse pelo menos 85vh, acho mais elegante": toda banda tem
+  `min-block-size: 85svh` com o conteúdo centrado na vertical.

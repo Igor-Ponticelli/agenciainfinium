@@ -94,6 +94,9 @@ O próprio site já demonstra o que vende: rápido, claro, bem feito no celular.
   foto já dados no portfólio. Não citar o uso do RetroDash na Geomais.
 - **Ausentes**: cases de automação, depoimentos, números de resultado, prazo médio, preço e
   foto da equipe. Nada disso pode ser fabricado.
+- Fotos de banco (Unsplash, escolhidas uma a uma) entram como ambientação das seções e capa dos
+  posts, nunca como se fossem a equipe, a sede ou clientes da Infinium. Registro e créditos em
+  `.claude/docs/fotos.md` (decisão do Igor, 31/10/2026).
 
 ## Product Principles
 

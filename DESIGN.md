@@ -165,14 +165,17 @@ Registrado em 31/10/2026 a partir do site construído (`src/styles/tokens.css`, 
 
 **Creative North Star: "A planilha que vira sistema"**
 
-O site nasce como a planilha que o cliente usa hoje: uma grade de células com letras de coluna, números de linha e filetes finos. Conforme a página desce, as células se mesclam em blocos sólidos (o sistema) e, na chamada final, a grade some. O único material além da grade é a fita, um traço de 2 px derivado do símbolo da marca (a fita de Möbius): é a régua do cabeçalho, o sublinhado de links e frases-chave, o cursor de seleção da planilha, o laço que percorre as etapas, a moldura das prévias e a cortina da troca de página.
+O site nasce como a planilha que o cliente usa hoje: uma grade de células com filetes finos (sem letras de coluna nem números de linha, por decisão do Igor em 31/10/2026). Conforme a página desce, as células se mesclam em blocos sólidos (o sistema) e, na chamada final, a grade some. O único material além da grade é a fita, um traço de 2 px derivado do símbolo da marca (a fita de Möbius): é a régua do cabeçalho, o sublinhado de links e frases-chave, o cursor de seleção da planilha, o laço que percorre as etapas, a moldura das prévias e a cortina da troca de página.
 
-A superfície é plana e clara (Body), com o escuro entrando por seção no degradê da marca. Nada tem sombra, vidro, gradiente em texto ou ícone decorativo; o único "desenho" fora de texto e fita são os traços em CSS do menu e do FAQ. A hierarquia vem só de escala e peso da Roboto. As prévias dos sites de clientes ficam fora da grade porque são o que a Infinium entrega, não o que ela tira; cada uma carrega a identidade do próprio cliente e não faz parte deste sistema.
+A superfície é plana e clara (Body), com o escuro entrando por seção no degradê da marca. Nada tem sombra, vidro ou gradiente em texto; os únicos "desenhos" fora de texto e fita são os traços em CSS do menu e do FAQ e os ícones de traço, que a própria fita desenha conforme a rolagem e que carregam o único brilho do site (31/10/2026). A hierarquia vem só de escala e peso da Roboto. As prévias dos sites de clientes ficam fora da grade porque são o que a Infinium entrega, não o que ela tira; cada uma carrega a identidade do próprio cliente e não faz parte deste sistema.
 
-O site recusa o padrão de agência: abertura centralizada sobre degradê, três cards iguais em fila, ícone com título e três benefícios.
+O site recusa o padrão de agência: abertura centralizada sobre degradê e cards flutuantes com sombra. Cartões existem desde 31/10/2026, mas como células mescladas da mesma linha, separadas por 1 px da grade; e cada seção é uma banda de largura inteira com fundo próprio.
 
 **Key Characteristics:**
-- Grade de células como layout (12 colunas no desktop, 6 no tablet, 4 no celular), com cabeça de linha numerada e letras de coluna
+- Doze colunas (6 no tablet, 4 no celular) como layout invisível: nenhuma linha vertical, filete só nas listas
+- Seções em bandas de largura inteira (Body, White, o degradê) de pelo menos 85svh, com o conteúdo centrado
+- Fotos do Unsplash como células mescladas; sobre o degradê, só a luz da foto nas cores da marca
+- Cartões como células em grade com ícones de traço desenhados pela fita, com brilho; uma luz segue o ponteiro
 - Células mescladas como blocos sólidos: White sobre Body, Violeta 900 sobre o degradê, Primary para a coluna "depois"
 - A fita de 2 px como material único: Primary sobre claro, Lilás sobre escuro
 - Só Roboto, variável, em sete papéis; hierarquia só por escala e peso
@@ -184,7 +187,7 @@ O site recusa o padrão de agência: abertura centralizada sobre degradê, três
 Paleta violeta da identidade, usada como tema claro com seções escuras no degradê; sobre o escuro, só White e Lilás.
 
 ### Primary
-- **Primary, Violeta 700** (`primary`): o acento do site sobre fundo claro. Botões principais, fita, cabeça de linha selecionada, logo sobre claro, seleção de texto, anel de foco, marcadores de lista, cursor de texto dos campos. Vira a célula mesclada "depois" da tabela antes e depois. Nunca aparece sobre o degradê nem sobre Ink.
+- **Primary, Violeta 700** (`primary`): o acento do site sobre fundo claro. Botões principais, fita, ícones, logo sobre claro, seleção de texto, anel de foco, marcadores de lista, cursor de texto dos campos. Vira a célula mesclada "depois" da tabela antes e depois. Nunca aparece sobre o degradê nem sobre Ink.
 - **Primary hover, Violeta 800** (`primary-hover`): só o fundo do botão Primary no hover.
 - **Violeta 900** (`violet-900`): fim do degradê e a cor da célula mesclada sobre o escuro (`.escuro .mesclada`, o submenu quando aberto na abertura escura).
 
@@ -196,7 +199,7 @@ Paleta violeta da identidade, usada como tema claro com seções escuras no degr
 - **Body** (`body`): fundo de página, fundo dos campos do formulário e do painel do menu no celular.
 - **White** (`white`): a célula mesclada sobre claro (dois serviços, formulário, as quatro células que se fundem, o submenu, o banner de cookies), o texto sobre o degradê e o hover do botão Lilás.
 - **Ink** (`ink`): títulos, rótulos de campo, texto de botão Lilás, chaves dos pares chave e valor, texto do menu no celular.
-- **Text** (`text`): texto corrido (5,5:1 sobre Body), rótulos da planilha sobre claro (letras de coluna e números de linha), placeholders, textos de apoio.
+- **Text** (`text`): texto corrido (5,5:1 sobre Body), rótulos da planilha sobre claro (cabeçalho da tabela), placeholders, textos de apoio.
 - **Line** (`line`): as linhas da grade, bordas de campo, do submenu e do botão de contorno, fundo do botão desativado.
 
 ### Degradê da marca
@@ -224,7 +227,7 @@ Paleta violeta da identidade, usada como tema claro com seções escuras no degr
 - **Subtitle** (500, 20 px, 1,3): frase-chave sublinhada pela fita, título de ficha, de etapa e de post (700 nesses três), frase da abertura e da chamada final (400, branco a 84 %), parágrafo de abertura das páginas internas.
 - **Body** (400, 16 px, 1,6): texto corrido, com medida de 65ch (`--texto-medida`) e máximos locais de 46 a 60ch. Botões e menu usam o corpo em 500.
 - **Small** (400, 15 px): menu do desktop, botão do WhatsApp do cabeçalho, dados da ficha, datas, textos de apoio e avisos, banner de cookies.
-- **Label** (500, 12 px, 1,4, +8 %, caixa-alta, tabular): letras de coluna, números de linha e cabeçalho da tabela antes e depois. Em Text sobre claro, Lilás a 72 % sobre escuro. `user-select: none`.
+- **Label** (500, 12 px, 1,4, +8 %, caixa-alta, tabular): o cabeçalho da tabela antes e depois. Em Text sobre claro, Lilás a 72 % sobre escuro.
 
 ### Named Rules
 **A Regra da Fonte Única.** Só Roboto, em 400, 500 e 700. As fontes dos clientes (Plus Jakarta Sans, Young Serif, Figtree, Lexend, Lexend Exa) existem só dentro das prévias, só depois de `[data-ativa]`, e nunca saem de lá.
@@ -233,17 +236,18 @@ Paleta violeta da identidade, usada como tema claro com seções escuras no degr
 
 ## Layout
 
-**A planilha.** Toda seção é uma `.folha`: largura `min(100% - 2 * gutter, 80rem)`, gutter `clamp(1rem, 4vw, 2.5rem)`, centrada. As colunas são um `repeating-linear-gradient` vertical em `--color-grade` que começa depois da cabeça de linha; cada `.linha` é um grid `cabeca-linha + repeat(colunas, 1fr)` com `border-block-end` de 1 px. O número da linha é um contador CSS (`counter(linha)`), decorativo (`aria-hidden`), na coluna 1; as letras A a L ficam na linha `.colunas` no topo de cada folha e as que não cabem somem.
+**Bandas.** Toda seção é uma `.banda` (`Secao.astro`): uma faixa de largura inteira com fundo próprio (`banda-claro` é o Body; `banda-branco` é White com células em Body; `banda-escuro` é o degradê da marca), pelo menos 85svh de altura com o conteúdo centrado na vertical, e respiro de 4rem (6rem no desktop; a cabeça das páginas internas leva 1,5rem em cima). As bandas se alternam ao longo da página: é isso que separa uma seção da outra.
+
+**A planilha.** Dentro de cada banda fica uma `.folha`: largura `min(100% - 2 * gutter, 80rem)`, gutter `clamp(1rem, 4vw, 2.5rem)`, centrada. Cada `.linha` é um grid `repeat(colunas, 1fr)`, mas nenhuma linha vertical é desenhada e a folha não tem borda (decisão do Igor em 31/10/2026, depois de ver a grade: "não gostei mais dos quadradinhos"). O filete de 1 px em `--color-grade` entre linhas existe só nas listas (`.passo`, `.post-linha`, `.home-posts-linha`, `.lista-planilha > .linha`, a linha do FAQ, `.cena-linha`). `isolation: isolate` em cada folha guarda o holofote atrás do conteúdo.
 
 | | celular | tablet (48rem) | desktop (64rem) |
 |---|---|---|---|
 | colunas | 4 (A a D) | 6 (A a F) | 12 (A a L) |
-| cabeça de linha | 1,75rem | 2,25rem | 2,5rem |
 | altura mínima da linha | 3,5rem | 4rem | 4rem |
 | padding da célula | 0,875rem | 1rem | 1rem |
 | cabeçalho | 3,5rem (56 px) | 4,5rem (72 px) | 4,5rem |
 
-**Como as células se posicionam.** Conteúdo entra nas colunas 2 a -1 por padrão e, no desktop, pega faixas do contrato: título e texto em A a H ou A a I, pares chave e valor em A a C mais D a L, os dois serviços em A a F e G a L, a cena do problema em A a F com o texto em H a L. Pares chave e valor empilham no celular (chave em cima, valor embaixo, na mesma linha) e ficam lado a lado a partir do tablet.
+**Como as células se posicionam.** Conteúdo ocupa a linha inteira por padrão e, no desktop, pega faixas do contrato: título e texto nas 7 a 9 primeiras colunas, os dois serviços em 1 a 6 e 7 a 12, a cena do problema em 1 a 6 (tabela e texto) com a foto em 7 a 12, a abertura em 1 a 7 com a foto em 8 a 12, as cabeças com foto em 1 a 8 com a foto em 9 a 12 (`--cabeca-linhas` diz quantas linhas a foto ocupa). Cartões: `span 4` no desktop (três por linha; `span 3` quando são quatro, `span 6` nos dois últimos quando são cinco), `span 3` no tablet, a linha inteira no celular.
 
 **Ritmo vertical.** O respiro é medido em linhas: `.linha-vazia` vale meia linha; o título de seção leva `padding: 3rem 0.875rem 1rem` e se apoia na base da própria linha. Os passos de espaço (`--space-3xs` a `--space-4xl`, 4 a 128 px) aparecem dentro das células, nunca entre linhas.
 
@@ -254,7 +258,7 @@ Paleta violeta da identidade, usada como tema claro com seções escuras no degr
 **Páginas sem grade.** A página de acessos é só o degradê com os botões centrados em 26rem. A landing page do Raio-X (`LandingPage.astro`) usa a mesma planilha, mas sem menu e sem rodapé longo: logo sem link, régua da fita, e no fim logo, contato e privacidade.
 
 ### Named Rules
-**A Regra da Linha Inteira.** Nenhum bloco flutua: tudo nasce numa `.linha` da planilha ou, no caso das prévias, numa obra em subgrid que ocupa a linha inteira. Três cards iguais em fila não existem; o que fica lado a lado são colunas da mesma linha com o mesmo peso.
+**A Regra da Linha Inteira.** Nenhum bloco flutua: tudo nasce numa `.linha` da planilha ou, no caso das prévias, numa obra em subgrid que ocupa a linha inteira. Cartões são células mescladas da mesma linha (`.cartoes`), separadas por 1 px da própria grade, sem sombra e sem canto; card flutuante não existe.
 
 ## Elevation & Depth
 
@@ -263,7 +267,7 @@ Sem sombra. A profundidade é tonal e estrutural: filetes de 1 px em Line, bloco
 A única exceção construída é o banner de cookies: `box-shadow: 0 12px 32px -12px rgb(32 10 52 / 0.45)`, uma sombra difusa em Violeta 900 que o separa do conteúdo sobre o qual flutua. Só existe com tags configuradas e não deve se espalhar para outros componentes.
 
 ### Named Rules
-**A Regra do Plano.** Nada tem sombra em repouso nem em hover. Profundidade é bloco sobre grade e claro sobre escuro; se um elemento novo precisa de sombra para se destacar, o problema é a composição.
+**A Regra do Plano.** Nada tem sombra em repouso nem em hover. Profundidade é bloco sobre grade e claro sobre escuro; se um elemento novo precisa de sombra para se destacar, o problema é a composição. As duas luzes do site são exceções pedidas pelo Igor (31/10/2026) e ficam na cor da fita: o brilho atrás dos ícones e o holofote sob o ponteiro.
 
 ## Shapes
 
@@ -276,13 +280,26 @@ O material do site, sempre em `--color-fita` e 2 px. Suas formas construídas:
 - **Régua do cabeçalho** (`.regua`): começa na margem do conteúdo e corre até a borda direita da tela. A cortina da troca de página parte dela.
 - **Sublinhado de link** (`.link-fita`, `.menu a`, títulos de post e de "próximo projeto"): `background-size` de 0 % a 100 % da esquerda para a direita em 260 ms, `ease-out`; fica cheio em `aria-current="page"`.
 - **Frase-chave** (`.pagina-frase`, `.servico-frase`): sublinhado fixo; no bloco de serviço, um traço curto de 2,5rem.
-- **Linha selecionada** (`.linha-selecionada .num`, assinatura da abertura): a cabeça da linha pintada na cor da fita com o número invertido, e a fita por baixo da linha.
-- **Cursor de seleção da cena** (`.cena-linha`): moldura `inset 0 0 0 2px` e cabeça pintada, dirigida por rolagem com `animation-timeline: view()` (desce uma linha por vez). Sem suporte ou com movimento reduzido, a primeira linha fica selecionada.
+- **Linha selecionada** (`.abertura-assinatura`, `.pagina-frase`): a fita por baixo da linha ou da frase.
+- **Traço dos ícones** (`.icone svg > *`): cada forma do ícone é a fita se desenhando por `stroke-dashoffset` conforme a rolagem.
+- **Cursor de seleção da cena** (`.cena-linha`): a fita por baixo da linha (2 px), dirigida por rolagem com `animation-timeline: view()` (desce uma linha por vez). Sem suporte ou com movimento reduzido, a primeira linha fica selecionada.
 - **Laço das etapas** (`.passo[data-ativo]`, `fita.ts`): a fita sublinha um passo por vez (`scaleX` em 420 ms), 1,6 s por item, só com a lista na tela, e volta ao primeiro; `data-laco-inicio` define o repouso (em /sistemas/, o diagnóstico). Parado com movimento reduzido.
 - **Linha sob o ponteiro** (`.item-linha::after`): nas listas da planilha, a fita se desenha na linha em hover.
 - **Moldura da prévia** (`.obra-moldura:hover`): o contorno de 1 px em Line vira 2 px em fita; o cursor nativo continua dentro.
 - **Laço SVG da conexão** (`.conexao-laco`): um `path` com `stroke-width: 2` que atravessa a linha inteira por baixo do texto, desenhado por `stroke-dashoffset` conforme a rolagem; só no desktop.
 - **Cortina** (`Fita.astro`, `fita.ts`): o degradê cobre a tela a partir da régua por `clip-path: inset()` em 320 ms (`cubic-bezier(0.65, 0, 0.35, 1)`), o `h1` da próxima página aparece em 200 ms, pausa de 100 ms, descobre em 320 ms. Com movimento reduzido vira um fade de 150 ms no `main`.
+
+### Cartões
+`.cartoes` é uma `.linha` com `gap: 1px`, fundo e borda de 1 px em `--color-grade`; cada `.cartao` (`Cartao.astro`) é uma célula em `--color-celula` com o ícone, um título em Subtitle 700 e o texto (até 38ch), `padding: 1.5rem 0.875rem` (2rem 1.5rem no desktop). Sem sombra, sem canto; o hover é a célula ativa do holofote. Variantes: `.cartao-frase` (só uma frase, em Ink 500) e cartão com botão (hub de serviços).
+
+### Ícones
+`Icone.astro` com as formas de `src/data/icones.ts`: 28 ícones próprios, grade 24 x 24, traço de 2 px em `currentColor` (`--color-fita`), pontas e cantos redondos, nenhum preenchimento, `pathLength="1"` em toda forma. Tamanho 28 px numa célula de 3rem (`.icone-inline`: 22 px em 2rem, ao lado de texto). A fita desenha cada forma conforme a rolagem (`animation-timeline: --icone`, uma `view-timeline` no próprio `.icone`, `cover 0% a 30%`, as formas seguintes defasadas em 8 %) e o brilho acende atrás (`::before`, halo radial em `--color-icone-brilho`, `cover 18% a 46%`), mais um `drop-shadow` de 6 px em `--color-icone-sombra`. Sem suporte a animação por rolagem ou com movimento reduzido, o ícone aparece pronto e aceso. Decorativo: sempre acompanha texto, `aria-hidden`.
+
+### Fotos
+`Foto.astro` com as fotos de `src/data/fotos.ts` (Unsplash, créditos em `.claude/docs/fotos.md`): `<Picture>` em AVIF e WebP, `widths` e `sizes` por uso, preguiçosa (menos as das aberturas, `fetchpriority="high"`). A foto é uma célula mesclada com `aspect-ratio` fixo (`--foto-proporcao`) e `object-fit: cover`; onde ocupa várias linhas (abertura, cena, cabeças), `aspect-ratio: auto` e a altura das linhas. `tom="violeta"` sobre o degradê: fundo no degradê da marca e `mix-blend-mode: luminosity` na imagem.
+
+### Holofote
+`holofote.ts` cria um elemento na folha sob o ponteiro: `.holofote`, uma luz de 48rem (`radial-gradient` em `--color-holofote`, Primary a 12 % sobre claro e Lilás a 14 % sobre escuro) atrás do conteúdo em `z-index: -1`, movida só por `transform` com a suavização do motor (16/s). Só `(pointer: fine)` sem movimento reduzido; some ao sair da folha e na troca de página.
 
 ### Buttons
 - **Shape:** cantos de 8 px (`--radius-m`), altura mínima 3rem, `padding: 0.75rem 1.5rem`, peso 500, `inline-flex` centrado.
@@ -328,7 +345,8 @@ Sobre o degradê e sem grade: título em Headline branco até 18ch, frase em sub
 ## Do's and Don'ts
 
 ### Do:
-- **Do** colocar todo conteúdo novo numa `.linha` da planilha (ou numa obra em subgrid) e deixar a cabeça de linha numerar sozinha.
+- **Do** colocar todo conteúdo novo numa `.linha` da planilha (ou numa obra em subgrid), dentro de uma banda (`Secao.astro`) que alterna o fundo com a vizinha.
+- **Do** dar a cada cartão um ícone de `src/data/icones.ts` e a cada foto um `alt` descritivo em `src/data/fotos.ts`.
 - **Do** usar `--color-fita`, `--color-grade`, `--color-rotulo` e `--color-celula` em vez de cores fixas; a classe `.escuro` troca as quatro.
 - **Do** fazer a fita se desenhar como traço (`background-size`, `scaleX`, `stroke-dashoffset`), da esquerda para a direita, em 260 ms (`--duration-base`) ou 420 ms (`--duration-slow`), sempre com `--ease-out`.
 - **Do** animar só `transform`, `opacity` e `clip-path`, no loop único do `motor.ts`, e parar tudo com `prefers-reduced-motion`.

@@ -18,7 +18,7 @@
     "derivedColors": [
       { "name": "gradient-brand", "value": "linear-gradient(135deg, #39135f 0%, #200a34 100%)", "purpose": "Abertura da home, chamada final, rodapé, acessos e cortina da troca de página." },
       { "name": "grade-escuro", "value": "color-mix(in oklab, #e9d5fe 14%, transparent)", "purpose": "Linhas da grade sobre o degradê." },
-      { "name": "rotulo-escuro", "value": "color-mix(in oklab, #e9d5fe 72%, transparent)", "purpose": "Letras de coluna, números de linha e nome da empresa sobre o degradê." },
+      { "name": "rotulo-escuro", "value": "color-mix(in oklab, #e9d5fe 72%, transparent)", "purpose": "Cabeçalho de tabela e nome da empresa sobre o degradê." },
       { "name": "apoio-escuro", "value": "color-mix(in oklab, #fff 84%, transparent)", "purpose": "Texto de apoio sobre o degradê (frase da abertura, da chamada final, assinatura do rodapé)." },
       { "name": "rolagem", "value": "color-mix(in oklab, #39135f 30%, #d9d6de)", "purpose": "Barra de rolagem (60% quando ativa; Lilás a 40% sobre escuro)." }
     ],
@@ -29,7 +29,7 @@
       "subtitle": { "displayName": "Subtitle", "purpose": "Frase-chave com a fita, título de ficha, de etapa e de post (700), frases de apoio sobre o degradê (400)." },
       "body": { "displayName": "Body", "purpose": "Texto corrido, medida de 65ch; botões e menu em 500." },
       "small": { "displayName": "Small", "purpose": "Menu do desktop, dados da ficha, datas, apoios, banner de cookies." },
-      "label": { "displayName": "Label", "purpose": "Letras de coluna, números de linha, cabeçalho de tabela; caixa-alta, tabular." }
+      "label": { "displayName": "Label", "purpose": "Cabeçalho de tabela; caixa-alta, tabular." }
     },
     "fonts": {
       "family": "Roboto",
@@ -45,7 +45,7 @@
       { "name": "consentimento", "value": "0 12px 32px -12px rgb(32 10 52 / 0.45)", "purpose": "A única sombra do site: o banner de cookies, fixo, sobre conteúdo arbitrário. Não é precedente para outros componentes." }
     ],
     "motion": [
-      { "name": "duration-fast", "value": "150ms", "purpose": "Submenu, contorno da moldura, borda de campo, cor da cabeça de linha." },
+      { "name": "duration-fast", "value": "150ms", "purpose": "Submenu, contorno da moldura, borda de campo, a célula ativa do holofote." },
       { "name": "duration-base", "value": "260ms", "purpose": "A fita se desenhando (links, botões, linha sob o ponteiro), painel do menu, traços do botão de menu e do FAQ." },
       { "name": "duration-slow", "value": "420ms", "purpose": "A fita no laço das etapas." },
       { "name": "duration-page", "value": "1100ms", "purpose": "Teto da troca de página (moderado, abaixo de 1,2 s)." },
@@ -64,8 +64,8 @@
       { "name": "motor", "value": "um único requestAnimationFrame baseado em tempo (motor.ts), dt limitado a 50 ms, dorme sem tarefas", "purpose": "Laço, Lenis; só transform, opacity e clip-path animados." }
     ],
     "breakpoints": [
-      { "name": "tablet", "value": "48rem", "note": "6 colunas, cabeça de linha 2,25rem, linha 4rem, cabeçalho 4,5rem" },
-      { "name": "desktop", "value": "64rem", "note": "12 colunas, cabeça de linha 2,5rem, submenu por hover, flutuante do WhatsApp some, laço da conexão aparece" },
+      { "name": "tablet", "value": "48rem", "note": "6 colunas, linha 4rem, cabeçalho 4,5rem, cartões dois por linha" },
+      { "name": "desktop", "value": "64rem", "note": "12 colunas, submenu por hover, flutuante do WhatsApp some, laço da conexão aparece, fotos ao lado do texto, cartões três por linha" },
       { "name": "banner-estreito", "value": "30rem", "note": "Banner de cookies em largura inteira abaixo disso" }
     ],
     "grid": {
@@ -126,9 +126,9 @@
       "name": "Linha da planilha com a fita selecionando",
       "kind": "card",
       "refersTo": "cell-merged",
-      "description": "Uma linha da grade: cabeça numerada, células com filete de 1 px, a fita como cursor de seleção (cabeça pintada e contorno de 2 px) na linha selecionada.",
-      "html": "<div class=\"ds-folha\"><div class=\"ds-linha\"><span class=\"ds-num\">1</span><span class=\"ds-celula ds-chave\">Pedidos</span><span class=\"ds-celula\">WhatsApp</span></div><div class=\"ds-linha ds-selecionada\"><span class=\"ds-num\">2</span><span class=\"ds-celula ds-chave\">Controle</span><span class=\"ds-celula\">Excel</span></div><div class=\"ds-linha\"><span class=\"ds-num\">3</span><span class=\"ds-celula ds-chave\">Tarefas</span><span class=\"ds-celula\">Trello</span></div></div>",
-      "css": ".ds-folha { background: #f1eff4; background-image: repeating-linear-gradient(to right, #d9d6de 0 1px, transparent 1px 25%); background-size: calc(100% - 2.5rem) 100%; background-position: right top; background-repeat: no-repeat; border-right: 1px solid #d9d6de; font-family: var(--font-sans, Roboto, sans-serif); color: #625f68; } .ds-linha { position: relative; display: grid; grid-template-columns: 2.5rem 1fr 1fr; min-height: 4rem; border-bottom: 1px solid #d9d6de; } .ds-num { display: grid; place-items: center; align-content: start; padding-top: 1.1rem; border-right: 1px solid #d9d6de; color: #625f68; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; font-variant-numeric: tabular-nums; user-select: none; } .ds-celula { display: flex; align-items: center; padding: 1rem; } .ds-chave { color: #211f26; font-weight: 500; } .ds-selecionada::after { content: ''; position: absolute; inset: -1px 0; box-shadow: inset 0 0 0 2px #39135f; pointer-events: none; } .ds-selecionada .ds-num { background: #39135f; color: #fff; }"
+      "description": "Uma linha de lista: filete de 1 px por baixo, e a fita (2 px) sublinhando a linha selecionada. Sem linhas verticais nem cabeça numerada desde 31/10/2026.",
+      "html": "<div class=\"ds-folha\"><div class=\"ds-linha\"><span class=\"ds-celula ds-chave\">Pedidos</span><span class=\"ds-celula\">WhatsApp</span></div><div class=\"ds-linha ds-selecionada\"><span class=\"ds-celula ds-chave\">Controle</span><span class=\"ds-celula\">Excel</span></div><div class=\"ds-linha\"><span class=\"ds-celula ds-chave\">Tarefas</span><span class=\"ds-celula\">Trello</span></div></div>",
+      "css": ".ds-folha { background: #f1eff4; font-family: var(--font-sans, Roboto, sans-serif); color: #625f68; } .ds-linha { position: relative; display: grid; grid-template-columns: 1fr 1fr; min-height: 4rem; border-bottom: 1px solid #d9d6de; } .ds-celula { display: flex; align-items: center; padding: 1rem; } .ds-chave { color: #211f26; font-weight: 500; } .ds-selecionada::after { content: ''; position: absolute; inset: auto 0 -1px 0; height: 2px; background: #39135f; pointer-events: none; }"
     },
     {
       "name": "Célula mesclada",
@@ -173,9 +173,12 @@
   ],
   "narrative": {
     "northStar": "A planilha que vira sistema",
-    "overview": "O site nasce como a planilha que o cliente usa hoje: uma grade de células com letras de coluna, números de linha e filetes finos. Conforme a página desce, as células se mesclam em blocos sólidos (o sistema) e, na chamada final, a grade some. O único material além da grade é a fita, um traço de 2 px derivado do símbolo da marca (a fita de Möbius): é a régua do cabeçalho, o sublinhado de links e frases-chave, o cursor de seleção da planilha, o laço que percorre as etapas, a moldura das prévias e a cortina da troca de página.\n\nA superfície é plana e clara (Body), com o escuro entrando por seção no degradê da marca. Nada tem sombra, vidro, gradiente em texto ou ícone decorativo; o único \"desenho\" fora de texto e fita são os traços em CSS do menu e do FAQ. A hierarquia vem só de escala e peso da Roboto. As prévias dos sites de clientes ficam fora da grade porque são o que a Infinium entrega, não o que ela tira; cada uma carrega a identidade do próprio cliente e não faz parte deste sistema.\n\nO site recusa o padrão de agência: abertura centralizada sobre degradê, três cards iguais em fila, ícone com título e três benefícios.",
+    "overview": "O site nasce como a planilha que o cliente usa hoje: doze colunas como layout, hoje invisíveis (o Igor tirou as letras, os números e, por fim, as próprias linhas em 31/10/2026; o filete fica só nas listas). Cada seção é uma banda de largura inteira com fundo próprio, de pelo menos 85svh, com o conteúdo centrado. Conforme a página desce, as células se mesclam em blocos sólidos (o sistema) e, na chamada final, a grade some. O único material além da grade é a fita, um traço de 2 px derivado do símbolo da marca (a fita de Möbius): é a régua do cabeçalho, o sublinhado de links e frases-chave, o cursor de seleção da planilha, o laço que percorre as etapas, a moldura das prévias e a cortina da troca de página.\n\nA superfície é plana e clara (Body), com o escuro entrando por seção no degradê da marca. Nada tem sombra, vidro ou gradiente em texto; os únicos desenhos fora de texto e fita são os traços em CSS do menu e do FAQ e os ícones de traço, desenhados pela fita conforme a rolagem, com o único brilho do site. Fotos do Unsplash entram como células mescladas. A hierarquia vem só de escala e peso da Roboto. As prévias dos sites de clientes ficam fora da grade porque são o que a Infinium entrega, não o que ela tira; cada uma carrega a identidade do próprio cliente e não faz parte deste sistema.\n\nO site recusa o padrão de agência: abertura centralizada sobre degradê e cards flutuantes com sombra; cartões existem como células da mesma linha, separadas por 1 px da grade.",
     "keyCharacteristics": [
-      "Grade de células como layout (12 colunas no desktop, 6 no tablet, 4 no celular), com cabeça de linha numerada e letras de coluna",
+      "Doze colunas (6 no tablet, 4 no celular) como layout invisível: nenhuma linha vertical, filete só nas listas",
+      "Seções em bandas de largura inteira (Body, White, o degradê) de pelo menos 85svh, com o conteúdo centrado",
+      "Fotos do Unsplash como células mescladas; sobre o degradê, só a luz da foto nas cores da marca",
+      "Cartões como células em grade, com ícones de traço desenhados pela fita e com brilho; uma luz segue o ponteiro",
       "Células mescladas como blocos sólidos: White sobre Body, Violeta 900 sobre o degradê, Primary para a coluna \"depois\"",
       "A fita de 2 px como material único: Primary sobre claro, Lilás sobre escuro",
       "Só Roboto, variável, em sete papéis; hierarquia só por escala e peso",
@@ -188,11 +191,12 @@
       { "name": "A Regra do Bloco Sólido", "body": "Célula mesclada é um bloco opaco (White, Violeta 900 ou Primary) que cobre a grade. Sem transparência, sem borda arredondada, sem sombra.", "section": "colors" },
       { "name": "A Regra da Fonte Única", "body": "Só Roboto, em 400, 500 e 700. As fontes dos clientes (Plus Jakarta Sans, Young Serif, Figtree, Lexend, Lexend Exa) existem só dentro das prévias, só depois de [data-ativa], e nunca saem de lá.", "section": "typography" },
       { "name": "A Regra da Escala Sem Adjetivo", "body": "Títulos não ganham cor, gradiente, kicker ou eyebrow: a hierarquia é tamanho e peso, e a ênfase é a fita por baixo da frase-chave.", "section": "typography" },
-      { "name": "A Regra da Linha Inteira", "body": "Nenhum bloco flutua: tudo nasce numa .linha da planilha ou, no caso das prévias, numa obra em subgrid que ocupa a linha inteira. Três cards iguais em fila não existem; o que fica lado a lado são colunas da mesma linha com o mesmo peso.", "section": "layout" },
+      { "name": "A Regra da Linha Inteira", "body": "Nenhum bloco flutua: tudo nasce numa .linha da planilha ou, no caso das prévias, numa obra em subgrid que ocupa a linha inteira. Cartões são células mescladas da mesma linha (.cartoes), separadas por 1 px da grade, sem sombra e sem canto; card flutuante não existe.", "section": "layout" },
       { "name": "A Regra do Plano", "body": "Nada tem sombra em repouso nem em hover. Profundidade é bloco sobre grade e claro sobre escuro; se um elemento novo precisa de sombra para se destacar, o problema é a composição.", "section": "elevation" }
     ],
     "dos": [
-      "Do colocar todo conteúdo novo numa .linha da planilha (ou numa obra em subgrid) e deixar a cabeça de linha numerar sozinha.",
+      "Do colocar todo conteúdo novo numa .linha da planilha (ou numa obra em subgrid), dentro de uma banda (Secao.astro) que alterna o fundo com a vizinha.",
+      "Do dar a cada cartão um ícone de src/data/icones.ts (traço de 24 x 24, pathLength=1 em toda forma) e a cada foto um alt descritivo em src/data/fotos.ts.",
       "Do usar --color-fita, --color-grade, --color-rotulo e --color-celula em vez de cores fixas; a classe .escuro troca as quatro.",
       "Do fazer a fita se desenhar como traço (background-size, scaleX, stroke-dashoffset), da esquerda para a direita, em 260 ms (--duration-base) ou 420 ms (--duration-slow), sempre com --ease-out.",
       "Do animar só transform, opacity e clip-path, no loop único do motor.ts, e parar tudo com prefers-reduced-motion.",

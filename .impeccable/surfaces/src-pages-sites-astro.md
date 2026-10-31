@@ -71,3 +71,18 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 - **Hub `/servicos/`:** uma planilha de duas colunas (Sites | Sistemas) com a pergunta "qual é o
   seu problema hoje?" em três linhas acima e a conexão em uma linha de largura inteira abaixo.
 - **Movimento:** igual ao da home, incluindo movimento reduzido e sem JS.
+
+## Revisão de 31/10/2026 (pedidos do Igor depois de ver o site)
+
+Vale sobre o contrato acima onde houver conflito (ver também o brief da home):
+- Sem letras de coluna nem números de linha.
+- A cabeça abre com uma foto do Unsplash numa célula mesclada à direita, ocupando as quatro
+  linhas (`/sites/`: placa "Open"; `/sistemas/`: quadro de notas adesivas; Raio-X: a lupa).
+- Seções como bandas alternadas (Body, White), cada uma uma coisa só.
+- "O que a gente faz" e "todo site inclui" viram cartões com ícone (três por linha, seis
+  cartões em duas linhas). Em `/sistemas/`, as quatro células de "um sistema só" ganham ícone, os
+  benefícios viram cartões e a lista do problema leva o ícone da ferramenta. No hub, a pergunta
+  "qual é o seu problema hoje?" vira três cartões com botão.
+- Os ícones se desenham pela fita conforme a rolagem, com brilho; uma luz segue o ponteiro.
+- Mais tarde no mesmo dia: sem linhas verticais de grade nem borda na folha ("não gostei mais
+  dos quadradinhos"); filete só nas listas; toda seção com pelo menos 85svh e conteúdo centrado.

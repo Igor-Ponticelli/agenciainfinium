@@ -739,3 +739,66 @@ escreve a oferta`, `docs: adiciona o checklist do raio-x`.
 - Ajuste de layout que apareceu aqui e valia para o site todo: no celular, as linhas "chave e
   valor" (resultados, benefícios, tipos, o que você recebe) empilham a chave sobre o valor em
   vez de dividir as quatro colunas. Os canais do contato também.
+
+## TODO 9: Fotos, bandas, cartões, ícones e holofote (feito em 31/10/2026)
+
+**Depende de:** TODO 6
+
+**Objetivo:** a rodada de revisão depois de o Igor ver o site pronto: tirar as letras de coluna e
+os números de linha, separar as seções como bandas, pôr fotos, cartões com ícones desenhados pela
+fita e um efeito de luz sob o ponteiro.
+
+**Pedidos do Igor (31/10/2026):** "Não gostei dos quadrados de A a L e dos números. Não pode ter
+isso. Senti falta imagem, pegar umas no unsplash sei lá. Até para o blog. [...] ajuda para colocar
+um detalhe em algum fundo, ter um efeito com mouse". E depois: "Estou sentindo falta de ícones
+também, tipo: Todo site inclui. Parece que tá muito um blog, talvez mais quebras de seção [...]
+Ter mais cards, pensar em alguma coisa tipo apple ou microsoft talvez (não digo de design, mas de
+separação de seção). [...] fazer aqueles ícones animados, que se completam com o scroll da página.
+[...] os ícones tendo um certo brilho, chama a atenção."
+
+**Passos:**
+1. Tirar `Colunas.astro` e o `.num` de `Linha.astro`; a cabeça de linha sai de todas as grades e
+   cada célula anda uma coluna para a esquerda (os subgrids da galeria não mudam).
+2. Fotos do Unsplash em `src/assets/fotos/`, registro em `src/data/fotos.ts`, componente
+   `Foto.astro` (AVIF e WebP, preguiçosa, tinta violeta sobre o escuro). Abertura da home, cena
+   do problema, blocos de serviço, cabeças de `/sites/`, `/sistemas/` e do Raio-X, capa dos posts
+   (campo `capa` no schema).
+3. `Secao.astro`: cada seção vira uma banda de largura inteira, alternando Body, White e o
+   degradê, com a folha fechada dentro.
+4. `Cartao.astro` e `.cartoes`: células mescladas em grade, separadas por 1 px, com ícone. Entram
+   em "o que a gente faz", "todo site inclui", resultados, benefícios, "para quem é", "o que você
+   recebe", a pergunta do hub e os canais do contato.
+5. `src/data/icones.ts` e `Icone.astro`: 28 ícones de traço próprios, desenhados pela fita conforme
+   a rolagem (`animation-timeline: view()`), com brilho na cor da fita. Também nas células da
+   cena, nas listas de problema e na entrega do hub.
+6. `holofote.ts`: a luz que segue o ponteiro e acende as linhas da grade, e a fita contornando a
+   célula sob o ponteiro. Só ponteiro fino, nada com movimento reduzido.
+7. Testes novos em `tests/fumaca.test.mjs`, capturas novas em `scripts/inspecao.mjs` (holofote e
+   ícones no meio do desenho), docs: direcao-visual.md, conteudo.md, PRODUCT.md, fotos.md,
+   briefs, DESIGN.md e design.json.
+
+**Pedido seguinte (31/10/2026, vendo o resultado):** "Se eu falei que gostei desses quadradinhos,
+eu não gostei mais. Pode remover. E sobre cada seção, queria que ocupasse pelo menos 85vh, acho
+mais elegante." Saíram as linhas verticais da planilha, as bordas da folha, as células se fundindo
+no bloco de sistemas e a célula ativa do holofote (fica só a luz); o filete entre linhas ficou
+só nas listas; a seleção da cena virou a fita por baixo da linha; toda banda tem
+`min-block-size: 85svh` com o conteúdo centrado.
+
+**Não fazer:** biblioteca de ícones, foto de pessoa posando como equipe ou cliente, sombra fora
+do brilho dos ícones, efeito no toque, linha vertical de grade.
+
+**Pronto quando:**
+- [x] Nenhuma página mostra letras de coluna ou números de linha.
+- [x] Fotos na home, nas páginas de serviço, no Raio-X e no blog, com `alt`, AVIF e WebP.
+- [x] Seções em bandas alternadas; cartões com ícones; ícones se desenham ao rolar.
+- [x] Holofote (só a luz) só com ponteiro fino; nada no toque, com movimento reduzido ou sem JS.
+- [x] Nenhuma linha vertical de grade; seções com pelo menos 85svh.
+- [x] `npm run build`, `npm test` e `npm run inspecao` passam; Lighthouse conferido.
+
+**Notas:**
+- A regra do contrato "nunca três cards iguais em fila" foi substituída pela decisão do Igor: os
+  cartões existem, como células da planilha, cada um com o seu ícone (direcao-visual.md, seção 5).
+- O brilho dos ícones é a exceção deliberada à Regra do Plano (sem sombra): fica só nos ícones e
+  no holofote, sempre na cor da fita.
+- Dist passou de 6,2 MB para cerca de 15 MB por causa das variantes das fotos; cada página carrega
+  só os tamanhos que usa.

@@ -42,7 +42,8 @@ proíbe eyebrow acima de título e cards iguais em fila.
 1. **Abertura.** Assinatura ("Sites e sistemas que trabalham por você") como título, uma frase
    que explica em linguagem de dono de empresa (tira o negócio do papel e da planilha e coloca no
    online e no automático) e duas ações: "Falar no WhatsApp" (principal) e "Ver como funciona"
-   (âncora). O logo horizontal no cabeçalho. Sem foto de banco de imagens, sem número inventado.
+   (âncora). O logo horizontal no cabeçalho. Uma foto do Unsplash à direita, na tinta violeta
+   do degradê (decisão de 31/10/2026; créditos em [fotos.md](fotos.md)). Sem número inventado.
 2. **O problema.** A cena que o cliente reconhece: pedidos no WhatsApp, controle no Excel,
    tarefas no Trello, financeiro no ERP, alguém copiando dado de um lado para o outro, e por
    fora um site lento ou inexistente. Texto curto, de EMPRESA.md.
