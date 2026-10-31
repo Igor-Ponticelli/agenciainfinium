@@ -235,6 +235,7 @@ const id = 'lx-lista';
                 <Picture
                   src={fotoCatalogo(d.foto)}
                   formats={['avif', 'webp']}
+                  fallbackFormat="webp"
                   widths={[96, 160]}
                   sizes="64px"
                   loading="lazy"
@@ -257,6 +258,7 @@ const id = 'lx-lista';
         <Picture
           src={fotoCatalogo(d.foto)}
           formats={['avif', 'webp']}
+          fallbackFormat="webp"
           widths={[360, 560, 720]}
           sizes="(min-width: 64rem) 34vw, 1px"
           loading="lazy"

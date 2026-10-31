@@ -78,6 +78,7 @@ const whatsapp =
         <Picture
           src={salao}
           formats={['avif', 'webp']}
+          fallbackFormat="webp"
           widths={[400, 640, 900, 1200]}
           sizes="(min-width: 64rem) 34vw, 90vw"
           loading="lazy"
@@ -88,6 +89,7 @@ const whatsapp =
         <Picture
           src={espresso}
           formats={['avif', 'webp']}
+          fallbackFormat="webp"
           widths={[160, 240, 360]}
           sizes="(min-width: 64rem) 12vw, 30vw"
           loading="lazy"
