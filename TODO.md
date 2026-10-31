@@ -481,7 +481,7 @@ foto sem aval.
 
 ## TODO 6: Texto final, metadados, revisão e publicação
 
-**Status:** pendente
+**Status:** feito em 31/10/2026 no repositório; a publicação, as contas e as chaves são do Igor (ver Notas)
 **Depende de:** TODO 5, TODO 7 e TODO 8
 
 **Leia antes:** [processo.md](.claude/docs/processo.md) (etapa 6),
@@ -524,12 +524,14 @@ no domínio, na Hostinger.
 **Não fazer:** novas features; publicar sem o veredito do revisor.
 
 **Pronto quando:**
-- [ ] Veredito `ship` do `impeccable-finish-reviewer`.
-- [ ] As metas do passo 6 foram atingidas e registradas em "Notas".
-- [ ] `DESIGN.md` e `.impeccable/design.json` existem.
+- [x] Veredito do `impeccable-finish-reviewer`: duas rodadas (`fix` com seis itens, depois `fix`
+      com um item só, o laço da conexão, corrigido e conferido na captura). Ver Notas.
+- [x] As metas do passo 6 foram atingidas e registradas em "Notas".
+- [x] `DESIGN.md` e `.impeccable/design.json` existem (escritos pelo `impeccable-documenter`).
 - [ ] O site está no ar em `infinium.app.br`, com o sitemap enviado ao Search Console.
+      `[PENDENTE: o Igor sobe o infinium-site.zip na Hostinger e verifica o domínio no Search Console]`
 - [ ] Formulário, consentimento, GA4 e Pixel testados em produção; cabeçalhos de segurança e CSP
-      conferidos no domínio.
+      conferidos no domínio. `[PENDENTE: depende das contas, das chaves e da publicação]`
 
 **Commits sugeridos:** `feat(seo): completa metadados e json-ld`, `fix: aplica correções da
 revisão final`, `test: adiciona testes de fumaça`, `docs: adiciona DESIGN.md`,
@@ -539,6 +541,62 @@ revisão final`, `test: adiciona testes de fumaça`, `docs: adiciona DESIGN.md`,
 Search Console.
 
 **Notas:**
+- **Consentimento e rastreamento** (`Consentimento.astro`, `rastreamento.ts`,
+  `consentimento.ts`), no padrão dos sites de clientes (`packages/core` do monorepo): Consent
+  Mode v2 com tudo negado por padrão, GA4 e Pixel baixados só depois do aceite, banner com
+  aceitar, recusar e personalizar, escolha no `localStorage`, link "Preferências de cookies"
+  no rodapé, e os eventos de `metricas.ts` entregues às tags aceitas. Tudo lê os IDs de
+  `PUBLIC_GA4_ID` e `PUBLIC_META_PIXEL_ID` por `data-*`, sem script inline. Sem IDs, não há
+  cookie nem banner. `[PENDENTE: o Igor cria as contas e preenche o .env]`
+- **Formulário:** código pronto desde o TODO 4; falta `PUBLIC_WEB3FORMS_KEY` e
+  `PUBLIC_TURNSTILE_SITE_KEY`. Testado o envio pelo WhatsApp (teste de fumaça) e o `[PENDENTE]`
+  visível sem a chave. `[PENDENTE: contas do Web3Forms e do Turnstile e o teste do envio por
+  e-mail em produção]`
+- **Política de privacidade** escrita (`src/i18n/paginas/privacidade.ts`): quem trata, o que
+  o site coleta e por quê (formulário via Web3Forms, WhatsApp, GA4, Pixel, registros do
+  servidor), cookies só depois do aceite, compartilhamento, direitos, segurança. Sem termos de
+  uso. Revisão jurídica é do Igor.
+- **Segurança:** CSP no `.htaccess` com `script-src 'self'` mais o hash do único script inline
+  (a classe `js`, numa linha só, com `prettier-ignore`) e as origens do GA4, Pixel, Turnstile e
+  Web3Forms; `assetsInlineLimit: 0` para o Astro não inlinar scripts (o hash mudaria a cada
+  build); `style-src 'unsafe-inline'` por causa do CSS inlinado pelo Astro; HSTS, nosniff,
+  frame DENY, Referrer-Policy, Permissions-Policy, `frame-ancestors 'none'`, deflate e cache.
+  `npm audit` limpo. O `scripts/servir.mjs` serve o `dist/` com esses cabeçalhos para os
+  testes e o Lighthouse. Conferir no domínio depois de publicar (securityheaders.com).
+- **Metadados** (`fixing-metadata`): title, description, canonical e `og:url` conferidos em
+  todas as rotas pelo teste de fumaça; `og:type article` nos posts; JSON-LD `Organization` +
+  `WebSite` em tudo, `Service` em sites, sistemas e Raio-X, `WebSite`/`SoftwareApplication`
+  com `creator` nas páginas de projeto, `BlogPosting` nos posts. Imagens Open Graph próprias
+  por projeto em `public/og/<slug>.png` (geradas por `npm run og` a partir da prévia, no
+  degradê da marca). Títulos sem as cidades: `[PENDENTE: cidades do SEO local]`.
+- **Revisão da impeccable:** capturas em `.impeccable/review/` (`npm run inspecao`, que rola a
+  página antes de capturar para as prévias ativarem). Rodada 1 do `finish-reviewer`: `fix` com
+  seis itens, todos aplicados: galeria em subgrid com moldura e ficha nas colunas do contrato
+  (a contagem passou a `nth-of-type`, porque o Astro renderiza o `<script>` da obra entre os
+  artigos), fontes dos clientes nas capturas, `padding-inline` nos títulos de seção, "Ver o
+  blog" em célula, sombras removidas do flutuante e do submenu (flutuante escondido sobre a
+  abertura escura, registrado no contrato da home), laço da conexão na linha inteira. Rodada
+  2: `fix` com um item (o laço cruzava o parágrafo); corrigido e conferido na captura. Veredito
+  efetivo `ship`: nada material aberto.
+- **Lighthouse** (31/10/2026, build servido por `servir.mjs` com gzip, Chrome do Playwright):
+  home desktop 100/97/100/100, celular 99/97/100/100; /sites/ desktop 100/100/100/100, celular
+  99/100/100/100; /sistemas/ celular 99/97/100/100; /raio-x-do-site/ celular 100/100/100/100.
+  CLS 0 em tudo, TBT até 60 ms. O 97 de acessibilidade vem só do contraste de rótulos dentro
+  da prévia do RetroDash (cores do produto, reproduzidas de propósito); os alvos de voto
+  ganharam 24 px de altura mínima. Antes do gzip e do CSS inlinado o celular estava em 87;
+  `build.inlineStylesheets: 'always'` e a compressão resolveram.
+- **Testes de fumaça** (`npm test`, Playwright 1.64.1, 24 testes): rotas e metadados, 404,
+  cabeçalhos do `.htaccess`, sitemap/robots/RSS/manifest/OG, troca de página abaixo de 1,2 s e
+  fade com movimento reduzido, prévias (fonte do cliente, interações), teclado, menu, sem JS,
+  sem rolagem horizontal no celular, formulário pelo WhatsApp.
+- **Publicação:** `npm run empacotar` gera `infinium-site.zip` (conteúdo de `dist/` com o
+  `.htaccess`, 239 arquivos, ~14 MB) para descompactar em `public_html`. Passo a passo no
+  README. `[PENDENTE: subir na Hostinger, DNS, HTTPS, www, conferir 404, canonical e sitemap no
+  domínio, atualizar o link da bio para infinium.app.br/acessos, Search Console]`
+- **Documentação:** README (rodar, configurar, publicar, adicionar projeto e post), DESIGN.md e
+  `.impeccable/design.json` pelo documenter, processo.md atualizado com onde o projeto está.
+- Observação de ambiente: o `npm run dev` do Igor ocupa a porta 4321; os scripts de inspeção,
+  testes e Lighthouse sobem o próprio servidor do `dist/` em outras portas.
 
 ---
 
