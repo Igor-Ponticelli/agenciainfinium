@@ -1,7 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
 import ChamadaFinal from '../../components/ChamadaFinal.astro';
-import Colunas from '../../components/Colunas.astro';
 import Linha from '../../components/Linha.astro';
 import { dataCurta, dataDoPost, dataIso, postsPublicados, tempoDeLeitura } from '../../data/blog';
 import { linkWhatsapp } from '../../data/empresa';
@@ -23,7 +22,6 @@ const posts = await postsPublicados();
     href="/blog/rss.xml"
   />
   <section class="folha pagina-cabeca" aria-labelledby="pagina-titulo">
-    <Colunas />
     <Linha>
       <h1 class="pagina-titulo" id="pagina-titulo">
         {t.titulo}

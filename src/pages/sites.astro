@@ -1,7 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
 import ChamadaFinal from '../components/ChamadaFinal.astro';
-import Colunas from '../components/Colunas.astro';
 import Linha from '../components/Linha.astro';
 import FontesPrevias from '../components/FontesPrevias.astro';
 import Obra from '../components/Obra.astro';
@@ -32,7 +31,6 @@ const jsonLd = {
 <Base titulo={meta.titulo} descricao={meta.descricao} jsonLd={[jsonLd]}>
   <FontesPrevias slot="head" />
   <section class="folha pagina-cabeca" aria-labelledby="pagina-titulo">
-    <Colunas />
     <Linha>
       <h1 class="pagina-titulo" id="pagina-titulo">
         {t.titulo}

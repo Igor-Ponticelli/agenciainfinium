@@ -1,6 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import Colunas from '../components/Colunas.astro';
 import Formulario from '../components/Formulario.astro';
 import Linha from '../components/Linha.astro';
 import { email, instagram, linkWhatsapp } from '../data/empresa';
@@ -13,7 +12,6 @@ const meta = metasPaginas.contato;
 
 <Base titulo={meta.titulo} descricao={meta.descricao}>
   <section class="folha pagina-cabeca" aria-labelledby="pagina-titulo">
-    <Colunas />
     <Linha>
       <h1 class="pagina-titulo" id="pagina-titulo">
         {t.titulo}

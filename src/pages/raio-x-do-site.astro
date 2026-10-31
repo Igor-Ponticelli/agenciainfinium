@@ -1,7 +1,6 @@
 ---
 import LandingPage from '../layouts/LandingPage.astro';
 import BotaoRaioX from '../components/BotaoRaioX.astro';
-import Colunas from '../components/Colunas.astro';
 import Linha from '../components/Linha.astro';
 import { nomeCompleto } from '../data/empresa';
 import { prazoDias, preco, precoFormatado } from '../data/raioX';
@@ -47,7 +46,6 @@ const jsonLd = {
       aria-labelledby="pagina-titulo"
       data-secao="abertura"
     >
-      <Colunas />
       <Linha>
         <h1
           class="pagina-titulo"

@@ -1,7 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
 import ChamadaFinal from '../components/ChamadaFinal.astro';
-import Colunas from '../components/Colunas.astro';
 import Linha from '../components/Linha.astro';
 import { linkWhatsapp } from '../data/empresa';
 import { rotas } from '../i18n/rotas';
@@ -15,7 +14,6 @@ const destino = { sites: rotas.sites, sistemas: rotas.sistemas, whatsapp: linkWh
 
 <Base titulo={meta.titulo} descricao={meta.descricao}>
   <section class="folha pagina-cabeca" aria-labelledby="pagina-titulo">
-    <Colunas />
     <Linha>
       <h1 class="pagina-titulo" id="pagina-titulo">
         {t.titulo}

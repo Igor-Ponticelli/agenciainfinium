@@ -71,7 +71,6 @@
   --texto-medida: 65ch;
   --gutter: clamp(1rem, 4vw, 2.5rem);
   --colunas: 4;
-  --cabeca-linha: 1.75rem;
   --linha-altura: 3.5rem;
   --celula-pad: 0.875rem;
   --cabecalho-altura: 3.5rem;
@@ -111,7 +110,6 @@
 @media (min-width: 48rem) {
   :root {
     --colunas: 6;
-    --cabeca-linha: 2.25rem;
     --linha-altura: 4rem;
     --celula-pad: 1rem;
     --cabecalho-altura: 4.5rem;
@@ -121,7 +119,6 @@
 @media (min-width: 64rem) {
   :root {
     --colunas: 12;
-    --cabeca-linha: 2.5rem;
   }
 }
 

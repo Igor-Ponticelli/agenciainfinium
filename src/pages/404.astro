@@ -1,7 +1,6 @@
 ---
 import simbolo from '../assets/marca/simbolo-primary.svg';
 import Base from '../layouts/Base.astro';
-import Colunas from '../components/Colunas.astro';
 import Linha from '../components/Linha.astro';
 import { rotas } from '../i18n/rotas';
 import { metasPaginas, textos as t } from '../i18n/textos';
@@ -11,7 +10,6 @@ const meta = metasPaginas.naoEncontrada;
 
 <Base titulo={meta.titulo} descricao={meta.descricao} noindex>
   <section class="folha pagina-cabeca pagina-404" aria-labelledby="pagina-titulo">
-    <Colunas />
     <Linha>
       <img
         class="simbolo"

@@ -1,19 +1,18 @@
 ---
 /**
- * Uma linha da planilha: o número na cabeça da linha (decorativo, fora da árvore de
- * acessibilidade) e as células no slot. As células se posicionam nas colunas pelas classes de
- * cada seção (site.css).
+ * Uma linha da planilha: as células do slot, posicionadas nas colunas pelas classes de cada
+ * seção (site.css). Sem cabeça numerada nem letras de coluna (decisão do Igor, 31/10/2026): a
+ * grade é só as linhas, as células e a fita.
  */
 import type { HTMLAttributes } from 'astro/types';
 
 interface Props extends HTMLAttributes<'div'> {
-  as?: 'div' | 'li' | 'section' | 'header' | 'article';
+  as?: 'div' | 'li' | 'ul' | 'ol' | 'section' | 'header' | 'article';
 }
 
 const { as: Tag = 'div', class: classe, ...resto } = Astro.props;
 ---
 
 <Tag class:list={['linha', classe]} {...resto}>
-  <span class="num" aria-hidden="true"></span>
   <slot />
 </Tag>

@@ -3,7 +3,6 @@ import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import ChamadaFinal from '../../components/ChamadaFinal.astro';
-import Colunas from '../../components/Colunas.astro';
 import Linha from '../../components/Linha.astro';
 import FontesPrevias from '../../components/FontesPrevias.astro';
 import Obra from '../../components/Obra.astro';
@@ -52,7 +51,6 @@ const jsonLd = {
   <FontesPrevias slot="head" />
   <article>
     <section class="folha pagina-cabeca">
-      <Colunas />
       <Linha>
         <h1 class="pagina-titulo">{d.titulo}</h1>
       </Linha>

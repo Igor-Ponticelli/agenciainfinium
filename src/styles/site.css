@@ -7,10 +7,6 @@
 
 /* ---------- Moldura geral ---------- */
 
-body {
-  counter-reset: linha;
-}
-
 main {
   position: relative;
   z-index: 1;
@@ -39,8 +35,8 @@ main:focus {
     var(--color-grade) 0 1px,
     transparent 1px var(--col)
   );
-  background-size: calc(100% - var(--cabeca-linha)) 100%;
-  background-position: right top;
+  background-size: 100% 100%;
+  background-position: left top;
   background-repeat: no-repeat;
   border-inline-end: 1px solid var(--color-grade);
 }
@@ -50,10 +46,9 @@ main:focus {
   border-inline-end: 0;
 }
 
-.linha,
-.colunas {
+.linha {
   display: grid;
-  grid-template-columns: var(--cabeca-linha) repeat(var(--colunas), minmax(0, 1fr));
+  grid-template-columns: repeat(var(--colunas), minmax(0, 1fr));
   border-block-end: 1px solid var(--color-grade);
 }
 
@@ -63,61 +58,6 @@ main:focus {
 
 .linha > * {
   min-inline-size: 0;
-}
-
-.num,
-.coluna {
-  display: grid;
-  place-items: center;
-  color: var(--color-rotulo);
-  font-size: var(--text-label);
-  font-weight: var(--weight-medium);
-  line-height: var(--leading-label);
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
-  font-variant-numeric: tabular-nums;
-  user-select: none;
-}
-
-.num {
-  grid-column: 1;
-  align-self: stretch;
-  padding-block: calc(var(--celula-pad) + 0.1em);
-  align-content: start;
-  border-inline-end: 1px solid var(--color-grade);
-}
-
-.linha .num::before {
-  counter-increment: linha;
-  content: counter(linha) / '';
-}
-
-.colunas {
-  min-block-size: 1.75rem;
-}
-
-.colunas .num {
-  padding-block: 0;
-}
-
-.coluna {
-  display: none;
-}
-
-.coluna:nth-child(-n + 5) {
-  display: grid;
-}
-
-@media (min-width: 48rem) {
-  .coluna:nth-child(-n + 7) {
-    display: grid;
-  }
-}
-
-@media (min-width: 64rem) {
-  .coluna {
-    display: grid;
-  }
 }
 
 .celula {
@@ -136,7 +76,7 @@ main:focus {
 
 /* Título de seção numa linha da planilha */
 .titulo-secao {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   align-self: end;
   padding: var(--space-xl) var(--celula-pad) var(--space-s);
   font-size: var(--text-h2);
@@ -146,7 +86,7 @@ main:focus {
 }
 
 .titulo-secao + .celula-apoio {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
 }
 
 .celula-apoio {
@@ -735,11 +675,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
   display: flex;
   flex-direction: column;
   /* O título da próxima seção aparece na base da primeira tela, chamando para rolar */
-  min-block-size: calc(100svh - var(--cabecalho-altura) - 1.75rem - 12svh);
-}
-
-.abertura .colunas {
-  flex: none;
+  min-block-size: calc(100svh - var(--cabecalho-altura) - 12svh);
 }
 
 .abertura-assinatura {
@@ -749,7 +685,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .abertura-assinatura h1 {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   align-self: center;
   padding: var(--space-xl) var(--celula-pad) var(--space-m);
   font-size: var(--text-hero);
@@ -759,18 +695,12 @@ html[data-menu-aberto] .whatsapp-flutuante {
   text-wrap: balance;
 }
 
-/* A fita sublinha a assinatura como a linha selecionada da planilha */
-.abertura-assinatura .num {
-  background-color: var(--color-fita);
-  color: var(--color-heading);
-}
-
 .abertura-assinatura {
   box-shadow: inset 0 -2px 0 var(--color-fita);
 }
 
 .abertura-frase {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   max-inline-size: 48ch;
   padding: var(--space-m) var(--celula-pad);
   color: color-mix(in oklab, #fff 84%, transparent);
@@ -780,7 +710,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .abertura-acoes {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   padding: var(--space-s) var(--celula-pad) var(--space-l);
 }
 
@@ -790,16 +720,16 @@ html[data-menu-aberto] .whatsapp-flutuante {
 
 @media (min-width: 64rem) {
   .abertura-assinatura h1 {
-    grid-column: 2 / 11;
+    grid-column: 1 / 10;
     padding-block: var(--space-2xl) var(--space-l);
   }
 
   .abertura-frase {
-    grid-column: 2 / 8;
+    grid-column: 1 / 7;
   }
 
   .abertura-acoes {
-    grid-column: 2 / 8;
+    grid-column: 1 / 7;
   }
 }
 
@@ -811,7 +741,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 
 .cena-tabela {
   display: grid;
-  grid-template-columns: var(--cabeca-linha) repeat(var(--colunas), minmax(0, 1fr));
+  grid-template-columns: repeat(var(--colunas), minmax(0, 1fr));
   grid-auto-rows: minmax(var(--linha-altura), auto);
 }
 
@@ -821,11 +751,6 @@ html[data-menu-aberto] .whatsapp-flutuante {
   grid-column: 1 / -1;
   grid-template-columns: subgrid;
   border-block-end: 1px solid var(--color-grade);
-}
-
-.cena-linha .num::before {
-  counter-increment: linha;
-  content: counter(linha) / '';
 }
 
 .cena-chave,
@@ -838,11 +763,11 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .cena-chave {
-  grid-column: 2 / 4;
+  grid-column: 1 / 3;
 }
 
 .cena-valor {
-  grid-column: 4 / -1;
+  grid-column: 3 / -1;
   border-inline-start: 0;
   color: var(--color-text);
   font-weight: var(--weight-regular);
@@ -850,26 +775,25 @@ html[data-menu-aberto] .whatsapp-flutuante {
 
 .cena-texto {
   grid-column: 1 / -1;
-  padding: var(--space-m) var(--celula-pad) var(--space-xl)
-    calc(var(--cabeca-linha) + var(--celula-pad));
+  padding: var(--space-m) var(--celula-pad) var(--space-xl);
   border-block-end: 1px solid var(--color-grade);
 }
 
 @media (min-width: 64rem) {
   .cena-linha {
-    grid-column: 1 / 8;
+    grid-column: 1 / 7;
   }
 
   .cena-chave {
-    grid-column: 2 / 5;
+    grid-column: 1 / 4;
   }
 
   .cena-valor {
-    grid-column: 5 / 8;
+    grid-column: 4 / 7;
   }
 
   .cena-texto {
-    grid-column: 8 / -1;
+    grid-column: 7 / -1;
     grid-row: 1 / span 4;
     padding: var(--celula-pad) var(--celula-pad) var(--celula-pad) var(--space-l);
     border-block-end: 0;
@@ -887,19 +811,8 @@ html[data-menu-aberto] .whatsapp-flutuante {
   pointer-events: none;
 }
 
-.cena-linha .num {
-  transition:
-    background-color var(--duration-fast) linear,
-    color var(--duration-fast) linear;
-}
-
 .cena-linha:first-of-type::after {
   opacity: 1;
-}
-
-.cena-linha:first-of-type .num {
-  background-color: var(--color-fita);
-  color: var(--color-on-accent);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -908,22 +821,12 @@ html[data-menu-aberto] .whatsapp-flutuante {
       opacity: 0;
     }
 
-    .cena-linha:first-of-type .num {
-      background-color: transparent;
-      color: var(--color-rotulo);
-    }
-
-    .cena-linha::after,
-    .cena-linha .num {
+    .cena-linha::after {
       animation: selecionar linear both;
       animation-timeline: view();
       animation-range: cover 0% cover 100%;
     }
 
-    .cena-linha .num {
-      animation-name: selecionar-cabeca;
-    }
-  }
 }
 
 @keyframes selecionar {
@@ -943,26 +846,6 @@ html[data-menu-aberto] .whatsapp-flutuante {
   }
 }
 
-@keyframes selecionar-cabeca {
-  0%,
-  44% {
-    background-color: transparent;
-    color: var(--color-rotulo);
-  }
-
-  47%,
-  53% {
-    background-color: var(--color-fita);
-    color: var(--color-on-accent);
-  }
-
-  56%,
-  100% {
-    background-color: transparent;
-    color: var(--color-rotulo);
-  }
-}
-
 /* ---------- Dois serviços: duas faixas de células mescladas, com o mesmo peso ---------- */
 
 .servicos-linha {
@@ -971,7 +854,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 
 .servico {
   position: relative;
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   display: grid;
   gap: var(--space-s);
   align-content: start;
@@ -988,11 +871,11 @@ html[data-menu-aberto] .whatsapp-flutuante {
   }
 
   .servico-sites {
-    grid-column: 2 / 8;
+    grid-column: 1 / 7;
   }
 
   .servico-sistemas {
-    grid-column: 8 / -1;
+    grid-column: 7 / -1;
   }
 
   .servico + .servico {
@@ -1059,7 +942,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .conexao-texto {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   position: relative;
   z-index: 1;
   display: grid;
@@ -1081,7 +964,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 
 @media (min-width: 64rem) {
   .conexao-texto {
-    grid-column: 2 / 9;
+    grid-column: 1 / 8;
   }
 }
 
@@ -1090,9 +973,9 @@ html[data-menu-aberto] .whatsapp-flutuante {
 .conexao-laco {
   display: none;
   position: absolute;
-  inset-inline: var(--cabeca-linha) 0;
+  inset-inline: 0;
   inset-block: 0;
-  inline-size: calc(100% - var(--cabeca-linha));
+  inline-size: 100%;
   block-size: 100%;
   overflow: visible;
   pointer-events: none;
@@ -1140,21 +1023,21 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .vitrines-cabeca .link-fita {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   justify-self: start;
   margin: 0 var(--celula-pad) var(--space-m);
 }
 
 .vitrines-grade {
   display: grid;
-  grid-template-columns: var(--cabeca-linha) repeat(var(--colunas), minmax(0, 1fr));
+  grid-template-columns: repeat(var(--colunas), minmax(0, 1fr));
   gap: var(--space-2xl) 0;
   padding-block: var(--space-l) var(--space-3xl);
   border-block-end: 1px solid var(--color-grade);
 }
 
 .obra {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   display: grid;
   gap: var(--space-s);
   align-content: start;
@@ -1247,7 +1130,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
      ficha ao lado, à esquerda; Lumaj média A a F com a ficha à direita; RetroDash grande E a L
      com a ficha à esquerda. Pares desencontrados, nunca cards iguais em fila. */
   .vitrines-grade .obra {
-    grid-column: 2 / -1;
+    grid-column: 1 / -1;
     grid-template-columns: subgrid;
     column-gap: 0;
     align-items: end;
@@ -1362,7 +1245,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .passo-indice {
-  grid-column: 2 / 3;
+  grid-column: 1 / 2;
   padding: var(--celula-pad);
   color: var(--color-text);
   font-size: var(--text-h2);
@@ -1378,7 +1261,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .passo-titulo {
-  grid-column: 3 / -1;
+  grid-column: 2 / -1;
   padding: var(--celula-pad) var(--celula-pad) 0;
   color: var(--color-heading);
   font-size: var(--text-h3);
@@ -1387,23 +1270,23 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .passo-texto {
-  grid-column: 3 / -1;
+  grid-column: 2 / -1;
   max-inline-size: 60ch;
   padding: 0.25rem var(--celula-pad) var(--celula-pad);
 }
 
 @media (min-width: 64rem) {
   .passo-indice {
-    grid-column: 2 / 3;
+    grid-column: 1 / 2;
   }
 
   .passo-titulo {
-    grid-column: 3 / 6;
+    grid-column: 2 / 5;
     padding-block-end: var(--celula-pad);
   }
 
   .passo-texto {
-    grid-column: 6 / -1;
+    grid-column: 5 / -1;
     padding-block-start: var(--celula-pad);
   }
 }
@@ -1434,44 +1317,44 @@ html[data-menu-aberto] .whatsapp-flutuante {
 /* No celular a chave fica em cima do valor, na mesma linha da planilha; a partir do tablet,
    lado a lado, nas colunas */
 .par-chave {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   padding: var(--celula-pad) var(--celula-pad) 0;
   color: var(--color-heading);
   font-weight: var(--weight-bold);
 }
 
 .par-valor {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   max-inline-size: 60ch;
   padding: var(--space-3xs) var(--celula-pad) var(--celula-pad);
 }
 
 @media (min-width: 48rem) {
   .par-chave {
-    grid-column: 2 / 4;
+    grid-column: 1 / 3;
     padding: var(--celula-pad);
   }
 
   .par-valor {
-    grid-column: 4 / -1;
+    grid-column: 3 / -1;
     padding: var(--celula-pad);
   }
 }
 
 @media (min-width: 64rem) {
   .par-chave {
-    grid-column: 2 / 5;
+    grid-column: 1 / 4;
   }
 
   .par-valor {
-    grid-column: 5 / -1;
+    grid-column: 4 / -1;
   }
 }
 
 /* ---------- Perguntas frequentes ---------- */
 
 .faq-item {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
 }
 
 .faq-item summary {
@@ -1615,7 +1498,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .pagina-titulo {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   padding: var(--space-xl) var(--celula-pad) var(--space-s);
   font-size: var(--text-h1);
   font-weight: var(--weight-bold);
@@ -1625,7 +1508,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .pagina-frase {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   align-self: center;
   justify-self: start;
   margin: var(--space-2xs) var(--celula-pad);
@@ -1637,14 +1520,8 @@ html[data-menu-aberto] .whatsapp-flutuante {
   line-height: var(--leading-subtitle);
 }
 
-/* A frase-chave é a linha selecionada: a cabeça da linha fica na cor da fita */
-.linha-selecionada .num {
-  background-color: var(--color-fita);
-  color: var(--color-on-accent);
-}
-
 .pagina-texto {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   max-inline-size: 56ch;
   padding: var(--space-s) var(--celula-pad);
   font-size: var(--text-subtitle);
@@ -1652,30 +1529,30 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .pagina-acao {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   padding: var(--space-s) var(--celula-pad) var(--space-l);
 }
 
 @media (min-width: 64rem) {
   .pagina-titulo {
-    grid-column: 2 / 10;
+    grid-column: 1 / 9;
     padding-block-start: var(--space-2xl);
   }
 
   .pagina-texto {
-    grid-column: 2 / 9;
+    grid-column: 1 / 8;
   }
 }
 
 /* Linha de texto corrido */
 .linha-texto .texto {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   padding: var(--space-m) var(--celula-pad) var(--space-l);
 }
 
 @media (min-width: 64rem) {
   .linha-texto .texto {
-    grid-column: 2 / 10;
+    grid-column: 1 / 9;
   }
 }
 
@@ -1687,7 +1564,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .item-linha {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   position: relative;
   display: flex;
   align-items: center;
@@ -1714,19 +1591,8 @@ html[data-menu-aberto] .whatsapp-flutuante {
 /* Antes e depois: células com borda de um lado, uma célula mesclada do outro */
 .antes-depois {
   display: grid;
-  grid-template-columns: var(--cabeca-linha) repeat(var(--colunas), minmax(0, 1fr));
+  grid-template-columns: repeat(var(--colunas), minmax(0, 1fr));
   border-block-end: 1px solid var(--color-grade);
-}
-
-.antes-depois .num {
-  grid-column: 1;
-  grid-row: 1 / -1;
-  align-content: start;
-}
-
-.antes-depois .num::before {
-  counter-increment: linha;
-  content: counter(linha) / '';
 }
 
 .antes-depois th,
@@ -1736,7 +1602,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .antes-depois .cabecalho-tabela {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   display: grid;
   grid-template-columns: subgrid;
 }
@@ -1757,7 +1623,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .antes-depois .corpo-tabela {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   display: grid;
   grid-template-columns: subgrid;
 }
@@ -1790,7 +1656,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .fusao-celula {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   display: grid;
   gap: var(--space-2xs);
   align-content: start;
@@ -1844,7 +1710,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 
 /* Texto em traço solto da fita: o que ainda não existe */
 .solto {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   max-inline-size: 48ch;
   margin: var(--space-s) var(--celula-pad) var(--space-l);
   padding-inline-start: var(--space-s);
@@ -1855,36 +1721,36 @@ html[data-menu-aberto] .whatsapp-flutuante {
 
 /* Hub de serviços: "qual é o seu problema hoje?" */
 .qual-problema {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   padding: var(--celula-pad) var(--celula-pad) 0;
   color: var(--color-heading);
   font-weight: var(--weight-medium);
 }
 
 .qual-resposta {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   padding: var(--space-2xs) var(--celula-pad);
 }
 
 .qual-acao {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   justify-self: start;
   margin: 0 var(--celula-pad) var(--celula-pad);
 }
 
 @media (min-width: 64rem) {
   .qual-problema {
-    grid-column: 2 / 8;
+    grid-column: 1 / 7;
     padding: var(--celula-pad);
   }
 
   .qual-resposta {
-    grid-column: 8 / 11;
+    grid-column: 7 / 10;
     padding: var(--celula-pad);
   }
 
   .qual-acao {
-    grid-column: 11 / -1;
+    grid-column: 10 / -1;
     align-self: center;
     margin: 0 var(--celula-pad);
   }
@@ -1898,19 +1764,19 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .projeto-obra .obra {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
 }
 
 /* Na página do projeto a obra ocupa a linha inteira: a prévia em 9 das 12 colunas e a ficha
    nas outras 3 (brief da home). Grade própria: a regra dos pares desencontrados não vale aqui. */
 .projeto-obra {
   display: grid;
-  grid-template-columns: var(--cabeca-linha) repeat(var(--colunas), minmax(0, 1fr));
+  grid-template-columns: repeat(var(--colunas), minmax(0, 1fr));
 }
 
 @media (min-width: 64rem) {
   .projeto-obra .obra {
-    grid-column: 2 / -1;
+    grid-column: 1 / -1;
     grid-template-columns: subgrid;
     column-gap: 0;
   }
@@ -1930,7 +1796,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .projeto-texto {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   display: grid;
   gap: var(--space-s);
   max-inline-size: var(--texto-medida);
@@ -1960,12 +1826,12 @@ html[data-menu-aberto] .whatsapp-flutuante {
 
 @media (min-width: 64rem) {
   .projeto-texto {
-    grid-column: 2 / 10;
+    grid-column: 1 / 9;
   }
 }
 
 .proximo {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   display: grid;
   gap: var(--space-2xs);
   padding: var(--space-l) var(--celula-pad) var(--space-2xl);
@@ -2004,7 +1870,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .post-data {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   padding: var(--celula-pad) var(--celula-pad) 0;
   color: var(--color-text);
   font-size: var(--text-s);
@@ -2012,7 +1878,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .post-resumo {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   display: grid;
   gap: var(--space-2xs);
   max-inline-size: 60ch;
@@ -2033,18 +1899,18 @@ html[data-menu-aberto] .whatsapp-flutuante {
 
 @media (min-width: 64rem) {
   .post-data {
-    grid-column: 2 / 4;
+    grid-column: 1 / 3;
     padding: var(--celula-pad);
   }
 
   .post-resumo {
-    grid-column: 4 / -1;
+    grid-column: 3 / -1;
     padding: var(--celula-pad);
   }
 }
 
 .post-cabeca {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2xs) var(--space-m);
@@ -2082,7 +1948,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .post-chamada-bloco {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   display: grid;
   gap: var(--space-s);
   justify-items: start;
@@ -2102,7 +1968,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 
 @media (min-width: 64rem) {
   .post-chamada-bloco {
-    grid-column: 2 / 10;
+    grid-column: 1 / 9;
     padding: var(--space-xl) var(--space-l);
   }
 }
@@ -2112,7 +1978,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .post-vizinho {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   display: grid;
   gap: var(--space-2xs);
   padding: var(--celula-pad);
@@ -2139,35 +2005,35 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .post-todos {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   justify-self: start;
   margin: var(--space-s) var(--celula-pad) var(--celula-pad);
 }
 
 @media (min-width: 64rem) {
   .post-vizinho {
-    grid-column: 2 / 7;
+    grid-column: 1 / 6;
   }
 
   .post-vizinho-proximo {
-    grid-column: 7 / -1;
+    grid-column: 6 / -1;
   }
 
   .post-vizinho:only-of-type {
-    grid-column: 2 / 7;
+    grid-column: 1 / 6;
   }
 }
 
 /* Os três últimos posts na home */
 .home-posts-todos {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   justify-self: start;
   align-self: center;
   margin: var(--celula-pad);
 }
 
 .home-posts-item {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   display: grid;
   gap: var(--space-3xs);
   padding: var(--celula-pad);
@@ -2182,7 +2048,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 /* ---------- Contato ---------- */
 
 .canal-nome {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   display: flex;
   align-items: center;
   justify-self: start;
@@ -2193,7 +2059,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .canal-texto {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   display: flex;
   align-items: center;
   padding: var(--space-3xs) var(--celula-pad) var(--celula-pad);
@@ -2201,28 +2067,28 @@ html[data-menu-aberto] .whatsapp-flutuante {
 
 @media (min-width: 48rem) {
   .canal-nome {
-    grid-column: 2 / 4;
+    grid-column: 1 / 3;
     margin: var(--celula-pad);
   }
 
   .canal-texto {
-    grid-column: 4 / -1;
+    grid-column: 3 / -1;
     padding: var(--celula-pad);
   }
 }
 
 @media (min-width: 64rem) {
   .canal-nome {
-    grid-column: 2 / 6;
+    grid-column: 1 / 5;
   }
 
   .canal-texto {
-    grid-column: 6 / -1;
+    grid-column: 5 / -1;
   }
 }
 
 .formulario {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   display: grid;
   gap: var(--space-m);
   padding: var(--space-l) var(--celula-pad) var(--space-xl);
@@ -2230,7 +2096,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 
 @media (min-width: 64rem) {
   .formulario {
-    grid-column: 2 / 10;
+    grid-column: 1 / 9;
     padding: var(--space-xl) var(--space-l) var(--space-2xl);
   }
 }
@@ -2383,7 +2249,7 @@ html:not(.js) [data-enviar='whatsapp'] {
 }
 
 .raio-x-preco {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   display: grid;
   gap: var(--space-s);
   justify-items: start;
@@ -2392,7 +2258,7 @@ html:not(.js) [data-enviar='whatsapp'] {
 
 @media (min-width: 64rem) {
   .raio-x-preco {
-    grid-column: 2 / 9;
+    grid-column: 1 / 8;
     padding: var(--space-xl) var(--space-l) var(--space-2xl);
   }
 }
@@ -2475,7 +2341,7 @@ html:not(.js) [data-enviar='whatsapp'] {
 /* ---------- 404 ---------- */
 
 .pagina-404 .simbolo {
-  grid-column: 2 / -1;
+  grid-column: 1 / -1;
   inline-size: 4rem;
   block-size: auto;
   margin: var(--space-xl) var(--celula-pad) 0;
