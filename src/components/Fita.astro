@@ -1,0 +1,16 @@
+---
+/**
+ * Camada da fita: a cortina da troca de página (o degradê da marca) e o título da próxima página.
+ * Persiste entre páginas; é só decoração, então fica fora da árvore de acessibilidade.
+ */
+---
+
+<div class="fita-camada" transition:persist="fita" aria-hidden="true">
+  <div class="fita-cortina" data-fita-cortina>
+    <p class="fita-cortina-titulo" data-fita-cortina-titulo></p>
+  </div>
+</div>
+
+<script>
+  import '../scripts/fita';
+</script>
