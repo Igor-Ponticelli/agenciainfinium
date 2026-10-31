@@ -1,60 +1,109 @@
 ---
 import Base from '../layouts/Base.astro';
+import ChamadaFinal from '../components/ChamadaFinal.astro';
+import Colunas from '../components/Colunas.astro';
+import Linha from '../components/Linha.astro';
 import { linkWhatsapp } from '../data/empresa';
 import { rotas } from '../i18n/rotas';
 import { servicos as t } from '../i18n/paginas/servicos';
 import { metasPaginas } from '../i18n/textos';
 
+/** Hub de serviços: uma planilha curta de duas colunas (brief da página de serviço). */
 const meta = metasPaginas.servicos;
 const destino = { sites: rotas.sites, sistemas: rotas.sistemas, whatsapp: linkWhatsapp() };
 ---
 
 <Base titulo={meta.titulo} descricao={meta.descricao}>
-  <h1>{t.titulo}</h1>
-  <p>{t.texto}</p>
+  <section class="folha pagina-cabeca" aria-labelledby="pagina-titulo">
+    <Colunas />
+    <Linha>
+      <h1 class="pagina-titulo" id="pagina-titulo">
+        {t.titulo}
+      </h1>
+    </Linha>
+    <Linha>
+      <p class="pagina-texto">{t.texto}</p>
+    </Linha>
+  </section>
 
-  <section>
-    <h2>{t.qual.titulo}</h2>
+  <section class="folha" aria-labelledby="qual-titulo">
+    <Linha>
+      <h2 class="titulo-secao" id="qual-titulo">
+        {t.qual.titulo}
+      </h2>
+    </Linha>
     {t.qual.opcoes.map((o) => (
-      <article>
-        <p>{o.problema}</p>
-        <p>{o.resposta}</p>
-        <p>
-          <a href={destino[o.destino]}>{o.acao}</a>
-        </p>
-      </article>
+      <Linha>
+        <p class="qual-problema">{o.problema}</p>
+        <p class="qual-resposta">{o.resposta}</p>
+        {o.destino === 'whatsapp' ? (
+          <a
+            class="qual-acao botao"
+            href={destino[o.destino]}
+            target="_blank"
+            rel="noopener"
+            data-evento="whatsapp_hub"
+          >
+            {o.acao}
+            <span class="visualmente-oculto">(abre em nova aba)</span>
+          </a>
+        ) : (
+          <a class="qual-acao botao" href={destino[o.destino]} data-evento={`servico_${o.destino}`}>
+            {o.acao}
+          </a>
+        )}
+      </Linha>
     ))}
   </section>
 
-  {[
-    { ...t.sites, rota: rotas.sites },
-    { ...t.sistemas, rota: rotas.sistemas },
-  ].map((s) => (
-    <section>
-      <h2>{s.titulo}</h2>
-      <p>{s.frase}</p>
-      <p>{s.texto}</p>
-      <ul>
-        {s.entrega.map((e) => (
-          <li>{e}</li>
-        ))}
-      </ul>
-      <p>
-        <a href={s.rota}>{s.acao}</a>
-      </p>
-    </section>
-  ))}
-
-  <section>
-    <h2>{t.conexao.titulo}</h2>
-    <p>{t.conexao.texto}</p>
+  <section class="folha" aria-label="Os dois serviços">
+    <Linha class="servicos-linha">
+      {[
+        { ...t.sites, classe: 'servico-sites', rota: rotas.sites, chave: 'sites' },
+        { ...t.sistemas, classe: 'servico-sistemas', rota: rotas.sistemas, chave: 'sistemas' },
+      ].map((s) => (
+        <article class:list={['servico', 'mesclada', s.classe]}>
+          <h2>{s.titulo}</h2>
+          <p class="servico-frase">{s.frase}</p>
+          <p>{s.texto}</p>
+          <ul class="servico-entrega">
+            {s.entrega.map((e) => (
+              <li>{e}</li>
+            ))}
+          </ul>
+          <div class="acoes">
+            <a class="botao" href={s.rota} data-evento={`servico_${s.chave}`}>
+              {s.acao}
+            </a>
+          </div>
+        </article>
+      ))}
+    </Linha>
   </section>
 
-  <section>
-    <h2>{t.chamada.titulo}</h2>
-    <p>{t.chamada.texto}</p>
-    <p>
-      <a href={linkWhatsapp()}>{t.chamada.acao}</a>
-    </p>
+  <section class="folha" aria-labelledby="conexao-titulo">
+    <Linha class="conexao">
+      <div class="conexao-texto">
+        <h2 id="conexao-titulo">{t.conexao.titulo}</h2>
+        <p>{t.conexao.texto}</p>
+      </div>
+      <svg
+        class="conexao-laco"
+        viewBox="0 0 1200 240"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <path pathLength="1" d="M -40 150 C 260 -40 340 290 600 120 C 860 -50 940 300 1240 110" />
+      </svg>
+    </Linha>
   </section>
+
+  <ChamadaFinal
+    slot="fechamento"
+    titulo={t.chamada.titulo}
+    texto={t.chamada.texto}
+    acao={t.chamada.acao}
+    href={linkWhatsapp()}
+    evento="whatsapp_chamada_final"
+  />
 </Base>
