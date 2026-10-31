@@ -56,6 +56,14 @@ export default defineConfig({
   // aparece nas capturas de inspeção. Desligada: o projeto não usa.
   devToolbar: { enabled: false },
 
+  // Nenhum script inline no build: a CSP do .htaccess só libera o hash do script da classe `js`.
+  // Sem isto, o Astro inlina os scripts pequenos (menu, fita) e o hash muda a cada build.
+  vite: { build: { assetsInlineLimit: 0 } },
+
+  // CSS dentro do HTML: uma ida a menos ao servidor antes da primeira pintura no celular
+  // (medido com o Lighthouse no TODO 6). A CSP já libera estilo inline por causa das fontes.
+  build: { inlineStylesheets: 'always' },
+
   fonts: [
     {
       provider: fontProviders.local(),
