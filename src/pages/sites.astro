@@ -1,86 +1,148 @@
 ---
 import Base from '../layouts/Base.astro';
+import ChamadaFinal from '../components/ChamadaFinal.astro';
+import Colunas from '../components/Colunas.astro';
+import Linha from '../components/Linha.astro';
+import Obra from '../components/Obra.astro';
 import { todosProjetos } from '../data/projetos';
 import { linkWhatsapp } from '../data/empresa';
-import { rotaProjeto, rotas } from '../i18n/rotas';
+import { rotas } from '../i18n/rotas';
 import { sites as t } from '../i18n/paginas/sites';
 import { metasPaginas } from '../i18n/textos';
 
+/** Página de sites: a planilha do serviço, aberta na primeira linha (brief da página de serviço). */
 const meta = metasPaginas.sites;
 const projetos = (await todosProjetos()).filter((p) => p.data.tipo === 'site');
+const formato = (i: number) => (i % 4 === 0 ? 'grande' : 'media');
+const ficha = (i: number) => (i % 4 === 0 ? 'lado' : 'abaixo');
 ---
 
 <Base titulo={meta.titulo} descricao={meta.descricao}>
-  <h1>{t.titulo}</h1>
-  <p>{t.frase}</p>
-  <p>{t.texto}</p>
-  <p>
-    <a href={linkWhatsapp('site')}>{t.acao}</a>
-  </p>
-
-  <section>
-    <h2>{t.problema.titulo}</h2>
-    <p>{t.problema.texto}</p>
+  <section class="folha pagina-cabeca" aria-labelledby="pagina-titulo">
+    <Colunas />
+    <Linha>
+      <h1 class="pagina-titulo" id="pagina-titulo">
+        {t.titulo}
+      </h1>
+    </Linha>
+    <Linha class="linha-selecionada">
+      <p class="pagina-frase">{t.frase}</p>
+    </Linha>
+    <Linha>
+      <p class="pagina-texto">{t.texto}</p>
+    </Linha>
+    <Linha>
+      <div class="pagina-acao acoes">
+        <a
+          class="botao"
+          href={linkWhatsapp('site')}
+          target="_blank"
+          rel="noopener"
+          data-evento="whatsapp_sites_topo"
+        >
+          {t.acao}
+          <span class="visualmente-oculto">(abre em nova aba)</span>
+        </a>
+      </div>
+    </Linha>
   </section>
 
-  <section>
-    <h2>{t.tipos.titulo}</h2>
+  <section class="folha" aria-labelledby="problema-titulo">
+    <Linha>
+      <h2 class="titulo-secao" id="problema-titulo">
+        {t.problema.titulo}
+      </h2>
+    </Linha>
+    <Linha class="linha-texto">
+      <div class="texto">
+        <p>{t.problema.texto}</p>
+      </div>
+    </Linha>
+  </section>
+
+  <section class="folha" aria-labelledby="tipos-titulo">
+    <Linha>
+      <h2 class="titulo-secao" id="tipos-titulo">
+        {t.tipos.titulo}
+      </h2>
+    </Linha>
     {t.tipos.itens.map((i) => (
-      <article>
-        <h3>{i.titulo}</h3>
-        <p>{i.texto}</p>
-      </article>
+      <Linha>
+        <h3 class="par-chave">{i.titulo}</h3>
+        <p class="par-valor">{i.texto}</p>
+      </Linha>
     ))}
   </section>
 
-  <section>
-    <h2>{t.inclui.titulo}</h2>
-    <ul>
+  <section class="folha" aria-labelledby="inclui-titulo">
+    <Linha>
+      <h2 class="titulo-secao" id="inclui-titulo">
+        {t.inclui.titulo}
+      </h2>
+    </Linha>
+    <ul class="lista-planilha">
       {t.inclui.itens.map((i) => (
-        <li>{i}</li>
+        <Linha as="li">
+          <span class="item-linha">{i}</span>
+        </Linha>
       ))}
     </ul>
   </section>
 
-  <section>
-    <h2>{t.comoFunciona.titulo}</h2>
-    <ol>
+  <section class="folha" aria-labelledby="como-titulo">
+    <Linha>
+      <h2 class="titulo-secao" id="como-titulo">
+        {t.comoFunciona.titulo}
+      </h2>
+    </Linha>
+    <ol class="passos" data-laco>
       {t.comoFunciona.passos.map((p) => (
-        <li>
-          <strong>{p.titulo}.</strong> {p.texto}
-        </li>
+        <Linha as="li" class="passo">
+          <span class="passo-indice" aria-hidden="true"></span>
+          <h3 class="passo-titulo">{p.titulo}</h3>
+          <p class="passo-texto">{p.texto}</p>
+        </Linha>
       ))}
     </ol>
   </section>
 
-  <section>
-    <h2>{t.prova.titulo}</h2>
-    <p>{t.prova.texto}</p>
-    <ul>
-      {projetos.map((p) => (
-        <li>
-          <a href={rotaProjeto(p.data.slug)}>{p.data.titulo}</a>: {p.data.resumo}
-        </li>
+  <section class="folha vitrines" aria-labelledby="prova-titulo">
+    <Linha class="vitrines-cabeca">
+      <h2 class="titulo-secao" id="prova-titulo">
+        {t.prova.titulo}
+      </h2>
+      <p class="celula celula-apoio">{t.prova.texto}</p>
+    </Linha>
+    <div class="vitrines-grade">
+      {projetos.map((p, i) => (
+        <Obra projeto={p} formato={formato(i)} ficha={ficha(i)} />
       ))}
-    </ul>
+    </div>
   </section>
 
-  <section>
-    <h2>{t.faq.titulo}</h2>
+  <section class="folha" aria-labelledby="faq-titulo">
+    <Linha>
+      <h2 class="titulo-secao" id="faq-titulo">
+        {t.faq.titulo}
+      </h2>
+    </Linha>
     {t.faq.itens.map((i) => (
-      <details>
-        <summary>{i.pergunta}</summary>
-        <p>{i.resposta}</p>
-      </details>
+      <Linha>
+        <details class="faq-item">
+          <summary>{i.pergunta}</summary>
+          <p>{i.resposta}</p>
+        </details>
+      </Linha>
     ))}
   </section>
 
-  <section>
-    <h2>{t.chamada.titulo}</h2>
-    <p>{t.chamada.texto}</p>
-    <p>
-      <a href={linkWhatsapp('site')}>{t.chamada.acao}</a>
-      <a href={rotas.contato}>{t.chamada.formulario}</a>
-    </p>
-  </section>
+  <ChamadaFinal
+    slot="fechamento"
+    titulo={t.chamada.titulo}
+    texto={t.chamada.texto}
+    acao={t.chamada.acao}
+    href={linkWhatsapp('site')}
+    evento="whatsapp_chamada_final"
+    secundaria={{ rotulo: t.chamada.formulario, href: rotas.contato }}
+  />
 </Base>
