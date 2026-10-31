@@ -300,7 +300,7 @@ briefs da home e da página de serviço`.
 
 ## TODO 4: Build das páginas e do movimento
 
-**Status:** pendente
+**Status:** feito em 30/10/2026 (falta o Igor aprovar o movimento com o site rodando)
 **Depende de:** TODO 3
 
 **Leia antes:** [processo.md](.claude/docs/processo.md) (etapa 4 e checklist),
@@ -344,12 +344,12 @@ saindo do logo. As prévias dos projetos ficam como espaços reservados com a pr
 customizado se o Igor não escolheu, imagem de banco.
 
 **Pronto quando:**
-- [ ] Todas as páginas construídas conforme os contratos, nos dois tamanhos (390 e 1440).
-- [ ] Troca de página funcionando entre todas as páginas, abaixo de 1,2 s, e fade com movimento
-      reduzido.
-- [ ] Teclado, toque, sem JS e movimento reduzido conferidos.
-- [ ] `npm run build` e `astro check` sem erro nem warning.
-- [ ] Nenhum achado aberto do detector da impeccable.
+- [x] Todas as páginas construídas conforme os contratos, nos dois tamanhos (390 e 1440).
+- [x] Troca de página funcionando entre todas as páginas, abaixo de 1,2 s, e fade com movimento
+      reduzido (medido: 1,1 s do clique ao fim da cortina, com o carregamento; 0,7 s em fade).
+- [x] Teclado, toque, sem JS e movimento reduzido conferidos (script `scripts/inspecao.mjs`).
+- [x] `npm run build` e `astro check` sem erro nem warning.
+- [x] Nenhum achado aberto do detector da impeccable.
 
 **Commits sugeridos:** `feat: adiciona motor de movimento e menu`, `feat(hero): adiciona a
 abertura da home`, `feat(servicos): constrói o hub de serviços`, `feat(sites): constrói a página
@@ -360,6 +360,44 @@ de métricas`, `feat: adiciona a troca de página`, `feat(acessos): constrói a 
 **Precisa do Igor:** aprovar o movimento com o site rodando.
 
 **Notas:**
+- A planilha é CSS: `.folha` desenha as linhas de coluna com um `repeating-linear-gradient`
+  alinhado às 12 colunas (6 no tablet, 4 no celular), cada `Linha.astro` tem a cabeça numerada
+  (`counter`, com texto alternativo vazio para o leitor de tela) e as células se posicionam por
+  classe de seção. `Colunas.astro` é a linha das letras. Célula mesclada = bloco sólido que cobre
+  as linhas.
+- A fita: hover de links e botões, a seleção da planilha e a moldura das prévias são **só CSS**.
+  A seleção que desce linha a linha na cena do problema usa animação dirigida por rolagem
+  (`animation-timeline: view()`); sem suporte ou com movimento reduzido, a primeira linha fica
+  selecionada. O laço das etapas e a troca de página ficam em `src/scripts/fita.ts`, num passo
+  do motor. A troca parte da régua do cabeçalho (`[data-fita-regua]`): a linha engrossa até
+  cobrir a tela com o degradê (320 ms), mostra o h1 da próxima página (200 ms), pausa 100 ms e
+  volta à régua (320 ms). Com movimento reduzido, fade de 150 ms em cada sentido.
+- Rolagem suave: `rolagem.ts` do portfólio, Lenis **1.3.27**, âncora em 1,1 s. `motor.ts` e
+  `menu.ts` copiados; o menu deixa `main`, `footer` e `.fechamento` inertes quando aberto.
+- Cabeçalho: logo em dois arquivos (Primary e branco), trocados por CSS conforme o fundo e com
+  o painel aberto. Submenu de Serviços no desktop por hover e `focus-within`; no celular, o
+  painel lista Sites e Sistemas dentro do grupo. **Botão flutuante do WhatsApp** em Lilás no
+  celular e no tablet (no desktop o botão fica no cabeçalho), escondido com o menu aberto.
+- Rodapé sempre sobre o degradê, junto com a chamada final de cada página (`ChamadaFinal.astro`
+  no slot `fechamento` do `Base.astro`). A home é a única com abertura escura (`aberturaEscura`).
+- Formulário (`Formulario.astro` + `formulario.ts`): POST nativo para o Web3Forms com honeypot,
+  limites de tamanho, Turnstile e redirecionamento para `/contato/enviado/` (noindex, fora do
+  sitemap). "Enviar pelo WhatsApp" monta a mensagem e abre o `wa.me`; sem JS esse botão some.
+  Sem `PUBLIC_WEB3FORMS_KEY`, o botão de e-mail fica desativado e a página mostra o
+  `[PENDENTE]`. Chaves em `.env` (`.env.example` versionado).
+- Métricas: `metricas.ts` com `registrar()` e `conectar()`; os cliques em `[data-evento]` ficam
+  numa fila em memória até o TODO 6 ligar GA4 e Pixel. Nada sai do navegador por enquanto.
+- Prévias: `Obra.astro` mostra a moldura com o fundo real de cada site e o nome, até o TODO 5.
+- Verificação com Playwright 1.64.1 (`scripts/inspecao.mjs`, capturas em 1440 e 390, console,
+  Tab, menu, sem JS, movimento reduzido, tempo da troca). Correções feitas a partir das capturas:
+  prévia grande subia sobre o texto da seção (margem negativa removida), o laço passava por cima
+  do texto da conexão (agora à direita, só no desktop), botão flutuante cobria o botão do painel.
+  A barra de ferramentas do Astro aparecia nas capturas porque o `astro preview` a injeta;
+  desligada no `astro.config.ts` (nunca entrou no `dist/`). Nas capturas de página inteira o
+  submenu aparece esmaecido: é artefato do Playwright (confirmado: na captura do viewport ele
+  está oculto, `opacity: 0`).
+- Fora do escopo e deixado para o TODO 6: CSP, consentimento, GA4 e Pixel reais, texto da
+  privacidade. Para o TODO 7: blog. Para o TODO 8: a LP do Raio-X.
 
 ---
 
