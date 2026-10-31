@@ -38,7 +38,20 @@ for (const [nome, viewport] of Object.entries(viewports)) {
 
   for (const rota of paginas) {
     await pagina.goto(base + rota, { waitUntil: 'networkidle' });
+    // Rola a página inteira como uma pessoa faria: as prévias ativam, as fontes dos sites e as
+    // imagens preguiçosas carregam, e a captura mostra o que o visitante vê
+    await pagina.evaluate(async () => {
+      const passo = Math.round(innerHeight * 0.8);
+      for (let y = 0; y < document.body.scrollHeight; y += passo) {
+        scrollTo(0, y);
+        await new Promise((r) => setTimeout(r, 120));
+      }
+      scrollTo(0, 0);
+    });
+    await pagina.waitForLoadState('networkidle');
     await pagina.evaluate(() => document.fonts.ready);
+    await pagina.waitForTimeout(400);
+    await pagina.mouse.move(0, 0);
     const arquivo = `${saida}/${nome}${rota.replace(/\//g, '_') || '_home'}.png`;
     await pagina.screenshot({ path: arquivo, fullPage: true });
     // Primeira tela separada, para o contrato
