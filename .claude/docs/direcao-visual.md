@@ -88,6 +88,26 @@ Iguais aos do portfólio, porque são regras de qualidade e não de estilo:
 
 ## 5. Registro das decisões
 
-Preencher quando o Igor decidir (TODO 3). Formato: data, o que foi decidido, por quê.
+Formato: data, o que foi decidido, por quê.
 
-- `[PENDENTE: material e movimento]`
+- **30/10/2026, material: a fita** (candidato 1). Um traço contínuo derivado do símbolo, em
+  Primary sobre claro e em Lilás sobre escuro. Sai do símbolo no cabeçalho e vira a régua do
+  cabeçalho; no hover, sublinha links e contorna botões, desenhando-se como traço (não como
+  fade); sobre uma prévia, vira moldura fina e libera o cursor nativo dentro; na troca de
+  página, cruza a tela e vira o degradê da marca com o título da próxima página em branco.
+  Cursor nativo sempre. Por quê: é o próprio símbolo (a fita que troca de lado), funciona no
+  toque e custa pouco para executar bem. O símbolo como cursor ficou fora.
+- **30/10/2026, movimento: moderado.** Troca de página abaixo de 1,2 s (cobrir 320 ms, título
+  200 ms, pausa 100 ms, descobrir 320 ms). Um loop só de `requestAnimationFrame`. Com movimento
+  reduzido, nada se desenha nem percorre, e a troca vira fade curto. Dials: VARIANCE 5, MOTION 4,
+  DENSITY 4.
+- **30/10/2026, direção estrutural da home: "planilha que vira sistema"**, a direção que o
+  sorteio da impeccable atribuiu (posição 7 da lista própria; o Igor escolheu a sorteada em vez
+  da "linha contínua", posição 1). A home nasce como a planilha que o cliente usa hoje (grade de
+  células, colunas com letra, linhas numeradas) e, conforme desce, as células se fundem num
+  bloco só: o sistema. A fita é o cursor de seleção da planilha. As prévias dos sites ficam fora
+  da grade. Contrato completo em `.impeccable/surfaces/src-pages-index-astro.md`.
+- **30/10/2026, abertura escura.** A primeira tela da home é inteira no degradê da marca: logo
+  branco, assinatura em branco, botão em Lilás com texto Ink. O claro começa na segunda tela e
+  o degradê volta na chamada final e nas capas de projeto. Primary nunca sobre o escuro. As
+  páginas de serviço abrem claras: o escuro é assinatura da home e da chamada final.
