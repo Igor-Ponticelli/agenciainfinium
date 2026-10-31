@@ -2,10 +2,17 @@
 import Base from '../layouts/Base.astro';
 import Colunas from '../components/Colunas.astro';
 import Linha from '../components/Linha.astro';
+import { privacidade as t } from '../i18n/paginas/privacidade';
 import { metasPaginas } from '../i18n/textos';
 
-/** Política de privacidade: o texto entra no TODO 6, com GA4, Pixel e formulário definidos. */
+/** Política de privacidade (LGPD): o que este site coleta de verdade, em português simples. */
 const meta = metasPaginas.privacidade;
+const atualizado = new Intl.DateTimeFormat('pt-BR', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'America/Sao_Paulo',
+}).format(new Date(`${t.atualizadoEm}T12:00:00-03:00`));
 ---
 
 <Base titulo={meta.titulo} descricao={meta.descricao}>
@@ -13,11 +20,31 @@ const meta = metasPaginas.privacidade;
     <Colunas />
     <Linha>
       <h1 class="pagina-titulo" id="pagina-titulo">
-        Política de privacidade
+        {t.titulo}
       </h1>
     </Linha>
     <Linha>
-      <p class="pagina-texto">[PENDENTE: o texto da política entra no TODO 6]</p>
+      <p class="pagina-texto">{t.texto}</p>
     </Linha>
+    <Linha>
+      <p class="post-cabeca">
+        <span>
+          {t.rotuloAtualizado}: <time datetime={t.atualizadoEm}>{atualizado}</time>
+        </span>
+      </p>
+    </Linha>
+  </section>
+
+  <section class="folha" aria-label={t.titulo}>
+    {t.secoes.map((s) => (
+      <Linha>
+        <div class="projeto-texto">
+          <h2>{s.titulo}</h2>
+          {s.paragrafos.map((p) => (
+            <p>{p}</p>
+          ))}
+        </div>
+      </Linha>
+    ))}
   </section>
 </Base>
