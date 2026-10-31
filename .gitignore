@@ -14,3 +14,5 @@ dist/
 !.env.example
 # Sorteios da impeccable: locais desta máquina
 .impeccable/questions/
+# Capturas da revisão da impeccable: artefatos de trabalho, não entram no git
+.impeccable/review/
