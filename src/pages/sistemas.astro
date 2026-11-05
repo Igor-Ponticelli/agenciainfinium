@@ -144,7 +144,12 @@ const jsonLd = {
     <ol class="obras">
       {produtos.map((p) => (
         <li class="obra revelar">
-          <Vitrine projeto={p} moldura="navegador" proporcao="16 / 10" />
+          <Vitrine
+            projeto={p}
+            moldura="navegador"
+            proporcao="16 / 10"
+            href={rotaProjeto(p.data.slug)}
+          />
           <div class="obra-ficha">
             <h3>
               <a href={rotaProjeto(p.data.slug)}>{p.data.titulo}</a>

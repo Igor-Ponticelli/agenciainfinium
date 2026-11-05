@@ -22,7 +22,12 @@ const { projetos, anterior, proximo } = Astro.props;
   <ul class="galeria-trilho" data-galeria-trilho>
     {projetos.map((p) => (
       <li class="galeria-item">
-        <Vitrine projeto={p} moldura="navegador" proporcao="16 / 10" />
+        <Vitrine
+          projeto={p}
+          moldura="navegador"
+          proporcao="16 / 10"
+          href={rotaProjeto(p.data.slug)}
+        />
         <div class="galeria-ficha">
           <h3>
             <a href={rotaProjeto(p.data.slug)}>{p.data.titulo}</a>

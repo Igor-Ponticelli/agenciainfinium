@@ -34,7 +34,12 @@ const indice = (i: number) => String(i + 1).padStart(2, '0');
         <ol class="obras">
           {grupo.map((p, i) => (
             <li class="obra revelar">
-              <Vitrine projeto={p} moldura="navegador" proporcao="16 / 10" />
+              <Vitrine
+                projeto={p}
+                moldura="navegador"
+                proporcao="16 / 10"
+                href={rotaProjeto(p.data.slug)}
+              />
               <div class="obra-ficha">
                 <span class="obra-indice" aria-hidden="true">
                   {indice(base + i)}

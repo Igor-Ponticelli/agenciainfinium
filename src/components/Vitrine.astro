@@ -22,6 +22,8 @@ interface Props {
   tela?: 'larga' | 'estreita';
   /** Nasce ativa (fonte e script na hora), para a vitrine da abertura. */
   ativa?: boolean;
+  /** Com um destino, a moldura inteira vira link (menos os controles da prévia). */
+  href?: string;
   class?: string;
 }
 
@@ -31,6 +33,7 @@ const {
   proporcao = moldura === 'celular' ? '9 / 19' : '16 / 10',
   tela = moldura === 'celular' ? 'estreita' : 'larga',
   ativa = false,
+  href,
   class: classe,
 } = Astro.props;
 const d = projeto.data;
@@ -49,7 +52,7 @@ const dominio = d.url ? new URL(d.url).host : '';
 ---
 
 <div
-  class:list={['v-vitrine', classe]}
+  class:list={['v-vitrine', { 'v-vitrine-com-link': Boolean(href) }, classe]}
   data-moldura={moldura}
   data-tela={tela}
   style={`--vitrine-fundo: ${cor.fundo}; --vitrine-texto: ${cor.texto}; --vitrine-proporcao: ${proporcao}`}
@@ -65,6 +68,11 @@ const dominio = d.url ? new URL(d.url).host : '';
     </div>
   )}
   <div class="v-vitrine-tela" role="region" aria-label={t.previa.rotulo(d.titulo, d.tipo)}>
+    {href && (
+      <a class="v-vitrine-link" href={href} tabindex="-1" aria-hidden="true">
+        {d.titulo}
+      </a>
+    )}
     {Previa ? (
       <div class="v-vitrine-palco">
         <div class="previa" data-previa={d.slug} data-ativa={ativa ? '' : undefined}>
