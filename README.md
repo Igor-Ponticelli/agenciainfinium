@@ -20,6 +20,7 @@ npm run check      # astro check
 npm test           # testes de fumaça com Playwright (depois do build)
 npm run inspecao   # capturas e checagens em .impeccable/review/ (depois do build)
 npm run og         # gera as imagens Open Graph dos projetos em public/og/ (depois do build)
+npm run og:home    # gera a imagem Open Graph padrão do site, public/og.png
 npm run empacotar  # build + infinium-site.zip com o conteúdo de dist/, para a Hostinger
 ```
 
