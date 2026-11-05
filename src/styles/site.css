@@ -960,7 +960,6 @@ html[data-menu-aberto] .whatsapp-flutuante {
 .icone-luz > * {
   stroke-dasharray: 0.28 0.72;
   stroke-dashoffset: 0;
-  filter: drop-shadow(0 0 3px var(--cor-icone));
 }
 
 @media (prefers-reduced-motion: no-preference) {
