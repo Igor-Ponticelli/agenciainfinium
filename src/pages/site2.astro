@@ -1,0 +1,377 @@
+---
+import Versao from '../layouts/Versao.astro';
+import Cabecalho from '../components/versoes/Cabecalho.astro';
+import Foto from '../components/Foto.astro';
+import Icone from '../components/Icone.astro';
+import Rodape from '../components/versoes/Rodape.astro';
+import Vitrine from '../components/versoes/Vitrine.astro';
+import { dataCurta, dataDoPost, dataIso, postsPublicados } from '../data/blog';
+import { linkWhatsapp } from '../data/empresa';
+import type { NomeIcone } from '../data/icones';
+import { todosProjetos } from '../data/projetos';
+import { rotaPost, rotas } from '../i18n/rotas';
+import { textos } from '../i18n/textos';
+import { versao2 as t } from '../i18n/paginas/versoes';
+import '../styles/versoes/site2.css';
+
+/**
+ * Versão 2 de estudo: o painel (direção Microsoft). Alinhado à esquerda, em blocos: abertura com
+ * foto ao lado, quatro portas de entrada, faixas de texto e imagem alternadas, a tabela de antes
+ * e depois num cartão, grade de projetos, etapas numeradas, blog em cartões e rodapé denso.
+ * Cabeçalho branco, botões de canto pequeno, links com seta. Direção em .claude/docs/versoes.md.
+ */
+const projetos = await todosProjetos();
+const posts = (await postsPublicados()).slice(0, 3);
+const destinos: Record<string, string> = {
+  sites: rotas.sites,
+  sistemas: rotas.sistemas,
+  projetos: rotas.projetos,
+  raioX: rotas.raioX,
+};
+const seta =
+  '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>';
+const certo =
+  '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>';
+---
+
+<Versao titulo={t.meta.titulo} descricao={t.meta.descricao} versao={2}>
+  <Cabecalho tema="claro" class="s2-cabecalho" />
+
+  <main id="conteudo" tabindex="-1">
+    <section class="s2-abertura" aria-labelledby="s2-titulo">
+      <div class="v-faixa s2-abertura-grade">
+        <div class="s2-abertura-texto">
+          <h1 id="s2-titulo">
+            {t.abertura.titulo.replace(t.abertura.destaque, '')}
+            <span class="s2-destaque">{t.abertura.destaque}</span>
+          </h1>
+          <p class="s2-abertura-frase">{t.abertura.texto}</p>
+          <div class="s2-acoes">
+            <a
+              class="s2-botao"
+              href={linkWhatsapp()}
+              target="_blank"
+              rel="noopener"
+              data-evento="whatsapp_abertura"
+            >
+              {t.abertura.acao}
+              <span class="visualmente-oculto">{textos.linkExterno}</span>
+            </a>
+            <a class="s2-botao s2-botao-contorno" href="#portas">
+              {t.abertura.secundaria}
+            </a>
+          </div>
+        </div>
+        <div class="s2-abertura-imagem">
+          <Foto
+            class="s2-abertura-foto"
+            nome="celular"
+            prioridade
+            posicao="50% 30%"
+            sizes="(min-width: 64rem) 36rem, 100vw"
+          />
+          <div class="s2-cartao-flutuante" aria-hidden="true">
+            <p class="s2-cartao-flutuante-titulo">
+              <Icone nome="certo" tamanho={18} />
+              {t.abertura.cartao.titulo}
+            </p>
+            <ul>
+              {t.abertura.cartao.linhas.map((l) => (
+                <li>{l}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="s2-faixa s2-portas" id="portas" aria-labelledby="s2-portas-titulo">
+      <div class="v-faixa">
+        <h2 id="s2-portas-titulo">{t.portas.titulo}</h2>
+        <ul class="s2-grade-portas">
+          {t.portas.itens.map((p) => (
+            <li class="s2-porta v-revelar">
+              <span class="s2-porta-icone">
+                <Icone nome={p.icone as NomeIcone} tamanho={24} />
+              </span>
+              <h3>
+                <a href={destinos[p.destino]} data-evento={`porta_${p.destino}`}>
+                  {p.titulo}
+                </a>
+              </h3>
+              <p>{p.texto}</p>
+              <span class="s2-link">
+                {p.acao}
+                <Fragment set:html={seta} />
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="s2-faixa s2-branca" aria-labelledby="s2-cena-titulo">
+      <div class="v-faixa s2-dupla">
+        <Foto
+          class="s2-dupla-foto v-revelar"
+          nome="planilha"
+          posicao="50% 45%"
+          sizes="(min-width: 64rem) 36rem, 100vw"
+        />
+        <div class="s2-dupla-texto v-revelar">
+          <h2 id="s2-cena-titulo">{t.cena.titulo}</h2>
+          <ul class="s2-cena-lista">
+            {t.cena.itens.map((i) => (
+              <li>
+                <Icone nome={i.icone as NomeIcone} tamanho={22} />
+                <span>
+                  <strong>{i.chave}</strong> {i.valor}
+                </span>
+              </li>
+            ))}
+          </ul>
+          {t.cena.paragrafos.map((p) => (
+            <p>{p}</p>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="s2-faixa" aria-labelledby="s2-sites-titulo">
+      <div class="v-faixa s2-dupla s2-dupla-invertida">
+        <div class="s2-dupla-texto v-revelar">
+          <h2 id="s2-sites-titulo">{t.sites.titulo}</h2>
+          <p class="s2-frase">{t.sites.frase}</p>
+          <p>{t.sites.texto}</p>
+          <p class="s2-rotulo">{t.sites.inclui.titulo}</p>
+          <ul class="s2-checagem">
+            {t.sites.inclui.itens.map((i) => (
+              <li>
+                <Fragment set:html={certo} />
+                {i}
+              </li>
+            ))}
+          </ul>
+          <div class="s2-acoes">
+            <a
+              class="s2-botao"
+              href={linkWhatsapp('site')}
+              target="_blank"
+              rel="noopener"
+              data-evento="whatsapp_sites"
+            >
+              {t.sites.acao}
+              <span class="visualmente-oculto">{textos.linkExterno}</span>
+            </a>
+            <a class="s2-link" href={rotas.sites} data-evento="servico_site">
+              {t.sites.ver}
+              <Fragment set:html={seta} />
+            </a>
+          </div>
+        </div>
+        <Foto
+          class="s2-dupla-foto v-revelar"
+          nome="aberto"
+          sizes="(min-width: 64rem) 36rem, 100vw"
+        />
+      </div>
+    </section>
+
+    <section class="s2-faixa s2-escura" aria-labelledby="s2-sistemas-titulo">
+      <div class="v-faixa s2-dupla s2-dupla-larga">
+        <div class="s2-dupla-texto v-revelar">
+          <h2 id="s2-sistemas-titulo">{t.sistemas.titulo}</h2>
+          <p class="s2-frase">{t.sistemas.frase}</p>
+          <p>{t.sistemas.texto}</p>
+          <div class="s2-acoes">
+            <a
+              class="s2-botao s2-botao-lilas"
+              href={linkWhatsapp('sistema')}
+              target="_blank"
+              rel="noopener"
+              data-evento="whatsapp_sistemas"
+            >
+              {t.sistemas.acao}
+              <span class="visualmente-oculto">{textos.linkExterno}</span>
+            </a>
+            <a class="s2-link" href={rotas.sistemas} data-evento="servico_sistema">
+              {t.sistemas.ver}
+              <Fragment set:html={seta} />
+            </a>
+          </div>
+        </div>
+        <div class="s2-antes-depois v-revelar">
+          <table>
+            <caption class="visualmente-oculto">{t.sistemas.antesDepois.titulo}</caption>
+            <thead>
+              <tr>
+                <th scope="col">{t.sistemas.antesDepois.colunas.antes}</th>
+                <th scope="col">{t.sistemas.antesDepois.colunas.depois}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {t.sistemas.antesDepois.linhas.map((l) => (
+                <tr>
+                  <td>{l.antes}</td>
+                  <td>{l.depois}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="s2-faixa s2-branca" aria-labelledby="s2-conexao-titulo">
+      <div class="v-faixa">
+        <div class="s2-cabeca v-revelar">
+          <h2 id="s2-conexao-titulo">{t.conexao.titulo}</h2>
+          <p>{t.conexao.texto}</p>
+        </div>
+        <ol class="s2-etapas v-revelar">
+          {t.conexao.etapas.map((e) => (
+            <li>
+              <span class="s2-etapa-icone">
+                <Icone nome={e.icone as NomeIcone} tamanho={26} />
+              </span>
+              <h3>{e.titulo}</h3>
+              <p>{e.texto}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="s2-faixa" id="projetos" aria-labelledby="s2-projetos-titulo">
+      <div class="v-faixa">
+        <div class="s2-cabeca s2-cabeca-linha v-revelar">
+          <div>
+            <h2 id="s2-projetos-titulo">{t.projetos.titulo}</h2>
+            <p>{t.projetos.texto}</p>
+          </div>
+          <a class="s2-link" href={rotas.projetos}>
+            {t.projetos.acao}
+            <Fragment set:html={seta} />
+          </a>
+        </div>
+        <ul class="s2-grade-projetos">
+          {projetos.map((p) => (
+            <li class="s2-projeto v-revelar">
+              <Vitrine projeto={p} moldura="nua" proporcao="16 / 10" />
+              <div class="s2-projeto-ficha">
+                <p class="s2-projeto-tipo">
+                  {textos.projeto.tipo[p.data.tipo]} · {p.data.ano}
+                </p>
+                <h3>
+                  <a href={`${rotas.projetos}${p.data.slug}/`}>{p.data.titulo}</a>
+                </h3>
+                <p>{p.data.resumo}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="s2-faixa s2-branca" id="como-funciona" aria-labelledby="s2-como-titulo">
+      <div class="v-faixa">
+        <div class="s2-cabeca v-revelar">
+          <h2 id="s2-como-titulo">{t.comoFunciona.titulo}</h2>
+          <p>{t.comoFunciona.texto}</p>
+        </div>
+        <ol class="s2-passos v-revelar">
+          {t.comoFunciona.passos.map((p, i) => (
+            <li>
+              <span class="s2-passo-numero" aria-hidden="true">
+                {i + 1}
+              </span>
+              <h3>{p.titulo}</h3>
+              <p>{p.texto}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    {posts.length > 0 && (
+      <section class="s2-faixa" aria-labelledby="s2-blog-titulo">
+        <div class="v-faixa">
+          <div class="s2-cabeca s2-cabeca-linha v-revelar">
+            <div>
+              <h2 id="s2-blog-titulo">{t.blog.titulo}</h2>
+              <p>{t.blog.texto}</p>
+            </div>
+            <a class="s2-link" href={rotas.blog}>
+              {t.blog.acao}
+              <Fragment set:html={seta} />
+            </a>
+          </div>
+          <ul class="s2-posts">
+            {posts.map((post) => {
+              const data = dataDoPost(post);
+              return (
+                <li class="s2-post v-revelar">
+                  <Foto
+                    class="s2-post-capa"
+                    nome={post.data.capa}
+                    widths={[480, 800]}
+                    sizes="(min-width: 48rem) 26rem, 100vw"
+                  />
+                  <div class="s2-post-texto">
+                    <time datetime={dataIso(data)}>{dataCurta(data)}</time>
+                    <h3>
+                      <a href={rotaPost(post.id)}>{post.data.titulo}</a>
+                    </h3>
+                    <p>{post.data.descricao}</p>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </section>
+    )}
+
+    <section class="s2-faixa s2-branca" aria-labelledby="s2-faq-titulo">
+      <div class="v-faixa s2-faq">
+        <div class="s2-cabeca v-revelar">
+          <h2 id="s2-faq-titulo">{t.faq.titulo}</h2>
+        </div>
+        <div class="s2-faq-lista v-revelar">
+          {t.faq.itens.map((i) => (
+            <details class="s2-faq-item">
+              <summary>{i.pergunta}</summary>
+              <p>{i.resposta}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="s2-faixa s2-escura s2-chamada" aria-labelledby="s2-chamada-titulo">
+      <div class="v-faixa s2-chamada-grade v-revelar">
+        <div>
+          <h2 id="s2-chamada-titulo">{t.chamada.titulo}</h2>
+          <p>{t.chamada.texto}</p>
+        </div>
+        <div class="s2-acoes">
+          <a
+            class="s2-botao s2-botao-lilas"
+            href={linkWhatsapp()}
+            target="_blank"
+            rel="noopener"
+            data-evento="whatsapp_chamada_final"
+          >
+            {t.chamada.acao}
+            <span class="visualmente-oculto">{textos.linkExterno}</span>
+          </a>
+          <a class="s2-botao s2-botao-contorno-claro" href={rotas.contato}>
+            {t.chamada.secundaria}
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Rodape tema="claro" class="s2-rodape" />
+</Versao>
