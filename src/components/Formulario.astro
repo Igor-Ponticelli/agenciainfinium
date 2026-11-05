@@ -5,15 +5,14 @@ import { contato } from '../i18n/paginas/contato';
 
 /**
  * Formulário de orçamento (conteudo.md, seção 10; arquitetura.md, seção 7).
- * Envio por e-mail: POST nativo para o Web3Forms, com honeypot, limite de tamanho, Turnstile
- * (verificado no servidor deles) e redirecionamento para /contato/enviado/. Funciona sem JS.
+ * Envio por e-mail: POST nativo para o Web3Forms, com honeypot, limite de tamanho, o filtro de
+ * spam do próprio Web3Forms e redirecionamento para /contato/enviado/. Funciona sem JS.
  * Envio pelo WhatsApp: formulario.ts monta a mensagem e abre o wa.me. Nenhum segredo aqui: as
  * chaves são públicas e vêm do .env (PUBLIC_*). Sem a chave do Web3Forms, o envio por e-mail
  * fica desligado e a página avisa.
  */
 const f = contato.formulario;
 const chaveWeb3Forms = import.meta.env.PUBLIC_WEB3FORMS_KEY as string | undefined;
-const chaveTurnstile = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
 const emailAtivo = Boolean(chaveWeb3Forms);
 const redirecionar = new URL(rotas.contatoEnviado, Astro.site).href;
 ---
@@ -84,10 +83,6 @@ const redirecionar = new URL(rotas.contatoEnviado, Astro.site).href;
     <textarea id="mensagem" name="mensagem" rows="5" maxlength="1000"></textarea>
   </div>
 
-  {emailAtivo && chaveTurnstile && (
-    <div class="cf-turnstile" data-sitekey={chaveTurnstile} data-theme="light"></div>
-  )}
-
   <p class="formulario-aviso">
     {f.privacidade}{' '}
     <a class="link-fita" href={rotas.privacidade}>
@@ -119,15 +114,6 @@ const redirecionar = new URL(rotas.contatoEnviado, Astro.site).href;
     </button>
   </div>
 </form>
-
-{emailAtivo && chaveTurnstile && (
-  <script
-    is:inline
-    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-    async
-    defer
-  ></script>
-)}
 
 <script>
   import '../scripts/formulario';
