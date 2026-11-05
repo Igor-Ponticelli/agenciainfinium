@@ -49,9 +49,6 @@ const rotas = [
   '/raio-x-do-site/',
   '/privacidade/',
   '/acessos/',
-  '/site1/',
-  '/site2/',
-  '/site3/',
 ];
 
 describe('rotas e metadados', () => {
@@ -196,7 +193,7 @@ describe('acessibilidade básica', () => {
           (a) => a.getBoundingClientRect().height > 0,
         ).length,
     );
-    assert.ok(links >= 6, `${links} links do menu visíveis`);
+    assert.ok(links >= 5, `${links} links do menu visíveis`);
     const whatsapp = await p.evaluate(() => {
       const b = document.querySelector('[data-enviar="whatsapp"]');
       return b ? b.getBoundingClientRect().height : 0;
@@ -218,20 +215,22 @@ describe('acessibilidade básica', () => {
   });
 });
 
-describe('fotos, cartões, ícones e holofote (31/10/2026)', () => {
-  it('a planilha não tem mais letras de coluna nem números de linha', async () => {
+describe('tópicos, ícones, galeria e fotos (05/11/2026)', () => {
+  it('nada da planilha nem do holofote sobrou no build', async () => {
     const { p, contexto } = await pagina();
-    await p.goto(base + '/sites/', { waitUntil: 'networkidle' });
-    const sobras = await p.evaluate(() => document.querySelectorAll('.colunas, .num').length);
+    await p.goto(base + '/', { waitUntil: 'networkidle' });
+    const sobras = await p.evaluate(
+      () => document.querySelectorAll('.colunas, .num, .folha, .holofote, .cena-linha').length,
+    );
     assert.equal(sobras, 0);
     await contexto.close();
   });
 
-  it('a foto da abertura carrega com prioridade e tem texto alternativo', async () => {
+  it('a foto da cabeça de serviço carrega com prioridade e as outras são preguiçosas', async () => {
     const { p, contexto } = await pagina();
-    await p.goto(base + '/', { waitUntil: 'networkidle' });
+    await p.goto(base + '/sites/', { waitUntil: 'networkidle' });
     const foto = await p.evaluate(() => {
-      const img = document.querySelector('.abertura-foto img');
+      const img = document.querySelector('.cabeca-foto img');
       return (
         img && {
           alt: img.getAttribute('alt'),
@@ -246,7 +245,7 @@ describe('fotos, cartões, ícones e holofote (31/10/2026)', () => {
     const preguicosas = await p.evaluate(
       () => document.querySelectorAll('.foto img[loading="lazy"]').length,
     );
-    assert.ok(preguicosas >= 3, `${preguicosas} fotos preguiçosas`);
+    assert.ok(preguicosas >= 1, `${preguicosas} fotos preguiçosas`);
     await contexto.close();
   });
 
@@ -254,7 +253,7 @@ describe('fotos, cartões, ícones e holofote (31/10/2026)', () => {
     const { p, contexto } = await pagina();
     await p.goto(base + '/blog/', { waitUntil: 'networkidle' });
     const capas = await p.evaluate(() =>
-      Array.from(document.querySelectorAll('.post-linha .post-capa img')).map((i) => i.alt),
+      Array.from(document.querySelectorAll('.post-cartao .post-capa img')).map((i) => i.alt),
     );
     assert.equal(capas.length, 6);
     assert.ok(
@@ -264,89 +263,80 @@ describe('fotos, cartões, ícones e holofote (31/10/2026)', () => {
     await p.goto(base + '/blog/o-que-e-um-site-seguro/', { waitUntil: 'networkidle' });
     assert.ok(await p.$('.cabeca-foto img'), 'capa na cabeça do post');
     await p.goto(base + '/', { waitUntil: 'networkidle' });
-    assert.equal(await p.evaluate(() => document.querySelectorAll('.home-posts-capa').length), 3);
+    assert.equal(
+      await p.evaluate(() => document.querySelectorAll('.home-posts .post-capa').length),
+      3,
+    );
     await contexto.close();
   });
 
-  it('os cartões levam o ícone da fita, com todas as formas prontas para o traço', async () => {
+  it('os tópicos levam o ícone da fita, desenhado pela rolagem no build', async () => {
     const { p, contexto } = await pagina();
     await p.goto(base + '/sites/', { waitUntil: 'networkidle' });
     const resumo = await p.evaluate(() => {
-      const cartoes = document.querySelectorAll('.cartoes .cartao');
-      const icones = document.querySelectorAll('.cartao .icone svg');
+      const topicos = document.querySelectorAll('.topicos .topico');
+      const icones = document.querySelectorAll('.topico .icone svg');
       const formas = document.querySelectorAll('.icone svg > *');
       const semPathLength = Array.from(formas).filter((f) => f.getAttribute('pathLength') !== '1');
       return {
-        cartoes: cartoes.length,
+        topicos: topicos.length,
         icones: icones.length,
         formas: formas.length,
         semPathLength: semPathLength.length,
       };
     });
-    assert.equal(resumo.cartoes, 9, 'três tipos e seis itens de "todo site inclui"');
+    assert.equal(resumo.topicos, 9, 'três tipos e seis itens de "todo site inclui"');
     assert.equal(resumo.icones, 9);
     assert.ok(resumo.formas > 9);
     assert.equal(resumo.semPathLength, 0);
     // A animação por rolagem precisa chegar inteira ao build: o minificador de CSS já quebrou
     // o par animation + animation-timeline uma vez (31/10/2026)
     const animacoes = await p.evaluate(() => {
-      const forma = document.querySelector('.cartao .icone svg > *');
+      const forma = document.querySelector('.topico .icone svg > *');
       return forma.getAnimations().map((a) => a.timeline?.constructor.name);
     });
     assert.deepEqual(animacoes, ['ViewTimeline'], 'traço do ícone preso à rolagem');
-    const laco = await p.evaluate(() => {
-      const el = document.querySelector('.cena-linha');
-      return el ? 'tem cena' : 'sem cena';
-    });
-    assert.equal(laco, 'sem cena');
     await contexto.close();
   });
 
-  it('a seleção da cena e o laço da conexão também seguem a rolagem no build', async () => {
-    const { p, contexto } = await pagina();
-    await p.goto(base + '/', { waitUntil: 'networkidle' });
-    const timelines = await p.evaluate(() => ({
-      cena: document
-        .querySelector('.cena-linha')
-        .getAnimations({ subtree: true })
-        .filter((a) => a.effect.pseudoElement === '::after')
-        .map((a) => a.timeline?.constructor.name),
-      laco: document
-        .querySelector('.conexao-laco path')
-        .getAnimations()
-        .map((a) => a.timeline?.constructor.name),
-    }));
-    assert.deepEqual(timelines, { cena: ['ViewTimeline'], laco: ['ViewTimeline'] });
-    await contexto.close();
-  });
-
-  it('o holofote acompanha o ponteiro sobre a folha e some fora dela', async () => {
+  it('o símbolo da conexão se desenha com a rolagem e a galeria rola com os botões', async () => {
     const { p, contexto, erros } = await pagina();
     await p.goto(base + '/', { waitUntil: 'networkidle' });
-    const h1 = await p.locator('.abertura h1').boundingBox();
-    await p.mouse.move(h1.x + 20, h1.y + 20);
-    await p.mouse.move(h1.x + 40, h1.y + 30);
-    await p.waitForSelector('.abertura[data-holofote] .holofote');
-    const luz = await p.evaluate(() => {
-      const l = document.querySelector('.holofote-luz');
-      return { x: l.style.getPropertyValue('--hx'), y: l.style.getPropertyValue('--hy') };
-    });
-    assert.match(luz.x, /px$/);
-    assert.match(luz.y, /px$/);
-    await p.mouse.move(5, 5);
-    await p.waitForFunction(() => !document.querySelector('[data-holofote]'));
+    const laco = await p.evaluate(() =>
+      document
+        .querySelector('.conexao-simbolo path')
+        .getAnimations()
+        .map((a) => a.timeline?.constructor.name),
+    );
+    assert.deepEqual(laco, ['ViewTimeline']);
+    await p.waitForSelector('[data-galeria-pronta]');
+    const antes = await p.evaluate(
+      () => document.querySelector('[data-galeria-trilho]').scrollLeft,
+    );
+    await p.click('[data-galeria-proximo]');
+    await p.waitForFunction(
+      (x) => document.querySelector('[data-galeria-trilho]').scrollLeft > x + 100,
+      antes,
+    );
     assert.deepEqual(erros, []);
     await contexto.close();
   });
 
-  it('no toque e com movimento reduzido o holofote não existe', async () => {
+  it('a faixa rolante e a revelação ficam paradas com movimento reduzido', async () => {
     const { p, contexto } = await pagina({ reducedMotion: 'reduce' });
     await p.goto(base + '/', { waitUntil: 'networkidle' });
-    const h1 = await p.locator('.abertura h1').boundingBox();
-    await p.mouse.move(h1.x + 20, h1.y + 20);
-    await p.mouse.move(h1.x + 40, h1.y + 30);
-    await p.waitForTimeout(200);
-    assert.equal(await p.$('[data-holofote]'), null);
+    const animacoes = await p.evaluate(
+      () =>
+        document
+          .querySelector('.rolante-trilho')
+          .getAnimations()
+          .filter((a) => a.playState === 'running').length,
+    );
+    assert.equal(animacoes, 0);
+    const opacidade = await p.evaluate(
+      () => getComputedStyle(document.querySelector('.revelar')).opacity,
+    );
+    assert.equal(opacidade, '1');
     await contexto.close();
   });
 });
