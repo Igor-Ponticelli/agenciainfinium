@@ -18,7 +18,8 @@ const formas = {
   alvo: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
   etiqueta:
     '<path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1"/>',
-  janela: '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 9h20M5.5 6.5h1M8.5 6.5h1"/>',
+  janela:
+    '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 9h20M5.5 6.5h1M8.5 6.5h1"/>',
   relogio: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>',
   certo: '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/>',
   usuarios:
@@ -35,7 +36,8 @@ const formas = {
   documento:
     '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M9 13h6M9 17h6"/>',
   escudo: '<path d="M12 3l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/>',
-  velocimetro: '<path d="M4 17a8.5 8.5 0 1 1 16 0"/><path d="M12 17l4-5"/><circle cx="12" cy="17" r="1.5"/>',
+  velocimetro:
+    '<path d="M4 17a8.5 8.5 0 1 1 16 0"/><path d="M12 17l4-5"/><circle cx="12" cy="17" r="1.5"/>',
   video: '<rect x="2.5" y="6" width="13" height="12" rx="2"/><path d="M15.5 10.5l6-3v9l-6-3z"/>',
   planilha: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 10v10"/>',
   quadro: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7.5 7v10M12 7v6M16.5 7v8"/>',
@@ -43,13 +45,20 @@ const formas = {
   envelope: '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2.5 7.5 12 14l9.5-6.5"/>',
   instagram:
     '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="0.6"/>',
+  /** O balão com a cauda e o fone dentro, no traço da marca (não é o logotipo do WhatsApp). */
+  whatsapp:
+    '<path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.3z"/><path d="M9.2 8.3c.2 1.5 1 2.8 2 3.8s2.3 1.8 3.8 2l1.2-1.2 2.1 1-.2 1.5c-.2.9-1 1.4-1.9 1.3A9.6 9.6 0 0 1 7.6 8c-.1-.9.4-1.7 1.3-1.9l1.5-.2 1 2.1z"/>',
+  copyright: '<circle cx="12" cy="12" r="9"/><path d="M14.5 9.8a3.3 3.3 0 1 0 0 4.4"/>',
 } as const;
 
 export type NomeIcone = keyof typeof formas;
 
 /** O markup de cada ícone, com `pathLength="1"` em toda forma, para a fita desenhar de 0 a 1. */
 export const icones: Record<NomeIcone, string> = Object.fromEntries(
-  Object.entries(formas).map(([nome, svg]) => [nome, svg.replace(/<(path|circle|rect|ellipse) /g, '<$1 pathLength="1" ')]),
+  Object.entries(formas).map(([nome, svg]) => [
+    nome,
+    svg.replace(/<(path|circle|rect|ellipse) /g, '<$1 pathLength="1" '),
+  ]),
 ) as Record<NomeIcone, string>;
 
 export const nomesIcones = Object.keys(formas) as NomeIcone[];

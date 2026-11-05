@@ -1005,6 +1005,21 @@ html[data-menu-aberto] .whatsapp-flutuante {
   }
 }
 
+/* O glifo: o ícone pequeno e parado ao lado do texto */
+.glifo {
+  flex: none;
+  display: inline-block;
+  vertical-align: -0.2em;
+}
+
+.rodape-coluna a,
+.rodape-empresa,
+.whatsapp-flutuante {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 /* ---------- Fotos: proporção fixa, cortadas pelo centro ---------- */
 
 .foto {

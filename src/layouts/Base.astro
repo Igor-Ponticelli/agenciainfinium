@@ -5,6 +5,7 @@ import Cabecalho from '../components/Cabecalho.astro';
 import ChamadaFinal from '../components/ChamadaFinal.astro';
 import Consentimento from '../components/Consentimento.astro';
 import Fita from '../components/Fita.astro';
+import Glifo from '../components/Glifo.astro';
 import Rodape from '../components/Rodape.astro';
 import Seo from '../components/Seo.astro';
 import { linkWhatsapp } from '../data/empresa';
@@ -78,6 +79,7 @@ const robotoLatin = fontData['--fonte-roboto']?.[0]?.src[0]?.url;
         rel="noopener"
         data-evento="whatsapp_flutuante"
       >
+        <Glifo nome="whatsapp" tamanho={20} />
         {t.contato.whatsapp}
         <span class="visualmente-oculto">
           : {t.acoes.falarWhatsapp} {t.linkExterno}

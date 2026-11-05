@@ -1,4 +1,5 @@
 ---
+import Glifo from './Glifo.astro';
 import { email, instagram, linkWhatsapp } from '../data/empresa';
 import { inicio } from '../i18n/paginas/inicio';
 import { textos as t } from '../i18n/textos';
@@ -43,6 +44,7 @@ const externo = href.startsWith('http');
         rel={externo ? 'noopener' : undefined}
         data-evento={evento}
       >
+        {externo && <Glifo nome="whatsapp" tamanho={20} />}
         {acao}
         {externo && <span class="visualmente-oculto">{t.linkExterno}</span>}
       </a>
@@ -54,9 +56,11 @@ const externo = href.startsWith('http');
       {!soAcao && !secundaria && (
         <>
           <a class="link-fita" href={`mailto:${email}`} data-evento="email_chamada_final">
+            <Glifo nome="envelope" />
             {email}
           </a>
           <a class="link-fita" href={instagram.url} target="_blank" rel="noopener">
+            <Glifo nome="instagram" />
             {instagram.usuario}
             <span class="visualmente-oculto">{t.linkExterno}</span>
           </a>

@@ -6,6 +6,7 @@ import Faq from '../components/Faq.astro';
 import FontesPrevias from '../components/FontesPrevias.astro';
 import Foto from '../components/Foto.astro';
 import Galeria from '../components/Galeria.astro';
+import Glifo from '../components/Glifo.astro';
 import Icone from '../components/Icone.astro';
 import Passos from '../components/Passos.astro';
 import Rolante from '../components/Rolante.astro';
@@ -64,6 +65,7 @@ const setaGrande =
             rel="noopener"
             data-evento="whatsapp_abertura"
           >
+            <Glifo nome="whatsapp" tamanho={20} />
             {t.abertura.acaoPrincipal}
             <span class="visualmente-oculto">{textos.linkExterno}</span>
           </a>

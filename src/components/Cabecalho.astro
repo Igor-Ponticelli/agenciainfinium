@@ -1,6 +1,7 @@
 ---
 import logoPrimary from '../assets/marca/logo-horizontal-primary.svg';
 import logoWhite from '../assets/marca/logo-horizontal-white.svg';
+import Glifo from './Glifo.astro';
 import { linkWhatsapp } from '../data/empresa';
 import { normalizar, rotas } from '../i18n/rotas';
 import { textos as t } from '../i18n/textos';
@@ -91,6 +92,7 @@ const itens = [
             rel="noopener"
             data-evento="whatsapp_menu"
           >
+            <Glifo nome="whatsapp" tamanho={16} />
             {t.acoes.falarWhatsapp}
             <span class="visualmente-oculto">{t.linkExterno}</span>
           </a>

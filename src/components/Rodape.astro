@@ -1,5 +1,6 @@
 ---
 import logoWhite from '../assets/marca/logo-horizontal-white.svg';
+import Glifo from './Glifo.astro';
 import { cnpj, email, instagram, linkWhatsapp, nomeCompleto } from '../data/empresa';
 import { rotas } from '../i18n/rotas';
 import { privacidade } from '../i18n/paginas/privacidade';
@@ -20,6 +21,7 @@ const mostrarCnpj = false;
 const temRastreamento = Boolean(
   import.meta.env.PUBLIC_GA4_ID || import.meta.env.PUBLIC_META_PIXEL_ID,
 );
+const ano = new Date().getFullYear();
 const altura = 24;
 const largura = Math.round((altura * logoWhite.width) / logoWhite.height);
 const colunas = [
@@ -72,17 +74,20 @@ const colunas = [
       <ul>
         <li>
           <a href={linkWhatsapp()} target="_blank" rel="noopener" data-evento="whatsapp_rodape">
+            <Glifo nome="whatsapp" />
             {t.contato.whatsapp}
             <span class="visualmente-oculto">{t.linkExterno}</span>
           </a>
         </li>
         <li>
           <a href={`mailto:${email}`} data-evento="email_rodape">
+            <Glifo nome="envelope" />
             {email}
           </a>
         </li>
         <li>
           <a href={instagram.url} target="_blank" rel="noopener">
+            <Glifo nome="instagram" />
             {instagram.usuario}
             <span class="visualmente-oculto">{t.linkExterno}</span>
           </a>
@@ -102,7 +107,8 @@ const colunas = [
       </ul>
     </div>
     <p class="rodape-empresa">
-      {nomeCompleto}
+      <Glifo nome="copyright" tamanho={16} />
+      {ano} {nomeCompleto}
       {mostrarCnpj && <span> · CNPJ {cnpj}</span>}
     </p>
   </div>
