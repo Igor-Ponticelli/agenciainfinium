@@ -57,8 +57,8 @@ pedido for "faça o TODO N", siga aquele item à risca.
   qual skill usar em cada uma. **Leia antes de qualquer trabalho de design ou de UI.**
 - [.claude/docs/direcao-visual.md](.claude/docs/direcao-visual.md): o que a identidade já fixa
   e o que ainda falta decidir (material, movimento). Tem precedência sobre as skills.
-- [.claude/docs/versoes.md](.claude/docs/versoes.md): as três versões de estudo da home
-  (`/site1/`, `/site2/`, `/site3/`, 05/11/2026), a pesquisa por trás delas e o que vem depois.
+- [.claude/docs/versoes.md](.claude/docs/versoes.md): a pesquisa (Apple, Microsoft, agências) e
+  as três versões de estudo de 05/11/2026 que deram na direção atual, "o infinito".
 - [.claude/docs/arquitetura.md](.claude/docs/arquitetura.md): stack, SEO, analytics, prévias.
 - [.claude/docs/conteudo.md](.claude/docs/conteudo.md): mapa do site, seções, CTAs, o que entra e
   o que nunca entra.

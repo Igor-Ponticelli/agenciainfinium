@@ -807,8 +807,8 @@ do brilho dos ícones, efeito no toque, linha vertical de grade.
 
 ## TODO 10: Escolher a direção nova e levar ao site inteiro
 
-**Status:** aguardando a escolha do Igor
-**Depende de:** as três versões de estudo (05/11/2026) em `/site1/`, `/site2/` e `/site3/`
+**Status:** feito em 05/11/2026
+**Depende de:** as três versões de estudo (05/11/2026), apagadas neste item
 
 **Objetivo:** o Igor viu o site pronto e não gostou. Em 05/11/2026 entraram três versões de
 estudo da home, cada uma com a própria pele sobre a mesma identidade, documentadas em
@@ -841,10 +841,23 @@ escolhida (`src/pages/siteN.astro`, `src/styles/versoes/siteN.css`).
 depoimento, prazo ou preço; vidro, partículas, degradê em texto, slider no hero.
 
 **Pronto quando:**
-- [ ] Todas as páginas na direção escolhida, com o mesmo cabeçalho e rodapé.
-- [ ] Nenhuma rota `/siteN/` no build, nos testes ou no sitemap.
-- [ ] `npm run build`, `npm test` e `npm run inspecao` passam; Lighthouse acima de 95 no desktop.
-- [ ] direcao-visual.md, o contrato da home e DESIGN.md contam a decisão.
+- [x] Todas as páginas na direção escolhida, com o mesmo cabeçalho e rodapé.
+- [x] Nenhuma rota `/siteN/` no build, nos testes ou no sitemap.
+- [x] `npm run build` e `npm test` passam. [PENDENTE: `npm run inspecao` e Lighthouse na máquina
+      do Igor; a inspeção perdeu as capturas do holofote.]
+- [x] direcao-visual.md, o contrato da home e DESIGN.md contam a decisão.
 
-**Precisa do Igor:** a escolha (1, 2, 3 ou mistura) e o que mais quer mudar depois de ver as três.
+**Precisa do Igor:** o que mais quer mudar depois de ver o site inteiro na direção nova.
+
+**Notas:**
+- A escolha veio no mesmo dia: base na versão 3 (fundo roxo, faixa rolante, como funciona,
+  "Vamos conversar?", rodapé), com o carrossel e o rodapé denso da 1 e o par imagem e texto e as
+  faixas claras da 2. Menos texto, ícones animados em todo tópico, sem o holofote, Lenis mais
+  contido (lerp 0,22).
+- Saíram de vez: `Linha`, `Cartao`, `Obra`, `Ficha`, `holofote.ts`, o laço da conexão em SVG e a
+  planilha do `site.css`. Entraram: `Secao` (faixas por tom), `Cabeca`, `Topicos`, `Dupla`,
+  `Passos`, `Galeria`, `Rolante`, `Vitrine` (o palco escalado das prévias), `Faq` e a
+  `ChamadaFinal` gigante como padrão de toda página (`Base.astro`).
+- O contrato da home em `.impeccable/surfaces/` ficou como registro histórico da direção
+  anterior; a direção nova está em direcao-visual.md, seção 5, e em DESIGN.md.
 

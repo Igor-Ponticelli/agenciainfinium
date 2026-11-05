@@ -36,8 +36,13 @@ Ficou de fora, de propósito:
 
 ## 2. Home, seção por seção
 
-Ordem pensada para quem lê 10 segundos no celular e para quem lê 2 minutos. O craft floor
-proíbe eyebrow acima de título e cards iguais em fila.
+Ordem pensada para quem lê 10 segundos no celular e para quem lê 2 minutos. Desde 05/11/2026
+(direção "o infinito"), cada seção diz uma coisa por tópico, com ícone, em vez de parágrafo: a
+abertura é a assinatura em tipo gigante com o símbolo; segue a faixa rolante com o que a
+Infinium faz e onde atende; a cena vira quatro tópicos e "um sistema só"; os dois serviços vêm
+em dupla de imagem e texto, sobre o claro; a conexão é a frase partida pelo símbolo; os projetos
+vão numa galeria de janelas; "como funciona" tem a cabeça fixa; e a chamada final é "Vamos
+conversar?". A lista abaixo é a ordem e o conteúdo de cada seção.
 
 1. **Abertura.** Assinatura ("Sites e sistemas que trabalham por você") como título, uma frase
    que explica em linguagem de dono de empresa (tira o negócio do papel e da planilha e coloca no

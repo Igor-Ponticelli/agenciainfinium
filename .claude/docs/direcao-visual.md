@@ -148,3 +148,18 @@ Formato: data, o que foi decidido, por quê.
   posts, perguntas, a cena); a seleção da cena vira a fita por baixo da linha. E "sobre cada
   seção, queria que ocupasse pelo menos 85vh, acho mais elegante": toda banda tem
   `min-block-size: 85svh` com o conteúdo centrado na vertical.
+- **05/11/2026, a direção "o infinito".** O Igor viu o site pronto e não gostou. Entraram três
+  versões de estudo (a vitrine, o painel e o infinito; [versoes.md](versoes.md)) e ele escolheu
+  juntar: a base é a terceira (o violeta profundo da marca como fundo, a frase gigante com o
+  símbolo se desenhando, a faixa rolante, as etapas com a cabeça fixa, o "Vamos conversar?"
+  gigante e o rodapé no violeta mais profundo), com o carrossel de projetos em janelas e o
+  rodapé denso da primeira, e o par imagem e texto e as faixas claras para leitura da segunda.
+  Pedidos dele: menos texto ("todo o site tem que ser tipo uma imersão"), uma frase por tópico e
+  **ícones animados em todo tópico**, nada do efeito do mouse ("a animação antiga do mouse era
+  muito ruim, nem ter isso") e rolagem suave sem parecer sem fim. Consequências: o site passa a
+  ser **escuro por padrão**, com o claro entrando por faixa (`.claro` troca os tokens
+  semânticos); sobre o escuro, só White e Lilás, Primary nunca; saem a planilha, a grade, o
+  holofote e o laço da conexão em SVG; ficam a fita como traço dos ícones (desenhados pela
+  rolagem, com o brilho), a cortina da troca de página (encurtada para 260, 160, 60 e 280 ms,
+  porque as páginas ficaram mais pesadas) e o laço das etapas; o Lenis fica com `lerp` 0,22. O registro do sistema construído está em `DESIGN.md`.
+

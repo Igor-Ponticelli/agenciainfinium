@@ -4,10 +4,9 @@ O Igor viu o site pronto e não gostou. Pediu uma revisão do site inteiro, com 
 (o roxo), olhando os grandes players de agência e os dois sites que ele considera referência,
 Apple e Microsoft. Pediu três versões novas para analisar, em `/site1/`, `/site2/` e `/site3/`.
 
-Este arquivo registra a pesquisa, o que cada versão tira dela, como as três foram construídas e o
-que acontece depois da escolha. As três páginas são **estudos de home**: a página completa, com
-cabeçalho, todas as seções e rodapé, cada uma com a própria pele. Não estão no sitemap, levam
-`noindex` e têm um alternador fixo no canto inferior esquerdo para pular entre "Atual", 1, 2 e 3.
+Este arquivo registra a pesquisa, o que cada versão tirava dela, como as três foram construídas e
+a escolha do Igor (seção 7). As três páginas de estudo existiram entre os commits de 05/11/2026 e
+o TODO 10, que as apagou depois da escolha; ficam no histórico do git.
 
 ## 1. O que a pesquisa mostrou
 
@@ -178,13 +177,19 @@ as outras páginas (serviço, projeto, blog, contato) com essa pele?
 As três podem se misturar: a estrutura de uma com a pele de outra, ou uma seção de uma dentro da
 outra. O que não muda é a identidade e o que o pacote fixa.
 
-## 7. Depois da escolha
+## 7. A escolha (05/11/2026)
 
-Quando o Igor escolher (uma versão ou uma mistura), entra o TODO 10 em [TODO.md](../../TODO.md):
-levar a direção escolhida para o site inteiro (home, serviços, sites, sistemas, projetos e
-página de projeto, blog e post, contato, Raio-X, acessos, privacidade, 404), gravar a decisão em
-[direcao-visual.md](direcao-visual.md), refazer o contrato da home, atualizar `DESIGN.md` e
-apagar as versões que não entraram.
+O Igor respondeu no mesmo dia. Da versão 1 gostou do carrossel, de "como funciona" e do rodapé,
+e sentiu falta de ícones mais animados. Da versão 2 gostou do tema claro ("dá um clean para a
+leitura") e do par imagem e texto, mas achou seca. Da versão 3 gostou do fundo roxo ("podemos
+manter mais nisso"), da faixa rolante, de "como funciona", do "Vamos conversar?" e do rodapé no
+roxo forte; achou que tinha texto demais. Pediu um site só, com base na 3 e os pontos fortes
+das outras, menos texto ("tem que ser tipo uma imersão"), ícones animados nos tópicos, nada do
+efeito do mouse e a rolagem suave sem parecer sem fim.
+
+O TODO 10 fez isso no site inteiro e apagou as três páginas de estudo. A decisão está em
+[direcao-visual.md](direcao-visual.md), seção 5; o sistema construído, em `DESIGN.md`. Este
+arquivo fica como registro da pesquisa e das alternativas.
 
 ## 8. Limites da pesquisa
 

@@ -168,9 +168,10 @@ as letras e os números, as seções viraram bandas, entraram fotos do Unsplash,
 desenhados pela fita e o holofote sob o ponteiro. As decisões estão em
 [direcao-visual.md](direcao-visual.md), seção 5.
 
-Em 05/11/2026, o Igor viu o site e não gostou. Entraram três versões de estudo da home
-(`/site1/`, `/site2/` e `/site3/`), cada uma com a própria pele sobre a mesma identidade, a
-partir de uma pesquisa sobre Apple, Microsoft e os grandes players de agência. Tudo em
-[versoes.md](versoes.md). O próximo passo é o TODO 10: o Igor escolhe uma (ou uma mistura) e a
-direção vai para o site inteiro.
+Em 05/11/2026, o Igor viu o site e não gostou. Entraram três versões de estudo da home, a partir
+de uma pesquisa sobre Apple, Microsoft e os grandes players de agência ([versoes.md](versoes.md)),
+e no mesmo dia ele escolheu uma mistura com base na terceira. O TODO 10 levou a direção nova, "o
+infinito", para o site inteiro: escuro por padrão, faixas claras para leitura, tópicos com ícones
+animados, galeria de projetos, etapas com a cabeça fixa e a chamada final gigante. As versões de
+estudo foram apagadas; a decisão está em [direcao-visual.md](direcao-visual.md), seção 5.
 
