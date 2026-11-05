@@ -36,11 +36,7 @@ const { post, anterior, proximo } = Astro.props;
 const { Content } = await render(post);
 const data = dataDoPost(post);
 const chamada = t.chamadas[post.data.chamada];
-const destino = {
-  sites: rotas.sites,
-  sistemas: rotas.sistemas,
-  raioX: rotas.raioX,
-}[post.data.chamada];
+const destino = { sites: rotas.sites, sistemas: rotas.sistemas }[post.data.chamada];
 const site = Astro.site!;
 
 const jsonLd = {
@@ -79,7 +75,7 @@ const jsonLd = {
       </p>
     </Cabeca>
 
-    <Secao tom="claro">
+    <Secao tom="claro" miolo="miolo-centro">
       <div class="texto-longo">
         <p class="post-abertura">{post.data.descricao}</p>
         <Content />

@@ -31,6 +31,15 @@ main:focus {
   margin-inline: auto;
 }
 
+.miolo-centro {
+  display: grid;
+  justify-items: center;
+}
+
+.miolo-centro > * {
+  inline-size: min(100%, var(--texto-medida));
+}
+
 .miolo-estreito {
   inline-size: min(100% - 2 * var(--gutter), var(--largura-texto));
 }
@@ -1176,6 +1185,24 @@ html[data-menu-aberto] .whatsapp-flutuante {
   pointer-events: none;
 }
 
+/* O link da vitrine: cobre a moldura por baixo da prévia; só os controles dela ficam por cima */
+.v-vitrine-link {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  color: transparent;
+  font-size: 0;
+}
+
+.v-vitrine-com-link {
+  cursor: pointer;
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.v-vitrine-com-link:hover {
+  transform: translateY(-3px);
+}
+
 /* A prévia: só os controles recebem o ponteiro */
 .previa {
   position: absolute;
@@ -1311,6 +1338,10 @@ html[data-menu-aberto] .whatsapp-flutuante {
   .obra {
     grid-template-columns: 7fr 4fr;
     gap: var(--space-2xl);
+  }
+
+  .obra:nth-child(even) {
+    grid-template-columns: 4fr 7fr;
   }
 
   .obra:nth-child(even) .v-vitrine {
@@ -2020,38 +2051,6 @@ html[data-menu-aberto] .whatsapp-flutuante {
 
 html:not(.js) [data-enviar='whatsapp'] {
   display: none;
-}
-
-/* ---------- Raio-X: preço e o bloco da oferta ---------- */
-
-.oferta {
-  display: grid;
-  gap: var(--space-s);
-  justify-items: start;
-  max-inline-size: 40rem;
-  padding: var(--space-l);
-  border: 1px solid var(--cor-linha);
-  border-radius: var(--radius-l);
-  background-color: var(--cor-superficie);
-}
-
-.oferta-valor {
-  color: var(--cor-titulo);
-  font-size: var(--text-h1);
-  font-weight: var(--weight-bold);
-  line-height: 1;
-  letter-spacing: var(--tracking-display);
-  font-variant-numeric: tabular-nums;
-}
-
-.oferta p {
-  max-inline-size: 52ch;
-}
-
-.oferta-honesto,
-.cabeca-apoio {
-  color: var(--cor-apagado);
-  font-size: var(--text-s);
 }
 
 /* ---------- Chamada final: gigante, sobre o degradê ---------- */
