@@ -36,9 +36,8 @@ Copie `.env.example` para `.env` e preencha o que existir. Tudo é chave públic
 | `PUBLIC_GA4_ID`             | Google Analytics 4 (só carrega depois do consentimento)            |
 | `PUBLIC_META_PIXEL_ID`      | Meta Pixel (só carrega depois do consentimento)                    |
 
-Sem `PUBLIC_GA4_ID` e `PUBLIC_META_PIXEL_ID` não há cookie nem banner. O preço, o prazo e o link
-de pagamento do Raio-X do site ficam em `src/data/raioX.ts`; a data de publicação do site, que
-escalona as datas dos posts, em `src/data/blog.ts`.
+Sem `PUBLIC_GA4_ID` e `PUBLIC_META_PIXEL_ID` não há cookie nem banner. A data de publicação do
+site, que escalona as datas dos posts, fica em `src/data/blog.ts`.
 
 ## Publicar na Hostinger
 
@@ -67,7 +66,7 @@ escalona as datas dos posts, em `src/data/blog.ts`.
 ## Como adicionar um post
 
 Um arquivo em `src/content/blog/<slug>.md` com `titulo`, `descricao` (até 160 caracteres),
-`data` ou `diasAntes`, `tags`, `chamada` (`sites`, `sistemas` ou `raioX`), `capa` (um nome de
+`data` ou `diasAntes`, `tags`, `chamada` (`sites` ou `sistemas`), `capa` (um nome de
 `src/data/fotos.ts`) e o texto em Markdown. Sem travessão. `rascunho: true` deixa o post fora do
 build.
 

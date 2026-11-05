@@ -26,11 +26,5 @@ export const blog = {
       texto: 'A Infinium cria um sistema só, do jeito que a sua empresa trabalha.',
       acao: 'Ver o serviço de sistemas',
     },
-    raioX: {
-      titulo: 'Quer saber como está o site da sua empresa?',
-      texto:
-        'O Raio-X do site mostra o que está travando o Google, a velocidade e a segurança, com um relatório curto e uma conversa.',
-      acao: 'Conhecer o Raio-X do site',
-    },
   },
 } as const;

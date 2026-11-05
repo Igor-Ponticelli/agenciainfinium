@@ -858,6 +858,9 @@ depoimento, prazo ou preço; vidro, partículas, degradê em texto, slider no he
   planilha do `site.css`. Entraram: `Secao` (faixas por tom), `Cabeca`, `Topicos`, `Dupla`,
   `Passos`, `Galeria`, `Rolante`, `Vitrine` (o palco escalado das prévias), `Faq` e a
   `ChamadaFinal` gigante como padrão de toda página (`Base.astro`).
+- Na rodada seguinte (05/11/2026) o Igor tirou o Raio-X do site: a landing page, o layout sem
+  menu, o botão, os textos e os dados saíram; os três posts que levavam ao Raio-X passaram a
+  levar ao serviço de sites. O TODO 8 fica como histórico.
 - O contrato da home em `.impeccable/surfaces/` ficou como registro histórico da direção
   anterior; a direção nova está em direcao-visual.md, seção 5, e em DESIGN.md.
 

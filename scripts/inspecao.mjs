@@ -20,7 +20,6 @@ const paginas = [
   '/projetos/brisa-cafe/',
   '/blog/',
   '/blog/por-que-seu-site-nao-aparece-no-google/',
-  '/raio-x-do-site/',
   '/contato/',
   '/acessos/',
   '/nao-existe/',

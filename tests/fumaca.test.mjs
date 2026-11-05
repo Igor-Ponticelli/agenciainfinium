@@ -46,7 +46,6 @@ const rotas = [
   '/blog/',
   '/blog/o-que-e-um-site-seguro/',
   '/contato/',
-  '/raio-x-do-site/',
   '/privacidade/',
   '/acessos/',
 ];

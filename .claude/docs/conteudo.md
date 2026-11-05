@@ -194,6 +194,8 @@ arquitetura.md, seção 7.
 
 ## 11. Raio-X do site
 
+**Removido em 05/11/2026, a pedido do Igor.** O que segue é o registro da ideia, caso volte.
+
 Produto de entrada, a preço baixo, vendido com tráfego pago (Igor, 30/10/2026). Uma oferta só,
 com dois ângulos de anúncio apontando para a mesma LP: "seu site não aparece no Google" e "seu
 site está seguro?". Conteúdo: a promessa espelhando o anúncio, o que a pessoa recebe (relatório
