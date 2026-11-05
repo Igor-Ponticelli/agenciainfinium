@@ -53,20 +53,22 @@ main:focus {
 }
 
 /* O veio: as faixas claras têm um grão fino em violeta (um ruído em SVG, sem imagem para baixar)
-   e um leve veio lilás nos cantos, para o claro não ficar chapado (pedido do Igor, 05/11/2026). */
+   e um leve veio lilás nos cantos, para o claro não ficar chapado (pedido do Igor, 05/11/2026).
+   Os veios terminam transparentes antes das bordas da faixa, para duas faixas claras seguidas
+   emendarem sem risco. */
 .faixa-claro {
   position: relative;
   isolation: isolate;
   background-image:
     radial-gradient(
-      80% 60% at 15% 20%,
+      70% 34% at 15% 26%,
       color-mix(in oklab, var(--violet-100) 55%, transparent),
-      transparent 70%
+      transparent 72%
     ),
     radial-gradient(
-      60% 50% at 90% 85%,
+      55% 28% at 86% 70%,
       color-mix(in oklab, var(--violet-100) 40%, transparent),
-      transparent 70%
+      transparent 72%
     );
 }
 
@@ -79,6 +81,15 @@ main:focus {
   background-size: 220px 220px;
   opacity: 0.11;
   pointer-events: none;
+}
+
+/* Leitura longa (post, privacidade): só o grão, bem leve, sem o veio */
+.faixa-leve {
+  background-image: none;
+}
+
+.faixa-leve::before {
+  opacity: 0.05;
 }
 
 .faixa-profundo {
