@@ -2,7 +2,8 @@
  * Ícones do site (pedido do Igor, 31/10/2026): traço de 2 px em `--color-fita`, desenhados pela
  * própria fita conforme a rolagem (Icone.astro e site.css). Grade de 24 x 24, pontas e cantos
  * redondos, nenhum preenchimento. Cada forma leva `pathLength="1"` para a animação do traço.
- * Desenhados aqui, sem biblioteca.
+ * Desenhados aqui, sem biblioteca; só os dois logotipos (Instagram e WhatsApp) vêm do Tabler
+ * Icons (MIT), porque marca se reconhece pelo desenho oficial.
  */
 const formas = {
   telas:
@@ -43,11 +44,11 @@ const formas = {
   quadro: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7.5 7v10M12 7v6M16.5 7v8"/>',
   nota: '<path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h3"/>',
   envelope: '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2.5 7.5 12 14l9.5-6.5"/>',
+  /** Instagram e WhatsApp vêm do Tabler Icons (MIT, Paweł Kuna), no mesmo traço dos nossos. */
   instagram:
-    '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="0.6"/>',
-  /** O balão com a cauda e o fone dentro, no traço da marca (não é o logotipo do WhatsApp). */
+    '<path d="M3 7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/><path d="M8.5 12a3.5 3.5 0 1 0 7 0 3.5 3.5 0 0 0-7 0"/><path d="M17 7v.01"/>',
   whatsapp:
-    '<path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.3z"/><path d="M9.2 8.3c.2 1.5 1 2.8 2 3.8s2.3 1.8 3.8 2l1.2-1.2 2.1 1-.2 1.5c-.2.9-1 1.4-1.9 1.3A9.6 9.6 0 0 1 7.6 8c-.1-.9.4-1.7 1.3-1.9l1.5-.2 1 2.1z"/>',
+    '<path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9z"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"/>',
   copyright: '<circle cx="12" cy="12" r="9"/><path d="M14.5 9.8a3.3 3.3 0 1 0 0 4.4"/>',
 } as const;
 

@@ -75,7 +75,8 @@ As fotos são do Unsplash, escolhidas uma a uma, e ficam em `src/assets/fotos/` 
 tamanhos usados. Créditos e o passo a passo para trocar uma foto em `.claude/docs/fotos.md`.
 Os ícones são desenhados à mão em `src/data/icones.ts` (traço de 24 x 24) e animados pela fita
 conforme a rolagem, com um brilho (`Icone.astro`); sem biblioteca de ícones. Todo tópico do site
-leva um (`Topicos.astro`, `Passos.astro`).
+leva um (`Topicos.astro`, `Passos.astro`). Os dois logotipos (WhatsApp e Instagram) vêm do
+[Tabler Icons](https://tabler.io/icons), licença MIT.
 
 ## Commits
 
