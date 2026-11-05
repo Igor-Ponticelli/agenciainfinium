@@ -181,6 +181,32 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
   .scale > div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* Fundos e superfícies (novembro de 2026): o veio no claro e a aurora nos cartões */
+.fundos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.fundos figure { margin: 0; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: var(--surface); display: flex; flex-direction: column; }
+.fundos figcaption { padding: 12px 14px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+.veio { position: relative; isolation: isolate; min-height: 260px; display: grid; place-items: center; background-color: #F1EFF4; color: #211F26;
+  background-image: radial-gradient(70% 34% at 15% 26%, rgb(233 213 254 / .55), transparent 72%), radial-gradient(55% 28% at 86% 70%, rgb(233 213 254 / .40), transparent 72%); }
+.veio::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: .11; pointer-events: none; background-size: 220px 220px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.22 0 0 0 0 0.07 0 0 0 0 0.37 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.veio b { font-size: 22px; letter-spacing: -0.02em; }
+.aurora-ground { min-height: 260px; display: grid; place-items: center; padding: 24px; background: #F1EFF4; }
+.aurora { position: relative; overflow: hidden; isolation: isolate; width: min(100%, 300px); display: grid; gap: 14px; padding: 24px; border: 1px solid rgb(233 213 254 / .18); border-radius: 16px; background: #200A34; color: rgb(255 255 255 / .78); }
+.aurora::before { content: ""; position: absolute; inset: -40%; z-index: -1; pointer-events: none;
+  background: radial-gradient(closest-side, rgb(117 70 174 / .7), transparent 70%) 20% 30% / 70% 70% no-repeat, radial-gradient(closest-side, rgb(233 213 254 / .35), transparent 70%) 80% 80% / 60% 60% no-repeat;
+  animation: aurora 9s ease-in-out infinite alternate; }
+@keyframes aurora { from { transform: translate(-6%, -4%) rotate(0deg); } to { transform: translate(6%, 6%) rotate(25deg); } }
+.aurora .num { position: absolute; top: 8px; right: 16px; font-size: 40px; font-weight: 700; letter-spacing: -0.04em; line-height: 1; color: #E9D5FE; opacity: .25; }
+.aurora b { color: #fff; font-size: 20px; }
+.aurora p { font-size: 15px; color: rgb(233 213 254 / .7); }
+.ico { position: relative; width: 48px; height: 48px; border: 1px solid rgb(233 213 254 / .18); border-radius: 12px; background: rgb(255 255 255 / .08); color: #E9D5FE; }
+.ico svg { position: absolute; inset: 21%; width: 58%; height: 58%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ico .base { opacity: .45; }
+.ico .luz > * { stroke-width: 2.4; stroke-dasharray: .28 .72; stroke-dashoffset: 1; animation: correr 2.4s linear infinite; }
+@keyframes correr { to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .aurora::before, .ico .luz > * { animation: none; } }
+@media (max-width: 720px) { .fundos { grid-template-columns: 1fr; } }
 </style>
 
 <header class="mast">
@@ -197,6 +223,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
     <a href="#simbolo">Símbolo</a>
     <a href="#tamanhos">Tamanhos</a>
     <a href="#cores">Cores</a>
+    <a href="#fundos">Fundos</a>
     <a href="#tipografia">Tipografia</a>
     <a href="#uso">Regras de uso</a>
     <a href="#mudancas">O que mudou</a>
@@ -322,6 +349,41 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
   </div>
 </section>
 
+<section id="fundos">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Fundos e superfícies</span>
+      <h2>O veio no claro, a aurora nos cartões</h2>
+      <p>Desde novembro de 2026 a marca tem duas superfícies além das cores chapadas, nascidas no site. Nenhuma usa imagem: são CSS puro, e as duas param com movimento reduzido.</p>
+    </div>
+    <div class="fundos">
+      <figure>
+        <div class="veio"><b>Fundo claro com veio</b></div>
+        <figcaption><span>Body com grão em Violeta 700 (11%) e dois veios de Lilás que terminam antes das bordas</span><button class="copy" data-hex="background-color: #F1EFF4; background-image: radial-gradient(70% 34% at 15% 26%, rgb(233 213 254 / .55), transparent 72%), radial-gradient(55% 28% at 86% 70%, rgb(233 213 254 / .40), transparent 72%);">Copiar CSS</button></figcaption>
+      </figure>
+      <figure>
+        <div class="aurora-ground">
+          <div class="aurora">
+            <span class="num" aria-hidden="true">01</span>
+            <span class="ico" aria-hidden="true"><svg class="base" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" pathLength="1"/><path d="M12 7v5l3.5 2" pathLength="1"/></svg><svg class="luz" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" pathLength="1"/><path d="M12 7v5l3.5 2" pathLength="1"/></svg></span>
+            <b>Cartão aurora</b>
+            <p>Violeta 900, duas luzes se movendo por trás, o número no canto e o ícone com a luz que corre pelo traço.</p>
+          </div>
+        </div>
+        <figcaption><span>Sobre o claro ou o escuro; as luzes andam 9 s para cada lado</span><button class="copy" data-hex="background: #200A34; /* ::before */ background: radial-gradient(closest-side, rgb(117 70 174 / .7), transparent 70%) 20% 30% / 70% 70% no-repeat, radial-gradient(closest-side, rgb(233 213 254 / .35), transparent 70%) 80% 80% / 60% 60% no-repeat; animation: aurora 9s ease-in-out infinite alternate;">Copiar CSS</button></figcaption>
+      </figure>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <ul class="list">
+        <li><h3>Onde o veio entra</h3><p>Em toda faixa clara de página. Em leitura longa (post, política), só o grão, a 5%, sem os veios. Nunca sobre o roxo.</p></li>
+        <li><h3>Onde a aurora entra</h3><p>Só em cartão: um tópico, uma parte de case, uma porta de entrada. Nunca como fundo de faixa, de rodapé ou atrás de foto: o roxo das faixas é chapado.</p></li>
+        <li><h3>O ícone vivo</h3><p>Traço de 2 px em Lilás a 45% com uma luz de 28% do caminho correndo por cima (2,4 s por volta), num ladrilho de 48 px. Ícones próprios, 24 x 24, sem biblioteca.</p></li>
+        <li><h3>Texto sobre a aurora</h3><p>Título branco, texto em Lilás a 70%. Primary nunca aparece sobre o cartão.</p></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 <section id="tipografia">
   <div class="wrap">
     <div class="sec-head">
@@ -402,13 +464,15 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
         <li><span class="mono">R7</span><div><b>Só Roboto.</b><p>Public Sans e Inter saíram. Escala tipográfica definida.</p></div></li>
         <li><span class="mono">N1</span><div><b>Assinatura horizontal.</b><p>Nova versão para cabeçalhos e faixas.</p></div></li>
         <li><span class="mono">N2</span><div><b>Regras de uso.</b><p>Área de proteção, tamanhos mínimos e fundos permitidos.</p></div></li>
+        <li><span class="mono">N3</span><div><b>Fundo claro com veio.</b><p>Grão em violeta e veios de Lilás sobre o Body, nascidos no site em novembro de 2026.</p></div></li>
+        <li><span class="mono">N4</span><div><b>Cartão aurora e ícone vivo.</b><p>Luzes se movendo atrás do cartão em Violeta 900 e a luz que corre pelo traço do ícone.</p></div></li>
       </ul>
     </div>
   </div>
 </section>
 </main>
 
-<footer><div class="wrap"><span>Fonte: Figma · Infinium · página Identidade, com refinamento aprovado</span><span>Versão 2 · 30/10/2026</span></div></footer>
+<footer><div class="wrap"><span>Fonte: Figma · Infinium · página Identidade, com refinamento aprovado</span><span>Versão 2.1 · 05/11/2026</span></div></footer>
 
 <script>
 const SVGS = {{SVG_JSON}};

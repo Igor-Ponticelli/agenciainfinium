@@ -170,4 +170,10 @@ Formato: data, o que foi decidido, por quê.
   ficou com o mesmo espaço dos dois lados do símbolo; o brilho dos ícones saiu e entrou um
   ladrilho; o antes e depois virou pares de cartões com ícone; e a página de projeto ganhou a
   prévia na faixa do título e o case em cartões, sem texto corrido.
+- **05/11/2026, as superfícies entram na identidade.** O veio (grão e veios de Lilás no claro),
+  o cartão aurora e o ícone vivo foram gravados no pacote de identidade: tabela em
+  [identidade/MARCA.md](identidade/MARCA.md), tokens `--infinium-veio-veins` e
+  `--infinium-aurora-lights` em `tokens/`, e a seção "Fundos" do `manual/brand-guide.html`,
+  regenerado pelo `build.py`. Regra de onde cada uma entra: veio em toda faixa clara (só o
+  grão na leitura longa); aurora só em cartões, nunca em faixa, rodapé ou atrás de foto.
 

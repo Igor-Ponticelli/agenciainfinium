@@ -1,6 +1,6 @@
 # Infinium — identidade e empresa
 
-Pacote com a identidade visual (versão 2, refinada em outubro de 2026) e a definição do que a Infinium faz.
+Pacote com a identidade visual (versão 2, refinada em outubro de 2026; superfícies do site somadas em novembro) e a definição do que a Infinium faz.
 
 ## Comece por aqui
 
@@ -8,7 +8,7 @@ Pacote com a identidade visual (versão 2, refinada em outubro de 2026) e a defi
 |---|---|
 | [EMPRESA.md](EMPRESA.md) | Quem somos, problema que resolvemos, posicionamento, missão e valores, tom de voz, mensagens-chave |
 | [SERVICOS.md](SERVICOS.md) | Sites e automação de processos: o que inclui, exemplos e etapas |
-| [MARCA.md](MARCA.md) | Logo, símbolo, cores, tipografia e regras de uso |
+| [MARCA.md](MARCA.md) | Logo, símbolo, cores, fundos e superfícies (veio, aurora, ícone vivo), tipografia e regras de uso |
 | [INSTAGRAM.md](INSTAGRAM.md) | Foto de perfil, nome, bio (3 opções), link e destaques, com base em pesquisa |
 | `manual/brand-guide.html` | Manual visual interativo; abra no navegador |
 

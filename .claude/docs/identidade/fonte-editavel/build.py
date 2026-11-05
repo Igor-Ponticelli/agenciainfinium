@@ -37,6 +37,23 @@ tokens = {
     "ink": "#211F26", "text": "#625F68", "line": "#D9D6DE", "body": "#F1EFF4", "white": "#FFFFFF",
   },
   "gradient": {"brand": "linear-gradient(135deg, #39135F 0%, #200A34 100%)"},
+  "surface": {  # novembro de 2026: as superfícies nascidas no site
+    "veio": {
+      "base": "#F1EFF4",
+      "veins": "radial-gradient(70% 34% at 15% 26%, rgb(233 213 254 / 0.55), transparent 72%), radial-gradient(55% 28% at 86% 70%, rgb(233 213 254 / 0.40), transparent 72%)",
+      "grain": "feTurbulence fractalNoise 0.65, 2 oitavas, em #39135F; opacidade 0.11 (0.05 em leitura longa, sem os veios)",
+    },
+    "aurora": {
+      "base": "#200A34",
+      "lights": "radial-gradient(closest-side, rgb(117 70 174 / 0.7), transparent 70%) 20% 30% / 70% 70% no-repeat, radial-gradient(closest-side, rgb(233 213 254 / 0.35), transparent 70%) 80% 80% / 60% 60% no-repeat",
+      "motion": "translate(-6%, -4%) rotate(0deg) a translate(6%, 6%) rotate(25deg), 9s ease-in-out, alternado; parado com movimento reduzido",
+      "use": "só em cartões, nunca em faixas, rodapé ou atrás de foto",
+    },
+    "icon": {
+      "stroke": "2px em #E9D5FE a 45%, ladrilho de 48px com canto de 12px",
+      "light": "28% do traço a 2.4px correndo em 2.4s por volta",
+    },
+  },
   "font": {"family": "Roboto, 'Helvetica Neue', Arial, sans-serif"},
   "type": {
     "display": {"weight": 700, "size": "56px", "line-height": 1.0, "tracking": "-0.025em"},
@@ -50,6 +67,8 @@ tokens = {
 css = [":root {"]
 for k, v in tokens["color"].items(): css.append(f"  --infinium-{k}: {v};")
 css.append(f"  --infinium-gradient: {tokens['gradient']['brand']};")
+css.append(f"  --infinium-veio-veins: {tokens['surface']['veio']['veins']};")
+css.append(f"  --infinium-aurora-lights: {tokens['surface']['aurora']['lights']};")
 css.append(f"  --infinium-font: {tokens['font']['family']};")
 for role, t in tokens["type"].items():
     css.append(f"  --infinium-{role}: {t['weight']} {t['size']}/{t['line-height']} var(--infinium-font);")

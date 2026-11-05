@@ -18,6 +18,8 @@
   --infinium-body: #F1EFF4;
   --infinium-white: #FFFFFF;
   --infinium-gradient: linear-gradient(135deg, #39135F 0%, #200A34 100%);
+  --infinium-veio-veins: radial-gradient(70% 34% at 15% 26%, rgb(233 213 254 / 0.55), transparent 72%), radial-gradient(55% 28% at 86% 70%, rgb(233 213 254 / 0.40), transparent 72%);
+  --infinium-aurora-lights: radial-gradient(closest-side, rgb(117 70 174 / 0.7), transparent 70%) 20% 30% / 70% 70% no-repeat, radial-gradient(closest-side, rgb(233 213 254 / 0.35), transparent 70%) 80% 80% / 60% 60% no-repeat;
   --infinium-font: Roboto, 'Helvetica Neue', Arial, sans-serif;
   --infinium-display: 700 56px/1.0 var(--infinium-font);
   --infinium-display-tracking: -0.025em;
