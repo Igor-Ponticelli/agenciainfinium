@@ -61,12 +61,10 @@ export const privacidade = {
   banner: {
     rotulo: 'Preferências de cookies',
     texto: 'Usamos cookies para entender como o site é usado',
-    textoMarketing: 'e para medir os nossos anúncios',
     politica: 'Política de privacidade',
     oQueAceita: 'O que você aceita',
     essenciais: 'Essenciais (sempre ativos)',
     estatisticas: 'Estatísticas de uso',
-    anuncios: 'Anúncios e remarketing',
     recusar: 'Recusar',
     personalizar: 'Personalizar',
     salvar: 'Salvar escolhas',

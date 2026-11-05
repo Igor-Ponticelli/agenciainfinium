@@ -23,9 +23,8 @@ function iniciar() {
       // Sem localStorage, a escolha vale só nesta página
     }
     banner.hidden = true;
-    // Tags já carregadas não "descarregam": se a pessoa retirou um consentimento, recarrega.
-    const retirou =
-      anterior && ((anterior.analytics && !p.analytics) || (anterior.marketing && !p.marketing));
+    // A tag já carregada não "descarrega": se a pessoa retirou o consentimento, recarrega.
+    const retirou = anterior?.analytics && !p.analytics;
     if (retirou) location.reload();
     else aplicar(p);
   };
@@ -33,23 +32,18 @@ function iniciar() {
   const abrir = (personalizar = false) => {
     const atual = ler();
     const analytics = caixa('analytics');
-    const marketing = caixa('marketing');
     if (analytics) analytics.checked = Boolean(atual?.analytics);
-    if (marketing) marketing.checked = Boolean(atual?.marketing);
     opcoes.hidden = !personalizar;
     botao('personalizar').hidden = personalizar;
     botao('salvar').hidden = !personalizar;
     banner.hidden = false;
   };
 
-  botao('aceitar').addEventListener('click', () => salvar({ analytics: true, marketing: true }));
-  botao('recusar').addEventListener('click', () => salvar({ analytics: false, marketing: false }));
+  botao('aceitar').addEventListener('click', () => salvar({ analytics: true }));
+  botao('recusar').addEventListener('click', () => salvar({ analytics: false }));
   botao('personalizar').addEventListener('click', () => abrir(true));
   botao('salvar').addEventListener('click', () =>
-    salvar({
-      analytics: Boolean(caixa('analytics')?.checked),
-      marketing: Boolean(caixa('marketing')?.checked),
-    }),
+    salvar({ analytics: Boolean(caixa('analytics')?.checked) }),
   );
 
   if (!ler()) abrir();

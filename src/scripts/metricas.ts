@@ -1,7 +1,7 @@
 /**
- * Base de métricas (arquitetura.md, seção 4). Uma função só de evento. Até o TODO 6 ligar o GA4
- * e o Meta Pixel (depois do consentimento), os eventos ficam numa fila em memória e nada sai do
- * navegador. Os CTAs levam `data-evento`; o clique neles é registrado por delegação.
+ * Base de métricas (arquitetura.md, seção 4). Uma função só de evento. Enquanto o GA4 não está
+ * ligado (sem ID no .env ou sem consentimento), os eventos ficam numa fila em memória e nada sai
+ * do navegador. Os CTAs levam `data-evento`; o clique neles é registrado por delegação.
  */
 
 export type Evento = {
@@ -21,7 +21,7 @@ export function registrar(nome: string, dados: Record<string, string> = {}) {
   else fila.push(evento);
 }
 
-/** Liga um destino (GA4, Pixel). Os eventos já enfileirados são entregues na hora. */
+/** Liga um destino (o GA4). Os eventos já enfileirados são entregues na hora. */
 export function conectar(novoDestino: Destino) {
   destino = novoDestino;
   for (const evento of fila.splice(0)) destino(evento);

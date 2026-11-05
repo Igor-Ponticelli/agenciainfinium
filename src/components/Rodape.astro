@@ -18,9 +18,7 @@ interface Props {
 const { curto = false } = Astro.props;
 // [PENDENTE: o Igor decide se o CNPJ aparece no rodapé]
 const mostrarCnpj = false;
-const temRastreamento = Boolean(
-  import.meta.env.PUBLIC_GA4_ID || import.meta.env.PUBLIC_META_PIXEL_ID,
-);
+const temRastreamento = Boolean(import.meta.env.PUBLIC_GA4_ID);
 const ano = new Date().getFullYear();
 const altura = 24;
 const largura = Math.round((altura * logoWhite.width) / logoWhite.height);
