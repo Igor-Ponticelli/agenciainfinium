@@ -122,6 +122,26 @@
   }
 }
 
+/* Contexto escuro dentro do claro: os cartões de tópico e do case voltam aos valores do escuro */
+.escuro,
+.topico,
+.caso-parte {
+  --cor-fundo: var(--violet-900);
+  --cor-texto: rgb(255 255 255 / 0.78);
+  --cor-titulo: #ffffff;
+  --cor-acento: var(--violet-100);
+  --cor-apagado: color-mix(in oklab, var(--violet-100) 62%, transparent);
+  --cor-linha: color-mix(in oklab, var(--violet-100) 18%, transparent);
+  --cor-superficie: rgb(255 255 255 / 0.045);
+  --cor-superficie-forte: rgb(255 255 255 / 0.08);
+  --cor-icone: var(--violet-100);
+  --botao-fundo: var(--violet-100);
+  --botao-texto: var(--violet-900);
+  --botao-hover: #ffffff;
+  color-scheme: dark;
+  color: var(--cor-texto);
+}
+
 /* Contexto claro: as faixas de leitura (Body), onde o acento volta a ser o Primary */
 .claro {
   --cor-fundo: var(--color-bg);

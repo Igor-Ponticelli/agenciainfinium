@@ -52,6 +52,69 @@ main:focus {
   color: var(--cor-texto);
 }
 
+/* A aurora: sobre todo fundo roxo, duas luzes se movem devagar por trás do conteúdo (pedido do
+   Igor, 05/11/2026). `overflow: clip` guarda as luzes sem virar área de rolagem, para a cabeça
+   fixa das etapas continuar fixa. Com movimento reduzido, as luzes ficam paradas. */
+.faixa-escuro:not(.abertura),
+.faixa-profundo,
+.faixa-degrade,
+.rodape {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+}
+
+.faixa-escuro:not(.abertura)::before,
+.faixa-profundo::before,
+.faixa-degrade::before,
+.rodape::before {
+  content: '';
+  position: absolute;
+  inset: -25%;
+  z-index: -1;
+  background:
+    radial-gradient(
+        closest-side,
+        color-mix(in oklab, var(--violet-500) 42%, transparent),
+        transparent 70%
+      )
+      12% 25% / 55% 70% no-repeat,
+    radial-gradient(
+        closest-side,
+        color-mix(in oklab, var(--violet-100) 13%, transparent),
+        transparent 70%
+      )
+      88% 75% / 45% 60% no-repeat;
+  animation: aurora-faixa 18s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.faixa-degrade::before {
+  background:
+    radial-gradient(
+        closest-side,
+        color-mix(in oklab, var(--violet-400) 36%, transparent),
+        transparent 70%
+      )
+      18% 30% / 55% 70% no-repeat,
+    radial-gradient(
+        closest-side,
+        color-mix(in oklab, var(--violet-100) 16%, transparent),
+        transparent 70%
+      )
+      85% 70% / 45% 60% no-repeat;
+}
+
+@keyframes aurora-faixa {
+  from {
+    transform: translate(-4%, -3%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(4%, 4%) rotate(14deg);
+  }
+}
+
 .faixa-profundo {
   --cor-fundo: var(--cor-fundo-profundo);
 }
@@ -729,7 +792,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
   font-size: var(--text-s);
 }
 
-/* ---------- Tópicos com ícone ---------- */
+/* ---------- Tópicos com ícone: cartões escuros com a aurora ---------- */
 
 .topicos {
   display: grid;
@@ -739,22 +802,73 @@ html[data-menu-aberto] .whatsapp-flutuante {
   list-style: none;
 }
 
+/* O cartão é sempre escuro, mesmo sobre o claro (tokens.css troca os tokens dentro dele); por
+   trás do texto, duas luzes se movem devagar, cada cartão num tempo diferente (`--i`) */
 .topico {
+  position: relative;
   display: grid;
   gap: var(--space-s);
   align-content: start;
   padding: var(--space-m);
+  overflow: hidden;
+  isolation: isolate;
   border: 1px solid var(--cor-linha);
   border-radius: var(--radius-m);
-  background-color: var(--cor-superficie);
+  background-color: var(--violet-900);
   transition:
     border-color var(--duration-base) var(--ease-out),
     transform var(--duration-base) var(--ease-out);
 }
 
+.topico::before {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  z-index: -1;
+  background:
+    radial-gradient(
+        closest-side,
+        color-mix(in oklab, var(--violet-500) 70%, transparent),
+        transparent 70%
+      )
+      20% 30% / 70% 70% no-repeat,
+    radial-gradient(
+        closest-side,
+        color-mix(in oklab, var(--violet-100) 35%, transparent),
+        transparent 70%
+      )
+      80% 80% / 60% 60% no-repeat;
+  animation: aurora-cartao 9s ease-in-out infinite alternate;
+  animation-delay: calc(var(--i, 0) * -1.3s);
+  pointer-events: none;
+}
+
+@keyframes aurora-cartao {
+  from {
+    transform: translate(-6%, -4%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(6%, 6%) rotate(25deg);
+  }
+}
+
 .topico:hover {
-  border-color: var(--cor-acento);
-  transform: translateY(-2px);
+  border-color: color-mix(in oklab, var(--violet-100) 55%, transparent);
+  transform: translateY(-3px);
+}
+
+.topico-num {
+  position: absolute;
+  inset-block-start: 0.5rem;
+  inset-inline-end: 1rem;
+  color: var(--violet-100);
+  font-size: 2.5rem;
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  opacity: 0.25;
+  font-variant-numeric: tabular-nums;
 }
 
 .topico-texto {
@@ -763,12 +877,13 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .topico h3 {
+  color: #ffffff;
   font-size: var(--text-h3);
   line-height: 1.25;
 }
 
 .topico p {
-  color: var(--cor-apagado);
+  color: color-mix(in oklab, var(--violet-100) 70%, transparent);
   font-size: var(--text-s);
 }
 
@@ -827,7 +942,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
   }
 }
 
-/* ---------- Ícones: a fita desenha o traço conforme a rolagem, num ladrilho ---------- */
+/* ---------- Ícones vivos: o traço desenhado pela rolagem e a luz que corre por ele ---------- */
 
 .icone {
   position: relative;
@@ -843,18 +958,32 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .icone svg {
+  position: absolute;
+  inset: 21%;
   inline-size: 58%;
   block-size: 58%;
 }
 
-.icone svg > * {
+/* O traço base, mais apagado, desenhado pela fita conforme a rolagem */
+.icone-base {
+  color: color-mix(in oklab, var(--cor-icone) 45%, transparent);
+}
+
+.icone-base > * {
   stroke-dasharray: 1;
   stroke-dashoffset: 0;
 }
 
+/* A luz: um trecho do traço que percorre a forma sem parar, cada ícone num tempo diferente */
+.icone-luz > * {
+  stroke-dasharray: 0.28 0.72;
+  stroke-dashoffset: 0;
+  filter: drop-shadow(0 0 3px var(--cor-icone));
+}
+
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
-    .icone svg > * {
+    .icone-base > * {
       stroke-dashoffset: 1;
       animation-name: desenhar;
       animation-timing-function: linear;
@@ -863,13 +992,19 @@ html[data-menu-aberto] .whatsapp-flutuante {
       animation-range: cover 0% cover 30%;
     }
 
-    .icone svg > :nth-child(2) {
+    .icone-base > :nth-child(2) {
       animation-range: cover 8% cover 38%;
     }
 
-    .icone svg > :nth-child(n + 3) {
+    .icone-base > :nth-child(n + 3) {
       animation-range: cover 16% cover 46%;
     }
+  }
+
+  .icone-luz > * {
+    stroke-dashoffset: 1;
+    animation: correr 2.4s linear infinite;
+    animation-delay: calc(var(--i, 0) * -0.35s);
   }
 }
 
@@ -878,6 +1013,12 @@ html[data-menu-aberto] .whatsapp-flutuante {
     stroke-dashoffset: 1;
   }
 
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes correr {
   to {
     stroke-dashoffset: 0;
   }
@@ -946,7 +1087,6 @@ html[data-menu-aberto] .whatsapp-flutuante {
 .cena-resultado .topico {
   grid-column: 3;
   border-color: var(--cor-acento);
-  background-color: var(--cor-superficie-forte);
 }
 
 @media (min-width: 64rem) {
@@ -1606,13 +1746,38 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .caso-parte {
+  position: relative;
   display: grid;
   gap: var(--space-s);
   align-content: start;
   padding: var(--space-m);
+  overflow: hidden;
+  isolation: isolate;
   border: 1px solid var(--cor-linha);
   border-radius: var(--radius-m);
-  background-color: var(--cor-superficie);
+  background-color: var(--violet-900);
+}
+
+.caso-parte::before {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  z-index: -1;
+  background:
+    radial-gradient(
+        closest-side,
+        color-mix(in oklab, var(--violet-500) 55%, transparent),
+        transparent 70%
+      )
+      20% 30% / 70% 70% no-repeat,
+    radial-gradient(
+        closest-side,
+        color-mix(in oklab, var(--violet-100) 25%, transparent),
+        transparent 70%
+      )
+      80% 80% / 60% 60% no-repeat;
+  animation: aurora-cartao 11s ease-in-out infinite alternate;
+  pointer-events: none;
 }
 
 .caso-parte h2 {
@@ -1621,8 +1786,12 @@ html[data-menu-aberto] .whatsapp-flutuante {
   line-height: 1.2;
 }
 
+.caso-parte h2 {
+  color: #ffffff;
+}
+
 .caso-parte p {
-  color: var(--cor-apagado);
+  color: color-mix(in oklab, var(--violet-100) 72%, transparent);
 }
 
 .caso-parte ul {

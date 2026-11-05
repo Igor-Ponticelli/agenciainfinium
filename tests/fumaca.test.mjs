@@ -274,7 +274,7 @@ describe('tópicos, ícones, galeria e fotos (05/11/2026)', () => {
     await p.goto(base + '/sites/', { waitUntil: 'networkidle' });
     const resumo = await p.evaluate(() => {
       const topicos = document.querySelectorAll('.topicos .topico');
-      const icones = document.querySelectorAll('.topico .icone svg');
+      const icones = document.querySelectorAll('.topico .icone');
       const formas = document.querySelectorAll('.icone svg > *');
       const semPathLength = Array.from(formas).filter((f) => f.getAttribute('pathLength') !== '1');
       return {
@@ -291,7 +291,7 @@ describe('tópicos, ícones, galeria e fotos (05/11/2026)', () => {
     // A animação por rolagem precisa chegar inteira ao build: o minificador de CSS já quebrou
     // o par animation + animation-timeline uma vez (31/10/2026)
     const animacoes = await p.evaluate(() => {
-      const forma = document.querySelector('.topico .icone svg > *');
+      const forma = document.querySelector('.topico .icone-base > *');
       return forma.getAnimations().map((a) => a.timeline?.constructor.name);
     });
     assert.deepEqual(animacoes, ['ViewTimeline'], 'traço do ícone preso à rolagem');
