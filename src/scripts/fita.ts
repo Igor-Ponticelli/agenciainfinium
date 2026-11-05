@@ -16,10 +16,10 @@ const cortina = document.querySelector<HTMLElement>('[data-fita-cortina]');
 const titulo = document.querySelector<HTMLElement>('[data-fita-cortina-titulo]');
 
 const curva = 'cubic-bezier(0.65, 0, 0.35, 1)';
-const COBRIR = 260;
+const COBRIR = 220;
 const TITULO = 160;
-const PAUSA = 60;
-const DESCOBRIR = 280;
+const PAUSA = 40;
+const DESCOBRIR = 240;
 
 let cobrindo = false;
 let esmaecido = false;

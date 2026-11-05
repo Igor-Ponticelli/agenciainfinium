@@ -160,7 +160,7 @@ Formato: data, o que foi decidido, por quê.
   ser **escuro por padrão**, com o claro entrando por faixa (`.claro` troca os tokens
   semânticos); sobre o escuro, só White e Lilás, Primary nunca; saem a planilha, a grade, o
   holofote e o laço da conexão em SVG; ficam a fita como traço dos ícones (desenhados pela
-  rolagem, com o brilho), a cortina da troca de página (encurtada para 260, 160, 60 e 280 ms,
+  rolagem, com o brilho), a cortina da troca de página (encurtada para 220, 160, 40 e 240 ms,
   porque as páginas ficaram mais pesadas) e o laço das etapas; o Lenis fica com `lerp` 0,22. O registro do sistema construído está em `DESIGN.md`.
 - **05/11/2026, mais tarde: a abertura com foto.** Vendo o site inteiro, o Igor não gostou da
   abertura (a frase com o símbolo se desenhando ao fundo) e pediu versões em imagem. Foram
