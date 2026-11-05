@@ -1,0 +1,56 @@
+---
+import { Font, fontData } from 'astro:assets';
+import Consentimento from '../components/Consentimento.astro';
+import FontesPrevias from '../components/FontesPrevias.astro';
+import Seo from '../components/Seo.astro';
+import Alternador from '../components/versoes/Alternador.astro';
+import { codigoIdioma } from '../i18n/rotas';
+import { textos as t } from '../i18n/textos';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/versoes/comum.css';
+
+/**
+ * Layout das três versões de estudo da home (/site1/, /site2/, /site3/), feitas em 05/11/2026
+ * para o Igor escolher a direção nova do site. Cada versão é uma página só, com a própria pele
+ * (src/styles/versoes/siteN.css, importado pela página) sobre os mesmos tokens da identidade.
+ * Sem indexação, fora do sitemap, sem o ClientRouter: são protótipos, não o site publicado.
+ */
+interface Props {
+  titulo: string;
+  descricao: string;
+  versao: 1 | 2 | 3;
+}
+
+const { titulo, descricao, versao } = Astro.props;
+const robotoLatin = fontData['--fonte-roboto']?.[0]?.src[0]?.url;
+---
+
+<!doctype html>
+<html lang={codigoIdioma} data-versao={versao}>
+  <head>
+    <meta charset="utf-8" />
+    <!-- Uma linha só, sem espaços: o hash deste script está na CSP do .htaccess -->
+    <!-- prettier-ignore -->
+    <script is:inline>document.documentElement.classList.add('js')</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {robotoLatin && (
+      <link rel="preload" href={robotoLatin} as="font" type="font/woff2" crossorigin />
+    )}
+    <Font cssVariable="--fonte-roboto" />
+    <Seo titulo={titulo} descricao={descricao} noindex />
+    <FontesPrevias />
+    <slot name="head" />
+  </head>
+  <body class:list={['versao', `versao-${versao}`]}>
+    <a class="pular-conteudo" href="#conteudo">
+      {t.pularParaConteudo}
+    </a>
+    <slot />
+    <Consentimento />
+    <Alternador versao={versao} />
+    <script>
+      import '../scripts/metricas';
+    </script>
+  </body>
+</html>
