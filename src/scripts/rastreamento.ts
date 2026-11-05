@@ -79,15 +79,11 @@ function entregar(evento: Evento) {
 
 window.infiniumConsentimento = { chave: CHAVE, aplicar, ler };
 
+// A troca de página pelo ClientRouter não precisa de `page_view` manual: a medição otimizada do
+// GA4 (ligada por padrão no stream) conta as mudanças pelo histórico do navegador. Mandar os dois
+// contava cada troca duas vezes.
 if (ga4) {
   conectar(entregar);
   const salvo = ler();
   if (salvo) aplicar(salvo);
 }
-
-// Troca de página pelo ClientRouter: a tag já carregada registra a nova página
-document.addEventListener('astro:page-load', () => {
-  if (carregado && window.gtag) {
-    window.gtag('event', 'page_view', { page_location: location.href, page_title: document.title });
-  }
-});
