@@ -1,4 +1,4 @@
-/* Reset mínimo e estados globais, a partir do portfólio. Sem layout nem composição (TODO 4). */
+/* Reset mínimo e estados globais, a partir do portfólio. Sem layout nem composição (site.css). */
 
 *,
 *::before,
@@ -11,16 +11,16 @@
 }
 
 html {
-  color-scheme: light;
+  color-scheme: dark;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  scrollbar-color: var(--color-rolagem) var(--color-bg);
+  scrollbar-color: var(--color-rolagem) var(--cor-fundo);
 }
 
 body {
   min-height: 100dvh;
-  background-color: var(--color-bg);
-  color: var(--color-text);
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
   font-family: var(--font-sans);
   font-size: var(--text-body);
   line-height: var(--leading-body);
@@ -49,7 +49,7 @@ h1,
 h2,
 h3,
 h4 {
-  color: var(--color-heading);
+  color: var(--cor-titulo);
   line-height: var(--leading-title);
   text-wrap: balance;
 }
@@ -69,8 +69,13 @@ a {
 }
 
 ::selection {
-  background-color: var(--color-accent);
-  color: var(--color-on-accent);
+  background-color: var(--cor-acento);
+  color: var(--cor-fundo);
+}
+
+.claro ::selection {
+  background-color: var(--violet-700);
+  color: #ffffff;
 }
 
 /* Link "Pular para o conteúdo": escondido até receber foco */
@@ -80,15 +85,15 @@ a {
   left: var(--space-2xs);
   z-index: 100;
   padding: var(--space-2xs) var(--space-s);
-  background-color: var(--color-accent);
-  color: var(--color-on-accent);
+  background-color: var(--violet-100);
+  color: var(--violet-900);
   text-decoration: none;
   transform: translateY(calc(-100% - var(--space-s)));
 }
 
 .pular-conteudo:focus-visible {
   transform: none;
-  outline-color: var(--color-heading);
+  outline-color: #ffffff;
 }
 
 .visualmente-oculto {
@@ -102,7 +107,7 @@ a {
   border: 0;
 }
 
-/* Sem JS, a âncora rola suave pelo navegador; com JS, quem cuida é o motor (TODO 4) */
+/* Sem JS, a âncora rola suave pelo navegador; com JS, quem cuida é o motor (rolagem.ts) */
 @media (prefers-reduced-motion: no-preference) {
   html:not(.js) {
     scroll-behavior: smooth;

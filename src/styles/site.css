@@ -1,13 +1,16 @@
 /*
- * Layout e tipografia do site. Mundo do contrato (.impeccable/surfaces/): a planilha que vira
- * sistema. Fundo Body com a grade em Line; seções escuras no degradê com a grade em Lilás; a fita
- * (2 px, Primary sobre claro, Lilás sobre escuro) como cursor de seleção, sublinhado e moldura.
- * Roboto em tudo. Nunca Primary sobre o escuro.
+ * Layout e tipografia do site, direção "o infinito" (05/11/2026, direcao-visual.md, seção 5):
+ * escuro no violeta profundo da marca, com faixas claras para leitura; tipo em caixa grande;
+ * uma frase por tópico, cada tópico com o seu ícone desenhado pela fita conforme a rolagem; o
+ * símbolo como motivo; imagem de um lado e texto do outro; a galeria de projetos em janelas;
+ * as etapas com a cabeça fixa; a chamada final gigante. Primary nunca sobre o escuro: sobre o
+ * violeta, só White e Lilás. Todo componente lê os tokens semânticos (`--cor-*`), que mudam no
+ * contexto `.claro` (tokens.css).
  *
  * Animação por rolagem: sempre nas propriedades longas (animation-name, -timing-function,
  * -fill-mode, -timeline), nunca no atalho `animation` ao lado de `animation-timeline`. O
- * Lightning CSS do build funde os dois num atalho que o Chrome rejeita, e a animação some
- * (descoberto em 31/10/2026; tests/fumaca.test.mjs confere no build).
+ * Lightning CSS do build funde os dois num atalho que o Chrome rejeita (31/10/2026;
+ * tests/fumaca.test.mjs confere no build).
  */
 
 /* ---------- Moldura geral ---------- */
@@ -21,234 +24,800 @@ main:focus {
   outline: none;
 }
 
-.faixa,
+.miolo,
 .cabecalho-faixa,
-.folha,
-.chamada-final-faixa,
 .rodape-faixa {
-  width: min(100% - 2 * var(--gutter), var(--largura));
+  inline-size: min(100% - 2 * var(--gutter), var(--largura));
   margin-inline: auto;
 }
 
-/* ---------- A planilha ---------- */
-
-/* A folha é a planilha sem as linhas desenhadas (decisão do Igor, 31/10/2026: "não gostei mais
-   dos quadradinhos"). As doze colunas continuam sendo o layout de tudo, mas nenhuma linha
-   vertical aparece; o filete entre linhas fica só onde há lista. `isolation` guarda o holofote
-   atrás do conteúdo. */
-.folha {
-  position: relative;
-  isolation: isolate;
+.miolo-estreito {
+  inline-size: min(100% - 2 * var(--gutter), var(--largura-texto));
 }
 
-.linha {
-  display: grid;
-  grid-template-columns: repeat(var(--colunas), minmax(0, 1fr));
+/* ---------- Faixas: cada seção é uma coisa só ---------- */
+
+.faixa {
+  padding-block: var(--faixa-respiro);
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
 }
 
-/* Filetes só nas listas: passos, posts, perguntas, a cena e as listas da planilha */
-.passo,
-.post-linha,
-.home-posts-linha,
-.lista-planilha > .linha,
-.linha:has(> .faq-item) {
-  border-block-end: 1px solid var(--color-grade);
+.faixa-profundo {
+  --cor-fundo: var(--cor-fundo-profundo);
 }
 
-.linha {
-  min-block-size: var(--linha-altura);
+.faixa-degrade {
+  background-image: var(--gradient-brand);
 }
 
-.linha > * {
-  min-inline-size: 0;
+.faixa-junta {
+  padding-block-start: 0;
 }
 
-.celula {
-  padding: var(--celula-pad);
-}
+/* ---------- Tipo ---------- */
 
-/* Célula mesclada: um bloco sólido que cobre a grade. É a imagem do sistema. */
-.mesclada {
-  background-color: var(--color-celula);
-}
-
-/* Linhas que são só espaço (respiro medido em linhas da planilha) */
-.linha-vazia {
-  min-block-size: calc(var(--linha-altura) / 2);
-}
-
-/* Título de seção numa linha da planilha */
-.titulo-secao {
-  grid-column: 1 / -1;
-  align-self: end;
-  padding: var(--space-m) var(--celula-pad) var(--space-s);
+h2 {
   font-size: var(--text-h2);
   font-weight: var(--weight-bold);
-  line-height: var(--leading-title);
+  line-height: 1.02;
   letter-spacing: var(--tracking-title);
 }
 
-.titulo-secao + .celula-apoio {
-  grid-column: 1 / -1;
-}
-
-.celula-apoio {
-  max-inline-size: 56ch;
-  align-self: end;
-  color: var(--color-text);
-}
-
-.escuro .celula-apoio {
-  color: color-mix(in oklab, #fff 82%, transparent);
-}
-
-.texto {
-  max-inline-size: var(--texto-medida);
-}
-
-.texto p + p {
-  margin-block-start: var(--space-s);
-}
-
-/* ---------- Bandas: cada seção é uma coisa só ---------- */
-
-/* Pedido do Igor (31/10/2026): as seções se separam como bandas de largura inteira, cada uma
-   com o próprio fundo e respiro, com pelo menos 85% da altura da tela e o conteúdo centrado na
-   vertical ("acho mais elegante"). Os fundos se alternam (Body, White, o degradê) e é isso que
-   marca onde uma seção acaba e a outra começa. */
-.banda {
-  display: grid;
-  align-content: center;
-  min-block-size: 85svh;
-  padding-block: var(--space-2xl);
-}
-
-.banda-branco {
-  --color-celula: var(--color-bg);
-  background-color: var(--color-surface);
-}
-
-.banda-cabeca {
-  padding-block: var(--space-m) var(--space-2xl);
-}
-
-@media (min-width: 64rem) {
-  .banda {
-    padding-block: var(--space-3xl);
-  }
-
-  .banda-cabeca {
-    padding-block: var(--space-l) var(--space-3xl);
-  }
-}
-
-/* ---------- Cartões: células mescladas em grade, com o ícone da fita ---------- */
-
-/* Uma linha `.cartoes` é uma grade de células mescladas separadas por 1 px (o fundo da linha é
-   a cor do filete e os cartões deixam 1 px entre si), com um filete em volta. Nada de sombra nem
-   canto: são células. Três por linha no desktop, duas no tablet, uma no celular. */
-.cartoes {
-  gap: 1px;
-  padding: 0;
-  border: 1px solid var(--color-grade);
-  background-color: var(--color-grade);
-  list-style: none;
-}
-
-.cartao {
-  grid-column: 1 / -1;
-  position: relative;
-  display: grid;
-  gap: var(--space-xs);
-  align-content: start;
-  padding: var(--space-m) var(--celula-pad);
-  background-color: var(--color-celula);
-}
-
-.cartao .icone {
-  margin-block-end: var(--space-2xs);
-}
-
-.cartao-titulo {
-  color: var(--color-heading);
+h3 {
   font-size: var(--text-h3);
   font-weight: var(--weight-bold);
+  line-height: 1.3;
+}
+
+/* A cabeça de uma seção: título, uma linha e, se houver, um link à direita */
+.cabeca-secao {
+  display: grid;
+  gap: var(--space-xs);
+  max-inline-size: 60ch;
+  margin-block-end: clamp(2rem, 5vw, 3.5rem);
+}
+
+.cabeca-secao p {
+  color: var(--cor-apagado);
+  font-size: var(--text-subtitle);
+  line-height: 1.4;
+}
+
+.cabeca-secao-linha {
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: var(--space-s) var(--space-l);
+  max-inline-size: none;
+}
+
+.cabeca-secao-linha > div {
+  display: grid;
+  gap: var(--space-xs);
+  max-inline-size: 60ch;
+}
+
+@media (max-width: 47.99rem) {
+  .cabeca-secao-linha {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+}
+
+/* O rótulo de seção: pequeno, em caixa-alta, com a linha correndo até a borda */
+.rotulo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+  margin-block-end: var(--space-l);
+  color: var(--cor-apagado);
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.rotulo::after {
+  content: '';
+  flex: 1;
+  block-size: 1px;
+  background-color: var(--cor-linha);
+}
+
+.frase-chave {
+  color: var(--cor-acento);
+  font-size: var(--text-subtitle);
+  font-weight: var(--weight-medium);
   line-height: var(--leading-subtitle);
 }
 
-.cartao-titulo a {
+.texto {
+  display: grid;
+  gap: var(--space-s);
+  max-inline-size: var(--texto-medida);
+}
+
+.apagado {
+  color: var(--cor-apagado);
+}
+
+/* ---------- Ações: pílula, contorno e o link com a fita por baixo ---------- */
+
+.acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-s) var(--space-l);
+}
+
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-block-size: 3.25rem;
+  padding: 0.85rem 1.75rem;
+  border: 1px solid var(--botao-fundo);
+  border-radius: var(--radius-full);
+  background-color: var(--botao-fundo);
+  color: var(--botao-texto);
+  font-weight: var(--weight-medium);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    transform var(--duration-base) var(--ease-out);
+}
+
+.botao:hover {
+  border-color: var(--botao-hover);
+  background-color: var(--botao-hover);
+  transform: translateY(-1px);
+}
+
+.botao-contorno {
+  border-color: var(--cor-linha);
+  background-color: transparent;
+  color: var(--cor-titulo);
+}
+
+.botao-contorno:hover {
+  border-color: var(--cor-acento);
+  background-color: var(--cor-superficie);
+  color: var(--cor-titulo);
+}
+
+.botao-grande {
+  min-block-size: 4rem;
+  padding-inline: 2.25rem;
+  font-size: var(--text-subtitle);
+  font-weight: var(--weight-bold);
+}
+
+.botao[disabled] {
+  border-color: var(--cor-linha);
+  background-color: var(--cor-superficie);
+  color: var(--cor-apagado);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.link-fita {
+  --fita-largura: 0%;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding-block-end: 2px;
+  background-image: linear-gradient(var(--cor-acento), var(--cor-acento));
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: var(--fita-largura) 1px;
+  color: var(--cor-titulo);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  transition: background-size var(--duration-base) var(--ease-out);
+}
+
+.link-fita:hover,
+.link-fita:focus-visible,
+.link-fita[aria-current='page'] {
+  --fita-largura: 100%;
+}
+
+.link-fita svg {
+  flex: none;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.link-fita:hover svg {
+  transform: translateX(3px);
+}
+
+/* ---------- Cabeçalho: fixo, quase transparente ---------- */
+
+.cabecalho {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 30;
+  background-color: color-mix(in oklab, var(--violet-900) 92%, transparent);
+  color: #ffffff;
+}
+
+/* O blur só no desktop: ele faz o cabeçalho virar o bloco de contenção do painel fixo do menu
+   do celular, e o painel deixaria de cobrir a tela */
+@media (min-width: 64rem) {
+  @supports (backdrop-filter: blur(12px)) {
+    .cabecalho {
+      background-color: color-mix(in oklab, var(--violet-900) 72%, transparent);
+      backdrop-filter: blur(12px);
+    }
+  }
+}
+
+.cabecalho-faixa {
+  display: flex;
+  align-items: center;
+  gap: var(--space-s) var(--space-l);
+  min-block-size: var(--cabecalho-altura);
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
   text-decoration: none;
 }
 
-.cartao-texto {
-  max-inline-size: 38ch;
+.logo img {
+  block-size: var(--logo-altura);
+  inline-size: auto;
 }
 
-.cartao-frase {
-  color: var(--color-heading);
+.logo .logo-claro {
+  display: none;
+}
+
+.menu-painel {
+  display: flex;
+  align-items: center;
+  gap: var(--space-s) var(--space-l);
+  margin-inline-start: auto;
+}
+
+.menu ul {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2xs) 1.75rem;
+  padding: 0;
+  list-style: none;
+}
+
+.menu a {
+  --fita-largura: 0%;
+  display: inline-block;
+  padding-block: 0.3rem;
+  background-image: linear-gradient(var(--violet-100), var(--violet-100));
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: var(--fita-largura) 1px;
+  color: rgb(255 255 255 / 0.78);
+  font-size: var(--text-s);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    background-size var(--duration-base) var(--ease-out);
+}
+
+.menu a:hover,
+.menu a:focus-visible,
+.menu a[aria-current='page'] {
+  --fita-largura: 100%;
+  color: #ffffff;
+}
+
+.botao-cabecalho {
+  min-block-size: 2.5rem;
+  padding: 0.5rem 1.1rem;
+  font-size: var(--text-s);
+}
+
+.cabecalho :focus-visible {
+  outline-color: var(--violet-100);
+}
+
+.menu-botao {
+  display: none;
+}
+
+.menu-botao-linhas {
+  position: relative;
+  display: block;
+  inline-size: 22px;
+  block-size: 10px;
+}
+
+.menu-botao-linhas span {
+  position: absolute;
+  inset-inline-start: 0;
+  inline-size: 100%;
+  block-size: 2px;
+  background-color: currentColor;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.menu-botao-linhas span:first-child {
+  inset-block-start: 0;
+}
+
+.menu-botao-linhas span:last-child {
+  inset-block-end: 0;
+}
+
+.menu-botao[aria-expanded='true'] .menu-botao-linhas span:first-child {
+  transform: translateY(4px) rotate(45deg);
+}
+
+.menu-botao[aria-expanded='true'] .menu-botao-linhas span:last-child {
+  transform: translateY(-4px) rotate(-45deg);
+}
+
+@media (max-width: 63.99rem) {
+  /* Sem JS: o painel se desfaz no cabeçalho e tudo fica visível */
+  html:not(.js) .cabecalho-faixa {
+    flex-wrap: wrap;
+    padding-block: var(--space-s);
+  }
+
+  html:not(.js) .menu-painel {
+    display: contents;
+  }
+
+  html:not(.js) .menu {
+    order: 3;
+    inline-size: 100%;
+  }
+
+  html:not(.js) .botao-cabecalho {
+    margin-inline-start: auto;
+  }
+
+  /* Com JS: botão de dois traços e painel de tela cheia */
+  html.js .logo,
+  html.js .menu-botao {
+    position: relative;
+    z-index: 2;
+  }
+
+  html.js .menu-botao {
+    display: inline-grid;
+    place-items: center;
+    inline-size: 2.75rem;
+    block-size: 2.75rem;
+    margin-inline: auto calc(-1 * var(--space-2xs));
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  html.js .menu-painel {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: var(--space-xl);
+    margin: 0;
+    padding: calc(var(--cabecalho-altura) + var(--space-xl)) var(--gutter) var(--space-xl);
+    background-color: var(--violet-900);
+    color: #ffffff;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-0.5rem);
+    transition:
+      opacity var(--duration-base) var(--ease-out),
+      transform var(--duration-base) var(--ease-out),
+      visibility 0s linear var(--duration-base);
+  }
+
+  html[data-menu-aberto] .menu-painel {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0s;
+  }
+
+  html[data-menu-aberto] {
+    overflow: hidden;
+  }
+
+  html.js .menu ul {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-xs);
+  }
+
+  html.js .menu a {
+    color: #ffffff;
+    font-size: clamp(2rem, 9vw, 2.75rem);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-title);
+    line-height: 1.1;
+  }
+
+  html.js .menu-painel .botao-cabecalho {
+    display: inline-flex;
+    min-block-size: 3.25rem;
+    font-size: var(--text-body);
+  }
+}
+
+/* ---------- Botão flutuante do WhatsApp (celular e tablet) ---------- */
+
+.whatsapp-flutuante {
+  position: fixed;
+  inset-block-end: var(--space-m);
+  inset-inline-end: var(--space-m);
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 3rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-full);
+  background-color: var(--violet-100);
+  color: var(--violet-900);
+  font-weight: var(--weight-bold);
+  text-decoration: none;
+  box-shadow: 0 12px 32px -12px rgb(0 0 0 / 0.6);
+}
+
+/* Com a abertura na tela, o cabeçalho já tem a ação: o flutuante espera (flutuante.ts) */
+html[data-topo-visivel] .whatsapp-flutuante,
+html[data-menu-aberto] .whatsapp-flutuante {
+  display: none;
+}
+
+@media (min-width: 64rem) {
+  .whatsapp-flutuante {
+    display: none;
+  }
+}
+
+/* ---------- Abertura da home: a frase gigante e o símbolo que se desenha ---------- */
+
+.abertura {
+  position: relative;
+  overflow: hidden;
+  background-image: linear-gradient(170deg, var(--violet-700) 0%, var(--violet-900) 55%);
+  padding-block: 0;
+}
+
+.abertura-grade {
+  position: relative;
+  display: grid;
+  gap: var(--space-xl);
+  align-content: end;
+  min-block-size: calc(100svh - var(--cabecalho-altura));
+  padding-block: clamp(4rem, 10vh, 7rem) clamp(3rem, 8vh, 5rem);
+}
+
+.abertura h1 {
+  position: relative;
+  max-inline-size: 11ch;
+  color: #ffffff;
+  font-size: var(--text-hero);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+}
+
+.abertura-apoio {
+  position: relative;
+  display: grid;
+  gap: var(--space-m);
+  max-inline-size: 40ch;
+}
+
+.abertura-apoio p {
+  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  line-height: 1.45;
+}
+
+@media (min-width: 64rem) {
+  .abertura-grade {
+    grid-template-columns: 1fr minmax(18rem, 26rem);
+    align-items: end;
+    gap: var(--space-l) var(--space-2xl);
+  }
+
+  .abertura h1 {
+    grid-column: 1 / -1;
+  }
+
+  .abertura-apoio {
+    grid-column: 2;
+  }
+}
+
+.abertura-simbolo {
+  position: absolute;
+  inset-block-start: clamp(1rem, 4vh, 3rem);
+  inset-inline-end: -8%;
+  inline-size: clamp(16rem, 46vw, 40rem);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.abertura-simbolo svg,
+.conexao-simbolo svg {
+  inline-size: 100%;
+  block-size: auto;
+  overflow: visible;
+}
+
+.abertura-simbolo path,
+.conexao-simbolo path {
+  stroke: var(--violet-100);
+  stroke-width: 7;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .abertura-simbolo path {
+    stroke-dashoffset: 1;
+    animation: desenhar-ao-abrir 2200ms var(--ease-out) 300ms forwards;
+  }
+
+  .abertura h1,
+  .abertura-apoio {
+    animation: subir 900ms var(--ease-out) both;
+  }
+
+  .abertura-apoio {
+    animation-delay: 180ms;
+  }
+}
+
+@keyframes desenhar-ao-abrir {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes subir {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- A faixa rolante ---------- */
+
+.rolante {
+  overflow: hidden;
+  border-block: 1px solid var(--cor-linha);
+  padding-block: 0.9rem;
+  background-color: var(--cor-fundo);
+}
+
+.rolante-trilho {
+  display: flex;
+  gap: 3rem;
+  inline-size: max-content;
+  padding-inline-start: 3rem;
+}
+
+.rolante-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-s);
+  color: var(--cor-apagado);
+  font-size: var(--text-s);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+}
+
+.rolante-item img {
+  inline-size: 1.25rem;
+  block-size: auto;
+  opacity: 0.8;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rolante-trilho {
+    animation: rolar 48s linear infinite;
+  }
+
+  .rolante:hover .rolante-trilho {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes rolar {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ---------- Cabeça das páginas internas ---------- */
+
+.cabeca {
+  padding-block: clamp(3rem, 7vw, 5rem);
+  background-image: linear-gradient(170deg, var(--violet-700) 0%, var(--violet-900) 60%);
+}
+
+.cabeca-grade {
+  display: grid;
+  gap: var(--space-xl);
+  align-items: center;
+}
+
+@media (min-width: 64rem) {
+  .cabeca-com-foto .cabeca-grade {
+    grid-template-columns: 1.15fr 1fr;
+    gap: var(--space-2xl);
+  }
+}
+
+.cabeca-texto {
+  display: grid;
+  gap: var(--space-m);
+  justify-items: start;
+}
+
+.cabeca h1 {
+  max-inline-size: 14ch;
+  color: #ffffff;
+  font-size: var(--text-h1);
+  font-weight: var(--weight-bold);
+  line-height: 0.98;
+  letter-spacing: var(--tracking-display);
+}
+
+.cabeca-frase {
+  color: var(--violet-100);
+  font-size: clamp(1.25rem, 1rem + 1vw, 1.625rem);
+  font-weight: var(--weight-medium);
+  line-height: 1.3;
+}
+
+.cabeca-linha {
+  max-inline-size: 46ch;
+  font-size: var(--text-subtitle);
+  line-height: 1.45;
+}
+
+.cabeca-foto {
+  --foto-proporcao: 4 / 3;
+  border-radius: var(--radius-l);
+}
+
+.cabeca-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs) var(--space-m);
+  color: var(--cor-apagado);
+  font-size: var(--text-s);
+}
+
+/* ---------- Tópicos com ícone ---------- */
+
+.topicos {
+  display: grid;
+  gap: var(--space-s);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  padding: 0;
+  list-style: none;
+}
+
+.topico {
+  display: grid;
+  gap: var(--space-s);
+  align-content: start;
+  padding: var(--space-m);
+  border: 1px solid var(--cor-linha);
+  border-radius: var(--radius-m);
+  background-color: var(--cor-superficie);
+  transition:
+    border-color var(--duration-base) var(--ease-out),
+    transform var(--duration-base) var(--ease-out);
+}
+
+.topico:hover {
+  border-color: var(--cor-acento);
+  transform: translateY(-2px);
+}
+
+.topico-texto {
+  display: grid;
+  gap: var(--space-3xs);
+}
+
+.topico h3 {
+  font-size: var(--text-h3);
+  line-height: 1.25;
+}
+
+.topico p {
+  color: var(--cor-apagado);
+  font-size: var(--text-s);
+}
+
+.topico .botao {
+  justify-self: start;
+  margin-block-start: var(--space-2xs);
+}
+
+/* Compactos: ícone e texto lado a lado, para listas curtas */
+.topicos-compactos {
+  gap: var(--space-2xs);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+}
+
+.topicos-compactos .topico {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  padding: var(--space-xs) var(--space-s);
+  border-radius: var(--radius-s);
+}
+
+.topicos-compactos .topico h3 {
+  font-size: var(--text-body);
   font-weight: var(--weight-medium);
 }
 
-.cartao .botao {
-  justify-self: start;
-  margin-block-start: var(--space-xs);
+.topicos-compactos .icone {
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
 }
 
-@media (min-width: 48rem) {
-  .cartao {
-    grid-column: span 3;
-    padding: var(--space-m);
-  }
-
-  .cartoes[data-cartoes='3'] .cartao:last-child,
-  .cartoes[data-cartoes='5'] .cartao:last-child {
-    grid-column: 1 / -1;
+/* Tópicos com a largura inteira em colunas fixas; no celular, dois por linha quando couber */
+@media (max-width: 63.99rem) {
+  .topicos-4,
+  .topicos-5 {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
   }
 }
 
 @media (min-width: 64rem) {
-  .cartao {
-    grid-column: span 4;
-    padding: var(--space-l) var(--space-m);
+  .topicos-2 {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .cartoes[data-cartoes='2'] .cartao {
-    grid-column: span 6;
+  .topicos-3 {
+    grid-template-columns: repeat(3, 1fr);
   }
 
-  .cartoes[data-cartoes='4'] .cartao {
-    grid-column: span 3;
+  .topicos-4 {
+    grid-template-columns: repeat(4, 1fr);
   }
 
-  .cartoes[data-cartoes='3'] .cartao:last-child,
-  .cartoes[data-cartoes='5'] .cartao:last-child {
-    grid-column: span 4;
-  }
-
-  .cartoes[data-cartoes='5'] .cartao:nth-child(n + 4) {
-    grid-column: span 6;
+  .topicos-5 {
+    grid-template-columns: repeat(5, 1fr);
   }
 }
 
-/* ---------- Ícones: a fita desenha o traço conforme a rolagem ---------- */
+/* ---------- Ícones: a fita desenha o traço conforme a rolagem, com o brilho ---------- */
 
-/* Pedido do Igor (31/10/2026): ícones de traço, desenhados pela própria fita enquanto a página
-   desce, com um brilho discreto na cor da fita. Sem suporte a animação por rolagem ou com
-   movimento reduzido, aparecem prontos e acesos. */
 .icone {
   position: relative;
   display: inline-grid;
   place-items: center;
   inline-size: 3rem;
   block-size: 3rem;
-  color: var(--color-fita);
+  color: var(--cor-icone);
   view-timeline: --icone block;
-}
-
-.icone-inline {
-  inline-size: 2rem;
-  block-size: 2rem;
-  flex: none;
 }
 
 /* O brilho: um halo na cor da fita atrás do traço */
@@ -257,12 +826,12 @@ main:focus {
   position: absolute;
   inset: -40%;
   border-radius: 50%;
-  background-image: radial-gradient(closest-side, var(--color-icone-brilho), transparent);
+  background-image: radial-gradient(closest-side, var(--cor-brilho), transparent);
 }
 
 .icone svg {
   position: relative;
-  filter: drop-shadow(0 0 6px var(--color-icone-sombra));
+  filter: drop-shadow(0 0 6px var(--cor-sombra-icone));
 }
 
 .icone svg > * {
@@ -300,22 +869,29 @@ main:focus {
   }
 }
 
+@keyframes desenhar {
+  from {
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 @keyframes acender {
   to {
     opacity: 1;
   }
 }
 
-/* ---------- Fotos: células mescladas com imagem ---------- */
+/* ---------- Fotos: proporção fixa, cortadas pelo centro ---------- */
 
-/* Fotos do Unsplash, escolhidas uma a uma (31/10/2026; créditos em .claude/docs/fotos.md).
-   A foto é uma célula mesclada: cobre a grade, tem proporção fixa (sem salto de layout) e é
-   cortada pelo centro. Sobre o degradê, só a luz da foto fica, nas cores da marca. */
 .foto {
   position: relative;
   overflow: hidden;
   aspect-ratio: var(--foto-proporcao, 3 / 2);
-  background-color: var(--color-celula);
+  background-color: var(--cor-superficie-forte);
 }
 
 .foto picture,
@@ -332,6 +908,7 @@ main:focus {
   object-position: var(--foto-posicao, 50% 50%);
 }
 
+/* Sobre o escuro: só a luz da foto, nas cores da marca */
 .foto-violeta {
   isolation: isolate;
   background-image: var(--gradient-brand);
@@ -341,1071 +918,276 @@ main:focus {
   mix-blend-mode: luminosity;
 }
 
-/* ---------- Holofote: a luz sob o ponteiro (holofote.ts) ---------- */
+/* ---------- A cena: as ferramentas soltas viram um sistema só ---------- */
 
-/* A luz: um disco suave na cor da fita que acompanha o ponteiro sobre a folha. Fica atrás do
-   conteúdo (as células mescladas a cobrem) e é movido só por transform. */
-.holofote {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  opacity: 0;
-  transition: opacity var(--duration-slow) var(--ease-out);
-  pointer-events: none;
-}
-
-.folha[data-holofote] .holofote {
-  opacity: 1;
-}
-
-.holofote-luz {
-  --raio: 24rem;
-  position: absolute;
-  inset-block-start: 0;
-  inset-inline-start: 0;
-  inline-size: calc(2 * var(--raio));
-  block-size: calc(2 * var(--raio));
-  background-image: radial-gradient(closest-side, var(--color-holofote), transparent);
-  transform: translate(calc(var(--hx, 0px) - var(--raio)), calc(var(--hy, 0px) - var(--raio)));
-  will-change: transform;
-}
-
-/* ---------- Links, botões e a fita ---------- */
-
-a {
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
-}
-
-/* A fita como sublinhado: desenha-se da esquerda para a direita no hover e no foco */
-.link-fita {
-  --fita-largura: 0%;
-  display: inline-block;
-  padding-block-end: 2px;
-  background-image: linear-gradient(var(--color-fita), var(--color-fita));
-  background-repeat: no-repeat;
-  background-position: left bottom;
-  background-size: var(--fita-largura) 2px;
-  color: inherit;
-  font-weight: var(--weight-medium);
-  text-decoration: none;
-  transition: background-size var(--duration-base) var(--ease-out);
-}
-
-.link-fita:hover,
-.link-fita:focus-visible,
-.link-fita[aria-current='page'] {
-  --fita-largura: 100%;
-}
-
-.botao {
-  --fita-largura: 0%;
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5em;
-  min-block-size: 3rem;
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--radius-m);
-  background-color: var(--color-accent);
-  color: var(--color-on-accent);
-  font-weight: var(--weight-medium);
-  text-decoration: none;
-  text-align: center;
-  cursor: pointer;
-  transition: background-color var(--duration-base) var(--ease-out);
-}
-
-/* No hover a fita contorna o botão por baixo, da esquerda para a direita */
-.botao::after {
-  content: '';
-  position: absolute;
-  inset-inline: 0.75rem;
-  inset-block-end: 0.4rem;
-  block-size: 2px;
-  background-color: currentColor;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform var(--duration-base) var(--ease-out);
-}
-
-.botao:hover {
-  background-color: var(--color-accent-hover);
-}
-
-.botao:hover::after,
-.botao:focus-visible::after {
-  transform: scaleX(1);
-}
-
-/* Sobre o escuro: Lilás com texto Ink. Nunca Primary. */
-.botao-claro {
-  background-color: var(--color-lilac);
-  color: var(--color-heading);
-}
-
-.botao-claro:hover {
-  background-color: #fff;
-}
-
-.botao-grande {
-  min-block-size: 3.75rem;
-  font-size: var(--text-subtitle);
-  font-weight: var(--weight-bold);
-}
-
-.botao-contorno {
-  border: 1px solid var(--color-line);
-  background-color: transparent;
-  color: var(--color-heading);
-}
-
-.botao-contorno:hover {
-  border-color: var(--color-accent);
-  background-color: var(--color-bg);
-}
-
-.botao-contorno::after {
-  background-color: var(--color-fita);
-}
-
-/* ---------- Banner de cookies (LGPD) ---------- */
-
-.consentimento {
-  position: fixed;
-  inset: auto var(--space-m) var(--space-m) auto;
-  z-index: 60;
+.cena-grade {
   display: grid;
-  gap: var(--space-s);
-  max-inline-size: min(26rem, 100vw - 2 * var(--space-m));
-  padding: var(--space-m);
-  border-radius: var(--radius-m);
-  background-color: var(--color-surface);
-  box-shadow: 0 12px 32px -12px rgb(32 10 52 / 0.45);
-  color: var(--color-text);
-  font-size: var(--text-s);
+  gap: var(--space-l);
 }
 
-.consentimento[hidden],
-.consentimento [hidden] {
-  display: none;
+.cena-frase {
+  max-inline-size: 32ch;
+  color: var(--cor-titulo);
+  font-size: clamp(1.375rem, 1rem + 1.6vw, 2rem);
+  font-weight: var(--weight-medium);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
 }
 
-.consentimento-texto {
-  color: var(--color-heading);
-}
-
-.consentimento-opcoes {
+.cena-resultado {
   display: grid;
-  gap: var(--space-2xs);
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
-.consentimento-opcoes legend {
-  margin-block-end: var(--space-2xs);
-  color: var(--color-heading);
-  font-weight: var(--weight-medium);
-}
-
-.consentimento-opcao {
-  display: flex;
+  grid-template-columns: auto auto 1fr;
+  gap: var(--space-m);
   align-items: center;
-  gap: var(--space-2xs);
 }
 
-.consentimento-opcao input {
-  accent-color: var(--color-accent);
+.cena-seta {
+  color: var(--cor-acento);
 }
 
-.consentimento-acoes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2xs);
+.cena-resultado .topico {
+  grid-column: 3;
+  border-color: var(--cor-acento);
+  background-color: var(--cor-superficie-forte);
 }
 
-.consentimento .botao {
-  min-block-size: 2.5rem;
-  padding: 0.5rem 0.9rem;
-  font-size: var(--text-s);
-}
-
-@media (max-width: 30rem) {
-  .consentimento {
-    inset: auto var(--space-2xs) var(--space-2xs) var(--space-2xs);
-    max-inline-size: none;
-  }
-}
-
-button.botao {
-  border: 0;
-  font: inherit;
-  font-weight: var(--weight-medium);
-}
-
-.acoes {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-s) var(--space-l);
-}
-
-@media (max-width: 47.99rem) {
-  .acoes {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .acoes .link-fita {
-    align-self: flex-start;
-  }
-}
-
-/* Foco e seleção sobre o escuro */
-.escuro ::selection {
-  background-color: var(--color-lilac);
-  color: var(--color-heading);
-}
-
-.escuro h1,
-.escuro h2,
-.escuro h3 {
-  color: #fff;
-}
-
-/* ---------- Cabeçalho ---------- */
-
-.cabecalho {
-  position: relative;
-  z-index: 3;
-}
-
-.cabecalho-faixa {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-s) var(--space-l);
-  min-block-size: var(--cabecalho-altura);
-  padding-block: var(--space-xs);
-}
-
-/* A régua: a fita que sai do logo e corre até a borda direita. A troca de página parte dela. */
-.regua {
-  block-size: 2px;
-  margin-inline-start: max(var(--gutter), (100% - var(--largura)) / 2);
-  background-color: var(--color-fita);
-}
-
-.logo {
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
-}
-
-.logo img {
-  block-size: 1.625rem;
-  inline-size: auto;
-}
-
-@media (min-width: 48rem) {
-  .logo img {
-    block-size: 1.75rem;
-  }
-}
-
-.logo-escuro {
-  display: none;
-}
-
-.escuro .logo-claro {
-  display: none;
-}
-
-.escuro .logo-escuro {
-  display: block;
-}
-
-/* Com o painel do celular aberto, o fundo é claro: o logo volta ao Primary */
-html[data-menu-aberto] .escuro .logo-claro {
-  display: block;
-}
-
-html[data-menu-aberto] .escuro .logo-escuro {
-  display: none;
-}
-
-.menu-painel {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-s) var(--space-l);
-  margin-inline-start: auto;
-}
-
-.menu-botao {
-  display: none;
-}
-
-.menu ul {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2xs) var(--space-m);
-  padding: 0;
-  list-style: none;
-  font-size: var(--text-s);
-  font-weight: var(--weight-medium);
-}
-
-.menu a {
-  --fita-largura: 0%;
-  display: inline-block;
-  padding-block: 0.3rem 0.35rem;
-  background-image: linear-gradient(var(--color-fita), var(--color-fita));
-  background-repeat: no-repeat;
-  background-position: left bottom;
-  background-size: var(--fita-largura) 2px;
-  text-decoration: none;
-  transition: background-size var(--duration-base) var(--ease-out);
-}
-
-.menu a:hover,
-.menu a:focus-visible,
-.menu a[aria-current='page'] {
-  --fita-largura: 100%;
-}
-
-.botao-whatsapp {
-  min-block-size: 2.5rem;
-  padding: 0.5rem 1rem;
-  font-size: var(--text-s);
-}
-
-/* Submenu de Serviços no desktop: abre no hover e no foco, fecha sozinho */
 @media (min-width: 64rem) {
-  .menu-grupo {
-    position: relative;
+  .cena-resultado {
+    grid-template-columns: 1fr auto 1fr;
   }
 
-  .menu-grupo > a {
-    padding-inline-end: 1.1em;
-  }
-
-  .menu-grupo > a::after {
-    content: '';
-    position: absolute;
-    inset-inline-end: 0.15em;
-    inset-block-start: 0.85em;
-    inline-size: 0.4em;
-    block-size: 0.4em;
-    border-inline-end: 1.5px solid currentColor;
-    border-block-end: 1.5px solid currentColor;
-    transform: rotate(45deg);
-  }
-
-  .submenu {
-    position: absolute;
-    inset-block-start: 100%;
-    inset-inline-start: calc(-1 * var(--space-s));
-    z-index: 4;
-    display: grid;
-    gap: 0;
-    min-inline-size: 11rem;
-    padding: var(--space-2xs) 0;
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-m);
-    background-color: var(--color-celula);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-0.25rem);
-    transition:
-      opacity var(--duration-fast) var(--ease-out),
-      transform var(--duration-fast) var(--ease-out),
-      visibility 0s linear var(--duration-fast);
-  }
-
-  .menu-grupo:hover .submenu,
-  .menu-grupo:focus-within .submenu {
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-    transition-delay: 0s;
-  }
-
-  .submenu a {
-    display: block;
-    padding: var(--space-xs) var(--space-s);
-    background-position: var(--space-s) calc(100% - 0.45rem);
-    background-size: calc(var(--fita-largura) - 2 * var(--space-s) * (var(--fita-largura) / 100%))
-      2px;
-  }
-
-  .submenu a:hover,
-  .submenu a:focus-visible,
-  .submenu a[aria-current='page'] {
-    background-size: calc(100% - 2 * var(--space-s)) 2px;
+  .cena-resultado .cena-frase {
+    grid-column: 1;
   }
 }
 
 @media (max-width: 63.99rem) {
-  /* Sem JS: o painel se desfaz no cabeçalho e tudo fica visível */
-  html:not(.js) .menu-painel {
-    display: contents;
+  .cena-resultado {
+    grid-template-columns: 1fr;
   }
 
-  html:not(.js) .menu {
-    order: 3;
-    inline-size: 100%;
+  .cena-resultado .topico {
+    grid-column: 1;
   }
 
-  html:not(.js) .submenu {
-    display: contents;
-  }
-
-  html:not(.js) .botao-whatsapp {
-    margin-inline-start: auto;
-  }
-
-  /* Com JS: botão de dois traços e painel de tela cheia */
-  html.js .logo,
-  html.js .menu-botao {
-    position: relative;
-    z-index: 2;
-  }
-
-  html.js .menu-botao {
-    display: inline-grid;
-    place-items: center;
-    inline-size: 2.75rem;
-    block-size: 2.75rem;
-    margin-inline: auto calc(-1 * var(--space-2xs));
-    padding: 0;
-    border: 0;
-    background: none;
-    color: inherit;
-    cursor: pointer;
-  }
-
-  html.js .menu-painel {
-    position: fixed;
-    inset: 0;
-    z-index: 1;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: stretch;
-    justify-content: space-between;
-    gap: var(--space-xl);
-    margin: 0;
-    padding: calc(var(--cabecalho-altura) + var(--space-xl)) var(--gutter) var(--space-xl);
-    background-color: var(--color-bg);
-    color: var(--color-heading);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-0.5rem);
-    transition:
-      opacity var(--duration-base) var(--ease-out),
-      transform var(--duration-base) var(--ease-out),
-      visibility 0s linear var(--duration-base);
-  }
-
-  html[data-menu-aberto] .menu-painel {
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-    transition-delay: 0s;
-  }
-
-  html[data-menu-aberto] {
-    overflow: hidden;
-  }
-
-  html[data-menu-aberto] .cabecalho {
-    color: var(--color-heading);
-  }
-
-  html[data-menu-aberto] .escuro .menu-botao {
-    color: var(--color-heading);
-  }
-
-  html.js .menu-painel .menu a {
-    --color-fita: var(--color-accent);
-  }
-
-  html.js .menu ul {
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--space-xs);
-    font-size: var(--text-h2);
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--tracking-title);
-    line-height: var(--leading-title);
-  }
-
-  html.js .submenu {
-    display: grid;
-    gap: var(--space-2xs);
-    margin-block-start: var(--space-2xs);
-    padding-inline-start: var(--space-m);
-    font-size: var(--text-subtitle);
-    font-weight: var(--weight-medium);
-    letter-spacing: 0;
-  }
-
-  html.js .menu-painel .botao-whatsapp {
-    display: flex;
-    min-block-size: 3.25rem;
-    background-color: var(--color-accent);
-    color: var(--color-on-accent);
-    font-size: var(--text-body);
+  .cena-seta {
+    transform: rotate(90deg);
+    justify-self: start;
+    margin-inline-start: var(--space-s);
   }
 }
 
-.menu-botao-linhas {
-  position: relative;
-  display: block;
-  inline-size: 22px;
-  block-size: 10px;
-}
+/* ---------- Duplas: imagem de um lado, texto do outro ---------- */
 
-.menu-botao-linhas span {
-  position: absolute;
-  inset-inline-start: 0;
-  inline-size: 100%;
-  block-size: 2px;
-  background-color: currentColor;
-  transition: transform var(--duration-base) var(--ease-out);
-}
-
-.menu-botao-linhas span:first-child {
-  inset-block-start: 0;
-}
-
-.menu-botao-linhas span:last-child {
-  inset-block-end: 0;
-}
-
-.menu-botao[aria-expanded='true'] .menu-botao-linhas span:first-child {
-  transform: translateY(4px) rotate(45deg);
-}
-
-.menu-botao[aria-expanded='true'] .menu-botao-linhas span:last-child {
-  transform: translateY(-4px) rotate(-45deg);
-}
-
-/* ---------- Botão flutuante do WhatsApp (celular e tablet) ---------- */
-
-.whatsapp-flutuante {
-  position: fixed;
-  inset-block-end: var(--space-m);
-  inset-inline-end: var(--space-m);
-  z-index: 50;
-  display: inline-flex;
+.dupla {
+  display: grid;
+  gap: var(--space-l);
   align-items: center;
-  min-block-size: 3rem;
-  padding: 0.75rem 1.25rem;
-  border: 1px solid var(--violet-300);
-  border-radius: var(--radius-full);
-  background-color: var(--color-lilac);
-  color: var(--color-heading);
-  font-weight: var(--weight-bold);
-  text-decoration: none;
 }
 
-/* Com a abertura escura na tela, o cabeçalho já tem a ação: o flutuante espera (flutuante.ts) */
-html[data-topo-visivel] .whatsapp-flutuante {
-  display: none;
-}
-
-html[data-menu-aberto] .whatsapp-flutuante {
-  display: none;
+.dupla + .dupla {
+  margin-block-start: clamp(3rem, 8vw, 6rem);
 }
 
 @media (min-width: 64rem) {
-  .whatsapp-flutuante {
-    display: none;
+  .dupla {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2xl);
+  }
+
+  .dupla-invertida .dupla-foto {
+    order: 2;
   }
 }
 
-/* ---------- Abertura da home (escura, no degradê) ---------- */
-
-.topo-escuro {
-  position: relative;
-}
-
-/* A abertura é uma grade: as três linhas do texto e, à direita, a foto numa célula mesclada que
-   ocupa as três; no celular a foto fecha a primeira tela por baixo. */
-.abertura {
+.dupla-texto {
   display: grid;
-  grid-template-columns: repeat(var(--colunas), minmax(0, 1fr));
-  grid-template-rows: 1fr auto auto auto;
-  /* O título da próxima seção aparece na base da primeira tela, chamando para rolar */
-  min-block-size: calc(100svh - var(--cabecalho-altura) - 12svh);
+  gap: var(--space-m);
+  justify-items: start;
 }
 
-.abertura > .linha {
-  grid-column: 1 / -1;
-  grid-template-columns: subgrid;
+.dupla-texto h2 {
+  font-size: clamp(2.25rem, 1.5rem + 3vw, 4rem);
 }
 
-.abertura-assinatura {
-  align-content: center;
-  border-block-end: 0;
-  box-shadow: inset 0 -2px 0 var(--color-fita);
-}
-
-.abertura-assinatura h1 {
-  grid-column: 1 / -1;
-  align-self: center;
-  padding: var(--space-xl) var(--celula-pad) var(--space-m);
-  font-size: var(--text-hero);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-display);
-  letter-spacing: var(--tracking-display);
-  text-wrap: balance;
-}
-
-.abertura-frase {
-  grid-column: 1 / -1;
+.dupla-texto > p {
   max-inline-size: 48ch;
-  padding: var(--space-m) var(--celula-pad);
-  color: color-mix(in oklab, #fff 84%, transparent);
-  font-size: var(--text-subtitle);
-  font-weight: var(--weight-regular);
-  line-height: var(--leading-subtitle);
 }
 
-.abertura-acoes {
-  grid-column: 1 / -1;
-  padding: var(--space-s) var(--celula-pad) var(--space-l);
-}
-
-.abertura-acoes .link-fita {
-  color: #fff;
-}
-
-.abertura-foto {
-  --foto-proporcao: 4 / 3;
-  grid-column: 1 / -1;
-}
-
-@media (min-width: 64rem) {
-  .abertura {
-    grid-template-rows: 1fr auto auto;
-  }
-
-  .abertura > .linha {
-    grid-column: 1 / 8;
-  }
-
-  .abertura-assinatura h1 {
-    padding-block: var(--space-2xl) var(--space-l);
-  }
-
-  .abertura-frase,
-  .abertura-acoes {
-    grid-column: 1 / 7;
-  }
-
-  .abertura-foto {
-    grid-column: 8 / -1;
-    grid-row: 1 / -1;
-    aspect-ratio: auto;
-    min-block-size: 0;
-  }
-}
-
-/* ---------- A cena do problema: a planilha de verdade ---------- */
-
-.cena-tabela {
-  display: grid;
-  grid-template-columns: repeat(var(--colunas), minmax(0, 1fr));
-  grid-auto-rows: minmax(var(--linha-altura), auto);
-}
-
-.cena-linha {
-  position: relative;
-  display: grid;
-  grid-column: 1 / -1;
-  grid-template-columns: subgrid;
-  border-block-end: 1px solid var(--color-grade);
-}
-
-.cena-chave,
-.cena-valor {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  padding: var(--celula-pad);
-  color: var(--color-heading);
-  font-weight: var(--weight-medium);
-}
-
-.cena-chave {
-  grid-column: 1 / 3;
-}
-
-.cena-valor {
-  grid-column: 3 / -1;
-  border-inline-start: 0;
-  color: var(--color-text);
-  font-weight: var(--weight-regular);
-}
-
-/* A foto da planilha de verdade: uma célula mesclada à direita, da altura das linhas e do
-   texto; no celular, entre a tabela e o texto */
-.cena-foto {
-  --foto-proporcao: 3 / 2;
-  grid-column: 1 / -1;
-}
-
-.cena-texto {
-  grid-column: 1 / -1;
-  padding: var(--space-m) var(--celula-pad) var(--space-l);
-}
-
-@media (min-width: 64rem) {
-  .cena-linha {
-    grid-column: 1 / 7;
-  }
-
-  .cena-chave {
-    grid-column: 1 / 4;
-  }
-
-  .cena-valor {
-    grid-column: 4 / 7;
-  }
-
-  .cena-foto {
-    grid-column: 7 / -1;
-    grid-row: 1 / 6;
-    aspect-ratio: auto;
-    min-block-size: 0;
-  }
-
-  .cena-texto {
-    grid-column: 1 / 7;
-    grid-row: 5;
-    padding: var(--space-m) var(--space-l) var(--space-l) var(--celula-pad);
-  }
-}
-
-/* A seleção: a fita sublinha uma linha por vez, conforme a rolagem. Sem suporte a animação
-   por rolagem (ou com movimento reduzido), a primeira linha fica selecionada. */
-.cena-linha::after {
-  content: '';
-  position: absolute;
-  inset: auto 0 -1px 0;
-  block-size: 2px;
-  background-color: var(--color-fita);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.cena-linha:first-of-type::after {
-  opacity: 1;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    .cena-linha:first-of-type::after {
-      opacity: 0;
-    }
-
-    .cena-linha::after {
-      animation-name: selecionar;
-      animation-timing-function: linear;
-      animation-fill-mode: both;
-      animation-timeline: view();
-      animation-range: cover 0% cover 100%;
-    }
-  }
-}
-
-@keyframes selecionar {
-  0%,
-  44% {
-    opacity: 0;
-  }
-
-  47%,
-  53% {
-    opacity: 1;
-  }
-
-  56%,
-  100% {
-    opacity: 0;
-  }
-}
-
-/* ---------- Dois serviços: duas faixas de células mescladas, com o mesmo peso ---------- */
-
-.servicos-linha {
-  align-items: stretch;
-}
-
-.servico {
-  position: relative;
-  grid-column: 1 / -1;
-  display: grid;
-  gap: var(--space-s);
-  align-content: start;
-  padding: var(--space-l) var(--celula-pad) var(--space-xl);
-}
-
-.servico + .servico {
-  border-block-start: 1px solid var(--color-grade);
-}
-
-@media (min-width: 64rem) {
-  .servico {
-    padding: var(--space-xl) var(--space-l) var(--space-2xl);
-  }
-
-  .servico-sites {
-    grid-column: 1 / 7;
-  }
-
-  .servico-sistemas {
-    grid-column: 7 / -1;
-  }
-
-  .servico + .servico {
-    border-block-start: 0;
-    border-inline-start: 1px solid var(--color-grade);
-  }
-}
-
-.servico > * {
-  position: relative;
-}
-
-.servico > h2,
-.servico > h3 {
-  font-size: var(--text-h2);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-title);
-  letter-spacing: var(--tracking-title);
-}
-
-.servico-frase {
-  --fita-largura: 2.5rem;
-  padding-block-end: 0.35rem;
-  background-image: linear-gradient(var(--color-fita), var(--color-fita));
-  background-repeat: no-repeat;
-  background-position: left bottom;
-  background-size: var(--fita-largura) 2px;
-  color: var(--color-heading);
-  font-size: var(--text-subtitle);
-  font-weight: var(--weight-medium);
-  line-height: var(--leading-subtitle);
-}
-
-.servico p {
-  max-inline-size: 46ch;
-}
-
-.servico-para {
-  color: var(--color-text);
-  font-size: var(--text-s);
-}
-
-.servico .acoes {
-  margin-block-start: var(--space-s);
-}
-
-/* A foto de cada serviço: uma célula com imagem no alto do bloco, sangrando até as bordas */
-.servico-foto {
-  --foto-proporcao: 16 / 9;
-  margin: calc(-1 * var(--space-l)) calc(-1 * var(--celula-pad)) var(--space-2xs);
-}
-
-@media (min-width: 64rem) {
-  .servico-foto {
-    --foto-proporcao: 2 / 1;
-    margin: calc(-1 * var(--space-xl)) calc(-1 * var(--space-l)) var(--space-2xs);
-  }
-}
-
-/* A lista do que cada serviço entrega (hub de serviços) */
-.servico-entrega {
-  display: grid;
-  gap: var(--space-2xs);
-  padding: 0;
-  list-style: none;
-}
-
-.servico-entrega li {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  color: var(--color-heading);
-}
-
-/* ---------- Conexão: uma linha só, de largura inteira, com o laço da fita ---------- */
-
-.conexao {
-  position: relative;
-  overflow: hidden;
-}
-
-.conexao-texto {
-  grid-column: 1 / -1;
-  position: relative;
-  z-index: 1;
-  display: grid;
-  gap: var(--space-s);
-  padding: var(--space-2xl) var(--celula-pad);
-}
-
-.conexao-texto h2 {
-  max-inline-size: 22ch;
-  font-size: var(--text-h2);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-title);
-  letter-spacing: var(--tracking-title);
-}
-
-.conexao-texto p {
-  max-inline-size: 60ch;
-}
-
-@media (min-width: 64rem) {
-  .conexao-texto {
-    grid-column: 1 / 8;
-  }
-}
-
-/* O laço da fita atravessa a linha inteira por baixo do texto, sai pela borda direita e volta
-   pela esquerda (a fita de Möbius do símbolo). No celular não há espaço e ele sai. */
-.conexao-laco {
-  display: none;
-  position: absolute;
-  inset-inline: 0;
-  inset-block: 0;
+.dupla-texto .topicos {
   inline-size: 100%;
-  block-size: 100%;
-  overflow: visible;
-  pointer-events: none;
+}
+
+.dupla-foto {
+  --foto-proporcao: 4 / 3;
+  border-radius: var(--radius-l);
+}
+
+/* ---------- Conexão: a frase partida pelo símbolo ---------- */
+
+.conexao-grade {
+  display: grid;
+  gap: var(--space-xl);
+  justify-items: center;
+  text-align: center;
+}
+
+.conexao-grade h2 {
+  display: grid;
+  gap: var(--space-s);
+  justify-items: center;
+  inline-size: 100%;
+  font-size: clamp(1.75rem, 1rem + 3vw, 3.25rem);
 }
 
 @media (min-width: 64rem) {
-  .conexao-laco {
-    display: block;
+  .conexao-grade h2 {
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: var(--space-l);
+  }
+
+  .conexao-antes {
+    text-align: end;
+  }
+
+  .conexao-depois {
+    text-align: start;
   }
 }
 
-.conexao-laco path {
-  fill: none;
-  stroke: var(--color-fita);
-  stroke-width: 2;
-  vector-effect: non-scaling-stroke;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 0;
+.conexao-simbolo {
+  display: block;
+  inline-size: min(100%, 22rem);
+}
+
+.conexao-simbolo path {
+  stroke-width: 12;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
-    .conexao-laco path {
+    .conexao-simbolo path {
       animation-name: desenhar;
       animation-timing-function: linear;
       animation-fill-mode: both;
       animation-timeline: view();
-      animation-range: entry 20% cover 55%;
+      animation-range: entry 10% entry 95%;
     }
   }
 }
 
-@keyframes desenhar {
-  from {
-    stroke-dashoffset: 1;
-  }
-
-  to {
-    stroke-dashoffset: 0;
-  }
+.conexao-grade p {
+  max-inline-size: 56ch;
+  font-size: var(--text-subtitle);
+  line-height: 1.4;
 }
 
-/* ---------- Projetos, fora da grade ---------- */
+/* ---------- Vitrines: as prévias dos projetos em molduras ---------- */
 
-.vitrines-cabeca .celula-apoio {
-  padding-block-end: var(--space-s);
-}
-
-.vitrines-cabeca .link-fita {
-  grid-column: 1 / -1;
-  justify-self: start;
-  margin: 0 var(--celula-pad) var(--space-m);
-}
-
-.vitrines-grade {
-  display: grid;
-  grid-template-columns: repeat(var(--colunas), minmax(0, 1fr));
-  gap: var(--space-2xl) 0;
-  padding-block: var(--space-l) var(--space-3xl);
-}
-
-.obra {
-  grid-column: 1 / -1;
-  display: grid;
-  gap: var(--space-s);
-  align-content: start;
-  padding-inline: var(--celula-pad);
-}
-
-.obra-moldura {
+.v-vitrine {
   position: relative;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-  border-radius: var(--radius-s);
-  background-color: var(--obra-fundo, var(--color-surface));
-  outline: 1px solid var(--color-line);
-  outline-offset: 0;
-  container-type: size;
-  transition: outline-color var(--duration-fast) var(--ease-out);
-}
-
-/* Sobre a prévia, a fita vira moldura. O cursor nativo continua lá dentro. */
-.obra-moldura:hover,
-.obra-moldura:focus-within,
-.obra-moldura:active {
-  outline: 2px solid var(--color-fita);
-}
-
-.obra-link {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  color: transparent;
-  font-size: 0;
-}
-
-.obra-placeholder {
-  position: absolute;
-  inset: 0;
   display: grid;
-  align-content: end;
-  gap: 0.25rem;
-  padding: var(--space-m);
-  color: var(--obra-texto, var(--color-heading));
+  overflow: hidden;
+  border-radius: var(--v-vitrine-raio, var(--radius-m));
+  background-color: #ffffff;
+  color: var(--color-text);
+  box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.55);
+}
+
+.v-vitrine-barra {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 0.55rem 0.75rem;
+  border-block-end: 1px solid var(--color-line);
+}
+
+.v-vitrine-pontos {
+  display: inline-flex;
+  gap: 0.3rem;
+}
+
+.v-vitrine-pontos span {
+  inline-size: 0.6rem;
+  block-size: 0.6rem;
+  border-radius: 50%;
+  background-color: var(--color-line);
+}
+
+.v-vitrine-url {
+  flex: 1;
+  overflow: hidden;
+  padding: 0.2rem 0.75rem;
+  border-radius: var(--radius-full);
+  background-color: var(--color-bg);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.v-vitrine-tela {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: var(--vitrine-proporcao, 16 / 10);
+  background-color: var(--vitrine-fundo, #ffffff);
+  color: var(--vitrine-texto, var(--color-heading));
+  container-type: inline-size;
+}
+
+/* O palco: a prévia é desenhada numa largura de referência (1100 px para o layout largo do site,
+   400 px para o estreito, como no celular) e escalada para caber na moldura. Assim a prévia
+   escolhe o layout pelo palco, não pelo tamanho da moldura. Sem suporte à escala calculada, o
+   palco é a própria moldura. */
+.v-vitrine-palco {
+  --vitrine-base: 1100px;
+  position: absolute;
+  inset: 0;
+  container-type: size;
+}
+
+.v-vitrine[data-tela='estreita'] .v-vitrine-palco {
+  --vitrine-base: 400px;
+}
+
+@supports (transform: scale(tan(atan2(1px, 1px)))) {
+  .v-vitrine-palco {
+    inset: 0 auto auto 0;
+    inline-size: var(--vitrine-base);
+    aspect-ratio: var(--vitrine-proporcao, 16 / 10);
+    transform: scale(tan(atan2(100cqi, var(--vitrine-base))));
+    transform-origin: 0 0;
+  }
+}
+
+/* A moldura de celular: borda grossa, cantos redondos e o entalhe */
+.v-vitrine[data-moldura='celular'] {
+  padding: 0.6rem;
+  border-radius: 2.4rem;
+  background-color: #16081f;
+}
+
+.v-vitrine[data-moldura='celular'] .v-vitrine-tela {
+  border-radius: 1.9rem;
+}
+
+.v-vitrine[data-moldura='celular']::after {
+  content: '';
+  position: absolute;
+  inset-block-start: 1.1rem;
+  inset-inline-start: 50%;
+  z-index: 3;
+  inline-size: 30%;
+  block-size: 1.3rem;
+  border-radius: var(--radius-full);
+  background-color: #16081f;
+  transform: translateX(-50%);
   pointer-events: none;
 }
 
-.obra-placeholder strong {
-  font-size: var(--text-h3);
-  font-weight: var(--weight-bold);
-}
-
-.obra-placeholder span {
-  font-size: var(--text-s);
-  opacity: 0.8;
-}
-
-/* Miniprévias: só os controles recebem o ponteiro; o resto da área leva à página do projeto */
+/* A prévia: só os controles recebem o ponteiro */
 .previa {
   position: absolute;
   inset: 0;
@@ -1418,190 +1200,267 @@ html[data-menu-aberto] .whatsapp-flutuante {
   pointer-events: auto;
 }
 
-@media (min-width: 64rem) {
-  .obra {
-    padding-inline: 0;
-  }
-
-  /* A moldura grande de um site é 4:3 (cabe o hero inteiro, com o status da Brisa); a de um
-     produto é 16:10; a média é retrato. A prévia escolhe o layout largo a partir de 700 px. */
-  .obra-moldura {
-    aspect-ratio: 16 / 10;
-  }
-
-  .obra[data-formato='grande'][data-tipo='site'] .obra-moldura {
-    aspect-ratio: 4 / 3;
-  }
-
-  .obra[data-formato='media'] .obra-moldura {
-    aspect-ratio: 4 / 5;
-  }
-
-  /* Na galeria, cada obra ocupa a linha inteira em subgrid, e a moldura e a ficha vão para as
-     colunas do contrato (nth-of-type, porque o Astro renderiza o <script> da Obra entre os
-     artigos): Brisa grande A a H com a ficha em J a L; Linetex média G a L com a
-     ficha ao lado, à esquerda; Lumaj média A a F com a ficha à direita; RetroDash grande E a L
-     com a ficha à esquerda. Pares desencontrados, nunca cards iguais em fila. */
-  .vitrines-grade .obra {
-    grid-column: 1 / -1;
-    grid-template-columns: subgrid;
-    column-gap: 0;
-    align-items: end;
-  }
-
-  .vitrines-grade .obra .obra-moldura,
-  .vitrines-grade .obra .ficha {
-    grid-row: 1;
-  }
-
-  .vitrines-grade .obra:nth-of-type(4n + 1) .obra-moldura {
-    grid-column: 1 / 9;
-  }
-
-  .vitrines-grade .obra:nth-of-type(4n + 1) .ficha {
-    grid-column: 10 / 13;
-    align-self: start;
-  }
-
-  .vitrines-grade .obra:nth-of-type(4n + 2) {
-    margin-block-start: 12vh;
-  }
-
-  .vitrines-grade .obra:nth-of-type(4n + 2) .obra-moldura {
-    grid-column: 7 / 13;
-  }
-
-  .vitrines-grade .obra:nth-of-type(4n + 2) .ficha {
-    grid-column: 3 / 7;
-    padding-inline-end: var(--space-l);
-  }
-
-  .vitrines-grade .obra:nth-of-type(4n + 3) {
-    margin-block-start: 4vh;
-  }
-
-  .vitrines-grade .obra:nth-of-type(4n + 3) .obra-moldura {
-    grid-column: 1 / 7;
-  }
-
-  .vitrines-grade .obra:nth-of-type(4n + 3) .ficha {
-    grid-column: 7 / 10;
-    padding-inline-start: var(--celula-pad);
-  }
-
-  .vitrines-grade .obra:nth-of-type(4n + 4) .obra-moldura {
-    grid-column: 5 / 13;
-  }
-
-  .vitrines-grade .obra:nth-of-type(4n + 4) .ficha {
-    grid-column: 1 / 5;
-    padding-inline-end: var(--space-l);
-  }
-}
-
-/* ---------- Ficha técnica: dados da planilha ---------- */
-
-.ficha {
+.v-vitrine-vazia {
+  position: absolute;
+  inset: 0;
   display: grid;
-  gap: var(--space-xs);
-  align-content: start;
+  align-content: end;
+  gap: 0.25rem;
+  padding: var(--space-m);
 }
 
-.ficha-titulo {
-  font-size: var(--text-h3);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-subtitle);
+/* ---------- Galeria de projetos: rolagem horizontal com encaixe ---------- */
+
+.galeria {
+  position: relative;
 }
 
-.ficha-titulo a {
+.galeria-trilho {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(84vw, 44rem);
+  gap: var(--space-m);
+  margin: 0;
+  padding: var(--space-2xs) max(var(--gutter), (100% - var(--largura)) / 2) var(--space-m);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: max(var(--gutter), (100% - var(--largura)) / 2);
+  scrollbar-width: none;
+  list-style: none;
+}
+
+.galeria-trilho::-webkit-scrollbar {
+  display: none;
+}
+
+.galeria-item {
+  display: grid;
+  gap: var(--space-s);
+  scroll-snap-align: start;
+}
+
+.galeria-ficha {
+  display: grid;
+  gap: var(--space-3xs);
+  padding-inline: var(--space-3xs);
+}
+
+.galeria-ficha h3 a {
   text-decoration: none;
 }
 
-.ficha-dados {
-  display: grid;
-  border-block-start: 1px solid var(--color-grade);
+.galeria-ficha h3 a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.galeria-ficha p {
+  max-inline-size: 52ch;
+  color: var(--cor-apagado);
   font-size: var(--text-s);
 }
 
-.ficha-dados div {
-  display: grid;
-  grid-template-columns: 5rem 1fr;
+.galeria-tipo {
+  display: block;
+  color: var(--cor-acento);
+  font-size: var(--text-label);
+  font-variant-numeric: tabular-nums;
+}
+
+.galeria-botoes {
+  display: none;
+  justify-content: flex-end;
   gap: var(--space-2xs);
-  padding-block: 0.35rem;
-  border-block-end: 1px solid var(--color-grade);
+  inline-size: min(100% - 2 * var(--gutter), var(--largura));
+  margin-inline: auto;
 }
 
-.ficha-dados dt {
-  color: var(--color-text);
+[data-galeria-pronta] .galeria-botoes {
+  display: flex;
 }
 
-.ficha-dados dd {
-  color: var(--color-heading);
+.galeria-botoes button {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  border: 1px solid var(--cor-linha);
+  border-radius: 50%;
+  background-color: var(--cor-superficie);
+  color: var(--cor-titulo);
+  cursor: pointer;
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    opacity var(--duration-fast) var(--ease-out);
 }
 
-.ficha-acao {
-  justify-self: start;
-  margin-block-start: var(--space-3xs);
+.galeria-botoes button:hover {
+  border-color: var(--cor-acento);
 }
 
-/* ---------- Como funciona: as linhas numeradas e o laço ---------- */
+.galeria-botoes button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* Projetos em linhas largas (página de projetos) */
+.obras {
+  display: grid;
+  gap: clamp(3rem, 7vw, 6rem);
+  padding: 0;
+  list-style: none;
+}
+
+.obra {
+  display: grid;
+  gap: var(--space-m);
+  align-items: center;
+}
+
+@media (min-width: 64rem) {
+  .obra {
+    grid-template-columns: 7fr 4fr;
+    gap: var(--space-2xl);
+  }
+
+  .obra:nth-child(even) .v-vitrine {
+    order: 2;
+  }
+}
+
+.obra .v-vitrine {
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.obra:hover .v-vitrine {
+  transform: scale(1.015);
+}
+
+.obra-ficha {
+  display: grid;
+  gap: var(--space-2xs);
+  justify-items: start;
+}
+
+.obra-indice {
+  color: var(--cor-acento);
+  font-size: var(--text-s);
+  font-weight: var(--weight-medium);
+  font-variant-numeric: tabular-nums;
+}
+
+.obra-ficha h2,
+.obra-ficha h3 {
+  font-size: clamp(1.75rem, 1.2rem + 1.8vw, 2.5rem);
+  letter-spacing: -0.025em;
+}
+
+.obra-ficha h2 a,
+.obra-ficha h3 a {
+  text-decoration: none;
+}
+
+.obra-ficha h2 a:hover,
+.obra-ficha h3 a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.obra-tipo {
+  color: var(--cor-apagado);
+  font-size: var(--text-s);
+  font-variant-numeric: tabular-nums;
+}
+
+.obra-ficha > p:not(.obra-tipo) {
+  max-inline-size: 40ch;
+}
+
+.obra-ficha .link-fita,
+.obra-ficha .botao {
+  margin-block-start: var(--space-2xs);
+}
+
+/* A obra da página de projeto: a prévia sozinha, grande */
+.obra-grande {
+  inline-size: min(100%, 68rem);
+  margin-inline: auto;
+}
+
+/* ---------- Como funciona: a cabeça fixa e as etapas ---------- */
+
+.passos-grade {
+  display: grid;
+  gap: var(--space-l) var(--space-2xl);
+  align-items: start;
+}
+
+@media (min-width: 64rem) {
+  .passos-grade {
+    grid-template-columns: 1fr 1.6fr;
+  }
+
+  .passos-cabeca {
+    position: sticky;
+    inset-block-start: calc(var(--cabecalho-altura) + var(--space-l));
+  }
+}
+
+.passos-cabeca {
+  display: grid;
+  gap: var(--space-s);
+  justify-items: start;
+  max-inline-size: 36ch;
+}
+
+.passos-cabeca p {
+  color: var(--cor-apagado);
+  font-size: var(--text-subtitle);
+  line-height: 1.4;
+}
 
 .passos {
   padding: 0;
   list-style: none;
-  counter-reset: passo;
+  border-block-start: 1px solid var(--cor-linha);
 }
 
 .passo {
   position: relative;
-  counter-increment: passo;
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  gap: var(--space-m);
+  align-items: start;
+  padding-block: var(--space-l);
+  border-block-end: 1px solid var(--cor-linha);
 }
 
-.passo-indice {
-  grid-column: 1 / 2;
-  padding: var(--celula-pad);
-  color: var(--color-text);
-  font-size: var(--text-h2);
-  font-weight: var(--weight-bold);
-  line-height: 1;
-  letter-spacing: var(--tracking-title);
+.passo-numero {
+  min-inline-size: 2.5rem;
+  padding-block-start: 0.6rem;
+  color: var(--cor-acento);
+  font-size: var(--text-s);
+  font-weight: var(--weight-medium);
   font-variant-numeric: tabular-nums;
-  transition: color var(--duration-base) var(--ease-out);
-}
-
-.passo-indice::before {
-  content: counter(passo);
-}
-
-.passo-titulo {
-  grid-column: 2 / -1;
-  padding: var(--celula-pad) var(--celula-pad) 0;
-  color: var(--color-heading);
-  font-size: var(--text-h3);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-subtitle);
+  opacity: 0.7;
+  transition: opacity var(--duration-base) var(--ease-out);
 }
 
 .passo-texto {
-  grid-column: 2 / -1;
-  max-inline-size: 60ch;
-  padding: 0.25rem var(--celula-pad) var(--celula-pad);
+  display: grid;
+  gap: var(--space-2xs);
+  padding-block-start: 0.4rem;
 }
 
-@media (min-width: 64rem) {
-  .passo-indice {
-    grid-column: 1 / 2;
-  }
+.passo h3 {
+  font-size: 1.5rem;
+  letter-spacing: -0.015em;
+}
 
-  .passo-titulo {
-    grid-column: 2 / 5;
-    padding-block-end: var(--celula-pad);
-  }
-
-  .passo-texto {
-    grid-column: 5 / -1;
-    padding-block-start: var(--celula-pad);
-  }
+.passo p {
+  max-inline-size: 52ch;
+  color: var(--cor-apagado);
 }
 
 /* A fita percorre os passos (fita.ts) e sublinha o ativo */
@@ -1611,7 +1470,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
   inset-inline: 0;
   inset-block-end: -1px;
   block-size: 2px;
-  background-color: var(--color-fita);
+  background-color: var(--cor-acento);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform var(--duration-slow) var(--ease-out);
@@ -1621,21 +1480,288 @@ html[data-menu-aberto] .whatsapp-flutuante {
   transform: scaleX(1);
 }
 
-.passo[data-ativo] .passo-indice {
-  color: var(--color-fita);
+.passo[data-ativo] .passo-numero {
+  opacity: 1;
 }
 
-/* ---------- Perguntas frequentes ---------- */
+@media (max-width: 47.99rem) {
+  .passo {
+    grid-template-columns: auto 1fr;
+  }
+
+  .passo-numero {
+    grid-column: 1 / -1;
+    padding-block-start: 0;
+  }
+}
+
+/* ---------- Antes e depois: a tabela num cartão claro ---------- */
+
+.antes-depois {
+  overflow: hidden;
+  border-radius: var(--radius-m);
+  background-color: var(--color-surface);
+  box-shadow: 0 24px 40px -16px rgb(0 0 0 / 0.4);
+  color: var(--color-text);
+}
+
+.antes-depois table {
+  inline-size: 100%;
+  border-collapse: collapse;
+}
+
+.antes-depois th,
+.antes-depois td {
+  padding: 0.9rem 1.25rem;
+  text-align: start;
+  vertical-align: top;
+}
+
+.antes-depois th {
+  color: var(--color-text);
+  font-size: 0.75rem;
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.antes-depois tbody tr {
+  border-block-start: 1px solid var(--color-line);
+}
+
+.antes-depois td:first-child {
+  color: var(--color-heading);
+}
+
+.antes-depois td:last-child,
+.antes-depois th:last-child {
+  background-color: var(--violet-100);
+  color: var(--violet-900);
+  font-weight: var(--weight-medium);
+}
+
+@media (max-width: 40rem) {
+  .antes-depois th,
+  .antes-depois td {
+    padding: 0.75rem 0.9rem;
+    font-size: var(--text-s);
+  }
+}
+
+/* ---------- Blog: cartões e o texto do post ---------- */
+
+.posts {
+  display: grid;
+  gap: var(--space-m);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  padding: 0;
+  list-style: none;
+}
+
+.post-cartao {
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--cor-linha);
+  border-radius: var(--radius-m);
+  background-color: var(--cor-superficie);
+  transition:
+    border-color var(--duration-base) var(--ease-out),
+    transform var(--duration-base) var(--ease-out);
+}
+
+.post-cartao:hover,
+.post-cartao:focus-within {
+  border-color: var(--cor-acento);
+  transform: translateY(-2px);
+}
+
+.post-capa {
+  --foto-proporcao: 16 / 9;
+}
+
+.post-cartao-texto {
+  display: grid;
+  gap: var(--space-2xs);
+  padding: var(--space-m);
+}
+
+.post-cartao time,
+.post-meta {
+  color: var(--cor-apagado);
+  font-size: var(--text-label);
+  font-variant-numeric: tabular-nums;
+}
+
+.post-cartao h2,
+.post-cartao h3 {
+  font-size: 1.125rem;
+  line-height: 1.3;
+}
+
+.post-cartao h2 a,
+.post-cartao h3 a {
+  text-decoration: none;
+}
+
+.post-cartao h2 a::after,
+.post-cartao h3 a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.post-cartao p:not(.post-meta) {
+  color: var(--cor-apagado);
+  font-size: var(--text-s);
+}
+
+/* Texto corrido (post, case, privacidade), numa coluna confortável, sobre o claro */
+.texto-longo {
+  display: grid;
+  gap: var(--space-s);
+  max-inline-size: var(--texto-medida);
+}
+
+.texto-longo h2 {
+  margin-block-start: var(--space-m);
+  font-size: 1.5rem;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+
+.texto-longo h2:first-child {
+  margin-block-start: 0;
+}
+
+.texto-longo h3 {
+  margin-block-start: var(--space-xs);
+}
+
+.texto-longo ul,
+.texto-longo ol {
+  display: grid;
+  gap: var(--space-2xs);
+  padding-inline-start: 1.4em;
+}
+
+.texto-longo li::marker {
+  color: var(--cor-acento);
+  font-weight: var(--weight-medium);
+}
+
+.texto-longo code {
+  padding: 0.1em 0.35em;
+  border-radius: 0.3rem;
+  background-color: var(--cor-superficie-forte);
+  color: var(--cor-titulo);
+  font-family: inherit;
+  font-weight: var(--weight-medium);
+}
+
+.texto-longo a {
+  color: var(--cor-acento);
+  text-underline-offset: 0.2em;
+}
+
+.post-abertura {
+  color: var(--cor-titulo);
+  font-size: var(--text-subtitle);
+  line-height: 1.4;
+}
+
+.post-chamada {
+  display: grid;
+  gap: var(--space-s);
+  justify-items: start;
+  max-inline-size: var(--texto-medida);
+  margin-block-start: var(--space-xl);
+  padding: var(--space-l);
+  border: 1px solid var(--cor-linha);
+  border-radius: var(--radius-m);
+  background-color: var(--cor-superficie);
+}
+
+.post-chamada h2 {
+  font-size: 1.5rem;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+.vizinhos {
+  display: grid;
+  gap: var(--space-m);
+  margin-block-start: var(--space-xl);
+  padding-block-start: var(--space-l);
+  border-block-start: 1px solid var(--cor-linha);
+}
+
+@media (min-width: 48rem) {
+  .vizinhos {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.vizinho {
+  display: grid;
+  gap: var(--space-3xs);
+  justify-items: start;
+  text-decoration: none;
+}
+
+.vizinho-proximo {
+  justify-items: end;
+  text-align: end;
+}
+
+.vizinho-rotulo {
+  color: var(--cor-apagado);
+  font-size: var(--text-label);
+}
+
+.vizinho-titulo {
+  color: var(--cor-titulo);
+  font-size: 1.25rem;
+  font-weight: var(--weight-bold);
+  line-height: 1.25;
+}
+
+.vizinho:hover .vizinho-titulo {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.vizinhos .link-fita {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+
+/* ---------- Perguntas ---------- */
+
+.faq-grade {
+  display: grid;
+  gap: var(--space-l) var(--space-2xl);
+}
+
+@media (min-width: 64rem) {
+  .faq-grade {
+    grid-template-columns: 1fr 1.6fr;
+  }
+}
+
+.faq {
+  border-block-start: 1px solid var(--cor-linha);
+}
 
 .faq-item {
-  grid-column: 1 / -1;
+  border-block-end: 1px solid var(--cor-linha);
 }
 
 .faq-item summary {
   position: relative;
-  display: block;
-  padding: var(--celula-pad) calc(var(--celula-pad) + 2rem) var(--celula-pad) var(--celula-pad);
-  color: var(--color-heading);
+  padding: 1.1rem 3rem 1.1rem 0;
+  color: var(--cor-titulo);
+  font-size: 1.125rem;
   font-weight: var(--weight-medium);
   cursor: pointer;
   list-style: none;
@@ -1650,11 +1776,11 @@ html[data-menu-aberto] .whatsapp-flutuante {
 .faq-item summary::after {
   content: '';
   position: absolute;
-  inset-inline-end: var(--celula-pad);
+  inset-inline-end: 0.5rem;
   inset-block-start: calc(50% - 1px);
-  inline-size: 0.875rem;
+  inline-size: 1rem;
   block-size: 2px;
-  background-color: var(--color-fita);
+  background-color: var(--cor-acento);
   transition: transform var(--duration-base) var(--ease-out);
 }
 
@@ -1666,719 +1792,48 @@ html[data-menu-aberto] .whatsapp-flutuante {
   transform: rotate(0deg);
 }
 
-.faq-item[open] summary {
-  box-shadow: inset 0 -2px 0 var(--color-fita);
-}
-
 .faq-item p {
-  max-inline-size: var(--texto-medida);
-  padding: var(--space-s) var(--celula-pad) var(--space-m);
+  max-inline-size: 60ch;
+  padding: 0 3rem 1.25rem 0;
+  color: var(--cor-apagado);
 }
 
-/* ---------- Fechamento: chamada final e rodapé, no degradê, sem a grade ---------- */
+/* ---------- Formulário de contato (sobre o claro) ---------- */
 
-.fechamento {
-  position: relative;
-  z-index: 1;
+.contato-grade {
+  display: grid;
+  gap: var(--space-2xl);
+  align-items: start;
 }
 
-.chamada-final-faixa {
+@media (min-width: 64rem) {
+  .contato-grade {
+    grid-template-columns: 1fr 1.4fr;
+  }
+}
+
+.contato-canais {
+  gap: var(--space-s);
+  grid-template-columns: 1fr;
+}
+
+.formulario {
   display: grid;
   gap: var(--space-m);
-  padding-block: var(--space-3xl) var(--space-2xl);
-}
-
-.chamada-final h2 {
-  max-inline-size: 18ch;
-  font-size: var(--text-h1);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-display);
-  letter-spacing: var(--tracking-display);
-}
-
-.chamada-final p {
-  max-inline-size: 48ch;
-  color: color-mix(in oklab, #fff 84%, transparent);
-  font-size: var(--text-subtitle);
-  line-height: var(--leading-subtitle);
-}
-
-.chamada-final-acoes {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-s) var(--space-l);
-  margin-block-start: var(--space-s);
-}
-
-.chamada-final-acoes .link-fita {
-  color: #fff;
-}
-
-.rodape-faixa {
-  display: grid;
-  gap: var(--space-l);
-  padding-block: var(--space-2xl) var(--space-xl);
-  border-block-start: 1px solid var(--color-grade);
-}
-
-.rodape-marca {
-  display: grid;
-  gap: var(--space-s);
-}
-
-.rodape-marca img {
-  block-size: 1.5rem;
-  inline-size: auto;
-}
-
-.rodape-assinatura {
-  color: color-mix(in oklab, #fff 84%, transparent);
-}
-
-.rodape-links {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--space-s) var(--space-l);
-  padding: 0;
-  list-style: none;
-}
-
-.rodape-links a {
-  color: #fff;
-}
-
-.rodape-empresa {
-  color: var(--color-rotulo);
-  font-size: var(--text-s);
-}
-
-@media (min-width: 64rem) {
-  .rodape-faixa {
-    grid-template-columns: 1fr auto;
-    align-items: start;
-  }
-
-  .rodape-empresa {
-    grid-column: 1 / -1;
-  }
-}
-
-/* ---------- Páginas internas: a planilha aberta na primeira linha ---------- */
-
-.pagina-titulo {
-  grid-column: 1 / -1;
-  padding: var(--space-xl) var(--celula-pad) var(--space-s);
-  font-size: var(--text-h1);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-display);
-  letter-spacing: var(--tracking-display);
-  text-wrap: balance;
-}
-
-.pagina-frase {
-  grid-column: 1 / -1;
-  align-self: center;
-  justify-self: start;
-  margin: var(--space-2xs) var(--celula-pad);
-  padding-block-end: 0.4rem;
-  box-shadow: inset 0 -2px 0 var(--color-fita);
-  color: var(--color-heading);
-  font-size: var(--text-subtitle);
-  font-weight: var(--weight-medium);
-  line-height: var(--leading-subtitle);
-}
-
-.pagina-texto {
-  grid-column: 1 / -1;
-  max-inline-size: 56ch;
-  padding: var(--space-s) var(--celula-pad);
-  font-size: var(--text-subtitle);
-  line-height: var(--leading-subtitle);
-}
-
-.pagina-acao {
-  grid-column: 1 / -1;
-  padding: var(--space-s) var(--celula-pad) var(--space-l);
-}
-
-@media (min-width: 64rem) {
-  .pagina-titulo {
-    grid-column: 1 / 9;
-    padding-block-start: var(--space-2xl);
-  }
-
-  .pagina-texto {
-    grid-column: 1 / 8;
-  }
-}
-
-/* Linha de texto corrido */
-.linha-texto .texto {
-  grid-column: 1 / -1;
-  padding: var(--space-m) var(--celula-pad) var(--space-l);
-}
-
-@media (min-width: 64rem) {
-  .linha-texto .texto {
-    grid-column: 1 / 9;
-  }
-}
-
-/* Listas em linhas da planilha ("todo site inclui", a cena espalhada): a fita marca a linha sob o
-   ponteiro */
-.lista-planilha {
-  padding: 0;
-  list-style: none;
-}
-
-.item-linha {
-  grid-column: 1 / -1;
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: var(--space-s);
-  padding: var(--celula-pad);
-  color: var(--color-heading);
-}
-
-.item-linha::after {
-  content: '';
-  position: absolute;
-  inset-inline: 0;
-  inset-block-end: -1px;
-  block-size: 2px;
-  background-color: var(--color-fita);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform var(--duration-base) var(--ease-out);
-}
-
-.linha:hover > .item-linha::after {
-  transform: scaleX(1);
-}
-
-/* Antes e depois: células com borda de um lado, uma célula mesclada do outro */
-.antes-depois {
-  display: grid;
-  grid-template-columns: repeat(var(--colunas), minmax(0, 1fr));
-  border-block-end: 1px solid var(--color-grade);
-}
-
-.antes-depois th,
-.antes-depois td {
-  text-align: start;
-  font-weight: inherit;
-}
-
-.antes-depois .cabecalho-tabela {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: subgrid;
-}
-
-.antes-depois .cabecalho-tabela > * {
-  padding: var(--celula-pad);
-  color: var(--color-rotulo);
-  font-size: var(--text-label);
-  font-weight: var(--weight-medium);
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
-}
-
-.antes-depois .antes,
-.antes-depois .depois,
-.antes-depois .cabecalho-tabela > * {
-  grid-column: span calc(var(--colunas) / 2);
-}
-
-.antes-depois .corpo-tabela {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: subgrid;
-}
-
-.antes-depois .linha-tabela {
-  display: contents;
-}
-
-.antes-depois .antes {
-  padding: var(--celula-pad);
-  border-block-start: 1px solid var(--color-grade);
-  color: var(--color-heading);
-}
-
-.antes-depois .depois {
-  padding: var(--celula-pad);
-  background-color: var(--color-accent);
-  color: var(--color-on-accent);
-  font-weight: var(--weight-medium);
-}
-
-.antes-depois .antes,
-.antes-depois .depois {
-  font-variant-numeric: tabular-nums;
-}
-
-/* Quatro células se fundindo num bloco (Centraliza, Automatiza, Integra, Mostra) */
-.fusao {
-  align-items: stretch;
-}
-
-.fusao-celula {
-  grid-column: 1 / -1;
-  display: grid;
-  gap: var(--space-2xs);
-  align-content: start;
-  padding: var(--celula-pad);
-  background-color: var(--color-celula);
-}
-
-.fusao-celula + .fusao-celula {
-  border-block-start: 1px solid var(--color-grade);
-}
-
-.fusao-celula .icone {
-  margin-block-end: var(--space-3xs);
-}
-
-.fusao-celula strong {
-  color: var(--color-heading);
-  font-size: var(--text-h3);
-  font-weight: var(--weight-bold);
+  padding: var(--space-l);
+  border: 1px solid var(--cor-linha);
+  border-radius: var(--radius-l);
+  background-color: var(--cor-superficie);
 }
 
 @media (min-width: 48rem) {
-  .fusao-celula {
-    grid-column: span 3;
-  }
-
-  .fusao-celula:nth-child(n + 4) {
-    border-block-start: 1px solid var(--color-grade);
-  }
-
-  .fusao-celula:nth-child(3) {
-    border-block-start: 0;
-  }
-
-  .fusao-celula:nth-child(even) {
-    border-inline-start: 1px solid var(--color-grade);
-  }
-}
-
-@media (min-width: 64rem) {
-  .fusao-celula {
-    grid-column: span 3;
-    padding: var(--space-m);
-  }
-
-  .fusao-celula + .fusao-celula {
-    border-block-start: 0;
-    border-inline-start: 1px solid var(--color-grade);
-  }
-
-  .fusao-celula:nth-child(n + 4) {
-    border-block-start: 0;
-  }
-}
-
-/* Texto em traço solto da fita: o que ainda não existe */
-.solto {
-  grid-column: 1 / -1;
-  max-inline-size: 48ch;
-  margin: var(--space-s) var(--celula-pad) var(--space-l);
-  padding-inline-start: var(--space-s);
-  border-inline-start: 2px dashed var(--color-fita);
-  color: var(--color-text);
-  font-size: var(--text-s);
-}
-
-/* A cabeça com foto: as linhas do texto à esquerda e, à direita, a foto numa célula mesclada
-   que ocupa todas as linhas (`--cabeca-linhas`); no celular, a foto fecha a cabeça por baixo */
-.cabeca-com-foto {
-  display: grid;
-  grid-template-columns: repeat(var(--colunas), minmax(0, 1fr));
-}
-
-.cabeca-com-foto > .linha {
-  grid-column: 1 / -1;
-  grid-template-columns: subgrid;
-}
-
-.cabeca-foto {
-  --foto-proporcao: 3 / 2;
-  grid-column: 1 / -1;
-}
-
-@media (min-width: 64rem) {
-  .cabeca-com-foto > .linha {
-    grid-column: 1 / 9;
-  }
-
-  .cabeca-foto {
-    grid-column: 9 / -1;
-    grid-row: 1 / span var(--cabeca-linhas, 2);
-    aspect-ratio: auto;
-    min-block-size: 0;
-  }
-}
-
-/* ---------- Página de projeto ---------- */
-
-.projeto-obra {
-  padding-block: var(--space-l) var(--space-2xl);
-}
-
-.projeto-obra .obra {
-  grid-column: 1 / -1;
-}
-
-/* Na página do projeto a obra ocupa a linha inteira: a prévia em 9 das 12 colunas e a ficha
-   nas outras 3 (brief da home). Grade própria: a regra dos pares desencontrados não vale aqui. */
-.projeto-obra {
-  display: grid;
-  grid-template-columns: repeat(var(--colunas), minmax(0, 1fr));
-}
-
-@media (min-width: 64rem) {
-  .projeto-obra .obra {
-    grid-column: 1 / -1;
-    grid-template-columns: subgrid;
-    column-gap: 0;
-  }
-
-  .projeto-obra .obra .obra-moldura {
-    grid-column: 1 / 10;
-    grid-row: 1;
-    aspect-ratio: 16 / 10;
-  }
-
-  .projeto-obra .obra .ficha {
-    grid-column: 10 / -1;
-    grid-row: 1;
-    align-self: start;
-    padding-inline-start: var(--celula-pad);
-  }
-}
-
-.projeto-texto {
-  grid-column: 1 / -1;
-  display: grid;
-  gap: var(--space-s);
-  max-inline-size: var(--texto-medida);
-  padding: var(--space-l) var(--celula-pad) var(--space-2xl);
-}
-
-.projeto-texto h2 {
-  margin-block-start: var(--space-m);
-  font-size: var(--text-h3);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-subtitle);
-}
-
-.projeto-texto h2:first-child {
-  margin-block-start: 0;
-}
-
-.projeto-texto ul {
-  display: grid;
-  gap: var(--space-2xs);
-  padding-inline-start: 1.1em;
-}
-
-.projeto-texto li::marker {
-  color: var(--color-accent);
-}
-
-@media (min-width: 64rem) {
-  .projeto-texto {
-    grid-column: 1 / 9;
-  }
-}
-
-.proximo {
-  grid-column: 1 / -1;
-  display: grid;
-  gap: var(--space-2xs);
-  padding: var(--space-l) var(--celula-pad) var(--space-2xl);
-  text-decoration: none;
-}
-
-.proximo-rotulo {
-  color: var(--color-text);
-  font-size: var(--text-s);
-}
-
-.proximo-titulo {
-  --fita-largura: 0%;
-  justify-self: start;
-  background-image: linear-gradient(var(--color-fita), var(--color-fita));
-  background-repeat: no-repeat;
-  background-position: left bottom;
-  background-size: var(--fita-largura) 2px;
-  color: var(--color-heading);
-  font-size: var(--text-h1);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-display);
-  letter-spacing: var(--tracking-display);
-  transition: background-size var(--duration-base) var(--ease-out);
-}
-
-.proximo:hover .proximo-titulo,
-.proximo:focus-visible .proximo-titulo {
-  --fita-largura: 100%;
-}
-
-/* ---------- Blog ---------- */
-
-/* A lista: a capa numa célula à esquerda, a data e o resumo ao lado; no celular a capa abre a
-   linha. A linha inteira leva ao post (o link do título se estende pela célula). */
-.post-linha {
-  position: relative;
-  align-items: start;
-}
-
-.post-capa {
-  --foto-proporcao: 2 / 1;
-  grid-column: 1 / -1;
-  grid-row: 1;
-}
-
-.post-data {
-  grid-column: 1 / -1;
-  grid-row: 2;
-  padding: var(--celula-pad) var(--celula-pad) 0;
-  color: var(--color-text);
-  font-size: var(--text-s);
-  font-variant-numeric: tabular-nums;
-}
-
-.post-resumo {
-  grid-column: 1 / -1;
-  grid-row: 3;
-  display: grid;
-  gap: var(--space-2xs);
-  max-inline-size: 60ch;
-  padding: 0 var(--celula-pad) var(--celula-pad);
-}
-
-.post-resumo h2 {
-  font-size: var(--text-h3);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-subtitle);
-}
-
-.post-resumo h2 a::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-}
-
-.post-meta,
-.post-cabeca {
-  color: var(--color-text);
-  font-size: var(--text-s);
-}
-
-@media (min-width: 64rem) {
-  .post-capa {
-    --foto-proporcao: 3 / 2;
-    grid-column: 1 / 3;
-    align-self: stretch;
-    aspect-ratio: auto;
-    min-block-size: 8rem;
-  }
-
-  .post-data {
-    grid-column: 3 / 5;
-    grid-row: 1;
-    padding: var(--celula-pad);
-  }
-
-  .post-resumo {
-    grid-column: 5 / -1;
-    grid-row: 1;
-    padding: var(--celula-pad);
-  }
-}
-
-.post-cabeca {
-  grid-column: 1 / -1;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2xs) var(--space-m);
-  padding: var(--space-2xs) var(--celula-pad) var(--space-m);
-}
-
-.post-texto {
-  padding-block-start: var(--space-xl);
-}
-
-.post-abertura {
-  color: var(--color-heading);
-  font-size: var(--text-subtitle);
-  line-height: var(--leading-subtitle);
-}
-
-.post-texto ol {
-  display: grid;
-  gap: var(--space-2xs);
-  padding-inline-start: 1.4em;
-}
-
-.post-texto li::marker {
-  color: var(--color-accent);
-  font-weight: var(--weight-medium);
-}
-
-.post-texto code {
-  padding: 0.1em 0.35em;
-  border-radius: var(--radius-s);
-  background-color: var(--color-surface);
-  color: var(--color-heading);
-  font-family: inherit;
-  font-weight: var(--weight-medium);
-}
-
-.post-chamada-bloco {
-  grid-column: 1 / -1;
-  display: grid;
-  gap: var(--space-s);
-  justify-items: start;
-  padding: var(--space-l) var(--celula-pad);
-}
-
-.post-chamada-bloco h2 {
-  font-size: var(--text-h2);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-title);
-  letter-spacing: var(--tracking-title);
-}
-
-.post-chamada-bloco p {
-  max-inline-size: 52ch;
-}
-
-@media (min-width: 64rem) {
-  .post-chamada-bloco {
-    grid-column: 1 / 9;
-    padding: var(--space-xl) var(--space-l);
-  }
-}
-
-.post-vizinhos {
-  align-items: start;
-}
-
-.post-vizinho {
-  grid-column: 1 / -1;
-  display: grid;
-  gap: var(--space-2xs);
-  padding: var(--celula-pad);
-  text-decoration: none;
-}
-
-.post-vizinho-titulo {
-  --fita-largura: 0%;
-  justify-self: start;
-  background-image: linear-gradient(var(--color-fita), var(--color-fita));
-  background-repeat: no-repeat;
-  background-position: left bottom;
-  background-size: var(--fita-largura) 2px;
-  color: var(--color-heading);
-  font-size: var(--text-h3);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-subtitle);
-  transition: background-size var(--duration-base) var(--ease-out);
-}
-
-.post-vizinho:hover .post-vizinho-titulo,
-.post-vizinho:focus-visible .post-vizinho-titulo {
-  --fita-largura: 100%;
-}
-
-.post-todos {
-  grid-column: 1 / -1;
-  justify-self: start;
-  margin: var(--space-s) var(--celula-pad) var(--celula-pad);
-}
-
-@media (min-width: 64rem) {
-  .post-vizinho {
-    grid-column: 1 / 6;
-  }
-
-  .post-vizinho-proximo {
-    grid-column: 6 / -1;
-  }
-
-  .post-vizinho:only-of-type {
-    grid-column: 1 / 6;
-  }
-}
-
-/* Os três últimos posts na home */
-.home-posts-todos {
-  grid-column: 1 / -1;
-  justify-self: start;
-  align-self: center;
-  margin: var(--celula-pad);
-}
-
-.home-posts-linha {
-  position: relative;
-  align-items: center;
-}
-
-.home-posts-capa {
-  --foto-proporcao: 3 / 2;
-  grid-column: 1 / 3;
-  align-self: stretch;
-  aspect-ratio: auto;
-  min-block-size: 6rem;
-}
-
-.home-posts-item {
-  grid-column: 3 / -1;
-  display: grid;
-  gap: var(--space-3xs);
-  padding: var(--celula-pad);
-}
-
-.home-posts-item a::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-}
-
-.home-posts-item time {
-  color: var(--color-text);
-  font-size: var(--text-s);
-  font-variant-numeric: tabular-nums;
-}
-
-/* ---------- Contato ---------- */
-
-.formulario {
-  grid-column: 1 / -1;
-  display: grid;
-  gap: var(--space-m);
-  padding: var(--space-l) var(--celula-pad) var(--space-xl);
-}
-
-@media (min-width: 64rem) {
   .formulario {
-    grid-column: 1 / 9;
-    padding: var(--space-xl) var(--space-l) var(--space-2xl);
+    padding: var(--space-xl);
   }
 }
 
 .formulario h2 {
-  font-size: var(--text-h2);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-title);
-  letter-spacing: var(--tracking-title);
+  font-size: clamp(1.75rem, 1.2rem + 1.8vw, 2.5rem);
 }
 
 .campo {
@@ -2388,7 +1843,7 @@ html[data-menu-aberto] .whatsapp-flutuante {
 
 .campo label,
 .campo legend {
-  color: var(--color-heading);
+  color: var(--cor-titulo);
   font-weight: var(--weight-medium);
 }
 
@@ -2397,11 +1852,11 @@ html[data-menu-aberto] .whatsapp-flutuante {
   inline-size: 100%;
   min-block-size: 3rem;
   padding: 0.75rem var(--space-s);
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-m);
+  border: 1px solid var(--cor-linha);
+  border-radius: var(--radius-s);
   background-color: var(--color-bg);
-  color: var(--color-heading);
-  caret-color: var(--color-accent);
+  color: var(--cor-titulo);
+  caret-color: var(--cor-acento);
   transition: border-color var(--duration-fast) var(--ease-out);
 }
 
@@ -2411,13 +1866,13 @@ html[data-menu-aberto] .whatsapp-flutuante {
 
 .campo input:focus-visible,
 .campo textarea:focus-visible {
-  border-color: var(--color-accent);
+  border-color: var(--cor-acento);
   outline-offset: 2px;
 }
 
 .campo input::placeholder,
 .campo textarea::placeholder {
-  color: var(--color-text);
+  color: var(--cor-apagado);
 }
 
 .campo-opcoes {
@@ -2443,9 +1898,9 @@ html[data-menu-aberto] .whatsapp-flutuante {
   align-items: center;
   min-block-size: 2.75rem;
   padding: 0.5rem var(--space-s);
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--cor-linha);
   border-radius: var(--radius-full);
-  color: var(--color-heading);
+  color: var(--cor-titulo);
   cursor: pointer;
   transition:
     border-color var(--duration-fast) var(--ease-out),
@@ -2462,9 +1917,9 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .opcao:has(input:checked) {
-  border-color: var(--color-accent);
-  background-color: var(--color-accent);
-  color: var(--color-on-accent);
+  border-color: var(--botao-fundo);
+  background-color: var(--botao-fundo);
+  color: var(--botao-texto);
 }
 
 .opcao:has(input:focus-visible) {
@@ -2473,14 +1928,15 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .formulario-aviso {
-  color: var(--color-text);
+  color: var(--cor-apagado);
   font-size: var(--text-s);
 }
 
-.formulario-pendente {
+.formulario-pendente,
+.pendente {
   padding: var(--space-xs) var(--space-s);
-  border: 2px dashed var(--color-fita);
-  border-radius: var(--radius-m);
+  border: 2px dashed var(--cor-acento);
+  border-radius: var(--radius-s);
   font-size: var(--text-s);
 }
 
@@ -2494,68 +1950,147 @@ html:not(.js) [data-enviar='whatsapp'] {
   display: none;
 }
 
-.botao[disabled] {
-  background-color: var(--color-line);
-  color: var(--color-text);
-  cursor: not-allowed;
-}
+/* ---------- Raio-X: preço e o bloco da oferta ---------- */
 
-.botao[disabled]::after {
-  display: none;
-}
-
-/* ---------- Landing page do Raio-X ---------- */
-
-.cabecalho-landing .cabecalho-faixa {
-  justify-content: flex-start;
-}
-
-.raio-x-acao {
+.oferta {
   display: grid;
   gap: var(--space-s);
   justify-items: start;
+  max-inline-size: 40rem;
+  padding: var(--space-l);
+  border: 1px solid var(--cor-linha);
+  border-radius: var(--radius-l);
+  background-color: var(--cor-superficie);
 }
 
-.raio-x-apoio {
-  color: var(--color-text);
-  font-size: var(--text-s);
-}
-
-.raio-x-preco {
-  grid-column: 1 / -1;
-  display: grid;
-  gap: var(--space-s);
-  justify-items: start;
-  padding: var(--space-l) var(--celula-pad) var(--space-xl);
-}
-
-@media (min-width: 64rem) {
-  .raio-x-preco {
-    grid-column: 1 / 8;
-    padding: var(--space-xl) var(--space-l) var(--space-2xl);
-  }
-}
-
-.raio-x-valor {
-  color: var(--color-heading);
+.oferta-valor {
+  color: var(--cor-titulo);
   font-size: var(--text-h1);
   font-weight: var(--weight-bold);
-  line-height: var(--leading-display);
+  line-height: 1;
   letter-spacing: var(--tracking-display);
   font-variant-numeric: tabular-nums;
 }
 
-.raio-x-preco p {
+.oferta p {
   max-inline-size: 52ch;
 }
 
-.raio-x-honesto {
-  color: var(--color-text);
+.oferta-honesto,
+.cabeca-apoio {
+  color: var(--cor-apagado);
   font-size: var(--text-s);
 }
 
-.rodape-landing .rodape-faixa {
-  padding-block: var(--space-xl) var(--space-l);
+/* ---------- Chamada final: gigante, sobre o degradê ---------- */
+
+.chamada {
+  padding-block: clamp(5rem, 12vw, 10rem);
+}
+
+.chamada-grade {
+  display: grid;
+  gap: var(--space-l);
+}
+
+.chamada h2 {
+  font-size: var(--text-gigante);
+  line-height: var(--leading-display);
+  letter-spacing: -0.045em;
+}
+
+.chamada p {
+  max-inline-size: 44ch;
+  font-size: var(--text-subtitle);
+  line-height: 1.4;
+}
+
+.chamada-acoes {
+  margin-block-start: var(--space-s);
+}
+
+/* ---------- Rodapé: no violeta mais profundo, denso ---------- */
+
+.rodape {
+  background-color: var(--cor-fundo-profundo);
+  color: var(--cor-texto);
+  font-size: 0.875rem;
+}
+
+.rodape-faixa {
+  display: grid;
+  gap: var(--space-xl) var(--space-l);
+  padding-block: var(--space-2xl) var(--space-xl);
+  border-block-start: 1px solid var(--cor-linha);
+}
+
+.rodape-marca {
+  display: grid;
+  gap: var(--space-s);
+  align-content: start;
+}
+
+.rodape-marca img {
+  block-size: 1.5rem;
+  inline-size: auto;
+}
+
+.rodape-coluna ul {
+  display: grid;
+  gap: var(--space-2xs);
+  padding: 0;
+  list-style: none;
+}
+
+.rodape-titulo {
+  margin-block-end: var(--space-xs);
+  color: var(--violet-100);
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.rodape a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.rodape a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.rodape-empresa {
+  grid-column: 1 / -1;
+  padding-block-start: var(--space-m);
+  border-block-start: 1px solid var(--cor-linha);
+  color: var(--cor-apagado);
+  font-size: var(--text-label);
+}
+
+@media (min-width: 48rem) {
+  .rodape-faixa {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .rodape-marca {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 64rem) {
+  .rodape-faixa {
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+  }
+
+  .rodape-marca {
+    grid-column: 1;
+  }
+
+  .rodape-curto .rodape-faixa {
+    grid-template-columns: 2fr 1fr;
+  }
 }
 
 /* ---------- Acessos: só os botões, no degradê ---------- */
@@ -2568,7 +2103,7 @@ html:not(.js) [data-enviar='whatsapp'] {
   min-block-size: 100svh;
   padding: var(--space-2xl) var(--gutter);
   background-image: var(--gradient-brand);
-  color: #fff;
+  color: #ffffff;
 }
 
 .acessos-conteudo {
@@ -2584,9 +2119,7 @@ html:not(.js) [data-enviar='whatsapp'] {
 }
 
 .acessos h1 {
-  font-size: var(--text-h2);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-title);
+  font-size: clamp(1.75rem, 1.2rem + 1.8vw, 2.5rem);
   letter-spacing: var(--tracking-title);
 }
 
@@ -2607,17 +2140,127 @@ html:not(.js) [data-enviar='whatsapp'] {
   gap: var(--space-s) var(--space-l);
 }
 
-.acessos-links a {
-  color: #fff;
-}
-
 /* ---------- 404 ---------- */
 
-.pagina-404 .simbolo {
-  grid-column: 1 / -1;
-  inline-size: 4rem;
+.simbolo-404 {
+  inline-size: 5rem;
   block-size: auto;
-  margin: var(--space-xl) var(--celula-pad) 0;
+  margin-block-end: var(--space-s);
+}
+
+/* ---------- Banner de cookies (LGPD) ---------- */
+
+.consentimento {
+  position: fixed;
+  inset: auto var(--space-m) var(--space-m) auto;
+  z-index: 60;
+  display: grid;
+  gap: var(--space-s);
+  max-inline-size: min(26rem, 100vw - 2 * var(--space-m));
+  padding: var(--space-m);
+  border-radius: var(--radius-m);
+  background-color: var(--color-surface);
+  box-shadow: 0 12px 32px -12px rgb(0 0 0 / 0.6);
+  color: var(--color-text);
+  font-size: var(--text-s);
+  color-scheme: light;
+}
+
+.consentimento[hidden],
+.consentimento [hidden] {
+  display: none;
+}
+
+.consentimento-texto {
+  color: var(--color-heading);
+}
+
+.consentimento .link-fita {
+  color: var(--violet-700);
+  background-image: linear-gradient(var(--violet-700), var(--violet-700));
+}
+
+.consentimento-opcoes {
+  display: grid;
+  gap: var(--space-2xs);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.consentimento-opcoes legend {
+  margin-block-end: var(--space-2xs);
+  color: var(--color-heading);
+  font-weight: var(--weight-medium);
+}
+
+.consentimento-opcao {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+}
+
+.consentimento-opcao input {
+  accent-color: var(--violet-700);
+}
+
+.consentimento-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+}
+
+.consentimento .botao {
+  --botao-fundo: var(--violet-700);
+  --botao-texto: #ffffff;
+  --botao-hover: var(--violet-800);
+  min-block-size: 2.5rem;
+  padding: 0.5rem 0.9rem;
+  font-size: var(--text-s);
+}
+
+.consentimento .botao-contorno {
+  --botao-fundo: transparent;
+  border-color: var(--color-line);
+  color: var(--color-heading);
+}
+
+.consentimento .botao-contorno:hover {
+  background-color: var(--color-bg);
+  border-color: var(--violet-700);
+}
+
+@media (max-width: 30rem) {
+  .consentimento {
+    inset: auto var(--space-2xs) var(--space-2xs) var(--space-2xs);
+    max-inline-size: none;
+  }
+}
+
+/* ---------- Revelação por rolagem: visível por padrão, anima só com suporte ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .revelar {
+      animation-name: revelar;
+      animation-timing-function: var(--ease-out);
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+  }
+}
+
+@keyframes revelar {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* ---------- A fita: a cortina da troca de página ---------- */
@@ -2630,7 +2273,7 @@ html:not(.js) [data-enviar='whatsapp'] {
   place-items: center;
   padding: var(--gutter);
   background-image: var(--gradient-brand);
-  color: #fff;
+  color: #ffffff;
   clip-path: inset(50% 0 50% 0);
   visibility: hidden;
   pointer-events: none;

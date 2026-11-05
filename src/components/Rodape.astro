@@ -1,74 +1,87 @@
 ---
-import logoWhite from '../assets/marca/logo-horizontal-white.svg';
-import { cnpj, email, instagram, linkWhatsapp, nomeCompleto } from '../data/empresa';
-import { rotas } from '../i18n/rotas';
-import { privacidade } from '../i18n/paginas/privacidade';
-import { textos as t } from '../i18n/textos';
+import logoPrimary from '../../assets/marca/logo-horizontal-primary.svg';
+import logoWhite from '../../assets/marca/logo-horizontal-white.svg';
+import { cnpj, email, instagram, linkWhatsapp, nomeCompleto } from '../../data/empresa';
+import { rotas } from '../../i18n/rotas';
+import { textos as t } from '../../i18n/textos';
 
 /**
- * Rodapé, sempre sobre o degradê da marca, logo abaixo da chamada final da página.
- * Sobre o escuro, só White e Lilás. O logo é o arquivo SVG branco.
+ * Rodapé das versões de estudo: logo, assinatura, três colunas de links (serviços, empresa,
+ * contato) e a linha da empresa. `tema="escuro"` usa o logo branco. A pele vem de cada versão.
  */
+interface Props {
+  tema?: 'claro' | 'escuro';
+  class?: string;
+}
+
+const { tema = 'escuro', class: classe } = Astro.props;
 // [PENDENTE: o Igor decide se o CNPJ aparece no rodapé]
 const mostrarCnpj = false;
-// O link "Preferências de cookies" só existe quando há tags (e, portanto, banner)
-const temRastreamento = Boolean(
-  import.meta.env.PUBLIC_GA4_ID || import.meta.env.PUBLIC_META_PIXEL_ID,
-);
 const altura = 24;
 const largura = Math.round((altura * logoWhite.width) / logoWhite.height);
+const logo = tema === 'escuro' ? logoWhite : logoPrimary;
+const colunas = [
+  {
+    titulo: 'Serviços',
+    links: [
+      { rotulo: t.menu.sites, href: rotas.sites },
+      { rotulo: t.menu.sistemas, href: rotas.sistemas },
+      { rotulo: 'Raio-X do site', href: rotas.raioX },
+    ],
+  },
+  {
+    titulo: 'Empresa',
+    links: [
+      { rotulo: t.menu.projetos, href: rotas.projetos },
+      { rotulo: t.menu.blog, href: rotas.blog },
+      { rotulo: t.menu.contato, href: rotas.contato },
+      { rotulo: t.rodape.privacidade, href: rotas.privacidade },
+    ],
+  },
+];
 ---
 
-<footer class="rodape">
-  <div class="rodape-faixa">
-    <div class="rodape-marca">
-      <img
-        src={logoWhite.src}
-        width={largura}
-        height={altura}
-        alt={nomeCompleto}
-        decoding="async"
-      />
-      <p class="rodape-assinatura">{t.rodape.assinatura}</p>
+<footer class:list={['v-rodape', { 'v-escuro': tema === 'escuro' }, classe]}>
+  <div class="v-rodape-faixa">
+    <div class="v-rodape-marca">
+      <img src={logo.src} width={largura} height={altura} alt={nomeCompleto} decoding="async" />
+      <p>{t.rodape.assinatura}</p>
     </div>
-    <ul class="rodape-links">
-      <li>
-        <a
-          class="link-fita"
-          href={linkWhatsapp()}
-          target="_blank"
-          rel="noopener"
-          data-evento="whatsapp_rodape"
-        >
-          {t.contato.whatsapp}
-          <span class="visualmente-oculto">{t.linkExterno}</span>
-        </a>
-      </li>
-      <li>
-        <a class="link-fita" href={`mailto:${email}`} data-evento="email_rodape">
-          {email}
-        </a>
-      </li>
-      <li>
-        <a class="link-fita" href={instagram.url} target="_blank" rel="noopener">
-          {instagram.usuario}
-          <span class="visualmente-oculto">{t.linkExterno}</span>
-        </a>
-      </li>
-      <li>
-        <a class="link-fita" href={rotas.privacidade}>
-          {t.rodape.privacidade}
-        </a>
-      </li>
-      {temRastreamento && (
+    {colunas.map((c) => (
+      <div class="v-rodape-coluna">
+        <p class="v-rodape-titulo">{c.titulo}</p>
+        <ul>
+          {c.links.map((l) => (
+            <li>
+              <a href={l.href}>{l.rotulo}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+    <div class="v-rodape-coluna">
+      <p class="v-rodape-titulo">Contato</p>
+      <ul>
         <li>
-          <a class="link-fita" href={rotas.privacidade} data-abrir-cookies>
-            {privacidade.banner.reabrir}
+          <a href={linkWhatsapp()} target="_blank" rel="noopener" data-evento="whatsapp_rodape">
+            {t.contato.whatsapp}
+            <span class="visualmente-oculto">{t.linkExterno}</span>
           </a>
         </li>
-      )}
-    </ul>
-    <p class="rodape-empresa">
+        <li>
+          <a href={`mailto:${email}`} data-evento="email_rodape">
+            {email}
+          </a>
+        </li>
+        <li>
+          <a href={instagram.url} target="_blank" rel="noopener">
+            {instagram.usuario}
+            <span class="visualmente-oculto">{t.linkExterno}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <p class="v-rodape-empresa">
       {nomeCompleto}
       {mostrarCnpj && <span> · CNPJ {cnpj}</span>}
     </p>
