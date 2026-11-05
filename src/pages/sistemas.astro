@@ -7,6 +7,7 @@ import Faq from '../components/Faq.astro';
 import FontesPrevias from '../components/FontesPrevias.astro';
 import Passos from '../components/Passos.astro';
 import Secao from '../components/Secao.astro';
+import Icone from '../components/Icone.astro';
 import Topicos from '../components/Topicos.astro';
 import Vitrine from '../components/Vitrine.astro';
 import type { NomeIcone } from '../data/icones';
@@ -25,6 +26,10 @@ const meta = metasPaginas.sistemas;
 const produtos = (await todosProjetos()).filter((p) => p.data.tipo === 'produto');
 const iconesProblema: NomeIcone[] = ['planilha', 'quadro', 'nota', 'balao'];
 const iconesSolucao: NomeIcone[] = ['banco', 'ciclo', 'conexoes', 'painel'];
+const iconesAntes: NomeIcone[] = ['balao', 'quadro', 'relogio', 'documento', 'usuarios'];
+const iconesDepois: NomeIcone[] = ['banco', 'ciclo', 'certo', 'painel', 'raio'];
+const seta =
+  '<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 const iconesBeneficios: NomeIcone[] = ['relogio', 'certo', 'usuarios', 'olho', 'crescimento'];
 const iconesPassos: NomeIcone[] = [
   'balao',
@@ -91,25 +96,27 @@ const jsonLd = {
     <div class="cabeca-secao">
       <h2 id="antes-depois-titulo">{t.antesDepois.titulo}</h2>
     </div>
-    <div class="antes-depois revelar">
-      <table>
-        <caption class="visualmente-oculto">{t.antesDepois.titulo}</caption>
-        <thead>
-          <tr>
-            <th scope="col">{t.antesDepois.colunas.antes}</th>
-            <th scope="col">{t.antesDepois.colunas.depois}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {t.antesDepois.linhas.map((l) => (
-            <tr>
-              <td>{l.antes}</td>
-              <td>{l.depois}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <ol class="transformacoes revelar">
+      {t.antesDepois.linhas.map((l, idx) => (
+        <li class="transformacao">
+          <div class="transformacao-antes">
+            <Icone nome={iconesAntes[idx]!} tamanho={24} />
+            <p>
+              <span class="transformacao-rotulo">{t.antesDepois.colunas.antes}</span>
+              {l.antes}
+            </p>
+          </div>
+          <span class="transformacao-seta" set:html={seta} aria-hidden="true" />
+          <div class="transformacao-depois">
+            <Icone nome={iconesDepois[idx]!} tamanho={24} />
+            <p>
+              <span class="transformacao-rotulo">{t.antesDepois.colunas.depois}</span>
+              {l.depois}
+            </p>
+          </div>
+        </li>
+      ))}
+    </ol>
   </Secao>
 
   <Secao tom="claro" aria-labelledby="beneficios-titulo">
