@@ -43,8 +43,6 @@
   --cor-superficie: rgb(255 255 255 / 0.045);
   --cor-superficie-forte: rgb(255 255 255 / 0.08);
   --cor-icone: var(--violet-100);
-  --cor-brilho: color-mix(in oklab, var(--violet-100) 30%, transparent);
-  --cor-sombra-icone: color-mix(in oklab, var(--violet-100) 60%, transparent);
   --botao-fundo: var(--violet-100);
   --botao-texto: var(--violet-900);
   --botao-hover: #ffffff;
@@ -135,8 +133,6 @@
   --cor-superficie: var(--color-surface);
   --cor-superficie-forte: var(--violet-50);
   --cor-icone: var(--violet-700);
-  --cor-brilho: color-mix(in oklab, var(--violet-700) 22%, transparent);
-  --cor-sombra-icone: color-mix(in oklab, var(--violet-700) 45%, transparent);
   --botao-fundo: var(--violet-700);
   --botao-texto: #ffffff;
   --botao-hover: var(--violet-800);
