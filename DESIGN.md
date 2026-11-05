@@ -160,7 +160,7 @@ Registrado em 05/11/2026 a partir do site construído (`src/styles/tokens.css`, 
 
 **Creative North Star: "O infinito"**
 
-A Infinium como estúdio: o site é escuro, no violeta profundo da marca, com o tipo em caixa grande e o símbolo (a fita de Möbius) como motivo que se desenha. Cada ideia é um tópico com o seu ícone, nunca um parágrafo; o que precisa ser lido com calma (serviços, resultados, blog, o case, o formulário) vai para faixas claras no Body da identidade. A prova é a prévia real dos sites dos clientes, em janelas de navegador numa galeria. Toda página termina em "Vamos conversar?" gigante sobre o degradê e no rodapé no violeta mais profundo.
+A Infinium como estúdio: o site é escuro, no violeta profundo da marca, com o tipo em caixa grande, a abertura sobre uma foto em luz violeta e o símbolo (a fita de Möbius) como motivo que se desenha na conexão. Cada ideia é um tópico com o seu ícone, nunca um parágrafo; o que precisa ser lido com calma (serviços, resultados, blog, o case, o formulário) vai para faixas claras no Body da identidade. A prova é a prévia real dos sites dos clientes, em janelas de navegador numa galeria. Toda página termina em "Vamos conversar?" gigante sobre o degradê e no rodapé no violeta mais profundo.
 
 **Key Characteristics:**
 - Escuro por padrão (Violeta 900), com faixas claras (Body) para leitura; o contexto `.claro` troca os tokens semânticos
@@ -203,7 +203,7 @@ A Infinium como estúdio: o site é escuro, no violeta profundo da marca, com o 
 
 - **Faixas** (`Secao.astro`, `.faixa`): largura inteira, fundo por tom (escuro, profundo, degradê, claro), respiro `clamp(4rem, 9vw, 7.5rem)`; dentro, o **miolo** `min(100% - 2 * gutter, 80rem)` (texto corrido em 60rem).
 - **Cabeça de página** (`Cabeca.astro`): título, frase, uma linha e as ações à esquerda; foto na luz violeta à direita (1,15fr e 1fr) quando houver.
-- **Abertura da home**: uma tela (`100svh` menos o cabeçalho), o título em 11ch com o símbolo atrás à direita, o apoio na coluna da direita no desktop; a faixa rolante fecha a abertura.
+- **Abertura da home**: uma tela (`100svh` menos o cabeçalho e a faixa rolante), a foto em luz violeta cobrindo tudo a 55 % sob um degradê que escurece até o fundo, o título em 11ch e o apoio na coluna da direita no desktop; a faixa rolante fecha a abertura.
 - **Dupla** (`Dupla.astro`): duas colunas iguais a partir de 64rem, foto no lado escolhido, uma dupla por serviço.
 - **Tópicos**: grade `auto-fit` de 14rem (10rem no celular, dois por linha), ou colunas fixas `topicos-2` a `topicos-5`; compactos em linha para listas curtas.
 - **Galeria** (`Galeria.astro`): trilho horizontal com encaixe, janelas de `min(84vw, 44rem)`, recuo alinhado ao miolo; **obras** em linhas largas (7fr e 4fr, alternando o lado) na página de projetos.
@@ -213,7 +213,7 @@ A Infinium como estúdio: o site é escuro, no violeta profundo da marca, com o 
 
 ## Elevation & Depth
 
-Profundidade tonal: três escuros (profundo, fundo, degradê) e o claro. As únicas sombras são as das vitrines (janelas sobre o escuro), da tabela de antes e depois, do botão flutuante e do banner de cookies. Hover eleva 2 px e acende a borda no acento; nada de vidro. Os brilhos ficam nos ícones (halo e `drop-shadow` na cor do acento).
+Profundidade tonal: três escuros (profundo, fundo, degradê) e o claro. As únicas sombras são as das vitrines (janelas sobre o escuro), da tabela de antes e depois, do botão flutuante e do banner de cookies. Hover eleva 2 px e acende a borda no acento; nada de vidro. Nenhum brilho: os ícones ficam em ladrilhos.
 
 ## Shapes
 
@@ -223,12 +223,12 @@ Pílulas nos controles (`--radius-full`): botões, opções do formulário, o bo
 
 - **Botões**: pílula de 3,25rem (4rem na grande), peso 500, sobe 1 px no hover; contorno com borda em `--cor-linha`. Uma ação principal por bloco, a secundária é um `.link-fita`.
 - **Link com fita**: a linha de 1 px se desenha da esquerda para a direita no hover e no foco; a seta anda 3 px.
-- **Ícone** (`Icone.astro`, `src/data/icones.ts`): 28 ícones de traço próprios, 24 x 24, `pathLength="1"`; a fita desenha cada forma com `animation-timeline: view()` (cover 0 a 30 %, formas seguintes defasadas) e o halo acende atrás; sem suporte ou com movimento reduzido, aparece pronto.
+- **Ícone** (`Icone.astro`, `src/data/icones.ts`): 28 ícones de traço próprios, 24 x 24, `pathLength="1"`, num ladrilho de 3rem com borda e canto de 0,75rem; a fita desenha cada forma com `animation-timeline: view()` (cover 0 a 30 %, formas seguintes defasadas); sem suporte ou com movimento reduzido, aparece pronto. Sem brilho (saiu a pedido do Igor).
 - **Tópico**: superfície com borda, ícone de 3rem, título de 20 px e uma linha apagada; compacto: 2,25rem de ícone e título em 17 px.
 - **Vitrine** (`Vitrine.astro`): a prévia real do site num palco de 1100 px (ou 400 px no celular) escalado para a moldura (`scale(tan(atan2(100cqi, base)))`), em janela de navegador (barra com três pontos e o domínio), celular ou nua; só os controles da prévia recebem o ponteiro.
 - **Galeria**: botões redondos de anterior e próximo (`galeria.ts`), escondidos sem JS.
 - **Faixa rolante** (`Rolante.astro`): itens separados pelo símbolo micro, animação linear de 48 s, pausa no hover e com movimento reduzido.
-- **Antes e depois**: tabela num cartão branco com a coluna "depois" em Lilás, sempre sobre o degradê.
+- **Antes e depois** (`.transformacoes`): cada linha é um par de cartões com ícone, o manual apagado à esquerda e o automático em Lilás à direita, ligados por uma seta; sobre o degradê.
 - **Perguntas** (`Faq.astro`): `details` com o mais em dois traços no acento.
 - **Formulário**: cartão branco sobre o claro, campos em Body com borda Line, opções em pílula (marcada em Primary), aviso de privacidade e, sem a chave do Web3Forms, o bloco pendente tracejado.
 - **Chamada final** (`ChamadaFinal.astro`): sobre o degradê, título gigante, uma linha, botão grande em Lilás e os canais (e-mail e Instagram) ou uma secundária. Padrão de todas as páginas pelo `Base.astro`.

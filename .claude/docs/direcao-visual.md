@@ -162,4 +162,12 @@ Formato: data, o que foi decidido, por quê.
   holofote e o laço da conexão em SVG; ficam a fita como traço dos ícones (desenhados pela
   rolagem, com o brilho), a cortina da troca de página (encurtada para 260, 160, 60 e 280 ms,
   porque as páginas ficaram mais pesadas) e o laço das etapas; o Lenis fica com `lerp` 0,22. O registro do sistema construído está em `DESIGN.md`.
+- **05/11/2026, mais tarde: a abertura com foto.** Vendo o site inteiro, o Igor não gostou da
+  abertura (a frase com o símbolo se desenhando ao fundo) e pediu versões em imagem. Foram
+  quatro: a vitrine (o site do cliente numa janela sob a frase), o laço (o símbolo gigante atrás
+  da frase), o fluxo (as ferramentas soltas virando um sistema) e a foto (a foto em luz violeta
+  cobrindo a tela, com a frase por cima). Ele escolheu a foto. Na mesma rodada: a faixa rolante
+  ficou com o mesmo espaço dos dois lados do símbolo; o brilho dos ícones saiu e entrou um
+  ladrilho; o antes e depois virou pares de cartões com ícone; e a página de projeto ganhou a
+  prévia na faixa do título e o case em cartões, sem texto corrido.
 
