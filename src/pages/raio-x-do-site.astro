@@ -1,10 +1,11 @@
 ---
 import LandingPage from '../layouts/LandingPage.astro';
 import BotaoRaioX from '../components/BotaoRaioX.astro';
-import Cartao from '../components/Cartao.astro';
-import Foto from '../components/Foto.astro';
-import Linha from '../components/Linha.astro';
+import Cabeca from '../components/Cabeca.astro';
+import Faq from '../components/Faq.astro';
+import Passos from '../components/Passos.astro';
 import Secao from '../components/Secao.astro';
+import Topicos from '../components/Topicos.astro';
 import { nomeCompleto } from '../data/empresa';
 import type { NomeIcone } from '../data/icones';
 import { prazoDias, preco, precoFormatado } from '../data/raioX';
@@ -15,13 +16,16 @@ import { metasPaginas } from '../i18n/textos';
 /**
  * Landing page do Raio-X do site (conteudo.md, seção 11): uma oferta, uma ação, sem menu.
  * O botão vai para o link de pagamento; enquanto ele não existe, vai para o WhatsApp.
- * Em bandas, com a foto na cabeça e cartões com ícone (31/10/2026).
  */
 const meta = metasPaginas.raioX;
 const site = Astro.site!;
 const url = new URL(rotas.raioX, site).href;
 const iconesParaQuem: NomeIcone[] = ['olho', 'lupa', 'relogio', 'janela'];
 const iconesRecebe: NomeIcone[] = ['lupa', 'velocimetro', 'escudo', 'documento', 'video'];
+const iconesPassos: NomeIcone[] = ['certo', 'balao', 'documento'];
+const paraQuem = t.paraQuem.itens.map((i, idx) => ({ icone: iconesParaQuem[idx]!, titulo: i }));
+const recebe = t.recebe.itens.map((i, idx) => ({ icone: iconesRecebe[idx]!, ...i }));
+const passos = t.comoFunciona.passos.map((p, idx) => ({ icone: iconesPassos[idx]!, ...p }));
 
 const jsonLd = {
   '@type': 'Service',
@@ -48,130 +52,78 @@ const jsonLd = {
 
 <LandingPage titulo={meta.titulo} descricao={meta.descricao} jsonLd={[jsonLd]}>
   <div data-raio-x>
-    <Secao
-      cabeca
-      folha="pagina-cabeca cabeca-com-foto raio-x-abertura"
-      aria-labelledby="pagina-titulo"
-      data-secao="abertura"
-      style="--cabeca-linhas: 3"
-    >
-      <Linha>
-        <h1
-          class="pagina-titulo"
-          id="pagina-titulo"
-          data-angulo-google={t.abertura.angulos.google}
-          data-angulo-seguranca={t.abertura.angulos.seguranca}
-        >
-          {t.abertura.titulo}
-        </h1>
-      </Linha>
-      <Linha>
-        <p class="pagina-texto">{t.abertura.texto}</p>
-      </Linha>
-      <Linha>
-        <div class="pagina-acao raio-x-acao">
+    <div data-secao="abertura">
+      <Cabeca
+        titulo={t.abertura.titulo}
+        texto={t.abertura.texto}
+        foto="lupa"
+        atributosTitulo={{
+          'data-angulo-google': t.abertura.angulos.google,
+          'data-angulo-seguranca': t.abertura.angulos.seguranca,
+        }}
+      >
+        <div class="acoes">
           <BotaoRaioX evento="raio_x_cta_abertura" />
-          <p class="raio-x-apoio">{t.abertura.apoio}</p>
         </div>
-      </Linha>
-      <Foto class="cabeca-foto" nome="lupa" prioridade sizes="(min-width: 64rem) 28rem, 100vw" />
-    </Secao>
+        <p class="cabeca-apoio">{t.abertura.apoio}</p>
+      </Cabeca>
+    </div>
 
-    <Secao tom="branco" aria-labelledby="para-quem-titulo" data-secao="para-quem">
-      <Linha>
-        <h2 class="titulo-secao" id="para-quem-titulo">
-          {t.paraQuem.titulo}
-        </h2>
-      </Linha>
-      <Linha as="ul" class="cartoes" data-cartoes={t.paraQuem.itens.length}>
-        {t.paraQuem.itens.map((i, idx) => (
-          <Cartao as="li" icone={iconesParaQuem[idx]} texto={i} />
-        ))}
-      </Linha>
+    <Secao tom="claro" aria-labelledby="para-quem-titulo" data-secao="para-quem">
+      <div class="cabeca-secao">
+        <h2 id="para-quem-titulo">{t.paraQuem.titulo}</h2>
+      </div>
+      <Topicos itens={paraQuem} class="topicos-4 revelar" />
     </Secao>
 
     <Secao aria-labelledby="recebe-titulo" data-secao="recebe">
-      <Linha>
-        <h2 class="titulo-secao" id="recebe-titulo">
-          {t.recebe.titulo}
-        </h2>
-        <p class="celula celula-apoio">{t.recebe.texto}</p>
-      </Linha>
-      <Linha class="cartoes" data-cartoes={t.recebe.itens.length}>
-        {t.recebe.itens.map((i, idx) => (
-          <Cartao icone={iconesRecebe[idx]} titulo={i.titulo} texto={i.texto} />
-        ))}
-      </Linha>
+      <div class="cabeca-secao">
+        <h2 id="recebe-titulo">{t.recebe.titulo}</h2>
+        <p>{t.recebe.texto}</p>
+      </div>
+      <Topicos itens={recebe} class="topicos-5 revelar" />
     </Secao>
 
-    <Secao tom="branco" aria-labelledby="como-titulo" data-secao="como-funciona">
-      <Linha>
-        <h2 class="titulo-secao" id="como-titulo">
-          {t.comoFunciona.titulo}
-        </h2>
-      </Linha>
-      <ol class="passos" data-laco>
-        {t.comoFunciona.passos.map((p) => (
-          <Linha as="li" class="passo">
-            <span class="passo-indice" aria-hidden="true"></span>
-            <h3 class="passo-titulo">{p.titulo}</h3>
-            <p class="passo-texto">{p.texto}</p>
-          </Linha>
-        ))}
-      </ol>
+    <Secao tom="claro" aria-labelledby="como-titulo" data-secao="como-funciona">
+      <Passos titulo={t.comoFunciona.titulo} passos={passos} idTitulo="como-titulo" />
     </Secao>
 
     <Secao aria-labelledby="preco-titulo" data-secao="preco">
-      <Linha>
-        <h2 class="titulo-secao" id="preco-titulo">
-          {t.preco.titulo}
-        </h2>
-      </Linha>
-      <Linha class="servicos-linha">
-        <div class="raio-x-preco mesclada">
-          {preco !== null ? (
-            <p class="raio-x-valor">{precoFormatado(preco)}</p>
-          ) : (
-            <p class="formulario-pendente">{t.preco.pendente}</p>
-          )}
-          {prazoDias !== null && <p>{t.preco.prazo(prazoDias)}</p>}
-          <p>{t.preco.inclui}</p>
-          <BotaoRaioX evento="raio_x_cta_preco" />
-          <p class="raio-x-honesto">{t.preco.honesto}</p>
-        </div>
-      </Linha>
+      <div class="cabeca-secao">
+        <h2 id="preco-titulo">{t.preco.titulo}</h2>
+      </div>
+      <div class="oferta revelar">
+        {preco !== null ? (
+          <p class="oferta-valor">{precoFormatado(preco)}</p>
+        ) : (
+          <p class="pendente">{t.preco.pendente}</p>
+        )}
+        {prazoDias !== null && <p>{t.preco.prazo(prazoDias)}</p>}
+        <p>{t.preco.inclui}</p>
+        <BotaoRaioX evento="raio_x_cta_preco" />
+        <p class="oferta-honesto">{t.preco.honesto}</p>
+      </div>
     </Secao>
 
-    <Secao tom="branco" aria-labelledby="faq-titulo" data-secao="faq">
-      <Linha>
-        <h2 class="titulo-secao" id="faq-titulo">
-          {t.faq.titulo}
-        </h2>
-      </Linha>
-      {t.faq.itens.map((i) => (
-        <Linha>
-          <details class="faq-item">
-            <summary>{i.pergunta}</summary>
-            <p>{i.resposta}</p>
-          </details>
-        </Linha>
-      ))}
+    <Secao tom="claro" miolo="faq-grade" aria-labelledby="faq-titulo" data-secao="faq">
+      <h2 id="faq-titulo">{t.faq.titulo}</h2>
+      <Faq itens={t.faq.itens} class="revelar" />
     </Secao>
   </div>
 
   <section
     slot="fechamento"
-    class="chamada-final"
+    class="faixa faixa-degrade chamada"
     aria-labelledby="fechamento-titulo"
     data-secao="fechamento"
   >
-    <div class="chamada-final-faixa">
+    <div class="miolo chamada-grade">
       <h2 id="fechamento-titulo">{t.fechamento.titulo}</h2>
       <p>{t.fechamento.texto}</p>
-      <div class="chamada-final-acoes">
-        <BotaoRaioX evento="raio_x_cta_fechamento" claro rotulo={t.fechamento.acao} />
+      <div class="acoes chamada-acoes">
+        <BotaoRaioX evento="raio_x_cta_fechamento" rotulo={t.fechamento.acao} />
       </div>
-      <p class="rodape-empresa">{nomeCompleto}</p>
+      <p class="apagado">{nomeCompleto}</p>
     </div>
   </section>
 

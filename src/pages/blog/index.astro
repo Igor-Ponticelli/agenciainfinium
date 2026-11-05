@@ -1,21 +1,20 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Cabeca from '../../components/Cabeca.astro';
 import ChamadaFinal from '../../components/ChamadaFinal.astro';
 import Foto from '../../components/Foto.astro';
-import Linha from '../../components/Linha.astro';
 import Secao from '../../components/Secao.astro';
 import { dataCurta, dataDoPost, dataIso, postsPublicados, tempoDeLeitura } from '../../data/blog';
-import { linkWhatsapp } from '../../data/empresa';
 import { rotaPost } from '../../i18n/rotas';
 import { blog as t } from '../../i18n/paginas/blog';
 import { metasPaginas } from '../../i18n/textos';
 
-/** Blog: a lista de posts em linhas da planilha, com a capa de cada um, do mais novo para o mais antigo. */
+/** Blog: os posts em cartões com a capa, do mais novo para o mais antigo. */
 const meta = metasPaginas.blog;
 const posts = await postsPublicados();
 ---
 
-<Base titulo={meta.titulo} descricao={meta.descricao}>
+<Base titulo={meta.titulo} descricao={meta.descricao} semChamada>
   <link
     slot="head"
     rel="alternate"
@@ -23,51 +22,37 @@ const posts = await postsPublicados();
     title="Blog da Infinium"
     href="/blog/rss.xml"
   />
-  <Secao cabeca folha="pagina-cabeca" aria-labelledby="pagina-titulo">
-    <Linha>
-      <h1 class="pagina-titulo" id="pagina-titulo">
-        {t.titulo}
-      </h1>
-    </Linha>
-    <Linha>
-      <p class="pagina-texto">{t.texto}</p>
-    </Linha>
-  </Secao>
+  <Cabeca titulo={t.titulo} texto={t.texto} />
 
-  <Secao tom="branco" aria-label={t.rotulos.todos}>
-    {posts.map((post) => {
-      const data = dataDoPost(post);
-      return (
-        <Linha as="article" class="post-linha">
-          <Foto
-            class="post-capa"
-            nome={post.data.capa}
-            widths={[360, 640, 960]}
-            sizes="(min-width: 64rem) 12rem, 100vw"
-          />
-          <time class="post-data" datetime={dataIso(data)}>
-            {dataCurta(data)}
-          </time>
-          <div class="post-resumo">
-            <h2>
-              <a class="link-fita" href={rotaPost(post.id)}>
-                {post.data.titulo}
-              </a>
-            </h2>
-            <p>{post.data.descricao}</p>
-            <p class="post-meta">{t.rotulos.leitura(tempoDeLeitura(post))}</p>
-          </div>
-        </Linha>
-      );
-    })}
+  <Secao tom="claro" aria-label={t.rotulos.todos}>
+    <ul class="posts">
+      {posts.map((post) => {
+        const data = dataDoPost(post);
+        return (
+          <li class="post-cartao revelar">
+            <Foto
+              class="post-capa"
+              nome={post.data.capa}
+              widths={[480, 800]}
+              sizes="(min-width: 48rem) 26rem, 100vw"
+            />
+            <div class="post-cartao-texto">
+              <time datetime={dataIso(data)}>{dataCurta(data)}</time>
+              <h2>
+                <a href={rotaPost(post.id)}>{post.data.titulo}</a>
+              </h2>
+              <p>{post.data.descricao}</p>
+              <p class="post-meta">{t.rotulos.leitura(tempoDeLeitura(post))}</p>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
   </Secao>
 
   <ChamadaFinal
     slot="fechamento"
     titulo="Ficou com uma dúvida sobre o seu site?"
     texto="Manda uma mensagem. A conversa inicial é pelo WhatsApp e não tem compromisso."
-    acao="Falar no WhatsApp"
-    href={linkWhatsapp()}
-    evento="whatsapp_chamada_final"
   />
 </Base>

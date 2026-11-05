@@ -1,49 +1,54 @@
 ---
+import simbolo from '../assets/marca/simbolo-white.svg?raw';
 import Base from '../layouts/Base.astro';
-import Cartao from '../components/Cartao.astro';
+import Cabeca from '../components/Cabeca.astro';
 import ChamadaFinal from '../components/ChamadaFinal.astro';
 import Icone from '../components/Icone.astro';
-import Linha from '../components/Linha.astro';
 import Secao from '../components/Secao.astro';
+import Topicos from '../components/Topicos.astro';
 import type { NomeIcone } from '../data/icones';
 import { linkWhatsapp } from '../data/empresa';
-import { rotas } from '../i18n/rotas';
+import { inicio } from '../i18n/paginas/inicio';
 import { servicos as t } from '../i18n/paginas/servicos';
-import { metasPaginas } from '../i18n/textos';
+import { rotas } from '../i18n/rotas';
+import { metasPaginas, textos } from '../i18n/textos';
 
-/** Hub de serviços: a pergunta em três cartões, os dois serviços lado a lado e a conexão. */
+/** Hub de serviços: a pergunta em três tópicos, os dois serviços lado a lado e a conexão. */
 const meta = metasPaginas.servicos;
 const destino = { sites: rotas.sites, sistemas: rotas.sistemas, whatsapp: linkWhatsapp() };
 const iconesQual: NomeIcone[] = ['lupa', 'planilha', 'conexoes'];
-const iconesEntrega: Record<'sites' | 'sistemas', NomeIcone[]> = {
-  sites: ['janela', 'alvo', 'etiqueta'],
-  sistemas: ['banco', 'ciclo', 'conexoes', 'painel'],
-};
+const laco = simbolo.replace('<path ', '<path pathLength="1" ');
+const servicos = [
+  {
+    ...t.sites,
+    rota: rotas.sites,
+    chave: 'sites' as const,
+    topicos: inicio.servicos.sites.topicos,
+  },
+  {
+    ...t.sistemas,
+    rota: rotas.sistemas,
+    chave: 'sistemas' as const,
+    topicos: inicio.servicos.sistemas.topicos,
+  },
+];
 ---
 
-<Base titulo={meta.titulo} descricao={meta.descricao}>
-  <Secao cabeca folha="pagina-cabeca" aria-labelledby="pagina-titulo">
-    <Linha>
-      <h1 class="pagina-titulo" id="pagina-titulo">
-        {t.titulo}
-      </h1>
-    </Linha>
-    <Linha>
-      <p class="pagina-texto">{t.texto}</p>
-    </Linha>
-  </Secao>
+<Base titulo={meta.titulo} descricao={meta.descricao} semChamada>
+  <Cabeca titulo={t.titulo} texto={t.texto} />
 
-  <Secao tom="branco" aria-labelledby="qual-titulo">
-    <Linha>
-      <h2 class="titulo-secao" id="qual-titulo">
-        {t.qual.titulo}
-      </h2>
-    </Linha>
-    <Linha class="cartoes" data-cartoes={t.qual.opcoes.length}>
+  <Secao tom="claro" aria-labelledby="qual-titulo">
+    <div class="cabeca-secao">
+      <h2 id="qual-titulo">{t.qual.titulo}</h2>
+    </div>
+    <ul class="topicos topicos-3 revelar">
       {t.qual.opcoes.map((o, idx) => (
-        <Cartao icone={iconesQual[idx]}>
-          <p class="cartao-frase">{o.problema}</p>
-          <p class="cartao-texto">{o.resposta}</p>
+        <li class="topico">
+          <Icone nome={iconesQual[idx]!} tamanho={30} />
+          <div class="topico-texto">
+            <h3>{o.problema}</h3>
+            <p>{o.resposta}</p>
+          </div>
           {o.destino === 'whatsapp' ? (
             <a
               class="botao"
@@ -53,69 +58,43 @@ const iconesEntrega: Record<'sites' | 'sistemas', NomeIcone[]> = {
               data-evento="whatsapp_hub"
             >
               {o.acao}
-              <span class="visualmente-oculto">(abre em nova aba)</span>
+              <span class="visualmente-oculto">{textos.linkExterno}</span>
             </a>
           ) : (
             <a class="botao" href={destino[o.destino]} data-evento={`servico_${o.destino}`}>
               {o.acao}
             </a>
           )}
-        </Cartao>
+        </li>
       ))}
-    </Linha>
+    </ul>
   </Secao>
 
   <Secao aria-label="Os dois serviços">
-    <Linha class="servicos-linha">
-      {[
-        { ...t.sites, classe: 'servico-sites', rota: rotas.sites, chave: 'sites' as const },
-        {
-          ...t.sistemas,
-          classe: 'servico-sistemas',
-          rota: rotas.sistemas,
-          chave: 'sistemas' as const,
-        },
-      ].map((s) => (
-        <article class:list={['servico', 'mesclada', s.classe]}>
-          <h2>{s.titulo}</h2>
-          <p class="servico-frase">{s.frase}</p>
-          <p>{s.texto}</p>
-          <ul class="servico-entrega">
-            {s.entrega.map((e, idx) => (
-              <li>
-                {iconesEntrega[s.chave][idx] && (
-                  <Icone nome={iconesEntrega[s.chave][idx]} class="icone-inline" tamanho={22} />
-                )}
-                {e}
-              </li>
-            ))}
-          </ul>
-          <div class="acoes">
-            <a class="botao" href={s.rota} data-evento={`servico_${s.chave}`}>
-              {s.acao}
-            </a>
+    <div class="topicos topicos-2">
+      {servicos.map((s) => (
+        <article class="topico revelar">
+          <div class="topico-texto">
+            <h2>{s.titulo}</h2>
+            <p class="frase-chave">{s.frase}</p>
+            <p>{s.texto}</p>
           </div>
+          <Topicos itens={s.topicos} compactos />
+          <a class="botao" href={s.rota} data-evento={`servico_${s.chave}`}>
+            {s.acao}
+          </a>
         </article>
       ))}
-    </Linha>
+    </div>
   </Secao>
 
-  <Secao tom="escuro" aria-labelledby="conexao-titulo">
-    <Linha class="conexao">
-      <div class="conexao-texto">
-        <h2 id="conexao-titulo">{t.conexao.titulo}</h2>
-        <p>{t.conexao.texto}</p>
-      </div>
-      <svg
-        class="conexao-laco"
-        viewBox="0 0 1200 240"
-        preserveAspectRatio="none"
-        aria-hidden="true"
-      >
-        <path pathLength="1" d="M -20 212 C 300 212 500 212 660 204 S 1000 150 1230 100" />
-        <path pathLength="1" d="M -20 42 C 180 42 360 30 520 30" />
-      </svg>
-    </Linha>
+  <Secao tom="degrade" miolo="conexao-grade revelar" aria-labelledby="conexao-titulo">
+    <h2 id="conexao-titulo">
+      <span class="conexao-antes">{inicio.conexao.antes}</span>
+      <span class="conexao-simbolo" set:html={laco} aria-hidden="true" />
+      <span class="conexao-depois">{inicio.conexao.depois}</span>
+    </h2>
+    <p>{t.conexao.texto}</p>
   </Secao>
 
   <ChamadaFinal
@@ -123,7 +102,5 @@ const iconesEntrega: Record<'sites' | 'sistemas', NomeIcone[]> = {
     titulo={t.chamada.titulo}
     texto={t.chamada.texto}
     acao={t.chamada.acao}
-    href={linkWhatsapp()}
-    evento="whatsapp_chamada_final"
   />
 </Base>

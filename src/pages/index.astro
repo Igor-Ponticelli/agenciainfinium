@@ -1,282 +1,221 @@
 ---
+import simbolo from '../assets/marca/simbolo-white.svg?raw';
 import Base from '../layouts/Base.astro';
-import Cartao from '../components/Cartao.astro';
-import ChamadaFinal from '../components/ChamadaFinal.astro';
+import Dupla from '../components/Dupla.astro';
+import Faq from '../components/Faq.astro';
 import FontesPrevias from '../components/FontesPrevias.astro';
 import Foto from '../components/Foto.astro';
+import Galeria from '../components/Galeria.astro';
 import Icone from '../components/Icone.astro';
-import Linha from '../components/Linha.astro';
-import Obra from '../components/Obra.astro';
+import Passos from '../components/Passos.astro';
+import Rolante from '../components/Rolante.astro';
 import Secao from '../components/Secao.astro';
+import Topicos from '../components/Topicos.astro';
 import { dataCurta, dataDoPost, dataIso, postsPublicados } from '../data/blog';
-import type { NomeIcone } from '../data/icones';
+import { linkWhatsapp } from '../data/empresa';
 import { todosProjetos } from '../data/projetos';
 import { blog as tb } from '../i18n/paginas/blog';
-import { rotaPost } from '../i18n/rotas';
-import { linkWhatsapp } from '../data/empresa';
-import { rotas } from '../i18n/rotas';
 import { inicio as t } from '../i18n/paginas/inicio';
-import { metasPaginas } from '../i18n/textos';
+import { rotaPost, rotas } from '../i18n/rotas';
+import { metasPaginas, textos } from '../i18n/textos';
 
 /**
- * Home: a planilha que vira sistema (contrato em .impeccable/surfaces/src-pages-index-astro.md),
- * em bandas (decisão do Igor, 31/10/2026): abertura escura com a foto; a cena do problema é a
- * planilha de verdade; os dois serviços são células mescladas com foto; a conexão volta ao
- * degradê; os projetos ficam fora da grade; os resultados são cartões com ícone; a chamada
- * final fecha a planilha.
+ * Home, direção "o infinito" (05/11/2026): a frase gigante com o símbolo se desenhando, a faixa
+ * rolante, a cena em tópicos com ícone, os dois serviços com imagem de um lado e texto do outro,
+ * a conexão com o símbolo, a galeria de projetos, as etapas com a cabeça fixa, o que muda, o
+ * blog, as perguntas e a chamada final gigante. Uma frase por tópico, cada tópico com o seu ícone.
  */
 const meta = metasPaginas.inicio;
 const projetos = await todosProjetos();
 const posts = (await postsPublicados()).slice(0, 3);
-
-// Pares desencontrados: grande com a ficha ao lado, média com a ficha embaixo, e o inverso.
-const formato = (i: number) => ([0, 3].includes(i % 4) ? 'grande' : 'media');
-const ficha = (i: number) => ([0, 3].includes(i % 4) ? 'lado' : 'abaixo');
-
-// A ferramenta de cada linha da cena, e o ícone de cada resultado
-const iconesCena: NomeIcone[] = ['balao', 'planilha', 'quadro', 'nota'];
-const iconesResultados: NomeIcone[] = ['relogio', 'certo', 'usuarios', 'painel', 'crescimento'];
+// O símbolo com pathLength, para a fita se desenhar (site.css)
+const laco = simbolo.replace('<path ', '<path pathLength="1" ');
+const seta =
+  '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+const setaBaixo =
+  '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>';
+const setaGrande =
+  '<svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 ---
 
-<Base titulo={meta.titulo} descricao={meta.descricao} tituloCompleto aberturaEscura>
+<Base titulo={meta.titulo} descricao={meta.descricao} tituloCompleto>
   <FontesPrevias slot="head" />
-  <section slot="abertura" class="abertura folha" aria-labelledby="assinatura">
-    <Linha class="abertura-assinatura">
-      <h1 id="assinatura">{t.abertura.titulo}</h1>
-    </Linha>
-    <Linha>
-      <p class="abertura-frase">{t.abertura.texto}</p>
-    </Linha>
-    <Linha>
-      <div class="abertura-acoes acoes">
+
+  <Secao class="abertura" cheia aria-labelledby="abertura-titulo">
+    <div class="miolo abertura-grade">
+      <span class="abertura-simbolo" set:html={laco} aria-hidden="true" />
+      <h1 id="abertura-titulo">{t.abertura.titulo}</h1>
+      <div class="abertura-apoio">
+        <p>{t.abertura.texto}</p>
+        <div class="acoes">
+          <a
+            class="botao"
+            href={linkWhatsapp()}
+            target="_blank"
+            rel="noopener"
+            data-evento="whatsapp_abertura"
+          >
+            {t.abertura.acaoPrincipal}
+            <span class="visualmente-oculto">{textos.linkExterno}</span>
+          </a>
+          <a class="link-fita" href={`#${t.abertura.ancoraProjetos}`}>
+            {t.abertura.acaoSecundaria}
+            <Fragment set:html={setaBaixo} />
+          </a>
+        </div>
+      </div>
+    </div>
+    <Rolante itens={t.faixa} />
+  </Secao>
+
+  <Secao class="cena" aria-labelledby="cena-titulo">
+    <div class="cabeca-secao">
+      <h2 id="cena-titulo">{t.problema.titulo}</h2>
+    </div>
+    <div class="cena-grade">
+      <Topicos itens={t.problema.itens} class="topicos-4 revelar" />
+      <div class="cena-resultado revelar">
+        <p class="cena-frase">{t.problema.frase}</p>
+        <span class="cena-seta" set:html={setaGrande} aria-hidden="true" />
+        <div class="topico">
+          <Icone nome={t.problema.resultado.icone} tamanho={30} />
+          <div class="topico-texto">
+            <h3>{t.problema.resultado.titulo}</h3>
+            <p>{t.problema.resultado.texto}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Secao>
+
+  <Secao tom="claro" aria-labelledby="servicos-titulo">
+    <div class="cabeca-secao">
+      <h2 id="servicos-titulo">{t.servicos.titulo}</h2>
+    </div>
+    <Dupla foto="entre" class="revelar">
+      <h2>{t.servicos.sites.titulo}</h2>
+      <p class="frase-chave">{t.servicos.sites.frase}</p>
+      <p>{t.servicos.sites.texto}</p>
+      <Topicos itens={t.servicos.sites.topicos} compactos />
+      <div class="acoes">
+        <a class="botao" href={rotas.sites} data-evento="servico_site">
+          {t.servicos.sites.verServico}
+        </a>
         <a
-          class="botao botao-claro"
-          href={linkWhatsapp()}
+          class="link-fita"
+          href={linkWhatsapp('site')}
           target="_blank"
           rel="noopener"
-          data-evento="whatsapp_abertura"
+          data-evento="whatsapp_sites"
         >
-          {t.abertura.acaoPrincipal}
-          <span class="visualmente-oculto">(abre em nova aba)</span>
-        </a>
-        <a class="link-fita" href={`#${t.abertura.ancoraComoFunciona}`}>
-          {t.abertura.acaoSecundaria}
+          {t.servicos.sites.whatsapp}
+          <Fragment set:html={seta} />
+          <span class="visualmente-oculto">{textos.linkExterno}</span>
         </a>
       </div>
-    </Linha>
-    <Foto
-      class="abertura-foto"
-      nome="celular"
-      tom="violeta"
-      prioridade
-      posicao="50% 35%"
-      sizes="(min-width: 64rem) 34rem, 100vw"
-    />
-  </section>
+    </Dupla>
+    <Dupla foto="estoque" invertida class="revelar">
+      <h2>{t.servicos.sistemas.titulo}</h2>
+      <p class="frase-chave">{t.servicos.sistemas.frase}</p>
+      <p>{t.servicos.sistemas.texto}</p>
+      <Topicos itens={t.servicos.sistemas.topicos} compactos />
+      <div class="acoes">
+        <a class="botao" href={rotas.sistemas} data-evento="servico_sistema">
+          {t.servicos.sistemas.verServico}
+        </a>
+        <a
+          class="link-fita"
+          href={linkWhatsapp('sistema')}
+          target="_blank"
+          rel="noopener"
+          data-evento="whatsapp_sistemas"
+        >
+          {t.servicos.sistemas.whatsapp}
+          <Fragment set:html={seta} />
+          <span class="visualmente-oculto">{textos.linkExterno}</span>
+        </a>
+      </div>
+    </Dupla>
+  </Secao>
 
-  <Secao folha="cena" aria-labelledby="cena-titulo">
-    <Linha class="cena-titulo">
-      <h2 class="titulo-secao" id="cena-titulo">
-        {t.problema.titulo}
-      </h2>
-    </Linha>
-    <div class="cena-tabela">
-      {t.problema.celulas.map(([chave, valor], i) => (
-        <div class="cena-linha">
-          <span class="cena-chave">{chave}</span>
-          <span class="cena-valor">
-            {iconesCena[i] && <Icone nome={iconesCena[i]} class="icone-inline" tamanho={22} />}
-            {valor}
-          </span>
+  <Secao tom="degrade" miolo="conexao-grade revelar" aria-labelledby="conexao-titulo">
+    <h2 id="conexao-titulo">
+      <span class="conexao-antes">{t.conexao.antes}</span>
+      <span class="conexao-simbolo" set:html={laco} aria-hidden="true" />
+      <span class="conexao-depois">{t.conexao.depois}</span>
+    </h2>
+    <p>{t.conexao.texto}</p>
+  </Secao>
+
+  <Secao tom="profundo" cheia id={t.abertura.ancoraProjetos} aria-labelledby="projetos-titulo">
+    <div class="miolo">
+      <div class="cabeca-secao cabeca-secao-linha">
+        <div>
+          <h2 id="projetos-titulo">{t.projetos.titulo}</h2>
+          <p>{t.projetos.texto}</p>
         </div>
-      ))}
-      <Foto
-        class="cena-foto"
-        nome="planilha"
-        posicao="50% 45%"
-        sizes="(min-width: 64rem) 34rem, 100vw"
-      />
-      <div class="cena-texto texto">
-        {t.problema.paragrafos.map((p) => (
-          <p>{p}</p>
-        ))}
+        <a class="link-fita" href={rotas.projetos}>
+          {t.projetos.acao}
+          <Fragment set:html={seta} />
+        </a>
       </div>
     </div>
+    <Galeria projetos={projetos} anterior={t.projetos.anterior} proximo={t.projetos.proximo} />
   </Secao>
 
-  <Secao tom="branco" aria-labelledby="servicos-titulo">
-    <Linha>
-      <h2 class="titulo-secao" id="servicos-titulo">
-        {t.servicos.titulo}
-      </h2>
-    </Linha>
-    <Linha class="servicos-linha">
-      {[
-        {
-          ...t.servicos.sites,
-          classe: 'servico-sites',
-          rota: rotas.sites,
-          assunto: 'site' as const,
-          evento: 'whatsapp_sites',
-          foto: 'entre' as const,
-        },
-        {
-          ...t.servicos.sistemas,
-          classe: 'servico-sistemas',
-          rota: rotas.sistemas,
-          assunto: 'sistema' as const,
-          evento: 'whatsapp_sistemas',
-          foto: 'estoque' as const,
-        },
-      ].map((s) => (
-        <article class:list={['servico', 'mesclada', s.classe]}>
-          <Foto class="servico-foto" nome={s.foto} sizes="(min-width: 64rem) 40rem, 100vw" />
-          <h3>{s.titulo}</h3>
-          <p class="servico-frase">{s.frase}</p>
-          <p>{s.texto}</p>
-          <p class="servico-para">{s.paraQuem}</p>
-          <div class="acoes">
-            <a class="botao" href={s.rota} data-evento={`servico_${s.assunto}`}>
-              {s.verServico}
-            </a>
-            <a
-              class="link-fita"
-              href={linkWhatsapp(s.assunto)}
-              target="_blank"
-              rel="noopener"
-              data-evento={s.evento}
-            >
-              {s.whatsapp}
-              <span class="visualmente-oculto">(abre em nova aba)</span>
-            </a>
-          </div>
-        </article>
-      ))}
-    </Linha>
+  <Secao id={t.abertura.ancoraComoFunciona} aria-labelledby="como-titulo">
+    <Passos
+      titulo={t.comoFunciona.titulo}
+      texto={t.comoFunciona.texto}
+      passos={t.comoFunciona.passos}
+      idTitulo="como-titulo"
+    />
   </Secao>
 
-  <Secao tom="escuro" aria-labelledby="conexao-titulo">
-    <Linha class="conexao">
-      <div class="conexao-texto">
-        <h2 id="conexao-titulo">{t.conexao.titulo}</h2>
-        <p>{t.conexao.texto}</p>
-      </div>
-      <svg
-        class="conexao-laco"
-        viewBox="0 0 1200 240"
-        preserveAspectRatio="none"
-        aria-hidden="true"
-      >
-        <path pathLength="1" d="M -20 212 C 300 212 500 212 660 204 S 1000 150 1230 100" />
-        <path pathLength="1" d="M -20 42 C 180 42 360 30 520 30" />
-      </svg>
-    </Linha>
-  </Secao>
-
-  <Secao folha="vitrines" id="projetos" aria-labelledby="projetos-titulo">
-    <Linha class="vitrines-cabeca">
-      <h2 class="titulo-secao" id="projetos-titulo">
-        {t.projetos.titulo}
-      </h2>
-      <p class="celula celula-apoio">{t.projetos.texto}</p>
-      <a class="link-fita" href={rotas.projetos}>
-        {t.projetos.acao}
-      </a>
-    </Linha>
-    <div class="vitrines-grade">
-      {projetos.map((p, i) => (
-        <Obra projeto={p} formato={formato(i)} ficha={ficha(i)} />
-      ))}
+  <Secao tom="claro" aria-labelledby="resultados-titulo">
+    <div class="cabeca-secao">
+      <h2 id="resultados-titulo">{t.resultados.titulo}</h2>
     </div>
-  </Secao>
-
-  <Secao tom="branco" id={t.abertura.ancoraComoFunciona} aria-labelledby="como-titulo">
-    <Linha>
-      <h2 class="titulo-secao" id="como-titulo">
-        {t.comoFunciona.titulo}
-      </h2>
-      <p class="celula celula-apoio">{t.comoFunciona.texto}</p>
-    </Linha>
-    <ol class="passos" data-laco>
-      {t.comoFunciona.passos.map((p) => (
-        <Linha as="li" class="passo">
-          <span class="passo-indice" aria-hidden="true"></span>
-          <h3 class="passo-titulo">{p.titulo}</h3>
-          <p class="passo-texto">{p.texto}</p>
-        </Linha>
-      ))}
-    </ol>
-  </Secao>
-
-  <Secao aria-labelledby="resultados-titulo">
-    <Linha>
-      <h2 class="titulo-secao" id="resultados-titulo">
-        {t.resultados.titulo}
-      </h2>
-    </Linha>
-    <Linha class="cartoes" data-cartoes={t.resultados.itens.length}>
-      {t.resultados.itens.map((i, idx) => (
-        <Cartao icone={iconesResultados[idx]} titulo={i.titulo} texto={i.texto} />
-      ))}
-    </Linha>
+    <Topicos itens={t.resultados.itens} class="topicos-5 revelar" />
   </Secao>
 
   {posts.length > 0 && (
-    <Secao tom="branco" aria-labelledby="posts-titulo">
-      <Linha>
-        <h2 class="titulo-secao" id="posts-titulo">
-          {tb.rotulos.naHome}
-        </h2>
-      </Linha>
-      {posts.map((post) => {
-        const data = dataDoPost(post);
-        return (
-          <Linha class="home-posts-linha">
-            <Foto
-              class="home-posts-capa"
-              nome={post.data.capa}
-              widths={[360, 640]}
-              sizes="(min-width: 64rem) 12rem, 50vw"
-            />
-            <div class="home-posts-item">
-              <time datetime={dataIso(data)}>{dataCurta(data)}</time>
-              <a class="link-fita" href={rotaPost(post.id)}>
-                {post.data.titulo}
-              </a>
-            </div>
-          </Linha>
-        );
-      })}
-      <Linha>
-        <a class="link-fita home-posts-todos" href={rotas.blog}>
+    <Secao tom="claro" class="faixa-junta" aria-labelledby="posts-titulo">
+      <div class="cabeca-secao cabeca-secao-linha">
+        <div>
+          <h2 id="posts-titulo">{tb.rotulos.naHome}</h2>
+        </div>
+        <a class="link-fita" href={rotas.blog}>
           {tb.rotulos.verBlog}
+          <Fragment set:html={seta} />
         </a>
-      </Linha>
+      </div>
+      <ul class="posts home-posts revelar">
+        {posts.map((post) => {
+          const data = dataDoPost(post);
+          return (
+            <li class="post-cartao">
+              <Foto
+                class="post-capa"
+                nome={post.data.capa}
+                widths={[480, 800]}
+                sizes="(min-width: 48rem) 26rem, 100vw"
+              />
+              <div class="post-cartao-texto">
+                <time datetime={dataIso(data)}>{dataCurta(data)}</time>
+                <h3>
+                  <a href={rotaPost(post.id)}>{post.data.titulo}</a>
+                </h3>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
     </Secao>
   )}
 
-  <Secao aria-labelledby="faq-titulo">
-    <Linha>
-      <h2 class="titulo-secao" id="faq-titulo">
-        {t.faq.titulo}
-      </h2>
-    </Linha>
-    {t.faq.itens.map((i) => (
-      <Linha>
-        <details class="faq-item">
-          <summary>{i.pergunta}</summary>
-          <p>{i.resposta}</p>
-        </details>
-      </Linha>
-    ))}
+  <Secao miolo="faq-grade" aria-labelledby="faq-titulo">
+    <h2 id="faq-titulo">{t.faq.titulo}</h2>
+    <Faq itens={t.faq.itens} class="revelar" />
   </Secao>
-
-  <ChamadaFinal
-    slot="fechamento"
-    titulo={t.chamadaFinal.titulo}
-    texto={t.chamadaFinal.texto}
-    acao={t.chamadaFinal.acao}
-    href={linkWhatsapp()}
-    evento="whatsapp_chamada_final"
-  />
 </Base>

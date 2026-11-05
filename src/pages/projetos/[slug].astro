@@ -2,11 +2,11 @@
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Cabeca from '../../components/Cabeca.astro';
 import ChamadaFinal from '../../components/ChamadaFinal.astro';
-import Linha from '../../components/Linha.astro';
 import FontesPrevias from '../../components/FontesPrevias.astro';
-import Obra from '../../components/Obra.astro';
 import Secao from '../../components/Secao.astro';
+import Vitrine from '../../components/Vitrine.astro';
 import { todosProjetos, type Projeto } from '../../data/projetos';
 import { linkWhatsapp } from '../../data/empresa';
 import { rotaProjeto } from '../../i18n/rotas';
@@ -21,7 +21,7 @@ interface Props {
   projeto: Projeto;
 }
 
-/** Página de projeto: o case, com a prévia em tamanho grande e a ficha ao lado. */
+/** Página de projeto: a cabeça, a prévia grande já ativa, o case numa coluna clara e o próximo. */
 const { projeto } = Astro.props;
 const d = projeto.data;
 const { Content } = await render(projeto);
@@ -48,36 +48,45 @@ const jsonLd = {
 };
 ---
 
-<Base titulo={d.titulo} descricao={d.resumo} imagem={imagem} jsonLd={[jsonLd]}>
+<Base titulo={d.titulo} descricao={d.resumo} imagem={imagem} jsonLd={[jsonLd]} semChamada>
   <FontesPrevias slot="head" />
   <article>
-    <Secao cabeca folha="pagina-cabeca">
-      <Linha>
-        <h1 class="pagina-titulo">{d.titulo}</h1>
-      </Linha>
-      <Linha>
-        <p class="pagina-texto">{d.resumo}</p>
-      </Linha>
-    </Secao>
+    <Cabeca titulo={d.titulo} texto={d.resumo}>
+      <p class="cabeca-meta">
+        <span>
+          {t.projeto.rotulos.tipo}: {t.projeto.tipo[d.tipo]}
+        </span>
+        <span>
+          {t.projeto.rotulos.ano}: {d.ano}
+        </span>
+        <span>
+          {t.projeto.rotulos.status}: {t.projeto.status[d.status]}
+        </span>
+      </p>
+      {d.url && (
+        <a class="botao" href={d.url} target="_blank" rel="noopener noreferrer">
+          {t.acoes.visitarSite}
+          <span class="visualmente-oculto"> {t.linkExterno}</span>
+        </a>
+      )}
+    </Cabeca>
 
-    <Secao tom="branco" aria-label={t.previa.rotulo(d.titulo, d.tipo)}>
-      <div class="projeto-obra">
-        <Obra projeto={projeto} formato="grande" ficha="lado" completa />
+    <Secao tom="profundo" class="faixa-junta" aria-label={t.previa.rotulo(d.titulo, d.tipo)}>
+      <div class="obra-grande">
+        <Vitrine projeto={projeto} moldura="navegador" proporcao="16 / 10" ativa />
       </div>
     </Secao>
 
-    <Secao>
-      <Linha>
-        <div class="projeto-texto">
-          <Content />
-        </div>
-      </Linha>
-      <Linha>
-        <a class="proximo" href={rotaProjeto(proximo.data.slug)}>
-          <span class="proximo-rotulo">{t.acoes.proximoProjeto}</span>
-          <span class="proximo-titulo">{proximo.data.titulo}</span>
+    <Secao tom="claro">
+      <div class="texto-longo">
+        <Content />
+      </div>
+      <div class="vizinhos">
+        <a class="vizinho" href={rotaProjeto(proximo.data.slug)}>
+          <span class="vizinho-rotulo">{t.acoes.proximoProjeto}</span>
+          <span class="vizinho-titulo">{proximo.data.titulo}</span>
         </a>
-      </Linha>
+      </div>
     </Secao>
   </article>
 
@@ -90,6 +99,5 @@ const jsonLd = {
     }
     acao={d.tipo === 'site' ? t.acoes.queroSite : t.acoes.queroSistema}
     href={linkWhatsapp(assunto)}
-    evento="whatsapp_chamada_final"
   />
 </Base>
