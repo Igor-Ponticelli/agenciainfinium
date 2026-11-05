@@ -167,3 +167,10 @@ Em 31/10/2026, depois de o Igor ver o site, entrou uma rodada de revisão (TODO 
 as letras e os números, as seções viraram bandas, entraram fotos do Unsplash, cartões com ícones
 desenhados pela fita e o holofote sob o ponteiro. As decisões estão em
 [direcao-visual.md](direcao-visual.md), seção 5.
+
+Em 05/11/2026, o Igor viu o site e não gostou. Entraram três versões de estudo da home
+(`/site1/`, `/site2/` e `/site3/`), cada uma com a própria pele sobre a mesma identidade, a
+partir de uma pesquisa sobre Apple, Microsoft e os grandes players de agência. Tudo em
+[versoes.md](versoes.md). O próximo passo é o TODO 10: o Igor escolhe uma (ou uma mistura) e a
+direção vai para o site inteiro.
+

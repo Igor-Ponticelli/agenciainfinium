@@ -802,3 +802,49 @@ do brilho dos ícones, efeito no toque, linha vertical de grade.
   no holofote, sempre na cor da fita.
 - Dist passou de 6,2 MB para cerca de 15 MB por causa das variantes das fotos; cada página carrega
   só os tamanhos que usa.
+
+---
+
+## TODO 10: Escolher a direção nova e levar ao site inteiro
+
+**Status:** aguardando a escolha do Igor
+**Depende de:** as três versões de estudo (05/11/2026) em `/site1/`, `/site2/` e `/site3/`
+
+**Objetivo:** o Igor viu o site pronto e não gostou. Em 05/11/2026 entraram três versões de
+estudo da home, cada uma com a própria pele sobre a mesma identidade, documentadas em
+[versoes.md](.claude/docs/versoes.md): a vitrine (direção Apple), o painel (direção Microsoft) e
+o infinito (direção de agência). Este item começa quando o Igor escolher uma delas, ou uma
+mistura, e termina com o site inteiro na direção nova.
+
+**Leia antes:** [versoes.md](.claude/docs/versoes.md), [direcao-visual.md](.claude/docs/direcao-visual.md),
+[conteudo.md](.claude/docs/conteudo.md), [processo.md](.claude/docs/processo.md) e a página
+escolhida (`src/pages/siteN.astro`, `src/styles/versoes/siteN.css`).
+
+**Passos:**
+1. Gravar a escolha em direcao-visual.md, seção 5 (data, versão ou mistura, por quê), e o que
+   ela muda no que estava fixado (material, movimento, bandas, cartões, fotos, holofote).
+2. Refazer o contrato da home (`.impeccable/surfaces/src-pages-index-astro.md`) a partir da
+   versão escolhida, mantendo o modo Persuade e os seis blocos.
+3. Levar a pele para o site inteiro: `Base.astro`, `Cabecalho.astro`, `Rodape.astro`,
+   `site.css` e os componentes; depois cada página (home, serviços, sites, sistemas, projetos e
+   página de projeto, blog e post, contato e enviado, Raio-X, acessos, privacidade, 404).
+   Reaproveitar `Vitrine.astro` (o palco escalado das prévias) no lugar de `Obra.astro` se a
+   direção pedir molduras.
+4. Apagar as versões que não entraram (`src/pages/siteN.astro`, `src/styles/versoes/`,
+   `src/components/versoes/Alternador.astro`, `src/layouts/Versao.astro`, os textos em
+   `versoes.ts`), tirar as rotas dos testes e do `foraDoSitemap`.
+5. `humanize-text` nos textos novos; `fixing-metadata` se mudar título ou descrição; inspeção
+   com capturas; `impeccable-finish-reviewer`; `DESIGN.md` e `design.json` refeitos pelo
+   `impeccable-documenter`.
+
+**Não fazer:** mudar a paleta, a Roboto ou o logo; Primary sobre fundo escuro; inventar número,
+depoimento, prazo ou preço; vidro, partículas, degradê em texto, slider no hero.
+
+**Pronto quando:**
+- [ ] Todas as páginas na direção escolhida, com o mesmo cabeçalho e rodapé.
+- [ ] Nenhuma rota `/siteN/` no build, nos testes ou no sitemap.
+- [ ] `npm run build`, `npm test` e `npm run inspecao` passam; Lighthouse acima de 95 no desktop.
+- [ ] direcao-visual.md, o contrato da home e DESIGN.md contam a decisão.
+
+**Precisa do Igor:** a escolha (1, 2, 3 ou mistura) e o que mais quer mudar depois de ver as três.
+
