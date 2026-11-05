@@ -41,8 +41,15 @@ const fontesDasPrevias = [
   previa('Montserrat', 'montserrat', 'sans-serif'),
 ];
 
-// Fora do sitemap: a 404 e a página de links da bio (noindex).
-const foraDoSitemap: string[] = [rotas.naoEncontrada, rotas.acessos, rotas.contatoEnviado];
+// Fora do sitemap: a 404, a página de links da bio (noindex) e as versões de estudo da home.
+const foraDoSitemap: string[] = [
+  rotas.naoEncontrada,
+  rotas.acessos,
+  rotas.contatoEnviado,
+  '/site1/',
+  '/site2/',
+  '/site3/',
+];
 
 export default defineConfig({
   site,
