@@ -69,13 +69,20 @@ const dominio = d.url ? new URL(d.url).host : '';
   )}
   <div class="v-vitrine-tela" role="region" aria-label={t.previa.rotulo(d.titulo, d.tipo)}>
     {href && (
-      <a class="v-vitrine-link" href={href} tabindex="-1" aria-hidden="true">
-        {d.titulo}
+      <a class="v-vitrine-link" href={href}>
+        <span class="visualmente-oculto">
+          {t.acoes.verProjeto}: {d.titulo}
+        </span>
       </a>
     )}
     {Previa ? (
       <div class="v-vitrine-palco">
-        <div class="previa" data-previa={d.slug} data-ativa={ativa ? '' : undefined}>
+        <div
+          class="previa"
+          data-previa={d.slug}
+          data-ativa={ativa ? '' : undefined}
+          inert={href ? true : undefined}
+        >
           <Previa />
         </div>
       </div>

@@ -52,6 +52,35 @@ main:focus {
   color: var(--cor-texto);
 }
 
+/* O veio: as faixas claras têm um grão fino em violeta (um ruído em SVG, sem imagem para baixar)
+   e um leve veio lilás nos cantos, para o claro não ficar chapado (pedido do Igor, 05/11/2026). */
+.faixa-claro {
+  position: relative;
+  isolation: isolate;
+  background-image:
+    radial-gradient(
+      80% 60% at 15% 20%,
+      color-mix(in oklab, var(--violet-100) 55%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      60% 50% at 90% 85%,
+      color-mix(in oklab, var(--violet-100) 40%, transparent),
+      transparent 70%
+    );
+}
+
+.faixa-claro::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.22 0 0 0 0 0.07 0 0 0 0 0.37 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+  opacity: 0.11;
+  pointer-events: none;
+}
+
 .faixa-profundo {
   --cor-fundo: var(--cor-fundo-profundo);
 }
@@ -859,6 +888,11 @@ html[data-menu-aberto] .whatsapp-flutuante {
   .topicos-5 {
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
   }
+
+  /* O último cartão de uma fila ímpar ocupa a linha inteira */
+  .topicos-5 .topico:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (min-width: 64rem) {
@@ -1278,6 +1312,16 @@ html[data-menu-aberto] .whatsapp-flutuante {
 
 .v-vitrine-com-link:hover {
   transform: translateY(-3px);
+}
+
+/* Com link, a moldura inteira leva ao projeto: o link fica por cima da prévia, e os controles
+   dela só funcionam na página do projeto */
+.v-vitrine-com-link .v-vitrine-link {
+  z-index: 2;
+}
+
+.v-vitrine-com-link .v-vitrine-palco {
+  pointer-events: none;
 }
 
 /* A prévia: só os controles recebem o ponteiro */
