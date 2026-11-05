@@ -3,7 +3,7 @@ titulo: Por que o site da sua empresa não aparece no Google
 descricao: O site existe, mas ninguém acha. Os motivos mais comuns e o que você mesmo pode conferir hoje, sem técnico.
 diasAntes: 5
 tags: [google, seo, sites]
-chamada: raioX
+chamada: sites
 capa: lupaGlobo
 ---
 
@@ -37,4 +37,4 @@ A maior parte das buscas acontece no celular. O Google sabe disso e dá preferê
 4. Confira se o título de cada página diz o serviço e a cidade.
 5. Complete o Perfil da Empresa no Google.
 
-Se preferir que alguém olhe isso por você, é para isso que serve o Raio-X do site.
+Se preferir que alguém olhe isso por você, é só chamar no WhatsApp.

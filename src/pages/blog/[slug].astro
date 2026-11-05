@@ -2,9 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import ChamadaFinal from '../../components/ChamadaFinal.astro';
-import Foto from '../../components/Foto.astro';
-import Linha from '../../components/Linha.astro';
+import Cabeca from '../../components/Cabeca.astro';
 import Secao from '../../components/Secao.astro';
 import {
   dataDoPost,
@@ -14,7 +12,6 @@ import {
   tempoDeLeitura,
   type Post,
 } from '../../data/blog';
-import { linkWhatsapp, nomeCompleto } from '../../data/empresa';
 import { rotaPost, rotas } from '../../i18n/rotas';
 import { blog as t } from '../../i18n/paginas/blog';
 
@@ -34,16 +31,12 @@ interface Props {
   proximo: Post | null;
 }
 
-/** Um post: a capa na cabeça, texto numa coluna confortável, autor, data, a chamada e os vizinhos. */
+/** Um post: a capa na cabeça, o texto numa coluna clara, a chamada e os vizinhos. */
 const { post, anterior, proximo } = Astro.props;
 const { Content } = await render(post);
 const data = dataDoPost(post);
 const chamada = t.chamadas[post.data.chamada];
-const destino = {
-  sites: rotas.sites,
-  sistemas: rotas.sistemas,
-  raioX: rotas.raioX,
-}[post.data.chamada];
+const destino = { sites: rotas.sites, sistemas: rotas.sistemas }[post.data.chamada];
 const site = Astro.site!;
 
 const jsonLd = {
@@ -64,77 +57,53 @@ const jsonLd = {
 
 <Base titulo={post.data.titulo} descricao={post.data.descricao} jsonLd={[jsonLd]} tipoOg="article">
   <article>
-    <Secao cabeca folha="pagina-cabeca cabeca-com-foto" style="--cabeca-linhas: 2">
-      <Linha>
-        <h1 class="pagina-titulo">{post.data.titulo}</h1>
-      </Linha>
-      <Linha>
-        <p class="post-cabeca">
+    <Cabeca titulo={post.data.titulo} foto={post.data.capa}>
+      <p class="cabeca-meta">
+        <span>
+          {t.rotulos.escritoPor} {t.autor}
+        </span>
+        <time datetime={dataIso(data)}>{dataLonga(data)}</time>
+        <span>{t.rotulos.leitura(tempoDeLeitura(post))}</span>
+        {post.data.atualizadoEm && (
           <span>
-            {t.rotulos.escritoPor} {t.autor}
+            {t.rotulos.atualizado}{' '}
+            <time datetime={dataIso(post.data.atualizadoEm)}>
+              {dataLonga(post.data.atualizadoEm)}
+            </time>
           </span>
-          <time datetime={dataIso(data)}>{dataLonga(data)}</time>
-          <span>{t.rotulos.leitura(tempoDeLeitura(post))}</span>
-          {post.data.atualizadoEm && (
-            <span>
-              {t.rotulos.atualizado}{' '}
-              <time datetime={dataIso(post.data.atualizadoEm)}>
-                {dataLonga(post.data.atualizadoEm)}
-              </time>
-            </span>
-          )}
-        </p>
-      </Linha>
-      <Foto
-        class="cabeca-foto"
-        nome={post.data.capa}
-        prioridade
-        sizes="(min-width: 64rem) 28rem, 100vw"
-      />
-    </Secao>
+        )}
+      </p>
+    </Cabeca>
 
-    <Secao tom="branco">
-      <Linha>
-        <div class="projeto-texto post-texto">
-          <p class="post-abertura">{post.data.descricao}</p>
-          <Content />
-        </div>
-      </Linha>
-      <Linha class="post-chamada">
-        <div class="mesclada post-chamada-bloco">
-          <h2>{chamada.titulo}</h2>
-          <p>{chamada.texto}</p>
-          <a class="botao" href={destino} data-evento={`blog_${post.data.chamada}`}>
-            {chamada.acao}
-          </a>
-        </div>
-      </Linha>
-      <Linha class="post-vizinhos">
+    <Secao tom="claro" class="faixa-leve" miolo="miolo-centro">
+      <div class="texto-longo">
+        <p class="post-abertura">{post.data.descricao}</p>
+        <Content />
+      </div>
+      <div class="post-chamada">
+        <h2>{chamada.titulo}</h2>
+        <p>{chamada.texto}</p>
+        <a class="botao" href={destino} data-evento={`blog_${post.data.chamada}`}>
+          {chamada.acao}
+        </a>
+      </div>
+      <nav class="vizinhos" aria-label="Outros posts">
         {anterior && (
-          <a class="post-vizinho" href={rotaPost(anterior.id)}>
-            <span class="proximo-rotulo">{t.rotulos.anterior}</span>
-            <span class="post-vizinho-titulo">{anterior.data.titulo}</span>
+          <a class="vizinho" href={rotaPost(anterior.id)}>
+            <span class="vizinho-rotulo">{t.rotulos.anterior}</span>
+            <span class="vizinho-titulo">{anterior.data.titulo}</span>
           </a>
         )}
         {proximo && (
-          <a class="post-vizinho post-vizinho-proximo" href={rotaPost(proximo.id)}>
-            <span class="proximo-rotulo">{t.rotulos.proximo}</span>
-            <span class="post-vizinho-titulo">{proximo.data.titulo}</span>
+          <a class="vizinho vizinho-proximo" href={rotaPost(proximo.id)}>
+            <span class="vizinho-rotulo">{t.rotulos.proximo}</span>
+            <span class="vizinho-titulo">{proximo.data.titulo}</span>
           </a>
         )}
-        <a class="post-todos link-fita" href={rotas.blog}>
+        <a class="link-fita" href={rotas.blog}>
           {t.rotulos.todos}
         </a>
-      </Linha>
+      </nav>
     </Secao>
   </article>
-
-  <ChamadaFinal
-    slot="fechamento"
-    titulo="Menos trabalho manual, mais crescimento"
-    texto={`Conta para a ${nomeCompleto} o que a sua empresa precisa. A conversa inicial é pelo WhatsApp e não tem compromisso.`}
-    acao="Falar no WhatsApp"
-    href={linkWhatsapp()}
-    evento="whatsapp_chamada_final"
-  />
 </Base>

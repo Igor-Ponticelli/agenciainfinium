@@ -2,32 +2,28 @@
 import type { HTMLAttributes } from 'astro/types';
 
 /**
- * Uma seção do site como banda de largura inteira (pedido do Igor, 31/10/2026: cada seção é
- * uma coisa só). A banda tem o próprio fundo (Body, White ou o degradê da marca) e o respiro
- * vertical; dentro dela, a folha da planilha, fechada como um retângulo. As bandas se alternam
- * ao longo da página, e é isso que separa uma seção da outra.
+ * Uma faixa do site: largura inteira, com o próprio fundo e respiro, e o miolo centrado dentro.
+ * Tons: `escuro` (o violeta profundo, padrão), `profundo` (mais escuro, das vitrines e do rodapé),
+ * `degrade` (o degradê da marca) e `claro` (o Body, para leitura). O tom claro troca os tokens
+ * semânticos pela classe `.claro` (tokens.css).
  */
 interface Props extends HTMLAttributes<'section'> {
-  tom?: 'claro' | 'branco' | 'escuro';
-  /** Classes extras da folha (a planilha de dentro), como `cena` ou `vitrines`. */
-  folha?: string;
-  /** A banda de abertura das páginas internas: menos respiro em cima, logo abaixo da régua. */
-  cabeca?: boolean;
+  tom?: 'escuro' | 'profundo' | 'degrade' | 'claro';
+  /** Sem o miolo: a seção cuida da própria largura (abertura, faixa rolante, galeria). */
+  cheia?: boolean;
+  /** Classe do miolo. */
+  miolo?: string;
 }
 
-const { tom = 'claro', folha, cabeca = false, class: classe, ...resto } = Astro.props;
+const { tom = 'escuro', cheia = false, miolo, class: classe, ...resto } = Astro.props;
 ---
 
-<section
-  class:list={[
-    'banda',
-    `banda-${tom}`,
-    { escuro: tom === 'escuro', 'banda-cabeca': cabeca },
-    classe,
-  ]}
-  {...resto}
->
-  <div class:list={['folha', folha]}>
+<section class:list={['faixa', `faixa-${tom}`, { claro: tom === 'claro' }, classe]} {...resto}>
+  {cheia ? (
     <slot />
-  </div>
+  ) : (
+    <div class:list={['miolo', miolo]}>
+      <slot />
+    </div>
+  )}
 </section>

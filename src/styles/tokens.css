@@ -1,8 +1,10 @@
 /*
  * Tokens do site. Cores, degradê e tipografia vêm da identidade
  * (.claude/docs/identidade/tokens/tokens.css e MARCA.md), renomeados para o padrão do código
- * conforme direcao-visual.md, seção 2. A escala fluida, a planilha (colunas, linhas) e as
- * durações seguem o contrato de direção (.impeccable/surfaces/).
+ * conforme direcao-visual.md. Desde 05/11/2026 o site é escuro por padrão (o violeta profundo
+ * da marca) com faixas claras para leitura: os tokens semânticos (`--cor-*`) mudam de valor no
+ * contexto `.claro`, e todo componente lê só eles. Primary nunca sobre o escuro: sobre o violeta,
+ * o acento é o Lilás.
  */
 :root {
   /* Escala violeta */
@@ -17,7 +19,7 @@
   --violet-800: #280d40;
   --violet-900: #200a34;
 
-  /* Cor (tema claro como base; o escuro entra por seção) */
+  /* Cores da identidade */
   --color-bg: #f1eff4; /* Body */
   --color-surface: #ffffff;
   --color-text: #625f68; /* Text, 5,5:1 sobre o fundo */
@@ -27,57 +29,59 @@
   --color-accent-hover: var(--violet-800);
   --color-on-accent: #ffffff; /* 14,7:1 */
   --color-lilac: var(--violet-100);
-  --color-dark: #211f26; /* seções escuras; sobre escuro, só White e Lilás */
+  --color-dark: #211f26;
   --gradient-brand: linear-gradient(135deg, var(--violet-700) 0%, var(--violet-900) 100%);
-  --color-rolagem: color-mix(in oklab, var(--color-accent) 30%, var(--color-line));
-  --color-rolagem-ativa: color-mix(in oklab, var(--color-accent) 60%, var(--color-line));
 
-  /* A planilha: as linhas da grade e a fita (o cursor de seleção) mudam com o fundo */
-  --color-grade: var(--color-line);
-  --color-rotulo: var(--color-text);
-  --color-fita: var(--color-accent);
-  --color-celula: var(--color-surface);
-  /* O holofote (a luz sob o ponteiro) e o brilho dos ícones, na cor da fita */
-  --color-holofote: color-mix(in oklab, var(--color-accent) 12%, transparent);
-  --color-icone-brilho: color-mix(in oklab, var(--color-accent) 22%, transparent);
-  --color-icone-sombra: color-mix(in oklab, var(--color-accent) 45%, transparent);
+  /* Contexto escuro (o padrão do site): violeta profundo, texto branco, acento Lilás */
+  --cor-fundo: var(--violet-900);
+  --cor-fundo-profundo: #16081f;
+  --cor-texto: rgb(255 255 255 / 0.78);
+  --cor-titulo: #ffffff;
+  --cor-acento: var(--violet-100);
+  --cor-apagado: color-mix(in oklab, var(--violet-100) 62%, transparent);
+  --cor-linha: color-mix(in oklab, var(--violet-100) 18%, transparent);
+  --cor-superficie: rgb(255 255 255 / 0.045);
+  --cor-superficie-forte: rgb(255 255 255 / 0.08);
+  --cor-icone: var(--violet-100);
+  --botao-fundo: var(--violet-100);
+  --botao-texto: var(--violet-900);
+  --botao-hover: #ffffff;
+  --color-fita: var(--cor-acento);
+  --color-rolagem: color-mix(in oklab, var(--violet-100) 40%, transparent);
 
   /* Fonte: --fonte-roboto é gerada pelo Astro (astro.config.ts), com fallback de métricas ajustadas */
   --font-sans: var(--fonte-roboto, 'Roboto', 'Helvetica Neue', Arial, sans-serif);
 
-  /* Tipo: os cinco papéis de MARCA.md (peso, tamanho, altura e espaçamento) */
+  /* Tipo: os papéis de MARCA.md (peso, tamanho, altura e espaçamento) */
   --weight-regular: 400;
   --weight-medium: 500;
   --weight-bold: 700;
-  --text-display: 3.5rem; /* 56 */
-  --leading-display: 1;
-  --tracking-display: -0.025em;
-  --text-title: 2rem; /* 32 */
-  --leading-title: 1.15;
-  --tracking-title: -0.015em;
-  --text-subtitle: 1.25rem; /* 20 */
+  --text-body: 1.0625rem; /* 17, o corpo dos sites de referência */
+  --leading-body: 1.5;
+  --text-s: 0.9375rem;
+  --text-subtitle: 1.25rem;
   --leading-subtitle: 1.3;
-  --text-body: 1rem; /* 16 */
-  --leading-body: 1.6;
-  --text-label: 0.75rem; /* 12, caixa-alta */
-  --leading-label: 1.4;
+  --text-label: 0.8125rem;
   --tracking-label: 0.08em;
 
-  /* Escala fluida derivada dos papéis, para o display e os títulos crescerem com a tela */
-  --text-hero: clamp(2.75rem, 8vw, 7.5rem);
-  --text-h1: clamp(2.5rem, 1.5rem + 4vw, 5rem);
-  --text-h2: clamp(1.75rem, 1.25rem + 1.8vw, 2.75rem);
-  --text-h3: var(--text-subtitle);
-  --text-s: 0.9375rem;
+  /* Escala fluida dos títulos: do display gigante da abertura ao título de tópico */
+  --text-hero: clamp(3rem, 1rem + 9.4vw, 9rem);
+  --text-h1: clamp(2.5rem, 1.5rem + 4.6vw, 5.5rem);
+  --text-h2: clamp(2rem, 1.3rem + 3vw, 3.75rem);
+  --text-h3: 1.25rem;
+  --text-gigante: clamp(3.5rem, 1rem + 12vw, 11rem);
+  --tracking-display: -0.04em;
+  --tracking-title: -0.03em;
+  --leading-display: 0.95;
+  --leading-title: 1.05;
 
-  /* Layout e planilha */
+  /* Layout */
   --largura: 80rem;
+  --largura-texto: 60rem;
   --texto-medida: 65ch;
   --gutter: clamp(1rem, 4vw, 2.5rem);
-  --colunas: 4;
-  --linha-altura: 3.5rem;
-  --celula-pad: 0.875rem;
-  --cabecalho-altura: 3.5rem;
+  --cabecalho-altura: 4rem;
+  --logo-altura: 1.625rem;
 
   /* Espaço */
   --space-3xs: 0.25rem;
@@ -90,15 +94,15 @@
   --space-2xl: 4rem;
   --space-3xl: 6rem;
   --space-4xl: 8rem;
+  --faixa-respiro: clamp(4rem, 9vw, 7.5rem);
 
-  /* Raios */
-  --radius-none: 0;
-  --radius-s: 0.25rem;
-  --radius-m: 0.5rem;
-  --radius-l: 1rem;
+  /* Raios: pílulas nos controles, cantos largos nas superfícies */
+  --radius-s: 0.5rem;
+  --radius-m: 1rem;
+  --radius-l: 1.5rem;
   --radius-full: 999px;
 
-  /* Movimento moderado: troca de página abaixo de 1,2 s (direcao-visual.md, seções 3 e 5) */
+  /* Movimento moderado: troca de página abaixo de 1,2 s (direcao-visual.md) */
   --duration-fast: 150ms;
   --duration-base: 260ms;
   --duration-slow: 420ms;
@@ -106,36 +110,53 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 
-  /* Foco: anel em Primary sobre claro; em Lilás sobre escuro (direcao-visual.md, seção 4) */
-  --focus-ring: 2px solid var(--color-fita);
+  /* Foco: anel em Lilás sobre escuro, em Primary sobre claro */
+  --focus-ring: 2px solid var(--cor-acento);
   --focus-offset: 3px;
 }
 
 @media (min-width: 48rem) {
   :root {
-    --colunas: 6;
-    --linha-altura: 4rem;
-    --celula-pad: 1rem;
     --cabecalho-altura: 4.5rem;
+    --logo-altura: 1.75rem;
   }
 }
 
-@media (min-width: 64rem) {
-  :root {
-    --colunas: 12;
-  }
+/* Contexto escuro dentro do claro: os cartões de tópico e do case voltam aos valores do escuro */
+.escuro,
+.topico,
+.caso-parte {
+  --cor-fundo: var(--violet-900);
+  --cor-texto: rgb(255 255 255 / 0.78);
+  --cor-titulo: #ffffff;
+  --cor-acento: var(--violet-100);
+  --cor-apagado: color-mix(in oklab, var(--violet-100) 62%, transparent);
+  --cor-linha: color-mix(in oklab, var(--violet-100) 18%, transparent);
+  --cor-superficie: rgb(255 255 255 / 0.045);
+  --cor-superficie-forte: rgb(255 255 255 / 0.08);
+  --cor-icone: var(--violet-100);
+  --botao-fundo: var(--violet-100);
+  --botao-texto: var(--violet-900);
+  --botao-hover: #ffffff;
+  color-scheme: dark;
+  color: var(--cor-texto);
 }
 
-/* Seções escuras no degradê da marca: só White e Lilás sobre elas. Nunca Primary. */
-.escuro {
-  --color-grade: color-mix(in oklab, var(--color-lilac) 14%, transparent);
-  --color-rotulo: color-mix(in oklab, var(--color-lilac) 72%, transparent);
-  --color-fita: var(--color-lilac);
-  --color-celula: var(--violet-900);
-  --color-holofote: color-mix(in oklab, var(--color-lilac) 14%, transparent);
-  --color-icone-brilho: color-mix(in oklab, var(--color-lilac) 30%, transparent);
-  --color-icone-sombra: color-mix(in oklab, var(--color-lilac) 60%, transparent);
-  --color-rolagem: color-mix(in oklab, var(--color-lilac) 40%, transparent);
-  background-image: var(--gradient-brand);
-  color: #ffffff;
+/* Contexto claro: as faixas de leitura (Body), onde o acento volta a ser o Primary */
+.claro {
+  --cor-fundo: var(--color-bg);
+  --cor-texto: var(--color-text);
+  --cor-titulo: var(--color-heading);
+  --cor-acento: var(--violet-700);
+  --cor-apagado: var(--color-text);
+  --cor-linha: var(--color-line);
+  --cor-superficie: var(--color-surface);
+  --cor-superficie-forte: var(--violet-50);
+  --cor-icone: var(--violet-700);
+  --botao-fundo: var(--violet-700);
+  --botao-texto: #ffffff;
+  --botao-hover: var(--violet-800);
+  --color-rolagem: color-mix(in oklab, var(--violet-700) 30%, var(--color-line));
+  color-scheme: light;
+  color: var(--cor-texto);
 }

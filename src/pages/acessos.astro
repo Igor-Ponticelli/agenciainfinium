@@ -4,7 +4,7 @@ import Base from '../layouts/Base.astro';
 import { instagram, linkWhatsapp, nome } from '../data/empresa';
 import { rotas } from '../i18n/rotas';
 import { acessos as t } from '../i18n/paginas/acessos';
-import { metasPaginas } from '../i18n/textos';
+import { metasPaginas, textos } from '../i18n/textos';
 
 /**
  * Link da bio do Instagram: só o logo empilhado, a assinatura e três botões, no degradê da marca.
@@ -16,34 +16,30 @@ const altura = Math.round((largura * logoWhite.height) / logoWhite.width);
 ---
 
 <Base titulo={meta.titulo} descricao={meta.descricao} noindex semCabecalho>
-  <section class="acessos escuro" aria-labelledby="acessos-titulo">
+  <section class="acessos" aria-labelledby="acessos-titulo">
     <div class="acessos-conteudo">
       <img src={logoWhite.src} width={largura} height={altura} alt={nome} decoding="async" />
       <h1 id="acessos-titulo">{t.titulo}</h1>
       <ul class="acessos-botoes">
         <li>
           <a
-            class="botao botao-claro botao-grande"
+            class="botao botao-grande"
             href={linkWhatsapp()}
             target="_blank"
             rel="noopener"
             data-evento="whatsapp_acessos"
           >
             {t.botoes.whatsapp}
-            <span class="visualmente-oculto">(abre em nova aba)</span>
+            <span class="visualmente-oculto">{textos.linkExterno}</span>
           </a>
         </li>
         <li>
-          <a class="botao botao-claro botao-grande" href={rotas.sites} data-evento="acessos_sites">
+          <a class="botao botao-grande" href={rotas.sites} data-evento="acessos_sites">
             {t.botoes.site}
           </a>
         </li>
         <li>
-          <a
-            class="botao botao-claro botao-grande"
-            href={rotas.sistemas}
-            data-evento="acessos_sistemas"
-          >
+          <a class="botao botao-grande" href={rotas.sistemas} data-evento="acessos_sistemas">
             {t.botoes.sistema}
           </a>
         </li>
@@ -51,7 +47,7 @@ const altura = Math.round((largura * logoWhite.height) / logoWhite.width);
       <div class="acessos-links">
         <a class="link-fita" href={instagram.url} target="_blank" rel="noopener">
           {t.instagram}
-          <span class="visualmente-oculto">(abre em nova aba)</span>
+          <span class="visualmente-oculto">{textos.linkExterno}</span>
         </a>
         <a class="link-fita" href={rotas.inicio}>
           {t.verSite}

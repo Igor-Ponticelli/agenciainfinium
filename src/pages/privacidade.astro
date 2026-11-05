@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import Linha from '../components/Linha.astro';
+import Cabeca from '../components/Cabeca.astro';
 import Secao from '../components/Secao.astro';
 import { privacidade as t } from '../i18n/paginas/privacidade';
 import { metasPaginas } from '../i18n/textos';
@@ -15,35 +15,25 @@ const atualizado = new Intl.DateTimeFormat('pt-BR', {
 }).format(new Date(`${t.atualizadoEm}T12:00:00-03:00`));
 ---
 
-<Base titulo={meta.titulo} descricao={meta.descricao}>
-  <Secao cabeca folha="pagina-cabeca" aria-labelledby="pagina-titulo">
-    <Linha>
-      <h1 class="pagina-titulo" id="pagina-titulo">
-        {t.titulo}
-      </h1>
-    </Linha>
-    <Linha>
-      <p class="pagina-texto">{t.texto}</p>
-    </Linha>
-    <Linha>
-      <p class="post-cabeca">
-        <span>
-          {t.rotuloAtualizado}: <time datetime={t.atualizadoEm}>{atualizado}</time>
-        </span>
-      </p>
-    </Linha>
-  </Secao>
+<Base titulo={meta.titulo} descricao={meta.descricao} semChamada>
+  <Cabeca titulo={t.titulo} texto={t.texto}>
+    <p class="cabeca-meta">
+      <span>
+        {t.rotuloAtualizado}: <time datetime={t.atualizadoEm}>{atualizado}</time>
+      </span>
+    </p>
+  </Cabeca>
 
-  <Secao tom="branco" aria-label={t.titulo}>
-    {t.secoes.map((s) => (
-      <Linha>
-        <div class="projeto-texto">
+  <Secao tom="claro" class="faixa-leve" aria-label={t.titulo}>
+    <div class="texto-longo">
+      {t.secoes.map((s) => (
+        <>
           <h2>{s.titulo}</h2>
           {s.paragrafos.map((p) => (
             <p>{p}</p>
           ))}
-        </div>
-      </Linha>
-    ))}
+        </>
+      ))}
+    </div>
   </Secao>
 </Base>

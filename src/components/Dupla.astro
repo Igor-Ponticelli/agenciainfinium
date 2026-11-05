@@ -1,0 +1,37 @@
+---
+import Foto from './Foto.astro';
+import type { NomeFoto } from '../data/fotos';
+
+/**
+ * Imagem de um lado, texto do outro (pedido do Igor, 05/11/2026). A foto vai no lado que a
+ * página escolher e, no celular, abre o bloco. Sobre o escuro, a foto fica na luz violeta.
+ */
+interface Props {
+  foto: NomeFoto;
+  fotoPosicao?: string;
+  invertida?: boolean;
+  tom?: 'natural' | 'violeta';
+  class?: string;
+}
+
+const {
+  foto,
+  fotoPosicao = '50% 50%',
+  invertida = false,
+  tom = 'natural',
+  class: classe,
+} = Astro.props;
+---
+
+<div class:list={['dupla', { 'dupla-invertida': invertida }, classe]}>
+  <Foto
+    class="dupla-foto"
+    nome={foto}
+    tom={tom}
+    posicao={fotoPosicao}
+    sizes="(min-width: 64rem) 36rem, 100vw"
+  />
+  <div class="dupla-texto">
+    <slot />
+  </div>
+</div>

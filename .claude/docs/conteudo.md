@@ -21,7 +21,7 @@ chamam **Sites** e **Sistemas** (sistemas sob medida e automação de processos)
 | **Contato** `/contato/` | os dois | WhatsApp, e-mail, Instagram e o formulário de orçamento com dois envios (seção 10). |
 | **Raio-X do site** `/raio-x-do-site/` | quem chega por anúncio | Landing page do produto de entrada, sem menu, uma ação só (seção 11). Fora do menu. |
 | **Acessos** `/acessos/` | quem vem do Instagram | Link da bio. Três botões: falar no WhatsApp, quero um site, quero automatizar minha empresa. Sem menu, sem rodapé longo. `noindex`. |
-| **Privacidade** `/privacidade/` | todos | Obrigatória: GA4, Meta Pixel, formulário e cookies. Sem termos de uso (Igor, 30/10/2026). |
+| **Privacidade** `/privacidade/` | todos | Obrigatória: GA4, formulário e cookies. Sem termos de uso (Igor, 30/10/2026). |
 | **404** | todos | Obrigatória. Pode ter uma piada pequena com o símbolo. |
 
 **Menu:** Serviços (submenu: Sites, Sistemas) · Projetos · Blog · Contato · botão "Falar no
@@ -36,8 +36,13 @@ Ficou de fora, de propósito:
 
 ## 2. Home, seção por seção
 
-Ordem pensada para quem lê 10 segundos no celular e para quem lê 2 minutos. O craft floor
-proíbe eyebrow acima de título e cards iguais em fila.
+Ordem pensada para quem lê 10 segundos no celular e para quem lê 2 minutos. Desde 05/11/2026
+(direção "o infinito"), cada seção diz uma coisa por tópico, com ícone, em vez de parágrafo: a
+abertura é a assinatura em tipo gigante com o símbolo; segue a faixa rolante com o que a
+Infinium faz e onde atende; a cena vira quatro tópicos e "um sistema só"; os dois serviços vêm
+em dupla de imagem e texto, sobre o claro; a conexão é a frase partida pelo símbolo; os projetos
+vão numa galeria de janelas; "como funciona" tem a cabeça fixa; e a chamada final é "Vamos
+conversar?". A lista abaixo é a ordem e o conteúdo de cada seção.
 
 1. **Abertura.** Assinatura ("Sites e sistemas que trabalham por você") como título, uma frase
    que explica em linguagem de dono de empresa (tira o negócio do papel e da planilha e coloca no
@@ -157,8 +162,9 @@ de "grátis" além da conversa.
 - Onde o domínio `infinium.app.br` está registrado e quem administra o DNS.
 
 Decididos em 30/10/2026: WhatsApp `+55 47 99273-5089`; e-mail `agenciainfinium@gmail.com` no
-contato e no rodapé; GA4 e Pixel entram, configurados no fim; formulário entra; blog entra com
-os posts prontos; só política de privacidade, sem termos de uso; hospedagem na Hostinger.
+contato e no rodapé; GA4 e Pixel entram, configurados no fim (o Pixel saiu em 05/11/2026);
+formulário entra; blog entra com os posts prontos; só política de privacidade, sem termos de
+uso; hospedagem na Hostinger.
 
 ## 9. Blog
 
@@ -188,6 +194,8 @@ Texto curto de privacidade junto do botão, com link para `/privacidade/`. Regra
 arquitetura.md, seção 7.
 
 ## 11. Raio-X do site
+
+**Removido em 05/11/2026, a pedido do Igor.** O que segue é o registro da ideia, caso volte.
 
 Produto de entrada, a preço baixo, vendido com tráfego pago (Igor, 30/10/2026). Uma oferta só,
 com dois ângulos de anúncio apontando para a mesma LP: "seu site não aparece no Google" e "seu

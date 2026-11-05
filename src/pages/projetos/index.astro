@@ -1,63 +1,68 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Cabeca from '../../components/Cabeca.astro';
 import ChamadaFinal from '../../components/ChamadaFinal.astro';
-import Linha from '../../components/Linha.astro';
 import FontesPrevias from '../../components/FontesPrevias.astro';
-import Obra from '../../components/Obra.astro';
 import Secao from '../../components/Secao.astro';
+import Vitrine from '../../components/Vitrine.astro';
 import { todosProjetos } from '../../data/projetos';
-import { linkWhatsapp } from '../../data/empresa';
 import { projetos as t } from '../../i18n/paginas/projetos';
-import { metasPaginas, tiposProjeto } from '../../i18n/textos';
+import { rotaProjeto } from '../../i18n/rotas';
+import { metasPaginas, textos, tiposProjeto } from '../../i18n/textos';
 
-/** Portfólio: os projetos fora da grade, agrupados por tipo. */
+/** Portfólio: os projetos em linhas largas, agrupados por tipo, alternando o lado da prévia. */
 const meta = metasPaginas.projetos;
 const todos = await todosProjetos();
-const formato = (i: number) => ([0, 3].includes(i % 4) ? 'grande' : 'media');
-const ficha = (i: number) => ([0, 3].includes(i % 4) ? 'lado' : 'abaixo');
+const indice = (i: number) => String(i + 1).padStart(2, '0');
 ---
 
-<Base titulo={meta.titulo} descricao={meta.descricao}>
+<Base titulo={meta.titulo} descricao={meta.descricao} semChamada>
   <FontesPrevias slot="head" />
-  <Secao cabeca folha="pagina-cabeca" aria-labelledby="pagina-titulo">
-    <Linha>
-      <h1 class="pagina-titulo" id="pagina-titulo">
-        {t.titulo}
-      </h1>
-    </Linha>
-    <Linha>
-      <p class="pagina-texto">{t.texto}</p>
-    </Linha>
-  </Secao>
+  <Cabeca titulo={t.titulo} texto={t.texto} />
 
   {tiposProjeto.map((tipo, idx) => {
     const grupo = todos.filter((p) => p.data.tipo === tipo);
+    const base = tiposProjeto
+      .slice(0, idx)
+      .reduce((n, tp) => n + todos.filter((p) => p.data.tipo === tp).length, 0);
     return (
-      <Secao
-        tom={idx % 2 === 0 ? 'branco' : 'claro'}
-        folha="vitrines"
-        aria-labelledby={`grupo-${tipo}`}
-      >
-        <Linha class="vitrines-cabeca">
-          <h2 class="titulo-secao" id={`grupo-${tipo}`}>
-            {t.grupos[tipo].titulo}
-          </h2>
-          <p class="celula celula-apoio">{t.grupos[tipo].texto}</p>
-        </Linha>
-        <div class="vitrines-grade">
-          {grupo.map((p, i) => (
-            <Obra projeto={p} formato={formato(i)} ficha={ficha(i)} />
-          ))}
+      <Secao tom={idx % 2 === 0 ? 'claro' : 'profundo'} aria-labelledby={`grupo-${tipo}`}>
+        <div class="cabeca-secao">
+          <h2 id={`grupo-${tipo}`}>{t.grupos[tipo].titulo}</h2>
+          <p>{t.grupos[tipo].texto}</p>
         </div>
+        <ol class="obras">
+          {grupo.map((p, i) => (
+            <li class="obra revelar">
+              <Vitrine
+                projeto={p}
+                moldura="navegador"
+                proporcao="16 / 10"
+                href={rotaProjeto(p.data.slug)}
+              />
+              <div class="obra-ficha">
+                <span class="obra-indice" aria-hidden="true">
+                  {indice(base + i)}
+                </span>
+                <h3>
+                  <a href={rotaProjeto(p.data.slug)}>{p.data.titulo}</a>
+                </h3>
+                <p class="obra-tipo">
+                  {textos.projeto.tipo[p.data.tipo]} · {p.data.ano} ·{' '}
+                  {textos.projeto.status[p.data.status]}
+                </p>
+                <p>{p.data.resumo}</p>
+                <a class="link-fita" href={rotaProjeto(p.data.slug)}>
+                  {textos.acoes.verProjeto}
+                  <span class="visualmente-oculto">: {p.data.titulo}</span>
+                </a>
+              </div>
+            </li>
+          ))}
+        </ol>
       </Secao>
     );
   })}
 
-  <ChamadaFinal
-    slot="fechamento"
-    titulo={t.chamada.titulo}
-    acao={t.chamada.acao}
-    href={linkWhatsapp()}
-    evento="whatsapp_chamada_final"
-  />
+  <ChamadaFinal slot="fechamento" titulo={t.chamada.titulo} acao={t.chamada.acao} />
 </Base>

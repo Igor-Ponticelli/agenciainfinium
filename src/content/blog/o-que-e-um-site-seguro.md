@@ -3,7 +3,7 @@ titulo: 'O que é um site seguro: HTTPS, atualização, backup e cabeçalhos'
 descricao: Site de empresa pequena também é invadido. Quatro coisas que separam um site seguro de um site que só parece seguro.
 diasAntes: 2
 tags: [sites, seguranca]
-chamada: raioX
+chamada: sites
 capa: cadeado
 ---
 
@@ -37,4 +37,4 @@ Formulário é a porta por onde dado de gente entra. Ele precisa de proteção c
 2. Pergunte a quem cuida do site quando foi a última atualização e onde está o backup.
 3. Veja se o formulário tem alguma proteção além do campo em branco.
 
-O Raio-X do site confere tudo isso e devolve a lista do que está em ordem e do que não está.
+Se quiser ajuda para conferir tudo isso no site da sua empresa, é só chamar no WhatsApp.

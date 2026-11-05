@@ -1,0 +1,100 @@
+---
+import type { Projeto } from '../data/projetos';
+import { textos as t } from '../i18n/textos';
+import { previas } from './previas';
+
+/**
+ * Uma prévia de projeto numa moldura, para as versões de estudo: a mesma prévia em HTML/CSS do
+ * site (src/components/previas/), ativada quando chega perto da tela (previas.ts), dentro de uma
+ * janela de navegador, de um celular ou de uma moldura nua. A prévia é uma `region` com rótulo e
+ * só os controles dela recebem o ponteiro.
+ */
+interface Props {
+  projeto: Projeto;
+  moldura?: 'navegador' | 'celular' | 'nua';
+  /** Proporção da tela, no formato do CSS. */
+  proporcao?: string;
+  /**
+   * Qual layout da prévia aparece: a prévia é desenhada num palco de 1100 px (larga, o site no
+   * computador) ou de 400 px (estreita, o site no celular) e o palco é escalado para caber na
+   * moldura, qualquer que seja o tamanho dela (site.css, `.v-vitrine-palco`).
+   */
+  tela?: 'larga' | 'estreita';
+  /** Nasce ativa (fonte e script na hora), para a vitrine da abertura. */
+  ativa?: boolean;
+  /** Com um destino, a moldura inteira vira link (menos os controles da prévia). */
+  href?: string;
+  class?: string;
+}
+
+const {
+  projeto,
+  moldura = 'navegador',
+  proporcao = moldura === 'celular' ? '9 / 19' : '16 / 10',
+  tela = moldura === 'celular' ? 'estreita' : 'larga',
+  ativa = false,
+  href,
+  class: classe,
+} = Astro.props;
+const d = projeto.data;
+const Previa = previas[d.slug];
+
+// O fundo e a cor de texto reais de cada projeto (.claude/docs/projetos/), antes de a prévia
+// ganhar fonte e script.
+const cores: Record<string, { fundo: string; texto: string }> = {
+  'brisa-cafe': { fundo: '#faf4e6', texto: '#2b1d14' },
+  linetex: { fundo: '#ffffff', texto: '#0e1240' },
+  lumaj: { fundo: '#474747', texto: '#ffffff' },
+  retrodash: { fundo: '#0f1117', texto: '#ffffff' },
+};
+const cor = cores[d.slug] ?? { fundo: '#ffffff', texto: '#211f26' };
+const dominio = d.url ? new URL(d.url).host : '';
+---
+
+<div
+  class:list={['v-vitrine', { 'v-vitrine-com-link': Boolean(href) }, classe]}
+  data-moldura={moldura}
+  data-tela={tela}
+  style={`--vitrine-fundo: ${cor.fundo}; --vitrine-texto: ${cor.texto}; --vitrine-proporcao: ${proporcao}`}
+>
+  {moldura === 'navegador' && (
+    <div class="v-vitrine-barra" aria-hidden="true">
+      <span class="v-vitrine-pontos">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+      <span class="v-vitrine-url">{dominio}</span>
+    </div>
+  )}
+  <div class="v-vitrine-tela" role="region" aria-label={t.previa.rotulo(d.titulo, d.tipo)}>
+    {href && (
+      <a class="v-vitrine-link" href={href}>
+        <span class="visualmente-oculto">
+          {t.acoes.verProjeto}: {d.titulo}
+        </span>
+      </a>
+    )}
+    {Previa ? (
+      <div class="v-vitrine-palco">
+        <div
+          class="previa"
+          data-previa={d.slug}
+          data-ativa={ativa ? '' : undefined}
+          inert={href ? true : undefined}
+        >
+          <Previa />
+        </div>
+      </div>
+    ) : (
+      <div class="v-vitrine-vazia" aria-hidden="true">
+        <strong>{d.titulo}</strong>
+        <span>{t.previa.emPreparacao}</span>
+      </div>
+    )}
+  </div>
+</div>
+
+<script>
+  import '../scripts/previas';
+</script>

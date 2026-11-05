@@ -61,6 +61,20 @@ Só **Roboto** (Google Fonts).
 
 Use números tabulares em preços e tabelas.
 
+## Fundos e superfícies (novembro de 2026)
+
+Duas superfícies nascidas no site, além das cores chapadas. Nenhuma usa imagem: são CSS puro
+(`tokens/tokens.css`, `--infinium-veio-veins` e `--infinium-aurora-lights`) e as duas param com
+movimento reduzido. Demonstração viva em `manual/brand-guide.html`, seção "Fundos".
+
+| Superfície | O que é | Onde entra |
+|---|---|---|
+| **Veio** | Body com um grão fino em Violeta 700 (11 %) e dois veios de Lilás que terminam antes das bordas | Toda faixa clara. Em leitura longa (post, política) só o grão, a 5 %, sem os veios. Nunca sobre o roxo |
+| **Aurora** | Cartão em Violeta 900 com duas luzes (Violeta 500 e Lilás) se movendo devagar por trás, o número no canto e o ícone vivo | Só em cartões: tópico, parte de case, porta de entrada. Nunca como fundo de faixa, de rodapé ou atrás de foto: o roxo das faixas é chapado |
+| **Ícone vivo** | Traço de 2 px em Lilás a 45 % com uma luz de 28 % do caminho correndo por cima, num ladrilho de 48 px | Todo tópico, etapa e canal. Ícones próprios, 24 x 24, sem biblioteca |
+
+Sobre a aurora, o título é branco e o texto Lilás a 70 %. Primary nunca aparece sobre o cartão.
+
 ## Regras de uso
 
 - **Área de proteção:** a altura do "n" de Infinium, em todos os lados.

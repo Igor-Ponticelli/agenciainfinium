@@ -11,7 +11,7 @@ ErrorDocument 404 /404.html
 
 # Cabeçalhos de segurança (arquitetura.md, seção 7).
 # CSP: só scripts do próprio site, mais o script inline da classe `js` (pelo hash) e as origens
-# do GA4, do Meta Pixel, do Turnstile e do Web3Forms. Estilos inline são do Astro (fontes e
+# do GA4 e do Web3Forms. Estilos inline são do Astro (fontes e
 # atributos style das prévias). Nada de frame, nada de objeto, nada de base.
 <IfModule mod_headers.c>
   Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
@@ -19,7 +19,7 @@ ErrorDocument 404 /404.html
   Header always set X-Frame-Options "DENY"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
-  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo=' https://www.googletagmanager.com https://connect.facebook.net https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com https://www.facebook.com; font-src 'self'; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://www.facebook.com https://api.web3forms.com https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; form-action 'self' https://api.web3forms.com https://wa.me; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo=' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://www.google.com https://api.web3forms.com; frame-src 'none'; form-action 'self' https://api.web3forms.com https://wa.me; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests"
 </IfModule>
 
 # Compressão dos textos (a Hostinger costuma ligar o deflate; aqui garante)

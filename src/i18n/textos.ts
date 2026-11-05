@@ -118,11 +118,6 @@ export const metasPaginas: Record<NomeRota, { titulo: string; descricao: string 
     titulo: 'Mensagem enviada',
     descricao: 'Recebemos a sua mensagem.',
   },
-  raioX: {
-    titulo: 'Raio-X do site: análise de SEO, velocidade e segurança',
-    descricao:
-      'Descubra por que o site da sua empresa não aparece no Google, está lento ou inseguro, com um relatório curto e uma conversa.',
-  },
   privacidade: {
     titulo: 'Política de privacidade',
     descricao: 'Como a Agência Infinium trata os dados de quem visita o site e entra em contato.',

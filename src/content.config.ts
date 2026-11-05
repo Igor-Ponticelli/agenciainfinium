@@ -40,8 +40,8 @@ const blog = defineCollection({
     atualizadoEm: z.coerce.date().optional(),
     tags: z.array(z.string()).default([]),
     rascunho: z.boolean().default(false),
-    /** Para onde o post leva no fim: um serviço ou o Raio-X. */
-    chamada: z.enum(['sites', 'sistemas', 'raioX']),
+    /** Para onde o post leva no fim: um dos dois serviços. */
+    chamada: z.enum(['sites', 'sistemas']),
     /** A foto de capa (src/data/fotos.ts), na lista, na home e na cabeça do post. */
     capa: z.enum(nomesFotos),
   }),

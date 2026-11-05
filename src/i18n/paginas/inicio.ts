@@ -1,35 +1,51 @@
 /**
- * Texto da home, seção por seção (conteudo.md, seção 2). Persuasiva como uma landing page.
- * Fatos: EMPRESA.md e SERVICOS.md. Os projetos vêm da collection; aqui ficam só os textos em
- * volta deles. Regra do projeto: nada de travessão.
+ * Texto da home, seção por seção (conteudo.md, seção 2, revista em 05/11/2026: menos texto, um
+ * tópico com ícone no lugar de cada parágrafo). Persuasiva como uma landing page. Fatos:
+ * EMPRESA.md e SERVICOS.md. Os projetos vêm da collection; aqui ficam só os textos em volta
+ * deles. Regra do projeto: nada de travessão.
  */
+import type { NomeIcone } from '../../data/icones';
 
 export type Passo = { titulo: string; texto: string };
 export type Pergunta = { pergunta: string; resposta: string };
+export type Topico = { icone: NomeIcone; titulo: string; texto?: string };
 
 export const inicio = {
   abertura: {
     titulo: 'Sites e sistemas que trabalham por você',
     texto:
-      'A Infinium tira o seu negócio do papel e da planilha e coloca no online e no automático. Um site que traz o cliente e um sistema que cuida dele depois.',
+      'A Infinium tira o seu negócio do papel e da planilha e coloca no online e no automático.',
     acaoPrincipal: 'Falar no WhatsApp',
-    acaoSecundaria: 'Ver como funciona',
+    acaoSecundaria: 'Ver projetos',
+    ancoraProjetos: 'projetos',
     ancoraComoFunciona: 'como-funciona',
   },
 
+  /** A faixa rolante: o que a Infinium faz e onde atende (EMPRESA.md, PRODUCT.md). */
+  faixa: [
+    'Sites',
+    'Landing pages',
+    'Páginas de vendas',
+    'Sistemas sob medida',
+    'Automação de processos',
+    'Brusque e Vale do Itajaí',
+    'Atendimento remoto para todo o Brasil',
+  ],
+
   problema: {
     titulo: 'Reconhece essa cena?',
-    /** As células da planilha: o que a empresa controla e onde. */
-    celulas: [
-      ['Pedidos', 'WhatsApp'],
-      ['Controle', 'Excel'],
-      ['Tarefas', 'Trello'],
-      ['Financeiro', 'ERP'],
-    ],
-    paragrafos: [
-      'Os pedidos chegam pelo WhatsApp. O controle fica no Excel, as tarefas no Trello, o financeiro no ERP. Alguém passa o dia copiando informação de um lugar para outro, erros aparecem, clientes ficam sem retorno e ninguém tem uma visão clara do negócio.',
-      'Do lado de fora, a empresa também não aparece. Sem site, ou com um site lento e desatualizado, ela perde para o concorrente que foi encontrado primeiro.',
-    ],
+    itens: [
+      { icone: 'balao', titulo: 'Pedidos', texto: 'chegam pelo WhatsApp' },
+      { icone: 'planilha', titulo: 'Controle', texto: 'fica no Excel' },
+      { icone: 'quadro', titulo: 'Tarefas', texto: 'ficam no Trello' },
+      { icone: 'nota', titulo: 'Financeiro', texto: 'fica no ERP' },
+    ] satisfies Topico[],
+    frase: 'E alguém passa o dia copiando informação de um lugar para outro.',
+    resultado: {
+      icone: 'painel',
+      titulo: 'Um sistema só',
+      texto: 'Tudo no mesmo lugar, e o que era manual acontece sozinho.',
+    } satisfies Topico,
   },
 
   servicos: {
@@ -37,10 +53,12 @@ export const inicio = {
     sites: {
       titulo: 'Sites',
       frase: 'Seja encontrado. Seja escolhido.',
-      texto:
-        'Site institucional, landing page ou página de vendas. Rápido, bom no celular e pronto para transformar visita em contato.',
-      paraQuem:
-        'Para empresas e profissionais que precisam ser encontrados e passar confiança na internet.',
+      texto: 'Rápido, bom no celular e pronto para transformar visita em contato.',
+      topicos: [
+        { icone: 'janela', titulo: 'Site institucional' },
+        { icone: 'alvo', titulo: 'Landing page' },
+        { icone: 'etiqueta', titulo: 'Página de vendas' },
+      ] satisfies Topico[],
       verServico: 'Ver o serviço de sites',
       whatsapp: 'Quero um site',
     },
@@ -48,25 +66,31 @@ export const inicio = {
       titulo: 'Sistemas',
       frase: 'Do Excel, do Trello e do ERP para um sistema só.',
       texto:
-        'Um sistema único, feito do jeito que a sua empresa trabalha. O que era manual passa a acontecer sozinho: avisos, cobranças, relatórios, status e follow-up.',
-      paraQuem:
-        'Para empresas que perdem tempo copiando dados entre Excel, Trello, ERP e WhatsApp.',
+        'Feito do jeito que a sua empresa trabalha. O que era manual passa a acontecer sozinho.',
+      topicos: [
+        { icone: 'banco', titulo: 'Centraliza' },
+        { icone: 'ciclo', titulo: 'Automatiza' },
+        { icone: 'conexoes', titulo: 'Integra' },
+        { icone: 'painel', titulo: 'Mostra os números' },
+      ] satisfies Topico[],
       verServico: 'Ver o serviço de sistemas',
       whatsapp: 'Quero automatizar minha empresa',
     },
   },
 
   conexao: {
-    titulo: 'O site traz o cliente. O sistema cuida dele depois.',
+    antes: 'O site traz o cliente.',
+    depois: 'O sistema cuida dele depois.',
     texto:
-      'Um contato que chega pelo site pode cair direto no sistema, virar um pedido, gerar as tarefas da equipe e receber retorno automático. É o ciclo completo, sem trabalho manual no meio. E você fala com um parceiro só, do primeiro clique à operação.',
+      'Um contato que chega pelo site vira pedido, gera as tarefas da equipe e recebe retorno automático. Um parceiro só, do primeiro clique à operação.',
   },
 
   projetos: {
     titulo: 'Trabalho que você pode abrir agora',
-    texto:
-      'Três sites publicados e um sistema em produção. Cada prévia é o site de verdade, reproduzido aqui para você clicar.',
+    texto: 'Três sites publicados e um sistema em produção. Cada prévia é o site de verdade.',
     acao: 'Ver todos os projetos',
+    anterior: 'Projeto anterior',
+    proximo: 'Próximo projeto',
   },
 
   comoFunciona: {
@@ -74,44 +98,58 @@ export const inicio = {
     texto: 'As etapas mudam um pouco de um serviço para o outro, mas o caminho é o mesmo.',
     passos: [
       {
+        icone: 'balao',
         titulo: 'Conversa',
         texto: 'Você conta o que a empresa faz, o que atrapalha hoje e o que quer resolver.',
       },
       {
+        icone: 'documento',
         titulo: 'Proposta',
         texto: 'Escopo, prazo e investimento por escrito. Sem surpresa no meio do caminho.',
       },
       {
+        icone: 'quadro',
         titulo: 'Construção em etapas',
         texto: 'Você acompanha e dá retorno enquanto o trabalho acontece, não só no fim.',
       },
       {
+        icone: 'globo',
         titulo: 'Publicação',
         texto: 'O site vai ao ar, ou o sistema entra em uso, com orientação para a sua equipe.',
       },
       {
+        icone: 'ciclo',
         titulo: 'Acompanhamento',
-        texto:
-          'Ajustes, manutenção e melhorias conforme a empresa cresce. O trabalho não termina na entrega.',
+        texto: 'Ajustes e melhorias conforme a empresa cresce. O trabalho não termina na entrega.',
       },
-    ] satisfies Passo[],
+    ] satisfies Topico[],
   },
 
   resultados: {
-    titulo: 'O que a gente busca para a sua empresa',
+    titulo: 'O que muda na sua empresa',
     itens: [
-      { titulo: 'Tempo', texto: 'Horas de trabalho manual devolvidas à equipe toda semana.' },
-      { titulo: 'Menos erros', texto: 'A informação é digitada uma vez e aparece onde precisa.' },
+      { icone: 'relogio', titulo: 'Tempo', texto: 'Horas de trabalho manual devolvidas à equipe.' },
       {
+        icone: 'certo',
+        titulo: 'Menos erros',
+        texto: 'A informação é digitada uma vez e aparece onde precisa.',
+      },
+      {
+        icone: 'usuarios',
         titulo: 'Clientes que ficam',
         texto: 'Retorno no prazo, sem depender da memória de alguém.',
       },
-      { titulo: 'Visão', texto: 'Os números do negócio num painel, sem montar planilha.' },
       {
+        icone: 'olho',
+        titulo: 'Visão',
+        texto: 'Os números do negócio num painel, sem montar planilha.',
+      },
+      {
+        icone: 'crescimento',
         titulo: 'Crescimento',
         texto: 'Dá para atender mais sem contratar na mesma proporção.',
       },
-    ] satisfies Passo[],
+    ] satisfies Topico[],
   },
 
   faq: {
@@ -145,9 +183,9 @@ export const inicio = {
   },
 
   chamadaFinal: {
-    titulo: 'Menos trabalho manual, mais crescimento',
+    titulo: 'Vamos conversar?',
     texto:
-      'Conta para a gente o que a sua empresa precisa. A conversa inicial é pelo WhatsApp e não tem compromisso.',
+      'Conta o que a sua empresa precisa. A conversa inicial é pelo WhatsApp e não tem compromisso.',
     acao: 'Falar no WhatsApp',
   },
 } as const;

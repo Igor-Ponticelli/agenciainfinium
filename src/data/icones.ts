@@ -2,7 +2,8 @@
  * Ícones do site (pedido do Igor, 31/10/2026): traço de 2 px em `--color-fita`, desenhados pela
  * própria fita conforme a rolagem (Icone.astro e site.css). Grade de 24 x 24, pontas e cantos
  * redondos, nenhum preenchimento. Cada forma leva `pathLength="1"` para a animação do traço.
- * Desenhados aqui, sem biblioteca.
+ * Desenhados aqui, sem biblioteca; só os dois logotipos (Instagram e WhatsApp) vêm do Tabler
+ * Icons (MIT), porque marca se reconhece pelo desenho oficial.
  */
 const formas = {
   telas:
@@ -18,7 +19,8 @@ const formas = {
   alvo: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
   etiqueta:
     '<path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1"/>',
-  janela: '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 9h20M5.5 6.5h1M8.5 6.5h1"/>',
+  janela:
+    '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 9h20M5.5 6.5h1M8.5 6.5h1"/>',
   relogio: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>',
   certo: '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/>',
   usuarios:
@@ -35,21 +37,29 @@ const formas = {
   documento:
     '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M9 13h6M9 17h6"/>',
   escudo: '<path d="M12 3l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/>',
-  velocimetro: '<path d="M4 17a8.5 8.5 0 1 1 16 0"/><path d="M12 17l4-5"/><circle cx="12" cy="17" r="1.5"/>',
+  velocimetro:
+    '<path d="M4 17a8.5 8.5 0 1 1 16 0"/><path d="M12 17l4-5"/><circle cx="12" cy="17" r="1.5"/>',
   video: '<rect x="2.5" y="6" width="13" height="12" rx="2"/><path d="M15.5 10.5l6-3v9l-6-3z"/>',
   planilha: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 10v10"/>',
   quadro: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7.5 7v10M12 7v6M16.5 7v8"/>',
   nota: '<path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h3"/>',
   envelope: '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2.5 7.5 12 14l9.5-6.5"/>',
+  /** Instagram e WhatsApp vêm do Tabler Icons (MIT, Paweł Kuna), no mesmo traço dos nossos. */
   instagram:
-    '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="0.6"/>',
+    '<path d="M3 7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/><path d="M8.5 12a3.5 3.5 0 1 0 7 0 3.5 3.5 0 0 0-7 0"/><path d="M17 7v.01"/>',
+  whatsapp:
+    '<path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9z"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"/>',
+  copyright: '<circle cx="12" cy="12" r="9"/><path d="M14.5 9.8a3.3 3.3 0 1 0 0 4.4"/>',
 } as const;
 
 export type NomeIcone = keyof typeof formas;
 
 /** O markup de cada ícone, com `pathLength="1"` em toda forma, para a fita desenhar de 0 a 1. */
 export const icones: Record<NomeIcone, string> = Object.fromEntries(
-  Object.entries(formas).map(([nome, svg]) => [nome, svg.replace(/<(path|circle|rect|ellipse) /g, '<$1 pathLength="1" ')]),
+  Object.entries(formas).map(([nome, svg]) => [
+    nome,
+    svg.replace(/<(path|circle|rect|ellipse) /g, '<$1 pathLength="1" '),
+  ]),
 ) as Record<NomeIcone, string>;
 
 export const nomesIcones = Object.keys(formas) as NomeIcone[];

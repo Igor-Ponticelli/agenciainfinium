@@ -3,7 +3,7 @@ titulo: O que deixa um site lento, e o que isso custa
 descricao: Imagem pesada, tema cheio de plugin, hospedagem fraca. Os motivos mais comuns de um site demorar e como medir o seu.
 diasAntes: 3
 tags: [sites, velocidade]
-chamada: raioX
+chamada: sites
 capa: notebook
 ---
 
@@ -37,4 +37,4 @@ O Google mede a velocidade e usa isso para ordenar os resultados. Entre dois sit
 2. Veja se as imagens da página inicial são maiores que o necessário.
 3. Liste os serviços de terceiros que o site carrega e pergunte quais ainda são usados.
 
-Se quiser que a gente faça essa leitura e diga, em linguagem simples, o que trava o seu site, é isso que o Raio-X do site entrega.
+Se quiser que a gente faça essa leitura e diga, em linguagem simples, o que trava o seu site, é só chamar no WhatsApp.

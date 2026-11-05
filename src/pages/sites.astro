@@ -1,30 +1,34 @@
 ---
 import Base from '../layouts/Base.astro';
-import Cartao from '../components/Cartao.astro';
+import Cabeca from '../components/Cabeca.astro';
 import ChamadaFinal from '../components/ChamadaFinal.astro';
+import Dupla from '../components/Dupla.astro';
+import Faq from '../components/Faq.astro';
 import FontesPrevias from '../components/FontesPrevias.astro';
-import Foto from '../components/Foto.astro';
-import Linha from '../components/Linha.astro';
-import Obra from '../components/Obra.astro';
+import Galeria from '../components/Galeria.astro';
+import Passos from '../components/Passos.astro';
 import Secao from '../components/Secao.astro';
+import Topicos from '../components/Topicos.astro';
 import type { NomeIcone } from '../data/icones';
 import { todosProjetos } from '../data/projetos';
 import { linkWhatsapp } from '../data/empresa';
-import { rotas } from '../i18n/rotas';
+import { inicio } from '../i18n/paginas/inicio';
 import { sites as t } from '../i18n/paginas/sites';
-import { metasPaginas } from '../i18n/textos';
+import { rotas } from '../i18n/rotas';
+import { metasPaginas, textos } from '../i18n/textos';
 
 /**
- * Página de sites: a planilha do serviço, em bandas. A cabeça abre com a foto; "o que a gente
- * faz" e "todo site inclui" são cartões com ícone (brief da página de serviço, revisto em
- * 31/10/2026).
+ * Página de sites: a cabeça com a foto, o problema em dupla, o que a gente faz e o que todo
+ * site inclui em tópicos com ícone, as etapas, os três sites publicados e as perguntas.
  */
 const meta = metasPaginas.sites;
 const projetos = (await todosProjetos()).filter((p) => p.data.tipo === 'site');
-const formato = (i: number) => (i % 4 === 0 ? 'grande' : 'media');
-const ficha = (i: number) => (i % 4 === 0 ? 'lado' : 'abaixo');
 const iconesTipos: NomeIcone[] = ['janela', 'alvo', 'etiqueta'];
 const iconesInclui: NomeIcone[] = ['telas', 'raio', 'lupa', 'balao', 'grafico', 'cadeado'];
+const iconesPassos: NomeIcone[] = ['balao', 'documento', 'olho', 'quadro', 'globo', 'ciclo'];
+const tipos = t.tipos.itens.map((i, idx) => ({ icone: iconesTipos[idx]!, ...i }));
+const inclui = t.inclui.itens.map((i, idx) => ({ icone: iconesInclui[idx]!, titulo: i }));
+const passos = t.comoFunciona.passos.map((p, idx) => ({ icone: iconesPassos[idx]!, ...p }));
 const site = Astro.site!;
 const jsonLd = {
   '@type': 'Service',
@@ -38,126 +42,65 @@ const jsonLd = {
 };
 ---
 
-<Base titulo={meta.titulo} descricao={meta.descricao} jsonLd={[jsonLd]}>
+<Base titulo={meta.titulo} descricao={meta.descricao} jsonLd={[jsonLd]} semChamada>
   <FontesPrevias slot="head" />
-  <Secao
-    cabeca
-    folha="pagina-cabeca cabeca-com-foto"
-    aria-labelledby="pagina-titulo"
-    style="--cabeca-linhas: 4"
-  >
-    <Linha>
-      <h1 class="pagina-titulo" id="pagina-titulo">
-        {t.titulo}
-      </h1>
-    </Linha>
-    <Linha class="linha-selecionada">
-      <p class="pagina-frase">{t.frase}</p>
-    </Linha>
-    <Linha>
-      <p class="pagina-texto">{t.texto}</p>
-    </Linha>
-    <Linha>
-      <div class="pagina-acao acoes">
-        <a
-          class="botao"
-          href={linkWhatsapp('site')}
-          target="_blank"
-          rel="noopener"
-          data-evento="whatsapp_sites_topo"
-        >
-          {t.acao}
-          <span class="visualmente-oculto">(abre em nova aba)</span>
-        </a>
-      </div>
-    </Linha>
-    <Foto class="cabeca-foto" nome="aberto" prioridade sizes="(min-width: 64rem) 28rem, 100vw" />
+  <Cabeca titulo={t.titulo} frase={t.frase} texto={t.texto} foto="aberto">
+    <div class="acoes">
+      <a
+        class="botao"
+        href={linkWhatsapp('site')}
+        target="_blank"
+        rel="noopener"
+        data-evento="whatsapp_sites_topo"
+      >
+        {t.acao}
+        <span class="visualmente-oculto">{textos.linkExterno}</span>
+      </a>
+    </div>
+  </Cabeca>
+
+  <Secao aria-labelledby="problema-titulo">
+    <Dupla foto="lupaGlobo" tom="violeta" class="revelar">
+      <h2 id="problema-titulo">{t.problema.titulo}</h2>
+      <p>{t.problema.texto}</p>
+    </Dupla>
   </Secao>
 
-  <Secao tom="branco" aria-labelledby="problema-titulo">
-    <Linha>
-      <h2 class="titulo-secao" id="problema-titulo">
-        {t.problema.titulo}
-      </h2>
-    </Linha>
-    <Linha class="linha-texto">
-      <div class="texto">
-        <p>{t.problema.texto}</p>
-      </div>
-    </Linha>
+  <Secao tom="claro" aria-labelledby="tipos-titulo">
+    <div class="cabeca-secao">
+      <h2 id="tipos-titulo">{t.tipos.titulo}</h2>
+    </div>
+    <Topicos itens={tipos} class="topicos-3 revelar" />
   </Secao>
 
-  <Secao aria-labelledby="tipos-titulo">
-    <Linha>
-      <h2 class="titulo-secao" id="tipos-titulo">
-        {t.tipos.titulo}
-      </h2>
-    </Linha>
-    <Linha class="cartoes" data-cartoes={t.tipos.itens.length}>
-      {t.tipos.itens.map((i, idx) => (
-        <Cartao icone={iconesTipos[idx]} titulo={i.titulo} texto={i.texto} />
-      ))}
-    </Linha>
-  </Secao>
-
-  <Secao tom="branco" aria-labelledby="inclui-titulo">
-    <Linha>
-      <h2 class="titulo-secao" id="inclui-titulo">
-        {t.inclui.titulo}
-      </h2>
-    </Linha>
-    <Linha as="ul" class="cartoes" data-cartoes={t.inclui.itens.length}>
-      {t.inclui.itens.map((i, idx) => (
-        <Cartao as="li" icone={iconesInclui[idx]} texto={i} />
-      ))}
-    </Linha>
+  <Secao tom="claro" aria-labelledby="inclui-titulo">
+    <div class="cabeca-secao">
+      <h2 id="inclui-titulo">{t.inclui.titulo}</h2>
+    </div>
+    <Topicos itens={inclui} class="topicos-3 revelar" />
   </Secao>
 
   <Secao aria-labelledby="como-titulo">
-    <Linha>
-      <h2 class="titulo-secao" id="como-titulo">
-        {t.comoFunciona.titulo}
-      </h2>
-    </Linha>
-    <ol class="passos" data-laco>
-      {t.comoFunciona.passos.map((p) => (
-        <Linha as="li" class="passo">
-          <span class="passo-indice" aria-hidden="true"></span>
-          <h3 class="passo-titulo">{p.titulo}</h3>
-          <p class="passo-texto">{p.texto}</p>
-        </Linha>
-      ))}
-    </ol>
+    <Passos titulo={t.comoFunciona.titulo} passos={passos} idTitulo="como-titulo" />
   </Secao>
 
-  <Secao tom="branco" folha="vitrines" aria-labelledby="prova-titulo">
-    <Linha class="vitrines-cabeca">
-      <h2 class="titulo-secao" id="prova-titulo">
-        {t.prova.titulo}
-      </h2>
-      <p class="celula celula-apoio">{t.prova.texto}</p>
-    </Linha>
-    <div class="vitrines-grade">
-      {projetos.map((p, i) => (
-        <Obra projeto={p} formato={formato(i)} ficha={ficha(i)} />
-      ))}
+  <Secao tom="profundo" cheia aria-labelledby="prova-titulo">
+    <div class="miolo">
+      <div class="cabeca-secao">
+        <h2 id="prova-titulo">{t.prova.titulo}</h2>
+        <p>{t.prova.texto}</p>
+      </div>
     </div>
+    <Galeria
+      projetos={projetos}
+      anterior={inicio.projetos.anterior}
+      proximo={inicio.projetos.proximo}
+    />
   </Secao>
 
-  <Secao aria-labelledby="faq-titulo">
-    <Linha>
-      <h2 class="titulo-secao" id="faq-titulo">
-        {t.faq.titulo}
-      </h2>
-    </Linha>
-    {t.faq.itens.map((i) => (
-      <Linha>
-        <details class="faq-item">
-          <summary>{i.pergunta}</summary>
-          <p>{i.resposta}</p>
-        </details>
-      </Linha>
-    ))}
+  <Secao miolo="faq-grade" aria-labelledby="faq-titulo">
+    <h2 id="faq-titulo">{t.faq.titulo}</h2>
+    <Faq itens={t.faq.itens} class="revelar" />
   </Secao>
 
   <ChamadaFinal
@@ -166,7 +109,6 @@ const jsonLd = {
     texto={t.chamada.texto}
     acao={t.chamada.acao}
     href={linkWhatsapp('site')}
-    evento="whatsapp_chamada_final"
     secundaria={{ rotulo: t.chamada.formulario, href: rotas.contato }}
   />
 </Base>

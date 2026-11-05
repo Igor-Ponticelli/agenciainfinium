@@ -1,12 +1,13 @@
 ---
 import type { GetStaticPaths } from 'astro';
-import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Cabeca from '../../components/Cabeca.astro';
 import ChamadaFinal from '../../components/ChamadaFinal.astro';
-import Linha from '../../components/Linha.astro';
 import FontesPrevias from '../../components/FontesPrevias.astro';
-import Obra from '../../components/Obra.astro';
+import Icone from '../../components/Icone.astro';
 import Secao from '../../components/Secao.astro';
+import Vitrine from '../../components/Vitrine.astro';
+import type { NomeIcone } from '../../data/icones';
 import { todosProjetos, type Projeto } from '../../data/projetos';
 import { linkWhatsapp } from '../../data/empresa';
 import { rotaProjeto } from '../../i18n/rotas';
@@ -21,10 +22,38 @@ interface Props {
   projeto: Projeto;
 }
 
-/** Página de projeto: o case, com a prévia em tamanho grande e a ficha ao lado. */
+/**
+ * Página de projeto: a cabeça com a prévia grande na mesma faixa, e o case em cartões, uma parte
+ * por título do Markdown (pedido do Igor, 05/11/2026: nada de texto corrido; ícones e cartões).
+ * O Markdown do case é simples (títulos, parágrafos e listas), então é lido aqui mesmo.
+ */
 const { projeto } = Astro.props;
 const d = projeto.data;
-const { Content } = await render(projeto);
+
+type Parte = { titulo: string; paragrafos: string[]; itens: string[] };
+const partes: Parte[] = [];
+for (const linha of (projeto.body ?? '').split('\n')) {
+  const texto = linha.trim();
+  if (!texto) continue;
+  if (texto.startsWith('## ')) {
+    partes.push({ titulo: texto.slice(3), paragrafos: [], itens: [] });
+  } else if (texto.startsWith('- ')) {
+    partes.at(-1)?.itens.push(texto.slice(2));
+  } else {
+    partes.at(-1)?.paragrafos.push(texto);
+  }
+}
+
+// O ícone de cada parte, pelo que o título diz
+const iconeDaParte = (titulo: string): NomeIcone => {
+  const s = titulo.toLowerCase();
+  if (s.includes('negócio') || s.includes('problema')) return 'etiqueta';
+  if (s.includes('objetivo') || s.includes('para quem')) return 'alvo';
+  if (s.includes('conceito') || s.includes('visual')) return 'olho';
+  if (s.includes('faz')) return 'painel';
+  if (s.includes('engenharia')) return 'escudo';
+  return 'certo';
+};
 
 // O último projeto volta ao primeiro.
 const todos = await todosProjetos();
@@ -48,36 +77,57 @@ const jsonLd = {
 };
 ---
 
-<Base titulo={d.titulo} descricao={d.resumo} imagem={imagem} jsonLd={[jsonLd]}>
+<Base titulo={d.titulo} descricao={d.resumo} imagem={imagem} jsonLd={[jsonLd]} semChamada>
   <FontesPrevias slot="head" />
   <article>
-    <Secao cabeca folha="pagina-cabeca">
-      <Linha>
-        <h1 class="pagina-titulo">{d.titulo}</h1>
-      </Linha>
-      <Linha>
-        <p class="pagina-texto">{d.resumo}</p>
-      </Linha>
-    </Secao>
-
-    <Secao tom="branco" aria-label={t.previa.rotulo(d.titulo, d.tipo)}>
-      <div class="projeto-obra">
-        <Obra projeto={projeto} formato="grande" ficha="lado" completa />
-      </div>
-    </Secao>
-
-    <Secao>
-      <Linha>
-        <div class="projeto-texto">
-          <Content />
-        </div>
-      </Linha>
-      <Linha>
-        <a class="proximo" href={rotaProjeto(proximo.data.slug)}>
-          <span class="proximo-rotulo">{t.acoes.proximoProjeto}</span>
-          <span class="proximo-titulo">{proximo.data.titulo}</span>
+    <Cabeca titulo={d.titulo} texto={d.resumo}>
+      <p class="cabeca-meta">
+        <span>
+          {t.projeto.rotulos.tipo}: {t.projeto.tipo[d.tipo]}
+        </span>
+        <span>
+          {t.projeto.rotulos.ano}: {d.ano}
+        </span>
+        <span>
+          {t.projeto.rotulos.status}: {t.projeto.status[d.status]}
+        </span>
+      </p>
+      {d.url && (
+        <a class="botao" href={d.url} target="_blank" rel="noopener noreferrer">
+          {t.acoes.visitarSite}
+          <span class="visualmente-oculto"> {t.linkExterno}</span>
         </a>
-      </Linha>
+      )}
+      <div slot="abaixo" class="obra-grande" aria-label={t.previa.rotulo(d.titulo, d.tipo)}>
+        <Vitrine projeto={projeto} moldura="navegador" proporcao="16 / 10" ativa />
+      </div>
+    </Cabeca>
+
+    <Secao tom="claro">
+      <ul class="caso">
+        {partes.map((parte) => (
+          <li class="caso-parte revelar">
+            <Icone nome={iconeDaParte(parte.titulo)} tamanho={28} />
+            <h2>{parte.titulo}</h2>
+            {parte.paragrafos.map((p) => (
+              <p>{p}</p>
+            ))}
+            {parte.itens.length > 0 && (
+              <ul>
+                {parte.itens.map((i) => (
+                  <li>{i}</li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+      <div class="vizinhos">
+        <a class="vizinho" href={rotaProjeto(proximo.data.slug)}>
+          <span class="vizinho-rotulo">{t.acoes.proximoProjeto}</span>
+          <span class="vizinho-titulo">{proximo.data.titulo}</span>
+        </a>
+      </div>
     </Secao>
   </article>
 
@@ -90,6 +140,5 @@ const jsonLd = {
     }
     acao={d.tipo === 'site' ? t.acoes.queroSite : t.acoes.queroSistema}
     href={linkWhatsapp(assunto)}
-    evento="whatsapp_chamada_final"
   />
 </Base>

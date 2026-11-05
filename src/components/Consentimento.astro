@@ -3,25 +3,20 @@ import { rotas } from '../i18n/rotas';
 import { privacidade as t } from '../i18n/paginas/privacidade';
 
 /**
- * Rastreamento e banner de cookies. Os IDs vêm do .env (PUBLIC_GA4_ID, PUBLIC_META_PIXEL_ID);
- * sem nenhum, não há tag, não há cookie e o banner não existe. Com algum, o banner aparece até
- * a pessoa escolher, e nada é carregado antes disso (rastreamento.ts, consentimento.ts).
+ * Rastreamento e banner de cookies. O ID do GA4 vem do .env (PUBLIC_GA4_ID); sem ele, não há
+ * tag, não há cookie e o banner não existe. Com ele, o banner aparece até a pessoa escolher, e
+ * nada é carregado antes disso (rastreamento.ts, consentimento.ts).
  * Persiste entre páginas (transition:persist), para a escolha não piscar na troca.
  */
 const ga4 = (import.meta.env.PUBLIC_GA4_ID as string | undefined) || '';
-const metaPixel = (import.meta.env.PUBLIC_META_PIXEL_ID as string | undefined) || '';
-const temAnalytics = Boolean(ga4);
-const temMarketing = Boolean(metaPixel);
-const temRastreamento = temAnalytics || temMarketing;
 ---
 
-{temRastreamento && (
+{ga4 && (
   <div transition:persist="consentimento">
-    <div data-rastreamento data-ga4={ga4} data-meta-pixel={metaPixel} hidden></div>
+    <div data-rastreamento data-ga4={ga4} hidden></div>
     <section class="consentimento" aria-label={t.banner.rotulo} data-consentimento hidden>
       <p class="consentimento-texto">
-        {t.banner.texto}
-        {temMarketing && ` ${t.banner.textoMarketing}`}{' '}
+        {t.banner.texto}{' '}
         <a class="link-fita" href={rotas.privacidade}>
           {t.banner.politica}
         </a>
@@ -33,18 +28,10 @@ const temRastreamento = temAnalytics || temMarketing;
           <input type="checkbox" checked disabled />
           {t.banner.essenciais}
         </label>
-        {temAnalytics && (
-          <label class="consentimento-opcao">
-            <input type="checkbox" name="analytics" />
-            {t.banner.estatisticas}
-          </label>
-        )}
-        {temMarketing && (
-          <label class="consentimento-opcao">
-            <input type="checkbox" name="marketing" />
-            {t.banner.anuncios}
-          </label>
-        )}
+        <label class="consentimento-opcao">
+          <input type="checkbox" name="analytics" />
+          {t.banner.estatisticas}
+        </label>
       </fieldset>
       <div class="consentimento-acoes">
         <button class="botao botao-contorno" type="button" data-acao="recusar">

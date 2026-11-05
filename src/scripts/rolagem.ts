@@ -2,7 +2,8 @@
  * Rolagem suave com o Lenis, movido pelo mesmo loop do motor (sem um segundo rAF).
  * Âncoras na própria página (como "Ver como funciona") viajam até a seção.
  * Com movimento reduzido, nada disso liga: a rolagem é a nativa e as âncoras pulam direto.
- * Copiado do portfólio do Igor; a viagem da âncora ficou mais curta (movimento moderado).
+ * Copiado do portfólio do Igor; a suavização ficou mais curta (lerp 0,22) para a rolagem não
+ * parecer sem fim (pedido do Igor, 05/11/2026).
  */
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
@@ -20,7 +21,7 @@ function iniciar() {
   if (mqReduzido.matches) return;
   lenis = new Lenis({
     autoRaf: false,
-    lerp: 0.12,
+    lerp: 0.22,
     wheelMultiplier: 1,
     stopInertiaOnNavigate: true,
   });

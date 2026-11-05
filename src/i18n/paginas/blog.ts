@@ -14,6 +14,7 @@ export const blog = {
     todos: 'Todos os posts',
     naHome: 'Do blog',
     verBlog: 'Ver o blog',
+    ler: 'Ler o texto',
   },
   chamadas: {
     sites: {
@@ -25,12 +26,6 @@ export const blog = {
       titulo: 'Cansou de copiar planilha?',
       texto: 'A Infinium cria um sistema só, do jeito que a sua empresa trabalha.',
       acao: 'Ver o serviço de sistemas',
-    },
-    raioX: {
-      titulo: 'Quer saber como está o site da sua empresa?',
-      texto:
-        'O Raio-X do site mostra o que está travando o Google, a velocidade e a segurança, com um relatório curto e uma conversa.',
-      acao: 'Conhecer o Raio-X do site',
     },
   },
 } as const;

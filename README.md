@@ -29,16 +29,13 @@ Na primeira vez, o Playwright precisa do Chromium: `npx playwright install chrom
 
 Copie `.env.example` para `.env` e preencha o que existir. Tudo é chave pública:
 
-| variável                    | para quê                                                           |
-| --------------------------- | ------------------------------------------------------------------ |
-| `PUBLIC_WEB3FORMS_KEY`      | envio do formulário de contato por e-mail (sem ela, só o WhatsApp) |
-| `PUBLIC_TURNSTILE_SITE_KEY` | proteção do formulário contra robôs                                |
-| `PUBLIC_GA4_ID`             | Google Analytics 4 (só carrega depois do consentimento)            |
-| `PUBLIC_META_PIXEL_ID`      | Meta Pixel (só carrega depois do consentimento)                    |
+| variável               | para quê                                                           |
+| ---------------------- | ------------------------------------------------------------------ |
+| `PUBLIC_WEB3FORMS_KEY` | envio do formulário de contato por e-mail (sem ela, só o WhatsApp) |
+| `PUBLIC_GA4_ID`        | Google Analytics 4 (só carrega depois do consentimento)            |
 
-Sem `PUBLIC_GA4_ID` e `PUBLIC_META_PIXEL_ID` não há cookie nem banner. O preço, o prazo e o link
-de pagamento do Raio-X do site ficam em `src/data/raioX.ts`; a data de publicação do site, que
-escalona as datas dos posts, em `src/data/blog.ts`.
+Sem `PUBLIC_GA4_ID` não há cookie nem banner. A data de publicação do
+site, que escalona as datas dos posts, fica em `src/data/blog.ts`.
 
 ## Publicar na Hostinger
 
@@ -67,7 +64,7 @@ escalona as datas dos posts, em `src/data/blog.ts`.
 ## Como adicionar um post
 
 Um arquivo em `src/content/blog/<slug>.md` com `titulo`, `descricao` (até 160 caracteres),
-`data` ou `diasAntes`, `tags`, `chamada` (`sites`, `sistemas` ou `raioX`), `capa` (um nome de
+`data` ou `diasAntes`, `tags`, `chamada` (`sites` ou `sistemas`), `capa` (um nome de
 `src/data/fotos.ts`) e o texto em Markdown. Sem travessão. `rascunho: true` deixa o post fora do
 build.
 
@@ -77,7 +74,9 @@ As fotos são do Unsplash, escolhidas uma a uma, e ficam em `src/assets/fotos/` 
 (alt, autor, página) em `src/data/fotos.ts`; o componente `Foto.astro` gera AVIF e WebP nos
 tamanhos usados. Créditos e o passo a passo para trocar uma foto em `.claude/docs/fotos.md`.
 Os ícones são desenhados à mão em `src/data/icones.ts` (traço de 24 x 24) e animados pela fita
-conforme a rolagem (`Icone.astro`); sem biblioteca de ícones.
+conforme a rolagem, com um brilho (`Icone.astro`); sem biblioteca de ícones. Todo tópico do site
+leva um (`Topicos.astro`, `Passos.astro`). Os dois logotipos (WhatsApp e Instagram) vêm do
+[Tabler Icons](https://tabler.io/icons), licença MIT.
 
 ## Commits
 

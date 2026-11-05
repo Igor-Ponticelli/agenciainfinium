@@ -1,41 +1,28 @@
 ---
-import simbolo from '../assets/marca/simbolo-primary.svg';
+import simbolo from '../assets/marca/simbolo-lilac.svg';
 import Base from '../layouts/Base.astro';
-import Linha from '../components/Linha.astro';
-import Secao from '../components/Secao.astro';
+import Cabeca from '../components/Cabeca.astro';
 import { rotas } from '../i18n/rotas';
 import { metasPaginas, textos as t } from '../i18n/textos';
 
 const meta = metasPaginas.naoEncontrada;
 ---
 
-<Base titulo={meta.titulo} descricao={meta.descricao} noindex>
-  <Secao cabeca folha="pagina-cabeca pagina-404" aria-labelledby="pagina-titulo">
-    <Linha>
-      <img
-        class="simbolo"
-        src={simbolo.src}
-        width={simbolo.width}
-        height={simbolo.height}
-        alt=""
-        aria-hidden="true"
-        decoding="async"
-      />
-    </Linha>
-    <Linha>
-      <h1 class="pagina-titulo" id="pagina-titulo">
-        {t.naoEncontrada.titulo}
-      </h1>
-    </Linha>
-    <Linha>
-      <p class="pagina-texto">{t.naoEncontrada.texto}</p>
-    </Linha>
-    <Linha>
-      <div class="pagina-acao acoes">
-        <a class="botao" href={rotas.inicio}>
-          {t.naoEncontrada.voltar}
-        </a>
-      </div>
-    </Linha>
-  </Secao>
+<Base titulo={meta.titulo} descricao={meta.descricao} noindex semChamada>
+  <Cabeca titulo={t.naoEncontrada.titulo} texto={t.naoEncontrada.texto}>
+    <img
+      class="simbolo-404"
+      src={simbolo.src}
+      width={simbolo.width}
+      height={simbolo.height}
+      alt=""
+      aria-hidden="true"
+      decoding="async"
+    />
+    <div class="acoes">
+      <a class="botao" href={rotas.inicio}>
+        {t.naoEncontrada.voltar}
+      </a>
+    </div>
+  </Cabeca>
 </Base>

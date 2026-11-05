@@ -1,0 +1,20 @@
+---
+import type { Pergunta } from '../i18n/paginas/inicio';
+
+/** Perguntas frequentes: uma pergunta por linha, em `details`, com o mais em dois traços. */
+interface Props {
+  itens: readonly Pergunta[];
+  class?: string;
+}
+
+const { itens, class: classe } = Astro.props;
+---
+
+<div class:list={['faq', classe]}>
+  {itens.map((i) => (
+    <details class="faq-item">
+      <summary>{i.pergunta}</summary>
+      <p>{i.resposta}</p>
+    </details>
+  ))}
+</div>

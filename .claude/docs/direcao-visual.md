@@ -148,3 +148,32 @@ Formato: data, o que foi decidido, por quê.
   posts, perguntas, a cena); a seleção da cena vira a fita por baixo da linha. E "sobre cada
   seção, queria que ocupasse pelo menos 85vh, acho mais elegante": toda banda tem
   `min-block-size: 85svh` com o conteúdo centrado na vertical.
+- **05/11/2026, a direção "o infinito".** O Igor viu o site pronto e não gostou. Entraram três
+  versões de estudo (a vitrine, o painel e o infinito; [versoes.md](versoes.md)) e ele escolheu
+  juntar: a base é a terceira (o violeta profundo da marca como fundo, a frase gigante com o
+  símbolo se desenhando, a faixa rolante, as etapas com a cabeça fixa, o "Vamos conversar?"
+  gigante e o rodapé no violeta mais profundo), com o carrossel de projetos em janelas e o
+  rodapé denso da primeira, e o par imagem e texto e as faixas claras para leitura da segunda.
+  Pedidos dele: menos texto ("todo o site tem que ser tipo uma imersão"), uma frase por tópico e
+  **ícones animados em todo tópico**, nada do efeito do mouse ("a animação antiga do mouse era
+  muito ruim, nem ter isso") e rolagem suave sem parecer sem fim. Consequências: o site passa a
+  ser **escuro por padrão**, com o claro entrando por faixa (`.claro` troca os tokens
+  semânticos); sobre o escuro, só White e Lilás, Primary nunca; saem a planilha, a grade, o
+  holofote e o laço da conexão em SVG; ficam a fita como traço dos ícones (desenhados pela
+  rolagem, com o brilho), a cortina da troca de página (encurtada para 220, 160, 40 e 240 ms,
+  porque as páginas ficaram mais pesadas) e o laço das etapas; o Lenis fica com `lerp` 0,22. O registro do sistema construído está em `DESIGN.md`.
+- **05/11/2026, mais tarde: a abertura com foto.** Vendo o site inteiro, o Igor não gostou da
+  abertura (a frase com o símbolo se desenhando ao fundo) e pediu versões em imagem. Foram
+  quatro: a vitrine (o site do cliente numa janela sob a frase), o laço (o símbolo gigante atrás
+  da frase), o fluxo (as ferramentas soltas virando um sistema) e a foto (a foto em luz violeta
+  cobrindo a tela, com a frase por cima). Ele escolheu a foto. Na mesma rodada: a faixa rolante
+  ficou com o mesmo espaço dos dois lados do símbolo; o brilho dos ícones saiu e entrou um
+  ladrilho; o antes e depois virou pares de cartões com ícone; e a página de projeto ganhou a
+  prévia na faixa do título e o case em cartões, sem texto corrido.
+- **05/11/2026, as superfícies entram na identidade.** O veio (grão e veios de Lilás no claro),
+  o cartão aurora e o ícone vivo foram gravados no pacote de identidade: tabela em
+  [identidade/MARCA.md](identidade/MARCA.md), tokens `--infinium-veio-veins` e
+  `--infinium-aurora-lights` em `tokens/`, e a seção "Fundos" do `manual/brand-guide.html`,
+  regenerado pelo `build.py`. Regra de onde cada uma entra: veio em toda faixa clara (só o
+  grão na leitura longa); aurora só em cartões, nunca em faixa, rodapé ou atrás de foto.
+

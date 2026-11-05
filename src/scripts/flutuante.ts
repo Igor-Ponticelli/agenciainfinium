@@ -1,5 +1,5 @@
 /**
- * Botão flutuante do WhatsApp (celular e tablet): enquanto a abertura escura da home está na
+ * Botão flutuante do WhatsApp (celular e tablet): enquanto a abertura da home está na
  * tela, o cabeçalho já tem a ação e o flutuante espera, para não tapar o título da segunda
  * tela. Marca `data-topo-visivel` no <html>; o CSS esconde o botão.
  */
@@ -9,7 +9,7 @@ let observador: IntersectionObserver | null = null;
 function observar() {
   observador?.disconnect();
   raiz.removeAttribute('data-topo-visivel');
-  const topo = document.querySelector('.topo-escuro');
+  const topo = document.querySelector('.abertura');
   if (!topo || !('IntersectionObserver' in window)) return;
   observador = new IntersectionObserver(
     (entradas) => {

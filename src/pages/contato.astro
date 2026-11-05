@@ -1,69 +1,64 @@
 ---
 import Base from '../layouts/Base.astro';
-import Cartao from '../components/Cartao.astro';
+import Cabeca from '../components/Cabeca.astro';
 import Formulario from '../components/Formulario.astro';
-import Linha from '../components/Linha.astro';
+import Icone from '../components/Icone.astro';
 import Secao from '../components/Secao.astro';
 import { email, instagram, linkWhatsapp } from '../data/empresa';
 import { contato as t } from '../i18n/paginas/contato';
 import { metasPaginas, textos } from '../i18n/textos';
 
-/** Contato: os canais em três cartões com ícone e o formulário numa célula mesclada. */
+/** Contato: os canais em tópicos com ícone e o formulário ao lado, sobre o claro. */
 const meta = metasPaginas.contato;
 ---
 
-<Base titulo={meta.titulo} descricao={meta.descricao}>
-  <Secao cabeca folha="pagina-cabeca" aria-labelledby="pagina-titulo">
-    <Linha>
-      <h1 class="pagina-titulo" id="pagina-titulo">
-        {t.titulo}
-      </h1>
-    </Linha>
-    <Linha>
-      <p class="pagina-texto">{t.texto}</p>
-    </Linha>
-  </Secao>
+<Base titulo={meta.titulo} descricao={meta.descricao} semChamada>
+  <Cabeca titulo={t.titulo} texto={t.texto} />
 
-  <Secao tom="branco" aria-label="Canais de contato">
-    <Linha class="cartoes" data-cartoes={3}>
-      <Cartao icone="balao">
-        <h3 class="cartao-titulo">
-          <a
-            class="link-fita"
-            href={linkWhatsapp()}
-            target="_blank"
-            rel="noopener"
-            data-evento="whatsapp_contato"
-          >
-            {t.canais.whatsapp.rotulo}
-            <span class="visualmente-oculto">{textos.linkExterno}</span>
-          </a>
-        </h3>
-        <p class="cartao-texto">{t.canais.whatsapp.texto}</p>
-      </Cartao>
-      <Cartao icone="envelope">
-        <h3 class="cartao-titulo cartao-titulo-longo">
-          <a class="link-fita" href={`mailto:${email}`} data-evento="email_contato">
-            {email}
-          </a>
-        </h3>
-        <p class="cartao-texto">{t.canais.email.texto}</p>
-      </Cartao>
-      <Cartao icone="instagram">
-        <h3 class="cartao-titulo">
-          <a class="link-fita" href={instagram.url} target="_blank" rel="noopener">
-            {instagram.usuario}
-            <span class="visualmente-oculto">{textos.linkExterno}</span>
-          </a>
-        </h3>
-        <p class="cartao-texto">{t.canais.instagram.texto}</p>
-      </Cartao>
-    </Linha>
-  </Secao>
-
-  <Secao aria-labelledby="formulario-titulo">
-    <Linha class="servicos-linha">
-      <Formulario />
-    </Linha>
+  <Secao tom="claro" miolo="contato-grade" aria-labelledby="formulario-titulo">
+    <ul class="topicos contato-canais" aria-label="Canais de contato">
+      <li class="topico">
+        <Icone nome="whatsapp" tamanho={30} />
+        <div class="topico-texto">
+          <h3>
+            <a
+              class="link-fita"
+              href={linkWhatsapp()}
+              target="_blank"
+              rel="noopener"
+              data-evento="whatsapp_contato"
+            >
+              {t.canais.whatsapp.rotulo}
+              <span class="visualmente-oculto">{textos.linkExterno}</span>
+            </a>
+          </h3>
+          <p>{t.canais.whatsapp.texto}</p>
+        </div>
+      </li>
+      <li class="topico">
+        <Icone nome="envelope" tamanho={30} />
+        <div class="topico-texto">
+          <h3>
+            <a class="link-fita" href={`mailto:${email}`} data-evento="email_contato">
+              {email}
+            </a>
+          </h3>
+          <p>{t.canais.email.texto}</p>
+        </div>
+      </li>
+      <li class="topico">
+        <Icone nome="instagram" tamanho={30} />
+        <div class="topico-texto">
+          <h3>
+            <a class="link-fita" href={instagram.url} target="_blank" rel="noopener">
+              {instagram.usuario}
+              <span class="visualmente-oculto">{textos.linkExterno}</span>
+            </a>
+          </h3>
+          <p>{t.canais.instagram.texto}</p>
+        </div>
+      </li>
+    </ul>
+    <Formulario />
   </Secao>
 </Base>

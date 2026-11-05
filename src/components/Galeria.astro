@@ -1,0 +1,81 @@
+---
+import Vitrine from './Vitrine.astro';
+import type { Projeto } from '../data/projetos';
+import { rotaProjeto } from '../i18n/rotas';
+import { textos as t } from '../i18n/textos';
+
+/**
+ * A galeria de projetos: as prévias em janelas de navegador, numa fila com rolagem horizontal
+ * e encaixe (scroll-snap). Com JS, os botões de anterior e próximo rolam uma janela por vez
+ * (galeria.ts); sem JS, o dedo e a roda do mouse já rolam.
+ */
+interface Props {
+  projetos: readonly Projeto[];
+  anterior: string;
+  proximo: string;
+}
+
+const { projetos, anterior, proximo } = Astro.props;
+---
+
+<div class="galeria" data-galeria>
+  <ul class="galeria-trilho" data-galeria-trilho>
+    {projetos.map((p) => (
+      <li class="galeria-item">
+        <Vitrine
+          projeto={p}
+          moldura="navegador"
+          proporcao="16 / 10"
+          href={rotaProjeto(p.data.slug)}
+        />
+        <div class="galeria-ficha">
+          <h3>
+            <a href={rotaProjeto(p.data.slug)}>{p.data.titulo}</a>
+          </h3>
+          <p>
+            <span class="galeria-tipo">
+              {t.projeto.tipo[p.data.tipo]} · {p.data.ano}
+            </span>
+            {p.data.resumo}
+          </p>
+        </div>
+      </li>
+    ))}
+  </ul>
+  <div class="galeria-botoes">
+    <button type="button" aria-label={anterior} data-galeria-anterior>
+      <svg
+        viewBox="0 0 24 24"
+        width="20"
+        height="20"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="m15 6-6 6 6 6" />
+      </svg>
+    </button>
+    <button type="button" aria-label={proximo} data-galeria-proximo>
+      <svg
+        viewBox="0 0 24 24"
+        width="20"
+        height="20"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="m9 6 6 6-6 6" />
+      </svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  import '../scripts/galeria';
+</script>

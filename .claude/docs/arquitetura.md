@@ -49,7 +49,7 @@ URLs previstas (o mapa completo está em [conteudo.md](conteudo.md)):
 | `/contato/` | WhatsApp, e-mail, Instagram e formulário |
 | `/raio-x-do-site/` | landing page do produto de entrada, sem menu, para tráfego pago |
 | `/acessos/` | página de links da bio do Instagram (`noindex`) |
-| `/privacidade/` | política de privacidade (obrigatória: GA4, Pixel e formulário) |
+| `/privacidade/` | política de privacidade (obrigatória: GA4 e formulário) |
 | `/404/` | não encontrada |
 
 Metadados por página:
@@ -88,10 +88,10 @@ Regras que já valem, independentemente do material:
   orçamento com dois envios: "Enviar pelo WhatsApp" (monta a mensagem com os campos e abre o
   `wa.me`) e "Enviar por e-mail" (vai pelo serviço externo e cai no Gmail). Regras de segurança
   na seção 7.
-- **Analytics**: Google Analytics 4 e Meta Pixel entram, configurados no fim (TODO 6). O código
-  nasce preparado: um módulo `src/scripts/metricas.ts` com uma função única de evento, atributos
-  `data-evento` nos CTAs (clique no WhatsApp, envio do formulário, clique de CTA) e nada carregado
-  antes do consentimento. Banner no padrão dos sites de clientes (o monorepo tem o componente) e
+- **Analytics**: Google Analytics 4 entra, configurado no fim (TODO 6). Sem Meta Pixel (Igor,
+  05/11/2026). O código nasce preparado: um módulo `src/scripts/metricas.ts` com uma função única
+  de evento, atributos `data-evento` nos CTAs (clique no WhatsApp, envio do formulário, clique de
+  CTA) e nada carregado antes do consentimento. Banner no padrão dos sites de clientes (o monorepo tem o componente) e
   página `/privacidade/`. Sem termos de uso: site institucional não precisa (Igor, 30/10/2026).
 - **Nome**: "Infinium" no logo (sempre o arquivo, nunca redigitado) e "Agência Infinium" nos
   metadados e no rodapé, com o CNPJ no rodapé se o Igor quiser.
@@ -142,21 +142,21 @@ Num site estático a superfície é pequena, e o que existe fica assim:
 - **Transporte e cabeçalhos** (`public/.htaccess`): HTTPS forçado, `www` redirecionado para o
   apex, HSTS, `X-Content-Type-Options: nosniff`, `Referrer-Policy:
   strict-origin-when-cross-origin`, `Permissions-Policy` restritiva e `X-Frame-Options: DENY`
-  (as prévias não são iframes). `Content-Security-Policy` entra no TODO 6, depois de GA4, Pixel,
-  Turnstile e Web3Forms estarem definidos, porque a lista de origens depende deles.
+  (as prévias não são iframes). `Content-Security-Policy` entra no TODO 6, com as origens do GA4
+  e do Web3Forms.
 - **Formulário**: serviço externo **Web3Forms** (entrega por e-mail no Gmail, HTML `POST`
-  funciona sem JS). Proteções: **Cloudflare Turnstile** com a verificação feita no servidor do
-  Web3Forms (a chave secreta fica lá, não no repositório), campo **honeypot**, limite de
-  tamanho nos campos, limite de envios por origem do próprio serviço e validação nativa do
-  HTML. A chave pública do Web3Forms é pública por desenho; se houver abuso, ela é trocada no
+  funciona sem JS). Proteções: o filtro de spam que o Web3Forms aplica em todo envio, campo
+  **honeypot**, limite de tamanho nos campos, limite de envios por origem do próprio serviço e
+  validação nativa do HTML. Sem Turnstile: no Web3Forms ele só é conferido no plano pago (Igor,
+  05/11/2026). A chave pública do Web3Forms é pública por desenho; se houver abuso, ela é trocada no
   painel. Nada de dado pessoal fica no site: o envio vai direto para o e-mail. Se o Igor
   preferir outro provedor (Formspree), a troca é só do `action`.
-- **Segredos**: nenhum no repositório. Chaves públicas (Web3Forms, Turnstile site key, GA4,
-  Pixel) ficam em `.env` lido no build (`PUBLIC_*`), com `.env.example` versionado.
+- **Segredos**: nenhum no repositório. Chaves públicas (Web3Forms e GA4) ficam em `.env` lido
+  no build (`PUBLIC_*`), com `.env.example` versionado.
 - **Dependências**: versões fixadas, `npm audit` no checklist do TODO 6, nenhum script de
-  terceiros além dos de analytics (após consentimento) e do Turnstile (só na página de contato).
+  terceiros além do GA4 (após consentimento).
 - **Conteúdo**: sem `set:html` com dado externo; o único `set:html` é o JSON-LD gerado no build.
-- **Privacidade**: página `/privacidade/` cobrindo GA4, Pixel, formulário e cookies, conforme a
+- **Privacidade**: página `/privacidade/` cobrindo GA4, formulário e cookies, conforme a
   LGPD. Sem termos de uso.
 
 ## 8. Blog e landing page

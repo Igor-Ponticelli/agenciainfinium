@@ -1,0 +1,37 @@
+---
+import Icone from './Icone.astro';
+import type { Topico } from '../i18n/paginas/inicio';
+
+/**
+ * Tópicos com ícone: a forma de dizer uma coisa por item, sem parágrafo. Cada tópico é um cartão
+ * escuro com luzes se movendo por trás (a "aurora", escolhida pelo Igor em 05/11/2026), o
+ * número no canto, o ícone vivo, um título e, se houver, uma linha. `compactos` é a versão em
+ * linha (ícone e texto lado a lado), para listas curtas como "todo site inclui".
+ */
+interface Props {
+  itens: readonly Topico[];
+  compactos?: boolean;
+  as?: 'ul' | 'ol';
+  class?: string;
+}
+
+const { itens, compactos = false, as: Tag = 'ul', class: classe } = Astro.props;
+const indice = (i: number) => String(i + 1).padStart(2, '0');
+---
+
+<Tag class:list={['topicos', { 'topicos-compactos': compactos }, classe]}>
+  {itens.map((i, idx) => (
+    <li class="topico" style={`--i: ${idx}`}>
+      {!compactos && (
+        <span class="topico-num" aria-hidden="true">
+          {indice(idx)}
+        </span>
+      )}
+      <Icone nome={i.icone} tamanho={compactos ? 24 : 30} />
+      <div class="topico-texto">
+        <h3>{i.titulo}</h3>
+        {i.texto && <p>{i.texto}</p>}
+      </div>
+    </li>
+  ))}
+</Tag>

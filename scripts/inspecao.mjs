@@ -1,4 +1,4 @@
-// Inspeção em lote do build (TODO 4): capturas em 1440 e 390, erros de console, foco por teclado,
+// Inspeção em lote do build: capturas em 1440 e 390, erros de console, foco por teclado,
 // sem JS, movimento reduzido e o tempo da troca de página. Uso: node inspecao.mjs <pasta-saida>
 import { chromium } from 'playwright';
 import { mkdirSync } from 'node:fs';
@@ -20,7 +20,6 @@ const paginas = [
   '/projetos/brisa-cafe/',
   '/blog/',
   '/blog/por-que-seu-site-nao-aparece-no-google/',
-  '/raio-x-do-site/',
   '/contato/',
   '/acessos/',
   '/nao-existe/',
@@ -61,21 +60,7 @@ for (const [nome, viewport] of Object.entries(viewports)) {
     if (rota === '/' || rota === '/sites/' || rota === '/sistemas/') {
       await pagina.screenshot({ path: arquivo.replace('.png', '-primeira-tela.png') });
     }
-    // O holofote e a célula ativa sob o ponteiro (só com ponteiro fino), na abertura e na cena
-    if (nome === 'desktop' && rota === '/') {
-      await pagina.mouse.move(420, 380);
-      await pagina.mouse.move(460, 400);
-      await pagina.waitForTimeout(500);
-      await pagina.screenshot({ path: arquivo.replace('.png', '-holofote.png') });
-      await pagina.evaluate(() => document.querySelector('.cena')?.scrollIntoView());
-      await pagina.waitForTimeout(300);
-      await pagina.mouse.move(300, 420);
-      await pagina.mouse.move(340, 440);
-      await pagina.waitForTimeout(500);
-      await pagina.screenshot({ path: arquivo.replace('.png', '-holofote-cena.png') });
-      await pagina.mouse.move(0, 0);
-    }
-    // Os ícones no meio do desenho: a lista "todo site inclui" entrando na tela
+    // Os ícones no meio do desenho: os tópicos de "todo site inclui" entrando na tela
     if (nome === 'desktop' && rota === '/sites/') {
       await pagina.evaluate(() => {
         const alvo = document.querySelector('#inclui-titulo');

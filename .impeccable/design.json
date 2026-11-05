@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-31T00:00:00-03:00",
+  "generatedAt": "2026-11-05T00:00:00-03:00",
   "title": "Design System: Agência Infinium",
   "extensions": {
     "colorMeta": {
@@ -172,7 +172,7 @@
     }
   ],
   "narrative": {
-    "northStar": "A planilha que vira sistema",
+    "northStar": "O infinito",
     "overview": "O site nasce como a planilha que o cliente usa hoje: doze colunas como layout, hoje invisíveis (o Igor tirou as letras, os números e, por fim, as próprias linhas em 31/10/2026; o filete fica só nas listas). Cada seção é uma banda de largura inteira com fundo próprio, de pelo menos 85svh, com o conteúdo centrado. Conforme a página desce, as células se mesclam em blocos sólidos (o sistema) e, na chamada final, a grade some. O único material além da grade é a fita, um traço de 2 px derivado do símbolo da marca (a fita de Möbius): é a régua do cabeçalho, o sublinhado de links e frases-chave, o cursor de seleção da planilha, o laço que percorre as etapas, a moldura das prévias e a cortina da troca de página.\n\nA superfície é plana e clara (Body), com o escuro entrando por seção no degradê da marca. Nada tem sombra, vidro ou gradiente em texto; os únicos desenhos fora de texto e fita são os traços em CSS do menu e do FAQ e os ícones de traço, desenhados pela fita conforme a rolagem, com o único brilho do site. Fotos do Unsplash entram como células mescladas. A hierarquia vem só de escala e peso da Roboto. As prévias dos sites de clientes ficam fora da grade porque são o que a Infinium entrega, não o que ela tira; cada uma carrega a identidade do próprio cliente e não faz parte deste sistema.\n\nO site recusa o padrão de agência: abertura centralizada sobre degradê e cards flutuantes com sombra; cartões existem como células da mesma linha, separadas por 1 px da grade.",
     "keyCharacteristics": [
       "Doze colunas (6 no tablet, 4 no celular) como layout invisível: nenhuma linha vertical, filete só nas listas",

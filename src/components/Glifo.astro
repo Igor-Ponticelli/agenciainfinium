@@ -1,0 +1,29 @@
+---
+import { icones, type NomeIcone } from '../data/icones';
+
+/**
+ * Um glifo: o mesmo desenho dos ícones do site, pequeno e parado, ao lado do texto de um link ou
+ * de um botão (WhatsApp, e-mail, Instagram, copyright). Decorativo: o texto diz o que é.
+ */
+interface Props {
+  nome: NomeIcone;
+  tamanho?: number;
+  class?: string;
+}
+
+const { nome, tamanho = 18, class: classe } = Astro.props;
+---
+
+<svg
+  class:list={['glifo', classe]}
+  viewBox="0 0 24 24"
+  width={tamanho}
+  height={tamanho}
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  set:html={icones[nome]}
+/>

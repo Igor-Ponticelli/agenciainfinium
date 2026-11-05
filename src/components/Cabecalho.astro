@@ -1,114 +1,107 @@
 ---
 import logoPrimary from '../assets/marca/logo-horizontal-primary.svg';
 import logoWhite from '../assets/marca/logo-horizontal-white.svg';
+import Glifo from './Glifo.astro';
 import { linkWhatsapp } from '../data/empresa';
 import { normalizar, rotas } from '../i18n/rotas';
 import { textos as t } from '../i18n/textos';
 
 /**
- * Cabeçalho: logo horizontal (branco sobre o degradê, Primary sobre claro, sempre pelo arquivo
- * SVG), menu com o grupo Serviços (Sites, Sistemas), Projetos, Blog e Contato, o botão do
- * WhatsApp e a régua: a fita que sai do logo e corre até a borda. É dela que a troca de página
- * parte. No celular, botão de dois traços e painel de tela cheia (menu.ts).
+ * Cabeçalho: fixo, quase transparente sobre o violeta profundo, logo branco pelo arquivo SVG,
+ * menu plano (Sites, Sistemas, Projetos, Blog, Contato) e a pílula do WhatsApp. No celular, botão
+ * de dois traços e painel de tela cheia (menu.ts). Nas landing pages, só o logo (`soLogo`).
  */
+interface Props {
+  soLogo?: boolean;
+}
+
+const { soLogo = false } = Astro.props;
 const atual = normalizar(Astro.url.pathname);
 const ativo = (rota: string) => atual === rota || (rota !== '/' && atual.startsWith(rota));
 const altura = 28;
-const largura = Math.round((altura * logoPrimary.width) / logoPrimary.height);
-const emServico = ativo(rotas.servicos) || ativo(rotas.sites) || ativo(rotas.sistemas);
+const largura = Math.round((altura * logoWhite.width) / logoWhite.height);
+const itens = [
+  { rotulo: t.menu.sites, href: rotas.sites },
+  { rotulo: t.menu.sistemas, href: rotas.sistemas },
+  { rotulo: t.menu.projetos, href: rotas.projetos },
+  { rotulo: t.menu.blog, href: rotas.blog },
+  { rotulo: t.menu.contato, href: rotas.contato },
+];
 ---
 
 <header class="cabecalho">
   <div class="cabecalho-faixa">
-    <!-- O nome acessível fica no link: as duas imagens (clara e escura) alternam por CSS -->
-    <a class="logo" href={rotas.inicio} aria-label={t.logo} data-fita-logo>
-      <img
-        class="logo-claro"
-        src={logoPrimary.src}
-        width={largura}
-        height={altura}
-        alt=""
-        aria-hidden="true"
-        decoding="async"
-      />
-      <img
-        class="logo-escuro"
-        src={logoWhite.src}
-        width={largura}
-        height={altura}
-        alt=""
-        aria-hidden="true"
-        decoding="async"
-      />
-    </a>
-    <!-- Só aparece no celular com JS; sem JS, o painel fica sempre aberto -->
-    <button
-      class="menu-botao"
-      type="button"
-      aria-expanded="false"
-      aria-controls="menu-painel"
-      aria-label={t.menu.abrir}
-      data-menu-botao
-      data-rotulo-abrir={t.menu.abrir}
-      data-rotulo-fechar={t.menu.fechar}
-    >
-      <span class="menu-botao-linhas" aria-hidden="true">
-        <span></span>
-        <span></span>
+    {soLogo ? (
+      <span class="logo">
+        <img src={logoWhite.src} width={largura} height={altura} alt={t.logo} decoding="async" />
       </span>
-    </button>
-    <div class="menu-painel" id="menu-painel" data-menu-painel>
-      <nav class="menu" aria-label={t.menu.rotulo}>
-        <ul>
-          <li class="menu-grupo">
-            <a href={rotas.servicos} aria-current={ativo(rotas.servicos) ? 'page' : undefined}>
-              {t.menu.servicos}
-            </a>
-            <ul class="submenu" data-aberto={emServico ? '' : undefined}>
-              <li>
-                <a href={rotas.sites} aria-current={ativo(rotas.sites) ? 'page' : undefined}>
-                  {t.menu.sites}
-                </a>
-              </li>
-              <li>
-                <a href={rotas.sistemas} aria-current={ativo(rotas.sistemas) ? 'page' : undefined}>
-                  {t.menu.sistemas}
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <a href={rotas.projetos} aria-current={ativo(rotas.projetos) ? 'page' : undefined}>
-              {t.menu.projetos}
-            </a>
-          </li>
-          <li>
-            <a href={rotas.blog} aria-current={ativo(rotas.blog) ? 'page' : undefined}>
-              {t.menu.blog}
-            </a>
-          </li>
-          <li>
-            <a href={rotas.contato} aria-current={ativo(rotas.contato) ? 'page' : undefined}>
-              {t.menu.contato}
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <a
-        class="botao botao-whatsapp"
-        href={linkWhatsapp()}
-        target="_blank"
-        rel="noopener"
-        data-evento="whatsapp_menu"
-      >
-        {t.acoes.falarWhatsapp}
-        <span class="visualmente-oculto">{t.linkExterno}</span>
+    ) : (
+      <a class="logo" href={rotas.inicio} aria-label={t.logo}>
+        <img
+          src={logoWhite.src}
+          width={largura}
+          height={altura}
+          alt=""
+          aria-hidden="true"
+          decoding="async"
+        />
+        <img
+          class="logo-claro"
+          src={logoPrimary.src}
+          width={largura}
+          height={altura}
+          alt=""
+          aria-hidden="true"
+          decoding="async"
+        />
       </a>
-    </div>
+    )}
+    {!soLogo && (
+      <>
+        <button
+          class="menu-botao"
+          type="button"
+          aria-expanded="false"
+          aria-controls="menu-painel"
+          aria-label={t.menu.abrir}
+          data-menu-botao
+          data-rotulo-abrir={t.menu.abrir}
+          data-rotulo-fechar={t.menu.fechar}
+        >
+          <span class="menu-botao-linhas" aria-hidden="true">
+            <span></span>
+            <span></span>
+          </span>
+        </button>
+        <div class="menu-painel" id="menu-painel" data-menu-painel>
+          <nav class="menu" aria-label={t.menu.rotulo}>
+            <ul>
+              {itens.map((i) => (
+                <li>
+                  <a href={i.href} aria-current={ativo(i.href) ? 'page' : undefined}>
+                    {i.rotulo}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <a
+            class="botao botao-cabecalho"
+            href={linkWhatsapp()}
+            target="_blank"
+            rel="noopener"
+            data-evento="whatsapp_menu"
+          >
+            <Glifo nome="whatsapp" tamanho={16} />
+            {t.acoes.falarWhatsapp}
+            <span class="visualmente-oculto">{t.linkExterno}</span>
+          </a>
+        </div>
+      </>
+    )}
   </div>
-  <div class="regua" data-fita-regua aria-hidden="true"></div>
 </header>
 
-<script>
+{!soLogo && <script>
   import '../scripts/menu';
-</script>
+</script>}

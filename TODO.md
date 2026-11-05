@@ -492,15 +492,15 @@ foto sem aval.
 no domínio, na Hostinger.
 
 **Passos:**
-1. Ligar GA4 e Meta Pixel (decididos em 30/10/2026): o Igor cria as contas e passa os IDs para o
-   `.env`; carregar só depois do consentimento, banner no padrão dos sites de clientes, eventos
-   de `metricas.ts` ligados aos dois. Escrever `/privacidade/` cobrindo GA4, Pixel, formulário e
-   cookies (LGPD). Sem termos de uso.
-1a. Formulário em produção: o Igor cria a conta do Web3Forms (destino `agenciainfinium@gmail.com`)
-   e o site do Turnstile; chaves no `.env`; testar envio por e-mail e por WhatsApp, o honeypot e
-   um envio sem JS.
+1. Ligar o GA4 (decidido em 30/10/2026; o Meta Pixel saiu em 05/11/2026): o Igor cria a conta e
+   passa o ID para o `.env`; carregar só depois do consentimento, banner no padrão dos sites de
+   clientes, eventos de `metricas.ts` ligados a ele. Escrever `/privacidade/` cobrindo GA4,
+   formulário e cookies (LGPD). Sem termos de uso.
+1a. Formulário em produção: o Igor cria a conta do Web3Forms (destino `agenciainfinium@gmail.com`);
+   chave no `.env`; testar envio por e-mail e por WhatsApp, o honeypot e um envio sem JS. Sem
+   Turnstile (05/11/2026): no Web3Forms ele só é conferido no plano pago.
 1b. Segurança (arquitetura.md, seção 7): `Content-Security-Policy` no `.htaccess` com as origens
-   de GA4, Pixel, Turnstile e Web3Forms; conferir HSTS e os demais cabeçalhos no domínio;
+   do GA4 e do Web3Forms; conferir HSTS e os demais cabeçalhos no domínio;
    `npm audit` limpo; nenhum segredo no repositório.
 2. `fixing-metadata` em todas as páginas: title, description, canonical, Open Graph (imagem
    própria por página de projeto), favicon, manifest e JSON-LD (`Organization`, `WebSite`,
@@ -530,36 +530,43 @@ no domínio, na Hostinger.
 - [x] `DESIGN.md` e `.impeccable/design.json` existem (escritos pelo `impeccable-documenter`).
 - [ ] O site está no ar em `infinium.app.br`, com o sitemap enviado ao Search Console.
       `[PENDENTE: o Igor sobe o infinium-site.zip na Hostinger e verifica o domínio no Search Console]`
-- [ ] Formulário, consentimento, GA4 e Pixel testados em produção; cabeçalhos de segurança e CSP
+- [ ] Formulário, consentimento e GA4 testados em produção; cabeçalhos de segurança e CSP
       conferidos no domínio. `[PENDENTE: depende das contas, das chaves e da publicação]`
 
 **Commits sugeridos:** `feat(seo): completa metadados e json-ld`, `fix: aplica correções da
 revisão final`, `test: adiciona testes de fumaça`, `docs: adiciona DESIGN.md`,
 `docs: adiciona README`.
 
-**Precisa do Igor:** contas do GA4, Pixel, Web3Forms e Turnstile; acesso à Hostinger, DNS e
+**Precisa do Igor:** contas do GA4 e do Web3Forms; acesso à Hostinger, DNS e
 Search Console.
 
 **Notas:**
 - **Consentimento e rastreamento** (`Consentimento.astro`, `rastreamento.ts`,
   `consentimento.ts`), no padrão dos sites de clientes (`packages/core` do monorepo): Consent
-  Mode v2 com tudo negado por padrão, GA4 e Pixel baixados só depois do aceite, banner com
-  aceitar, recusar e personalizar, escolha no `localStorage`, link "Preferências de cookies"
-  no rodapé, e os eventos de `metricas.ts` entregues às tags aceitas. Tudo lê os IDs de
-  `PUBLIC_GA4_ID` e `PUBLIC_META_PIXEL_ID` por `data-*`, sem script inline. Sem IDs, não há
-  cookie nem banner. `[PENDENTE: o Igor cria as contas e preenche o .env]`
-- **Formulário:** código pronto desde o TODO 4; falta `PUBLIC_WEB3FORMS_KEY` e
-  `PUBLIC_TURNSTILE_SITE_KEY`. Testado o envio pelo WhatsApp (teste de fumaça) e o `[PENDENTE]`
-  visível sem a chave. `[PENDENTE: contas do Web3Forms e do Turnstile e o teste do envio por
-  e-mail em produção]`
+  Mode v2 com tudo negado por padrão, GA4 baixado só depois do aceite, banner com aceitar,
+  recusar e personalizar, escolha no `localStorage`, link "Preferências de cookies" no rodapé,
+  e os eventos de `metricas.ts` entregues ao GA4. O ID vem de `PUBLIC_GA4_ID` por `data-*`, sem
+  script inline. Sem ID, não há cookie nem banner. O ID está no `.env` do Igor (05/11/2026). A
+  primeira página é contada pelo `config` e as trocas pelo ClientRouter pela medição otimizada
+  do GA4 ("mudanças de página com base em eventos do histórico", ligada por padrão no stream);
+  o `page_view` manual saiu porque cada troca contava duas vezes. Conferido com o Playwright:
+  uma visualização na entrada, em cada troca, no voltar e ao recarregar. Se essa opção for
+  desligada no GA4, as trocas deixam de ser contadas. O CSP libera `www.google.com`, para onde
+  o GA4 espelha os envios (guia de CSP do Google). O Meta Pixel saiu em 05/11/2026, com o
+  código, a opção do banner e as origens do CSP.
+  `[PENDENTE: conferir a visita no Tempo real do GA4 depois de publicar]`
+- **Formulário:** código pronto desde o TODO 4; a chave do Web3Forms está no `.env` do Igor
+  (05/11/2026). O Turnstile saiu na mesma data: no Web3Forms ele só é conferido no plano pago, e
+  o widget carregaria sem proteger nada. Ficam o filtro de spam do Web3Forms, o honeypot e os
+  limites de tamanho. `[PENDENTE: o teste do envio por e-mail em produção]`
 - **Política de privacidade** escrita (`src/i18n/paginas/privacidade.ts`): quem trata, o que
-  o site coleta e por quê (formulário via Web3Forms, WhatsApp, GA4, Pixel, registros do
+  o site coleta e por quê (formulário via Web3Forms, WhatsApp, GA4, registros do
   servidor), cookies só depois do aceite, compartilhamento, direitos, segurança. Sem termos de
   uso. Revisão jurídica é do Igor.
 - **Segurança:** CSP no `.htaccess` com `script-src 'self'` mais o hash do único script inline
-  (a classe `js`, numa linha só, com `prettier-ignore`) e as origens do GA4, Pixel, Turnstile e
-  Web3Forms; `assetsInlineLimit: 0` para o Astro não inlinar scripts (o hash mudaria a cada
-  build); `style-src 'unsafe-inline'` por causa do CSS inlinado pelo Astro; HSTS, nosniff,
+  (a classe `js`, numa linha só, com `prettier-ignore`) e as origens do GA4 e do Web3Forms;
+  `assetsInlineLimit: 0` para o Astro não inlinar scripts (o hash mudaria a cada build);
+  `style-src 'unsafe-inline'` por causa do CSS inlinado pelo Astro; HSTS, nosniff,
   frame DENY, Referrer-Policy, Permissions-Policy, `frame-ancestors 'none'`, deflate e cache.
   `npm audit` limpo. O `scripts/servir.mjs` serve o `dist/` com esses cabeçalhos para os
   testes e o Lighthouse. Conferir no domínio depois de publicar (securityheaders.com).
@@ -705,8 +712,8 @@ para receber tráfego pago e vender a análise de SEO, velocidade, segurança e 
       Igor; até lá a página mostra o aviso no preço e o botão leva ao WhatsApp]`
 - [ ] Um teste de ponta a ponta: clique, pagamento em modo de teste, mensagem de confirmação.
       `[PENDENTE: depende do link de pagamento]`
-- [ ] Eventos chegando no GA4 e no Pixel (depois do TODO 6). Os eventos já são registrados em
-      `metricas.ts`; chegar ao GA4 depende dos IDs.
+- [ ] Eventos chegando no GA4 (depois do TODO 6). Os eventos já são registrados em
+      `metricas.ts`; chegar ao GA4 depende da publicação.
 
 **Commits sugeridos:** `feat(raio-x): adiciona a landing page do raio-x do site`, `content(raio-x):
 escreve a oferta`, `docs: adiciona o checklist do raio-x`.
@@ -802,3 +809,65 @@ do brilho dos ícones, efeito no toque, linha vertical de grade.
   no holofote, sempre na cor da fita.
 - Dist passou de 6,2 MB para cerca de 15 MB por causa das variantes das fotos; cada página carrega
   só os tamanhos que usa.
+
+---
+
+## TODO 10: Escolher a direção nova e levar ao site inteiro
+
+**Status:** feito em 05/11/2026
+**Depende de:** as três versões de estudo (05/11/2026), apagadas neste item
+
+**Objetivo:** o Igor viu o site pronto e não gostou. Em 05/11/2026 entraram três versões de
+estudo da home, cada uma com a própria pele sobre a mesma identidade, documentadas em
+[versoes.md](.claude/docs/versoes.md): a vitrine (direção Apple), o painel (direção Microsoft) e
+o infinito (direção de agência). Este item começa quando o Igor escolher uma delas, ou uma
+mistura, e termina com o site inteiro na direção nova.
+
+**Leia antes:** [versoes.md](.claude/docs/versoes.md), [direcao-visual.md](.claude/docs/direcao-visual.md),
+[conteudo.md](.claude/docs/conteudo.md), [processo.md](.claude/docs/processo.md) e a página
+escolhida (`src/pages/siteN.astro`, `src/styles/versoes/siteN.css`).
+
+**Passos:**
+1. Gravar a escolha em direcao-visual.md, seção 5 (data, versão ou mistura, por quê), e o que
+   ela muda no que estava fixado (material, movimento, bandas, cartões, fotos, holofote).
+2. Refazer o contrato da home (`.impeccable/surfaces/src-pages-index-astro.md`) a partir da
+   versão escolhida, mantendo o modo Persuade e os seis blocos.
+3. Levar a pele para o site inteiro: `Base.astro`, `Cabecalho.astro`, `Rodape.astro`,
+   `site.css` e os componentes; depois cada página (home, serviços, sites, sistemas, projetos e
+   página de projeto, blog e post, contato e enviado, Raio-X, acessos, privacidade, 404).
+   Reaproveitar `Vitrine.astro` (o palco escalado das prévias) no lugar de `Obra.astro` se a
+   direção pedir molduras.
+4. Apagar as versões que não entraram (`src/pages/siteN.astro`, `src/styles/versoes/`,
+   `src/components/versoes/Alternador.astro`, `src/layouts/Versao.astro`, os textos em
+   `versoes.ts`), tirar as rotas dos testes e do `foraDoSitemap`.
+5. `humanize-text` nos textos novos; `fixing-metadata` se mudar título ou descrição; inspeção
+   com capturas; `impeccable-finish-reviewer`; `DESIGN.md` e `design.json` refeitos pelo
+   `impeccable-documenter`.
+
+**Não fazer:** mudar a paleta, a Roboto ou o logo; Primary sobre fundo escuro; inventar número,
+depoimento, prazo ou preço; vidro, partículas, degradê em texto, slider no hero.
+
+**Pronto quando:**
+- [x] Todas as páginas na direção escolhida, com o mesmo cabeçalho e rodapé.
+- [x] Nenhuma rota `/siteN/` no build, nos testes ou no sitemap.
+- [x] `npm run build` e `npm test` passam. [PENDENTE: `npm run inspecao` e Lighthouse na máquina
+      do Igor; a inspeção perdeu as capturas do holofote.]
+- [x] direcao-visual.md, o contrato da home e DESIGN.md contam a decisão.
+
+**Precisa do Igor:** o que mais quer mudar depois de ver o site inteiro na direção nova.
+
+**Notas:**
+- A escolha veio no mesmo dia: base na versão 3 (fundo roxo, faixa rolante, como funciona,
+  "Vamos conversar?", rodapé), com o carrossel e o rodapé denso da 1 e o par imagem e texto e as
+  faixas claras da 2. Menos texto, ícones animados em todo tópico, sem o holofote, Lenis mais
+  contido (lerp 0,22).
+- Saíram de vez: `Linha`, `Cartao`, `Obra`, `Ficha`, `holofote.ts`, o laço da conexão em SVG e a
+  planilha do `site.css`. Entraram: `Secao` (faixas por tom), `Cabeca`, `Topicos`, `Dupla`,
+  `Passos`, `Galeria`, `Rolante`, `Vitrine` (o palco escalado das prévias), `Faq` e a
+  `ChamadaFinal` gigante como padrão de toda página (`Base.astro`).
+- Na rodada seguinte (05/11/2026) o Igor tirou o Raio-X do site: a landing page, o layout sem
+  menu, o botão, os textos e os dados saíram; os três posts que levavam ao Raio-X passaram a
+  levar ao serviço de sites. O TODO 8 fica como histórico.
+- O contrato da home em `.impeccable/surfaces/` ficou como registro histórico da direção
+  anterior; a direção nova está em direcao-visual.md, seção 5, e em DESIGN.md.
+

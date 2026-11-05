@@ -1,41 +1,70 @@
 ---
+import Glifo from './Glifo.astro';
+import { email, instagram, linkWhatsapp } from '../data/empresa';
+import { inicio } from '../i18n/paginas/inicio';
+import { textos as t } from '../i18n/textos';
+
 /**
- * A chamada final de cada página, sobre o degradê da marca, sem a grade: a planilha foi fechada.
- * Botão em Lilás com texto Ink (nunca Primary sobre escuro).
+ * A chamada final de toda página: "Vamos conversar?" em tipo gigante sobre o degradê, o botão
+ * do WhatsApp e os outros canais. Cada página pode trocar o título, o texto e a ação.
  */
 interface Props {
-  titulo: string;
+  titulo?: string;
   texto?: string;
-  acao: string;
-  href: string;
-  evento: string;
+  acao?: string;
+  href?: string;
+  evento?: string;
   /** Segunda ação, discreta (por exemplo, o formulário de contato). */
   secundaria?: { rotulo: string; href: string };
-  externo?: boolean;
+  /** Sem os canais de e-mail e Instagram. */
+  soAcao?: boolean;
 }
 
-const { titulo, texto, acao, href, evento, secundaria, externo = true } = Astro.props;
+const {
+  titulo = inicio.chamadaFinal.titulo,
+  texto = inicio.chamadaFinal.texto,
+  acao = inicio.chamadaFinal.acao,
+  href = linkWhatsapp(),
+  evento = 'whatsapp_chamada_final',
+  secundaria,
+  soAcao = false,
+} = Astro.props;
+const externo = href.startsWith('http');
 ---
 
-<section class="chamada-final" aria-labelledby="chamada-final-titulo">
-  <div class="chamada-final-faixa">
+<section class="faixa faixa-degrade chamada" aria-labelledby="chamada-final-titulo">
+  <div class="miolo chamada-grade">
     <h2 id="chamada-final-titulo">{titulo}</h2>
-    {texto && <p>{texto}</p>}
-    <div class="chamada-final-acoes">
+    <p>{texto}</p>
+    <div class="acoes chamada-acoes">
       <a
-        class="botao botao-claro"
+        class="botao botao-grande"
         href={href}
         target={externo ? '_blank' : undefined}
         rel={externo ? 'noopener' : undefined}
         data-evento={evento}
       >
+        {externo && <Glifo nome="whatsapp" tamanho={20} />}
         {acao}
-        {externo && <span class="visualmente-oculto">(abre em nova aba)</span>}
+        {externo && <span class="visualmente-oculto">{t.linkExterno}</span>}
       </a>
       {secundaria && (
         <a class="link-fita" href={secundaria.href}>
           {secundaria.rotulo}
         </a>
+      )}
+      {!soAcao && !secundaria && (
+        <>
+          <a class="link-fita" href={`mailto:${email}`} data-evento="email_chamada_final">
+            <Glifo nome="envelope" />
+            {email}
+          </a>
+          <a class="link-fita" href={instagram.url} target="_blank" rel="noopener">
+            <Glifo nome="instagram" />
+            {instagram.usuario}
+            <span class="visualmente-oculto">{t.linkExterno}</span>
+          </a>
+        </>
       )}
     </div>
   </div>
