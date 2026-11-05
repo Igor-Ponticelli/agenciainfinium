@@ -21,7 +21,7 @@ chamam **Sites** e **Sistemas** (sistemas sob medida e automação de processos)
 | **Contato** `/contato/` | os dois | WhatsApp, e-mail, Instagram e o formulário de orçamento com dois envios (seção 10). |
 | **Raio-X do site** `/raio-x-do-site/` | quem chega por anúncio | Landing page do produto de entrada, sem menu, uma ação só (seção 11). Fora do menu. |
 | **Acessos** `/acessos/` | quem vem do Instagram | Link da bio. Três botões: falar no WhatsApp, quero um site, quero automatizar minha empresa. Sem menu, sem rodapé longo. `noindex`. |
-| **Privacidade** `/privacidade/` | todos | Obrigatória: GA4, Meta Pixel, formulário e cookies. Sem termos de uso (Igor, 30/10/2026). |
+| **Privacidade** `/privacidade/` | todos | Obrigatória: GA4, formulário e cookies. Sem termos de uso (Igor, 30/10/2026). |
 | **404** | todos | Obrigatória. Pode ter uma piada pequena com o símbolo. |
 
 **Menu:** Serviços (submenu: Sites, Sistemas) · Projetos · Blog · Contato · botão "Falar no
@@ -162,8 +162,9 @@ de "grátis" além da conversa.
 - Onde o domínio `infinium.app.br` está registrado e quem administra o DNS.
 
 Decididos em 30/10/2026: WhatsApp `+55 47 99273-5089`; e-mail `agenciainfinium@gmail.com` no
-contato e no rodapé; GA4 e Pixel entram, configurados no fim; formulário entra; blog entra com
-os posts prontos; só política de privacidade, sem termos de uso; hospedagem na Hostinger.
+contato e no rodapé; GA4 e Pixel entram, configurados no fim (o Pixel saiu em 05/11/2026);
+formulário entra; blog entra com os posts prontos; só política de privacidade, sem termos de
+uso; hospedagem na Hostinger.
 
 ## 9. Blog
 

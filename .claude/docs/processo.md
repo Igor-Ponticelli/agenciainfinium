@@ -65,7 +65,8 @@ valendo (nada de listener de scroll cru, animar só transform e opacity, movimen
 **Travessão.** Proibido em qualquer texto visível. A `humanize-text` cobre o resto dos vícios.
 
 **Analytics.** As skills de performance preferem nenhum script de terceiros. A Infinium vende
-sites com Analytics e Pixel. **Pendente do Igor.** Se entrar, carrega só depois do consentimento.
+sites com Analytics e Pixel. Decidido: só o GA4, carregado depois do consentimento; sem Pixel
+(Igor, 05/11/2026).
 
 ## 4. Etapas
 
@@ -158,10 +159,10 @@ referência visual é direcao-visual.md e o pacote de identidade.
 
 Em 31/10/2026 os TODOs 1 a 8 estão feitos no repositório (base, conteúdo, brief e contrato,
 build, prévias, blog, Raio-X e a revisão final). O que falta é do Igor e está listado nas
-"Notas" do TODO 6 em [TODO.md](../../TODO.md): contas e chaves (Web3Forms, Turnstile, GA4,
-Pixel), preço, prazo e link de pagamento do Raio-X, valor do diagnóstico, cidades do SEO local,
-CNPJ no rodapé, data de publicação, a leitura dos textos, e a publicação na Hostinger com DNS e
-Search Console. O design construído está registrado em `DESIGN.md` e `.impeccable/design.json`.
+"Notas" do TODO 6 em [TODO.md](../../TODO.md): contas e chaves (Web3Forms e GA4), preço, prazo
+e link de pagamento do Raio-X, valor do diagnóstico, cidades do SEO local, CNPJ no rodapé, data
+de publicação, a leitura dos textos, e a publicação na Hostinger com DNS e Search Console. O
+design construído está registrado em `DESIGN.md` e `.impeccable/design.json`.
 
 Em 31/10/2026, depois de o Igor ver o site, entrou uma rodada de revisão (TODO 9): a grade perdeu
 as letras e os números, as seções viraram bandas, entraram fotos do Unsplash, cartões com ícones

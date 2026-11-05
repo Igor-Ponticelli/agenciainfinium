@@ -492,15 +492,15 @@ foto sem aval.
 no domínio, na Hostinger.
 
 **Passos:**
-1. Ligar GA4 e Meta Pixel (decididos em 30/10/2026): o Igor cria as contas e passa os IDs para o
-   `.env`; carregar só depois do consentimento, banner no padrão dos sites de clientes, eventos
-   de `metricas.ts` ligados aos dois. Escrever `/privacidade/` cobrindo GA4, Pixel, formulário e
-   cookies (LGPD). Sem termos de uso.
-1a. Formulário em produção: o Igor cria a conta do Web3Forms (destino `agenciainfinium@gmail.com`)
-   e o site do Turnstile; chaves no `.env`; testar envio por e-mail e por WhatsApp, o honeypot e
-   um envio sem JS.
+1. Ligar o GA4 (decidido em 30/10/2026; o Meta Pixel saiu em 05/11/2026): o Igor cria a conta e
+   passa o ID para o `.env`; carregar só depois do consentimento, banner no padrão dos sites de
+   clientes, eventos de `metricas.ts` ligados a ele. Escrever `/privacidade/` cobrindo GA4,
+   formulário e cookies (LGPD). Sem termos de uso.
+1a. Formulário em produção: o Igor cria a conta do Web3Forms (destino `agenciainfinium@gmail.com`);
+   chave no `.env`; testar envio por e-mail e por WhatsApp, o honeypot e um envio sem JS. Sem
+   Turnstile (05/11/2026): no Web3Forms ele só é conferido no plano pago.
 1b. Segurança (arquitetura.md, seção 7): `Content-Security-Policy` no `.htaccess` com as origens
-   de GA4, Pixel, Turnstile e Web3Forms; conferir HSTS e os demais cabeçalhos no domínio;
+   do GA4 e do Web3Forms; conferir HSTS e os demais cabeçalhos no domínio;
    `npm audit` limpo; nenhum segredo no repositório.
 2. `fixing-metadata` em todas as páginas: title, description, canonical, Open Graph (imagem
    própria por página de projeto), favicon, manifest e JSON-LD (`Organization`, `WebSite`,
@@ -530,36 +530,43 @@ no domínio, na Hostinger.
 - [x] `DESIGN.md` e `.impeccable/design.json` existem (escritos pelo `impeccable-documenter`).
 - [ ] O site está no ar em `infinium.app.br`, com o sitemap enviado ao Search Console.
       `[PENDENTE: o Igor sobe o infinium-site.zip na Hostinger e verifica o domínio no Search Console]`
-- [ ] Formulário, consentimento, GA4 e Pixel testados em produção; cabeçalhos de segurança e CSP
+- [ ] Formulário, consentimento e GA4 testados em produção; cabeçalhos de segurança e CSP
       conferidos no domínio. `[PENDENTE: depende das contas, das chaves e da publicação]`
 
 **Commits sugeridos:** `feat(seo): completa metadados e json-ld`, `fix: aplica correções da
 revisão final`, `test: adiciona testes de fumaça`, `docs: adiciona DESIGN.md`,
 `docs: adiciona README`.
 
-**Precisa do Igor:** contas do GA4, Pixel, Web3Forms e Turnstile; acesso à Hostinger, DNS e
+**Precisa do Igor:** contas do GA4 e do Web3Forms; acesso à Hostinger, DNS e
 Search Console.
 
 **Notas:**
 - **Consentimento e rastreamento** (`Consentimento.astro`, `rastreamento.ts`,
   `consentimento.ts`), no padrão dos sites de clientes (`packages/core` do monorepo): Consent
-  Mode v2 com tudo negado por padrão, GA4 e Pixel baixados só depois do aceite, banner com
-  aceitar, recusar e personalizar, escolha no `localStorage`, link "Preferências de cookies"
-  no rodapé, e os eventos de `metricas.ts` entregues às tags aceitas. Tudo lê os IDs de
-  `PUBLIC_GA4_ID` e `PUBLIC_META_PIXEL_ID` por `data-*`, sem script inline. Sem IDs, não há
-  cookie nem banner. `[PENDENTE: o Igor cria as contas e preenche o .env]`
-- **Formulário:** código pronto desde o TODO 4; falta `PUBLIC_WEB3FORMS_KEY` e
-  `PUBLIC_TURNSTILE_SITE_KEY`. Testado o envio pelo WhatsApp (teste de fumaça) e o `[PENDENTE]`
-  visível sem a chave. `[PENDENTE: contas do Web3Forms e do Turnstile e o teste do envio por
-  e-mail em produção]`
+  Mode v2 com tudo negado por padrão, GA4 baixado só depois do aceite, banner com aceitar,
+  recusar e personalizar, escolha no `localStorage`, link "Preferências de cookies" no rodapé,
+  e os eventos de `metricas.ts` entregues ao GA4. O ID vem de `PUBLIC_GA4_ID` por `data-*`, sem
+  script inline. Sem ID, não há cookie nem banner. O ID está no `.env` do Igor (05/11/2026). A
+  primeira página é contada pelo `config` e as trocas pelo ClientRouter pela medição otimizada
+  do GA4 ("mudanças de página com base em eventos do histórico", ligada por padrão no stream);
+  o `page_view` manual saiu porque cada troca contava duas vezes. Conferido com o Playwright:
+  uma visualização na entrada, em cada troca, no voltar e ao recarregar. Se essa opção for
+  desligada no GA4, as trocas deixam de ser contadas. O CSP libera `www.google.com`, para onde
+  o GA4 espelha os envios (guia de CSP do Google). O Meta Pixel saiu em 05/11/2026, com o
+  código, a opção do banner e as origens do CSP.
+  `[PENDENTE: conferir a visita no Tempo real do GA4 depois de publicar]`
+- **Formulário:** código pronto desde o TODO 4; a chave do Web3Forms está no `.env` do Igor
+  (05/11/2026). O Turnstile saiu na mesma data: no Web3Forms ele só é conferido no plano pago, e
+  o widget carregaria sem proteger nada. Ficam o filtro de spam do Web3Forms, o honeypot e os
+  limites de tamanho. `[PENDENTE: o teste do envio por e-mail em produção]`
 - **Política de privacidade** escrita (`src/i18n/paginas/privacidade.ts`): quem trata, o que
-  o site coleta e por quê (formulário via Web3Forms, WhatsApp, GA4, Pixel, registros do
+  o site coleta e por quê (formulário via Web3Forms, WhatsApp, GA4, registros do
   servidor), cookies só depois do aceite, compartilhamento, direitos, segurança. Sem termos de
   uso. Revisão jurídica é do Igor.
 - **Segurança:** CSP no `.htaccess` com `script-src 'self'` mais o hash do único script inline
-  (a classe `js`, numa linha só, com `prettier-ignore`) e as origens do GA4, Pixel, Turnstile e
-  Web3Forms; `assetsInlineLimit: 0` para o Astro não inlinar scripts (o hash mudaria a cada
-  build); `style-src 'unsafe-inline'` por causa do CSS inlinado pelo Astro; HSTS, nosniff,
+  (a classe `js`, numa linha só, com `prettier-ignore`) e as origens do GA4 e do Web3Forms;
+  `assetsInlineLimit: 0` para o Astro não inlinar scripts (o hash mudaria a cada build);
+  `style-src 'unsafe-inline'` por causa do CSS inlinado pelo Astro; HSTS, nosniff,
   frame DENY, Referrer-Policy, Permissions-Policy, `frame-ancestors 'none'`, deflate e cache.
   `npm audit` limpo. O `scripts/servir.mjs` serve o `dist/` com esses cabeçalhos para os
   testes e o Lighthouse. Conferir no domínio depois de publicar (securityheaders.com).
@@ -705,8 +712,8 @@ para receber tráfego pago e vender a análise de SEO, velocidade, segurança e 
       Igor; até lá a página mostra o aviso no preço e o botão leva ao WhatsApp]`
 - [ ] Um teste de ponta a ponta: clique, pagamento em modo de teste, mensagem de confirmação.
       `[PENDENTE: depende do link de pagamento]`
-- [ ] Eventos chegando no GA4 e no Pixel (depois do TODO 6). Os eventos já são registrados em
-      `metricas.ts`; chegar ao GA4 depende dos IDs.
+- [ ] Eventos chegando no GA4 (depois do TODO 6). Os eventos já são registrados em
+      `metricas.ts`; chegar ao GA4 depende da publicação.
 
 **Commits sugeridos:** `feat(raio-x): adiciona a landing page do raio-x do site`, `content(raio-x):
 escreve a oferta`, `docs: adiciona o checklist do raio-x`.

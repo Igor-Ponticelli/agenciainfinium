@@ -29,14 +29,12 @@ Na primeira vez, o Playwright precisa do Chromium: `npx playwright install chrom
 
 Copie `.env.example` para `.env` e preencha o que existir. Tudo é chave pública:
 
-| variável                    | para quê                                                           |
-| --------------------------- | ------------------------------------------------------------------ |
-| `PUBLIC_WEB3FORMS_KEY`      | envio do formulário de contato por e-mail (sem ela, só o WhatsApp) |
-| `PUBLIC_TURNSTILE_SITE_KEY` | proteção do formulário contra robôs                                |
-| `PUBLIC_GA4_ID`             | Google Analytics 4 (só carrega depois do consentimento)            |
-| `PUBLIC_META_PIXEL_ID`      | Meta Pixel (só carrega depois do consentimento)                    |
+| variável               | para quê                                                           |
+| ---------------------- | ------------------------------------------------------------------ |
+| `PUBLIC_WEB3FORMS_KEY` | envio do formulário de contato por e-mail (sem ela, só o WhatsApp) |
+| `PUBLIC_GA4_ID`        | Google Analytics 4 (só carrega depois do consentimento)            |
 
-Sem `PUBLIC_GA4_ID` e `PUBLIC_META_PIXEL_ID` não há cookie nem banner. A data de publicação do
+Sem `PUBLIC_GA4_ID` não há cookie nem banner. A data de publicação do
 site, que escalona as datas dos posts, fica em `src/data/blog.ts`.
 
 ## Publicar na Hostinger

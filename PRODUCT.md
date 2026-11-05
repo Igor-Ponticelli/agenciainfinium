@@ -61,8 +61,9 @@ O próprio site já demonstra o que vende: rápido, claro, bem feito no celular.
 - Automação de processos é vendida como serviço, **sem case de cliente** até o Igor confirmar
   um. A prova de sistemas é o RetroDash, apresentado como produto da Infinium, sem números de
   adoção inventados.
-- Analytics (Google Analytics e Meta Pixel): entram, configurados no fim. O código já nasce
-  preparado (eventos nos CTAs), com consentimento antes de carregar e página de privacidade.
+- Analytics (Google Analytics): entra, configurado no fim. Sem Meta Pixel (05/11/2026). O
+  código já nasce preparado (eventos nos CTAs), com consentimento antes de carregar e página de
+  privacidade.
 - Sem preço, prazo médio ou "diagnóstico gratuito" até o Igor confirmar
   (`identidade/EMPRESA.md`, "Pontos a confirmar").
 
