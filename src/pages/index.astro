@@ -77,7 +77,7 @@ const setaGrande =
     <Rolante itens={t.faixa} />
   </Secao>
 
-  <Secao class="cena" aria-labelledby="cena-titulo">
+  <Secao tom="claro" class="cena" aria-labelledby="cena-titulo">
     <div class="cabeca-secao">
       <h2 id="cena-titulo">{t.problema.titulo}</h2>
     </div>
@@ -97,11 +97,11 @@ const setaGrande =
     </div>
   </Secao>
 
-  <Secao tom="claro" aria-labelledby="servicos-titulo">
+  <Secao aria-labelledby="servicos-titulo">
     <div class="cabeca-secao">
       <h2 id="servicos-titulo">{t.servicos.titulo}</h2>
     </div>
-    <Dupla foto="entre" class="revelar">
+    <Dupla foto="entre" tom="violeta" class="revelar">
       <h2>{t.servicos.sites.titulo}</h2>
       <p class="frase-chave">{t.servicos.sites.frase}</p>
       <p>{t.servicos.sites.texto}</p>
@@ -123,7 +123,7 @@ const setaGrande =
         </a>
       </div>
     </Dupla>
-    <Dupla foto="estoque" invertida class="revelar">
+    <Dupla foto="estoque" tom="violeta" invertida class="revelar">
       <h2>{t.servicos.sistemas.titulo}</h2>
       <p class="frase-chave">{t.servicos.sistemas.frase}</p>
       <p>{t.servicos.sistemas.texto}</p>
