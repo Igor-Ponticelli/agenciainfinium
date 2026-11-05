@@ -488,26 +488,48 @@ html[data-menu-aberto] .whatsapp-flutuante {
   }
 }
 
-/* ---------- Abertura da home: a frase gigante e o símbolo que se desenha ---------- */
+/* ---------- Abertura da home: a frase gigante sobre a foto em luz violeta ---------- */
 
 .abertura {
   position: relative;
   overflow: hidden;
-  background-image: linear-gradient(170deg, var(--violet-700) 0%, var(--violet-900) 55%);
   padding-block: 0;
+}
+
+/* A foto cobre a abertura inteira, na luz violeta, e o degradê escurece de cima para baixo até
+   o fundo da página, para a frase e as ações ficarem legíveis */
+.abertura .abertura-foto {
+  position: absolute;
+  inset: 0;
+  aspect-ratio: auto;
+  opacity: 0.55;
+}
+
+.abertura::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    180deg,
+    rgb(32 10 52 / 0.25) 0%,
+    rgb(32 10 52 / 0.88) 68%,
+    var(--violet-900) 100%
+  );
+  pointer-events: none;
 }
 
 .abertura-grade {
   position: relative;
+  z-index: 1;
   display: grid;
   gap: var(--space-xl);
   align-content: end;
-  min-block-size: calc(100svh - var(--cabecalho-altura));
+  /* A primeira tela inteira, descontados o cabeçalho e a faixa rolante que fecha a abertura */
+  min-block-size: calc(100svh - var(--cabecalho-altura) - 3.5rem);
   padding-block: clamp(4rem, 10vh, 7rem) clamp(3rem, 8vh, 5rem);
 }
 
 .abertura h1 {
-  position: relative;
   max-inline-size: 11ch;
   color: #ffffff;
   font-size: var(--text-hero);
@@ -517,7 +539,6 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 .abertura-apoio {
-  position: relative;
   display: grid;
   gap: var(--space-m);
   max-inline-size: 40ch;
@@ -544,23 +565,18 @@ html[data-menu-aberto] .whatsapp-flutuante {
   }
 }
 
-.abertura-simbolo {
-  position: absolute;
-  inset-block-start: clamp(1rem, 4vh, 3rem);
-  inset-inline-end: -8%;
-  inline-size: clamp(16rem, 46vw, 40rem);
-  opacity: 0.55;
-  pointer-events: none;
+/* A faixa rolante fica por cima do degradê da foto */
+.abertura .rolante {
+  position: relative;
+  z-index: 1;
 }
 
-.abertura-simbolo svg,
 .conexao-simbolo svg {
   inline-size: 100%;
   block-size: auto;
   overflow: visible;
 }
 
-.abertura-simbolo path,
 .conexao-simbolo path {
   stroke: var(--violet-100);
   stroke-width: 7;
@@ -569,11 +585,6 @@ html[data-menu-aberto] .whatsapp-flutuante {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .abertura-simbolo path {
-    stroke-dashoffset: 1;
-    animation: desenhar-ao-abrir 2200ms var(--ease-out) 300ms forwards;
-  }
-
   .abertura h1,
   .abertura-apoio {
     animation: subir 900ms var(--ease-out) both;
@@ -581,12 +592,6 @@ html[data-menu-aberto] .whatsapp-flutuante {
 
   .abertura-apoio {
     animation-delay: 180ms;
-  }
-}
-
-@keyframes desenhar-ao-abrir {
-  to {
-    stroke-dashoffset: 0;
   }
 }
 

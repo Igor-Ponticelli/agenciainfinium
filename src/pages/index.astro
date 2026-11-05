@@ -20,7 +20,8 @@ import { rotaPost, rotas } from '../i18n/rotas';
 import { metasPaginas, textos } from '../i18n/textos';
 
 /**
- * Home, direção "o infinito" (05/11/2026): a frase gigante com o símbolo se desenhando, a faixa
+ * Home, direção "o infinito" (05/11/2026): a frase gigante sobre a foto em luz violeta (a
+ * abertura D, escolhida pelo Igor), a faixa
  * rolante, a cena em tópicos com ícone, os dois serviços com imagem de um lado e texto do outro,
  * a conexão com o símbolo, a galeria de projetos, as etapas com a cabeça fixa, o que muda, o
  * blog, as perguntas e a chamada final gigante. Uma frase por tópico, cada tópico com o seu ícone.
@@ -42,8 +43,16 @@ const setaGrande =
   <FontesPrevias slot="head" />
 
   <Secao class="abertura" cheia aria-labelledby="abertura-titulo">
+    <Foto
+      class="abertura-foto"
+      nome="notebook"
+      tom="violeta"
+      prioridade
+      posicao="50% 40%"
+      sizes="100vw"
+      widths={[800, 1200, 1600, 2000]}
+    />
     <div class="miolo abertura-grade">
-      <span class="abertura-simbolo" set:html={laco} aria-hidden="true" />
       <h1 id="abertura-titulo">{t.abertura.titulo}</h1>
       <div class="abertura-apoio">
         <p>{t.abertura.texto}</p>
