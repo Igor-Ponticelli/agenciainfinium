@@ -52,4 +52,9 @@ const {
       />
     )}
   </div>
+  {Astro.slots.has('abaixo') && (
+    <div class="miolo cabeca-abaixo">
+      <slot name="abaixo" />
+    </div>
+  )}
 </section>
