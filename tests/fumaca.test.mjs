@@ -49,6 +49,9 @@ const rotas = [
   '/raio-x-do-site/',
   '/privacidade/',
   '/acessos/',
+  '/site1/',
+  '/site2/',
+  '/site3/',
 ];
 
 describe('rotas e metadados', () => {
