@@ -8,17 +8,15 @@ import { raioX as t } from '../i18n/paginas/raioX';
  */
 interface Props {
   evento: string;
-  /** Sobre o degradê: Lilás com texto Ink. */
-  claro?: boolean;
   rotulo?: string;
 }
 
-const { evento, claro = false, rotulo = t.abertura.acao } = Astro.props;
+const { evento, rotulo = t.abertura.acao } = Astro.props;
 const destino = linkRaioX();
 ---
 
 <a
-  class:list={['botao', 'botao-grande', { 'botao-claro': claro }]}
+  class:list={['botao', 'botao-grande']}
   href={destino.href}
   target="_blank"
   rel="noopener"

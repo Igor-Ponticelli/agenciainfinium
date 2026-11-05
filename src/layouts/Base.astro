@@ -2,6 +2,7 @@
 import { Font, fontData } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
 import Cabecalho from '../components/Cabecalho.astro';
+import ChamadaFinal from '../components/ChamadaFinal.astro';
 import Consentimento from '../components/Consentimento.astro';
 import Fita from '../components/Fita.astro';
 import Rodape from '../components/Rodape.astro';
@@ -13,6 +14,11 @@ import '../styles/tokens.css';
 import '../styles/base.css';
 import '../styles/site.css';
 
+/**
+ * Layout do site: cabeçalho fixo, o conteúdo em faixas, a chamada final ("Vamos conversar?",
+ * ou a que a página puser no slot `fechamento`) e o rodapé. Escuro por padrão, no violeta
+ * profundo da marca (direcao-visual.md, seção 5, 05/11/2026).
+ */
 interface Props {
   titulo: string;
   descricao: string;
@@ -22,19 +28,15 @@ interface Props {
   tipoOg?: 'website' | 'article';
   /** Imagem Open Graph própria (caminho absoluto no site, 1200x630). */
   imagem?: string;
-  /** A página de acessos não tem cabeçalho nem rodapé (conteudo.md, seção 1). */
+  /** A página de acessos não tem cabeçalho, chamada nem rodapé (conteudo.md, seção 1). */
   semCabecalho?: boolean;
-  /**
-   * A home abre escura: cabeçalho e o slot `abertura` ficam dentro do degradê da marca
-   * (contrato da home). As outras páginas abrem claras.
-   */
-  aberturaEscura?: boolean;
+  /** Sem a chamada final padrão (quando a página traz a sua no slot `fechamento`). */
+  semChamada?: boolean;
 }
 
-const { semCabecalho = false, aberturaEscura = false, ...seo } = Astro.props;
+const { semCabecalho = false, semChamada = false, ...seo } = Astro.props;
 
 // Preload só do arquivo latin da Roboto (a primeira variante em astro.config.ts).
-// O filtro `preload` do <Font> não sabe o subset de fontes locais.
 const robotoLatin = fontData['--fonte-roboto']?.[0]?.src[0]?.url;
 ---
 
@@ -58,18 +60,13 @@ const robotoLatin = fontData['--fonte-roboto']?.[0]?.src[0]?.url;
     <a class="pular-conteudo" href="#conteudo">
       {t.pularParaConteudo}
     </a>
-    {!semCabecalho && (
-      <div class:list={['topo', { escuro: aberturaEscura, 'topo-escuro': aberturaEscura }]}>
-        <Cabecalho />
-        <slot name="abertura" />
-      </div>
-    )}
+    {!semCabecalho && <Cabecalho />}
     <main id="conteudo" tabindex="-1">
       <slot />
     </main>
     {!semCabecalho && (
-      <div class="escuro fechamento">
-        <slot name="fechamento" />
+      <div class="fechamento">
+        <slot name="fechamento">{!semChamada && <ChamadaFinal />}</slot>
         <Rodape />
       </div>
     )}
@@ -93,7 +90,6 @@ const robotoLatin = fontData['--fonte-roboto']?.[0]?.src[0]?.url;
       import '../scripts/metricas';
       import '../scripts/rolagem';
       import '../scripts/flutuante';
-      import '../scripts/holofote';
     </script>
   </body>
 </html>

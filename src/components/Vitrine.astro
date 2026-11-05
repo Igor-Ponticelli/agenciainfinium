@@ -1,7 +1,7 @@
 ---
-import type { Projeto } from '../../data/projetos';
-import { textos as t } from '../../i18n/textos';
-import { previas } from '../previas';
+import type { Projeto } from '../data/projetos';
+import { textos as t } from '../i18n/textos';
+import { previas } from './previas';
 
 /**
  * Uma prévia de projeto numa moldura, para as versões de estudo: a mesma prévia em HTML/CSS do
@@ -17,7 +17,7 @@ interface Props {
   /**
    * Qual layout da prévia aparece: a prévia é desenhada num palco de 1100 px (larga, o site no
    * computador) ou de 400 px (estreita, o site no celular) e o palco é escalado para caber na
-   * moldura, qualquer que seja o tamanho dela (comum.css, `.v-vitrine-palco`).
+   * moldura, qualquer que seja o tamanho dela (site.css, `.v-vitrine-palco`).
    */
   tela?: 'larga' | 'estreita';
   /** Nasce ativa (fonte e script na hora), para a vitrine da abertura. */
@@ -81,5 +81,5 @@ const dominio = d.url ? new URL(d.url).host : '';
 </div>
 
 <script>
-  import '../../scripts/previas';
+  import '../scripts/previas';
 </script>

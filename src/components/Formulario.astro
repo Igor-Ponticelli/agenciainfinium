@@ -19,7 +19,7 @@ const redirecionar = new URL(rotas.contatoEnviado, Astro.site).href;
 ---
 
 <form
-  class="formulario mesclada"
+  class="formulario"
   method="post"
   action={emailAtivo ? 'https://api.web3forms.com/submit' : undefined}
   data-formulario-contato

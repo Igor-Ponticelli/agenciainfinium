@@ -1,0 +1,55 @@
+---
+import Foto from './Foto.astro';
+import type { NomeFoto } from '../data/fotos';
+
+/**
+ * A cabeça das páginas internas: título grande, a frase-chave em Lilás, uma linha de texto e as
+ * ações no slot; à direita, opcionalmente, uma foto na luz violeta. Sempre sobre o escuro.
+ */
+interface Props {
+  titulo: string;
+  frase?: string;
+  texto?: string;
+  foto?: NomeFoto;
+  fotoPosicao?: string;
+  idTitulo?: string;
+  /** Atributos extras do título (a landing page do Raio-X troca o texto pelo ângulo do anúncio). */
+  atributosTitulo?: Record<string, string>;
+}
+
+const {
+  titulo,
+  frase,
+  texto,
+  foto,
+  fotoPosicao = '50% 50%',
+  idTitulo = 'pagina-titulo',
+  atributosTitulo = {},
+} = Astro.props;
+---
+
+<section
+  class:list={['faixa', 'faixa-escuro', 'cabeca', { 'cabeca-com-foto': Boolean(foto) }]}
+  aria-labelledby={idTitulo}
+>
+  <div class="miolo cabeca-grade">
+    <div class="cabeca-texto">
+      <h1 id={idTitulo} {...atributosTitulo}>
+        {titulo}
+      </h1>
+      {frase && <p class="cabeca-frase">{frase}</p>}
+      {texto && <p class="cabeca-linha">{texto}</p>}
+      <slot />
+    </div>
+    {foto && (
+      <Foto
+        class="cabeca-foto"
+        nome={foto}
+        tom="violeta"
+        prioridade
+        posicao={fotoPosicao}
+        sizes="(min-width: 64rem) 32rem, 100vw"
+      />
+    )}
+  </div>
+</section>

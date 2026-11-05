@@ -1,0 +1,27 @@
+---
+import simboloMicro from '../assets/marca/simbolo-micro-lilac.svg';
+
+/**
+ * A faixa rolante: os itens passam de um lado para o outro, em laço, separados pelo símbolo da
+ * marca. Decorativa (o conteúdo já está no texto da página), parada com movimento reduzido e ao
+ * passar o ponteiro.
+ */
+interface Props {
+  itens: readonly string[];
+}
+
+const { itens } = Astro.props;
+---
+
+<div class="rolante" aria-hidden="true">
+  <div class="rolante-trilho">
+    {[0, 1].map(() =>
+      itens.map((item) => (
+        <span class="rolante-item">
+          <img src={simboloMicro.src} width="20" height="10" alt="" decoding="async" />
+          {item}
+        </span>
+      )),
+    )}
+  </div>
+</div>
