@@ -11,7 +11,7 @@ import Passos from '../components/Passos.astro';
 import Rolante from '../components/Rolante.astro';
 import Secao from '../components/Secao.astro';
 import Topicos from '../components/Topicos.astro';
-import { dataCurta, dataDoPost, dataIso, postsPublicados } from '../data/blog';
+import { dataCurta, dataDoPost, dataIso, postsPublicados, tempoDeLeitura } from '../data/blog';
 import { linkWhatsapp } from '../data/empresa';
 import { todosProjetos } from '../data/projetos';
 import { blog as tb } from '../i18n/paginas/blog';
@@ -211,10 +211,17 @@ const setaGrande =
                 sizes="(min-width: 48rem) 26rem, 100vw"
               />
               <div class="post-cartao-texto">
-                <time datetime={dataIso(data)}>{dataCurta(data)}</time>
+                <span class="post-pilula">
+                  <time datetime={dataIso(data)}>{dataCurta(data)}</time> ·{' '}
+                  {tb.rotulos.leitura(tempoDeLeitura(post))}
+                </span>
                 <h3>
                   <a href={rotaPost(post.id)}>{post.data.titulo}</a>
                 </h3>
+                <span class="post-ler" aria-hidden="true">
+                  {tb.rotulos.ler}
+                  <Fragment set:html={seta} />
+                </span>
               </div>
             </li>
           );

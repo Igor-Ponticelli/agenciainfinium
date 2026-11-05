@@ -14,6 +14,7 @@ export const blog = {
     todos: 'Todos os posts',
     naHome: 'Do blog',
     verBlog: 'Ver o blog',
+    ler: 'Ler o texto',
   },
   chamadas: {
     sites: {
